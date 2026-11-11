@@ -85,11 +85,15 @@ The method only processes selectors that are described in the block manifest. Th
 || **classList**
 [`array`](../../../data-types.md) | List of CSS classes for the element after the update.
 
-The method completely replaces the `class` attribute instead of adding classes to the current list ||
+The method completely replaces the `class` attribute instead of adding classes to the current list.
+
+If the selector value is passed as an object, the field is required. Without `classList`, the method treats the whole object as a list of classes: `style` and `affect` are not applied, and `Array` is written to the `class` attribute ||
 || **affect**
 [`array`](../../../data-types.md) | List of CSS properties to be removed from the inline styles of all nested elements of the found node. For example, `["text-align", "color"]` ||
 || **style**
 [`object`](../../../data-types.md) | Set of inline styles for the found element in the format `{ "css-property": "value" }`. The method merges the passed values with the current `style` attribute.
+
+To remove a property and restore its default value, pass an empty string for it: `{ "color": "" }`. A string of spaces only works the same way.
 
 If the field is not passed and the element does not have a `background-image`, the current inline style remains unchanged. If `background-image` is already set, the method retains only this property and removes other inline styles ||
 |#

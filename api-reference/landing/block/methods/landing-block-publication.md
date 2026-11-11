@@ -342,8 +342,8 @@ Not every unsuccessful call arrives with an error. An unknown block identifier a
 || `PUBLIC_PAGE_REACHED` | The plan has a limit on the number of published pages ||
 || `LANDING_PAYMENT_FAILED` | The page was added from an app, and a subscription is required to publish it ||
 || `LANDING_PAYMENT_FAILED_BLOCK` | The page contains a block from an app, and a subscription is required to publish it ||
-|| `PUBLIC_SITE_REACHED` | The plan has a limit on the number of created or published sites ||
-|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available on paid plans only ||
+|| `PUBLIC_SITE_REACHED` | The plan has a limit on the number of created or published sites. The error is not returned for knowledge bases and group knowledge bases ||
+|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available on paid plans only. The error is not returned for knowledge bases and group knowledge bases ||
 || `PHONE_NOT_CONFIRMED` | Publishing requires a confirmed phone number ||
 || `EMAIL_NOT_CONFIRMED` | Publishing requires a confirmed e-mail ||
 || `URLCHECKER_FAIL` | Malicious content was detected on the page ||

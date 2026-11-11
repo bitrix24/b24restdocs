@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Delete product" access permission, one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions, and the permission to delete elements of the catalog information block
 
-This method deletes a service.
+The `catalog.product.service.delete` method deletes a service.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ This method deletes a service.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service. You can retrieve the identifier using the [catalog.product.service.list](./catalog-product-service-list.md) method.
 
-To obtain service identifiers, you need to use [catalog.product.service.list](./catalog-product-service-list.md) ||
+The method does not check the element type: if you pass the identifier of a product, the method deletes the product ||
 |#
 
 ## Code Examples
@@ -40,7 +40,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1264}' \
+    -d '{"id":7697}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.delete
     ```
 
@@ -50,7 +50,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1264,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7697,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.delete
     ```
 
@@ -68,7 +68,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.product.service.delete',
         params: {
-          id: 1264,
+          id: 7697,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +100,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.service.delete',
             params: {
-              id: 1264,
+              id: 7697,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -130,7 +130,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 
     try:
         bitrix_response = client.catalog.product.service.delete(
-            bitrix_id=1264,
+            bitrix_id=7697,
         ).response
         result = bitrix_response.result
         print(result)
@@ -156,10 +156,10 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
             ->call(
                 'catalog.product.service.delete',
                 [
-                    'id' => 1264,
+                    'id' => 7697,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -176,7 +176,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     BX24.callMethod(
         'catalog.product.service.delete',
         {
-            id: 1264,
+            id: 7697,
         },
         function(result) {
             if (result.error()) {
@@ -196,7 +196,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     $result = CRest::call(
         'catalog.product.service.delete',
         [
-            'id' => 1264
+            'id' => 7697
         ]
     );
 
@@ -210,7 +210,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.delete", b24.Params{
-    	"id": 1264,
+    	"id": 7697,
     })
     if err != nil {
     	return fmt.Errorf("catalog.product.service.delete: %w", err)
@@ -233,12 +233,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1718362658.676929,
-        "finish": 1718362659.517447,
-        "duration": 0.8405179977416992,
-        "processing": 0.39598703384399414,
-        "date_start": "2024-06-14T13:57:38+02:00",
-        "date_finish": "2024-06-14T13:57:39+02:00"
+        "start": 1793964161,
+        "finish": 1793964162.187206,
+        "duration": 1.1872060298919678,
+        "processing": 1,
+        "date_start": "2026-11-06T14:22:41+01:00",
+        "date_finish": "2026-11-06T14:22:42+01:00",
+        "operating_reset_at": 1793964720,
+        "operating": 0.7908980846405029
     }
 }
 ```
@@ -249,9 +251,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the service deletion ||
+[`boolean`](../../../data-types.md) | `true` if the service is deleted ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,8 +261,8 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-    "error":200040300040,
+{
+    "error":"200040300040",
     "error_description":"Access Denied"
 }
 ```
@@ -270,17 +272,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the service
-|| 
-|| `200040300040` | Insufficient permissions to delete the information block
-|| 
-|| `200040300010` | Insufficient permissions to view the trade catalog
-|| 
-|| `200040300000` | Information block not found
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the "Delete product" access permission or the permission to delete elements of the catalog information block ||
+|| `400` | Empty value | service does not exist. | There is no service with the specified `id`. The method returns the same error if `id` contains a string that is not a number ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

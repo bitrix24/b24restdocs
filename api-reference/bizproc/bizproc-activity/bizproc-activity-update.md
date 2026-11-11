@@ -199,7 +199,9 @@ Examples:
 - `Y` — yes
 - `N` — no ||
 || **Default** 
-[`any`](../../data-types.md) | Default value of the parameter ||
+[`any`](../../data-types.md) | Default value of the parameter.
+
+For a parameter in `RETURN_PROPERTIES`, this value is kept if [bizproc.event.send](../bizproc-robot/bizproc-event-send.md#empty-value) does not pass the key of this parameter or passes `null` ||
 |#
 
 #### Examples of Objects

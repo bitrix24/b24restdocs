@@ -11,9 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Delete product" permission, permission to delete the variation in the information block, and one of the permissions: "View product catalog", "View catalog products", or "Edit selling price"
 
-This method deletes a product variation.
+The method `catalog.product.offer.delete` deletes a product variation.
+
+{% note warning "" %}
+
+The method does not check that the record with the specified `id` is a variation. If you pass the identifier of a product from the product information block, the method deletes that product and returns `true`. Check the identifier using the [catalog.product.offer.get](./catalog-product-offer-get.md) method before deleting.
+
+{% endnote %}
+
+If you delete the last variation of a parent product, the parent product becomes a simple product.
 
 ## Method Parameters
 
@@ -23,9 +31,9 @@ This method deletes a product variation.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
+[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the variation.
 
-To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md) ||
+You can retrieve variation identifiers using the [catalog.product.offer.list](./catalog-product-offer-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +48,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1285}' \
+    -d '{"id":7695}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.delete
     ```
 
@@ -50,7 +58,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1285,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7695,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.offer.delete
     ```
 
@@ -64,11 +72,14 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
 
     declare const $b24: B24Frame
 
+    // result is true when the offer is deleted
+    type OfferDeleteResult = boolean
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<OfferDeleteResult>({
         method: 'catalog.product.offer.delete',
         params: {
-          id: 1285,
+          id: 7695,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -78,7 +89,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Product offer deleted:', result)
+        console.info('Deleted:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -92,7 +103,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function deleteProductOffer() {
+      async function deleteOffer() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -100,8 +111,8 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.offer.delete',
             params: {
-              id: 1285,
-            },
+                  id: 7695,
+                },
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -112,14 +123,14 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
           }
 
           const result = response.getData().result
-          console.info('Product offer deleted:', result)
+          console.info('Deleted:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', deleteProductOffer)
+      document.addEventListener('DOMContentLoaded', deleteOffer)
     </script>
     ```
 
@@ -130,7 +141,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
 
     try:
         bitrix_response = client.catalog.product.offer.delete(
-            bitrix_id=1285,
+            bitrix_id=7695,
         ).response
         result = bitrix_response.result
         print(result)
@@ -156,10 +167,10 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
             ->call(
                 'catalog.product.offer.delete',
                 [
-                    'id' => 1285,
+                    'id' => 7695,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -176,14 +187,14 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     BX24.callMethod(
         'catalog.product.offer.delete',
         {
-            id: 1285,
+            id: 7695,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -196,7 +207,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     $result = CRest::call(
         'catalog.product.offer.delete',
         [
-            'id' => 1285
+            'id' => 7695,
         ]
     );
 
@@ -210,17 +221,18 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.offer.delete", b24.Params{
-    	"id": 1285,
+    	"id": 7695,
     })
     if err != nil {
     	return fmt.Errorf("catalog.product.offer.delete: %w", err)
     }
 
-    var ok bool
-    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    // The method returns true if the variation is deleted.
+    var deleted bool
+    if err := json.Unmarshal(res.Result, &deleted); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println(deleted)
     ```
 
 {% endlist %}
@@ -233,12 +245,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1718623769.704759,
-        "finish": 1718623770.549073,
-        "duration": 0.8443140983581543,
-        "processing": 0.4027719497680664,
-        "date_start": "2024-06-17T14:29:29+02:00",
-        "date_finish": "2024-06-17T14:29:30+02:00"
+        "start": 1793895576,
+        "finish": 1793895576.862352,
+        "duration": 0.8623518943786621,
+        "processing": 0,
+        "date_start": "2026-11-05T19:19:36+01:00",
+        "date_finish": "2026-11-05T19:19:36+01:00",
+        "operating_reset_at": 1793895780,
+        "operating": 3.7463879585266113
     }
 }
 ```
@@ -249,9 +263,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the product variation deletion ||
+[`boolean`](../../../data-types.md) | `true` if the variation is deleted ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,9 +273,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-    "error":200040300040,
-    "error_description":"Access Denied"
+{
+    "error": "",
+    "error_description": "offer does not exist."
 }
 ```
 
@@ -270,17 +284,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the product variation
-|| 
-|| `200040300040` | Insufficient permissions to delete the information block
-|| 
-|| `200040300010` | Insufficient permissions to view the trade catalog
-|| 
-|| `200040300000` | Information block not found
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the "Delete product" permission or permission to delete this variation in the information block ||
+|| `400` | Empty value | offer does not exist. | No variation exists with the specified `id`, or the record with this `id` is not a variation ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter was not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | A non-numeric value was passed in `id` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

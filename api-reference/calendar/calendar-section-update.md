@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method updates the calendar.
+This method `calendar.section.update` updates the calendar: it changes only the parameters that are passed.
+
+The method replaces the `access` object entirely. The calendar is identified only by the `id` parameter: the type and the owner are taken from the saved calendar, and the method checks rights by them. The `type` and `ownerId` parameters are required, but the values from the request do not get into the update. The method does not accept the `export` parameter: the export period cannot be changed through this method, it is always `all`.
 
 ## Method Parameters
 
@@ -25,38 +27,43 @@ This method updates the calendar.
 || **type***
 [`string`](../data-types.md) | Calendar type. Possible values:
 - `user` — user calendar
-- `group` — group calendar  ||
-|| **ownerId***
-[`integer`](../data-types.md) | Identifier of the calendar owner ||
+- `group` — group calendar
+
+The parameter is required but does not affect the update: the method takes the type from the saved calendar ||
+|| **ownerId**
+[`integer`](../data-types.md) | Identifier of the calendar owner.
+
+Required for all calendar types except `user`. Does not affect the update: the method takes the owner from the saved calendar ||
 || **id***
-[`string`](../data-types.md) | Identifier of the calendar ||
+[`integer`](../data-types.md) | Identifier of an existing calendar ||
 || **name**
-[`string`](../data-types.md) | Calendar name ||
+[`string`](../data-types.md) | Calendar name. The method ignores an empty string and keeps the previous name ||
 || **description**
-[`string`](../data-types.md) | Calendar description ||
+[`string`](../data-types.md) | Calendar description. The method ignores an empty string: the description cannot be cleared with this method ||
 || **color**
-[`string`](../data-types.md) | Calendar color ||
+[`string`](../data-types.md) | Calendar color in the `#RRGGBB` format. If the value has fewer than six hexadecimal characters, the method saves the color `#9dcf00` ||
 || **text_color**
-[`string`](../data-types.md) | Text color in the calendar ||
-|| **export**
-[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
-||
+[`string`](../data-types.md) | Text color in the calendar in the `#RRGGBB` format. If the value has fewer than six hexadecimal characters, the method saves the color `#9dcf00` ||
+|| **access**
+[`object`](../data-types.md) | Object of calendar access rights [(detailed description)](#access) ||
 |#
 
-### Export Parameter {#export}
+### Parameter access {#access}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **ALLOW**
-[`boolean`](../data-types.md) | Allow calendar export ||
-|| **SET**
-[`string`](../data-types.md) | Period for which to perform the export. Possible values:
-- `all` — for the entire period
-- `3_9` — 3 months before and 9 after
-- `6_12` — 6 months before and 12 after
- ||
-|#
+The object format is described in the [Parameter access](./calendar-section-add.md#access) section of the `calendar.section.add` method. The value is the same object that comes in the `ACCESS` field of the [calendar.section.get](./calendar-section-get.md) response.
+
+If the user has no right to manage calendar access, the method silently ignores the passed object and the calendar rights remain the same. If the right is present, an empty `{}` object resets the rights to the default values.
+
+Value example:
+
+```json
+{
+    "access": {
+        "U1": 19,
+        "G2": 13
+    }
+}
+```
 
 ## Code Examples
 
@@ -70,7 +77,7 @@ This method updates the calendar.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":325,"type":"user","ownerId":2,"name":"Changed Section Name","description":"New description for section","color":"#9cbeAA","text_color":"#283099","export":[{"ALLOW":false}]}' \
+    -d '{"id":325,"type":"user","ownerId":2,"name":"Changed Section Name","description":"New description for section","color":"#9cbeaa","text_color":"#283099"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.section.update
     ```
 
@@ -80,7 +87,7 @@ This method updates the calendar.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":325,"type":"user","ownerId":2,"name":"Changed Section Name","description":"New description for section","color":"#9cbeAA","text_color":"#283099","export":[{"ALLOW":false}],"auth":"**put_access_token_here**"}' \
+    -d '{"id":325,"type":"user","ownerId":2,"name":"Changed Section Name","description":"New description for section","color":"#9cbeaa","text_color":"#283099","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/calendar.section.update
     ```
 
@@ -106,13 +113,8 @@ This method updates the calendar.
           ownerId: 2,
           name: 'Changed Section Name',
           description: 'New description for section',
-          color: '#9cbeAA',
+          color: '#9cbeaa',
           text_color: '#283099',
-          export: [
-            {
-              ALLOW: false,
-            },
-          ],
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -149,13 +151,8 @@ This method updates the calendar.
               ownerId: 2,
               name: 'Changed Section Name',
               description: 'New description for section',
-              color: '#9cbeAA',
+              color: '#9cbeaa',
               text_color: '#283099',
-              export: [
-                {
-                  ALLOW: false,
-                },
-              ],
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -187,14 +184,11 @@ This method updates the calendar.
         bitrix_response = client.calendar.section.update(
             type="user",
             owner_id=2,
-            bitrix_id="325",
+            bitrix_id=325,
             name="Changed Section Name",
             description="New description for section",
-            color="#9cbeAA",
+            color="#9cbeaa",
             text_color="#283099",
-            export={
-                "ALLOW": False,
-            },
         ).response
         result = bitrix_response.result
         print(result)
@@ -225,24 +219,18 @@ This method updates the calendar.
                     'ownerId'     => 2,
                     'name'        => 'Changed Section Name',
                     'description' => 'New description for section',
-                    'color'       => '#9cbeAA',
+                    'color'       => '#9cbeaa',
                     'text_color'  => '#283099',
-                    'export'      => [
-                        [
-                            'ALLOW' => false
-                        ]
-                    ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating calendar section: ' . $e->getMessage();
@@ -260,13 +248,8 @@ This method updates the calendar.
             ownerId: 2,
             name: 'Changed Section Name',
             description: 'New description for section',
-            color: '#9cbeAA',
-            text_color: '#283099',
-            export: [
-                {
-                    ALLOW: false
-                }
-            ]
+            color: '#9cbeaa',
+            text_color: '#283099'
         }
     );
     ```
@@ -284,13 +267,8 @@ This method updates the calendar.
             'ownerId' => 2,
             'name' => 'Changed Section Name',
             'description' => 'New description for section',
-            'color' => '#9cbeAA',
-            'text_color' => '#283099',
-            'export' => [
-                [
-                    'ALLOW' => false
-                ]
-            ]
+            'color' => '#9cbeaa',
+            'text_color' => '#283099'
         ]
     );
 
@@ -309,13 +287,8 @@ This method updates the calendar.
     	"ownerId":     2,
     	"name":        "Changed Section Name",
     	"description": "New description for section",
-    	"color":       "#9cbeAA",
+    	"color":       "#9cbeaa",
     	"text_color":  "#283099",
-    	"export": []b24.Params{
-    		{
-    			"ALLOW": false,
-    		},
-    	},
     })
     if err != nil {
     	return fmt.Errorf("calendar.section.update: %w", err)
@@ -336,14 +309,14 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": 190,
+    "result": 325,
     "time": {
-        "start": 1733812564.64201,
-        "finish": 1733812565.71673,
-        "duration": 1.0747201442718506,
-        "processing": 0.05963897705078125,
-        "date_start": "2024-12-08T06:36:04+00:00",
-        "date_finish": "2024-12-08T06:36:05+00:00"
+        "start": 1733828946.418185,
+        "finish": 1733828946.650208,
+        "duration": 0.23202300071716309,
+        "processing": 0.0054471492767333984,
+        "date_start": "2024-12-10T09:09:06+00:00",
+        "date_finish": "2024-12-10T09:09:06+00:00"
     }
 }
 ```
@@ -355,6 +328,8 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`integer`](../data-types.md) | Identifier of the updated calendar ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -373,14 +348,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.update" | The required parameter `type` is missing ||
-|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.update" | The required parameter `ownerId` is missing and the `type` parameter is not equal to `user` ||
-|| Empty value | Section ID is not set | The required parameter `id` is missing ||
-|| Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
-|| Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty value | Access denied | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
-|| Empty value | An error occurred while updating the section | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.update" | The required parameter `type` is missing ||
+|| `400` | Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.update" | The required parameter `ownerId` is missing and the `type` parameter is not equal to `user` ||
+|| `400` | Empty value | Section ID is not specified | The required parameter `id` is missing. An administrator gets this error also when there is no calendar with the specified `id` ||
+|| `400` | Empty value | Invalid parameter value for "name" | Incorrect data format in the `name` field ||
+|| `400` | Empty value | Invalid parameter value for "description" | Incorrect data format in the `description` field ||
+|| `400` | Empty value | Access denied | No rights to edit the calendar. A user who is not an administrator gets this error also when there is no calendar with the specified `id` ||
+|| `400` | Empty value | Error while editing section | Another error ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

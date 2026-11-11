@@ -346,6 +346,14 @@ HTTP status: **200**
         "isMultiple": false
       },
       {
+        "title": "verboseName",
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false
+      },
+      {
         "title": "description",
         "type": "string",
         "isRequired": false,
@@ -413,6 +421,14 @@ HTTP status: **200**
         "title": "fields",
         "type": "array",
         "isRequired": true,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true
+      },
+      {
+        "title": "tableGroupIds",
+        "type": "array",
+        "isRequired": false,
         "isReadOnly": false,
         "isImmutable": false,
         "isMultiple": true
@@ -492,7 +508,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or BI Builder external data sources are not available on this Bitrix24 ||
 |#
 
 

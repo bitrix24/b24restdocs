@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user except collab users
 
-This method adds a new calendar.
+The `calendar.section.add` method adds a new calendar.
 
-The system will add a new calendar only for the user who executes the method. An administrator can create calendars for other users.
+The method does not check whether the user from `ownerId` exists or whether the caller has rights to their calendar.
 
 ## Method Parameters
 
@@ -28,24 +28,27 @@ The system will add a new calendar only for the user who executes the method. An
 [`string`](../data-types.md) | Calendar type. Possible values: 
 - `user` — user calendar 
 - `group` — group calendar ||
-|| **ownerId***
+|| **ownerId**
 [`integer`](../data-types.md) | Identifier of the calendar owner.
 
-For `type` with the value `user`, the identifier of the current user will be set if no value is passed in `ownerId` ||
+Required for all calendar types except `user`. For the `user` type, the parameter can be omitted — the current user's ID is used then ||
 || **name***
 [`string`](../data-types.md) | Calendar name ||
 || **description**
 [`string`](../data-types.md) | Calendar description ||
 || **color**
-[`string`](../data-types.md) | Calendar color ||
+[`string`](../data-types.md) | Calendar color in `#RRGGBB` format. The default value is `#E6A469` ||
 || **text_color**
-[`string`](../data-types.md) | Text color in the calendar ||
+[`string`](../data-types.md) | Text color in the calendar in `#RRGGBB` format. The default value is `#000000` ||
 || **export**
-[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
-||
+[`object`](../data-types.md) | Object of the calendar export parameters [(detailed description)](#export) ||
+|| **access**
+[`object`](../data-types.md) | Object of the calendar access rights [(detailed description)](#access) ||
 |#
 
 ### Export Parameter {#export}
+
+Export settings are saved only if both fields are passed — `ALLOW` and `SET`. If only one field is passed, the method creates a calendar with the default values.
 
 #|
 || **Name**
@@ -59,8 +62,35 @@ For `type` with the value `user`, the identifier of the current user will be set
 - `all` — for the entire period
 - `3_9` — 3 months before and 9 after
 - `6_12` — 6 months before and 12 after
- ||
+
+The method does not save the parameter value: the export period is always `all` ||
 |#
+
+### Access Parameter {#access}
+
+The object key is the access code, the value is the numeric permission identifier. The format matches the `ACCESS` field in the [calendar.section.get](./calendar-section-get.md) response.
+
+If the user has no right to manage calendar access, the method silently ignores the passed object and sets the default rights. An empty `{}` object also sets the default rights.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **Access Code**
+[`string`](../data-types.md) | Code of the object the right is granted to: `U<id>` — user, `G<id>` — user group, `D<id>` — department. For a group calendar, the code denotes the role in the group: `SG<id>_A` — group owner, `SG<id>_E` — moderators, `SG<id>_K` — all members. The right itself is set by the value under the key. For example, `U1` is the user with ID `1` ||
+|| **Permission Identifier**
+[`integer`](../data-types.md) | Numeric code of the access right permission. The identifiers differ between Bitrix24 instances: an administrator of an on-premise Bitrix24 can find them out ||
+|#
+
+Example value:
+
+```json
+{
+    "access": {
+        "U1": 19,
+        "G2": 13
+    }
+}
+```
 
 ## Code Examples
 
@@ -238,9 +268,8 @@ For `type` with the value `user`, the identifier of the current user will be set
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding calendar section: ' . $e->getMessage();
@@ -347,6 +376,8 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`integer`](../data-types.md) | Identifier of the created calendar ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -365,13 +396,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.add" | The required parameter `type` is not provided ||
-|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.add" | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
-|| Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
-|| Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty value | Access denied | No permission to create a calendar with the provided `type` ||
-|| Empty value | An error occurred while creating the section | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.add" | The required parameter `type` is not provided ||
+|| `400` | Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.add" | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
+|| `400` | Empty value | Invalid parameter value for "name" | The `name` parameter is not provided or is not a string ||
+|| `400` | Empty value | Invalid parameter value for "description" | Incorrect data format in the `description` field ||
+|| `400` | Empty value | Access denied | For `type` with the value `group`, the user has no right to modify group calendars, or the method is called by a collab user ||
+|| `400` | Empty value | Error while creating section | Another error ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

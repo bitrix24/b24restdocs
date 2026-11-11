@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method deletes a calendar.
+The `calendar.section.delete` method deletes a calendar along with all its events.
+
+A deleted calendar and its events cannot be restored.
 
 ## Method Parameters
 
@@ -23,13 +25,15 @@ This method deletes a calendar.
 || **Name**
 `type` | **Description** ||
 || **type***
-[`string`](../data-types.md) | Calendar type: 
+[`string`](../data-types.md) | Calendar type. Possible values:
 - `user` — user calendar
 - `group` — group calendar ||
-|| **ownerId***
-[`integer`](../data-types.md) | Identifier of the calendar owner ||
+|| **ownerId**
+[`integer`](../data-types.md) | Identifier of the calendar owner.
+
+Required for all calendar types except `user`. For the `user` type, the parameter can be omitted — the current user's ID is used then ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the calendar ||
+[`integer`](../data-types.md) | Identifier of the calendar. If no calendar with this `id` exists, the method returns the `ERROR_CORE` error with the text EC_ACCESS_DENIED: it does not distinguish a missing calendar from someone else's ||
 |#
 
 ## Code Examples
@@ -180,7 +184,8 @@ This method deletes a calendar.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting calendar section: ' . $e->getMessage();
@@ -268,6 +273,8 @@ HTTP Status: **200**
 [`boolean`](../data-types.md) | Result of the calendar deletion.
 
 Returns `true` if the calendar was successfully deleted ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -286,12 +293,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.delete" | The required parameter `type` was not provided ||
-|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.delete" | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
-|| Empty value | Section ID is not set. | The required parameter `id` was not provided ||
-|| Empty value | Access denied. | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
-|| Empty value | An error occurred while deleting the section. | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.delete" | The required parameter `type` was not provided ||
+|| `400` | Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.delete" | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
+|| `400` | Empty value | Section ID is not specified | The required parameter `id` was not provided ||
+|| `400` | Empty value | Access denied | The `type` and `ownerId` parameters in the request point to a calendar that the user has no rights to modify ||
+|| `400` | `ERROR_CORE` | EC_ACCESS_DENIED | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
+|| `400` | Empty value | Error while deleting section | Another error ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -301,4 +309,4 @@ HTTP Status: **400**
 - [{#T}](./index.md)
 - [{#T}](./calendar-section-add.md)
 - [{#T}](./calendar-section-update.md)
-- [{#T}](./calendar-settings-get.md)
+- [{#T}](./calendar-section-get.md)

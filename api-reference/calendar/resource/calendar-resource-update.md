@@ -11,9 +11,16 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an administrator or a user with permission to edit resource calendars
 
-This method updates a resource.
+The `calendar.resource.update` method changes the resource name. How resource booking works is described in the [methods overview](./index.md).
+
+{% note warning "" %}
+
+- The method does not check that `resourceId` belongs to a resource. If you pass the ID of another calendar, such as a personal one, the method renames it and turns it into a resource: the calendar disappears from the user's calendars and appears in the [calendar.resource.list](./calendar-resource-list.md) list. Before calling the method, make sure the ID is in the response of that method.
+- On every call, the method resets the resource access permissions to the default values: all employees can edit the resource, and the user who called the method can manage access. Permissions configured in the interface are not retained.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,11 +30,11 @@ This method updates a resource.
 || **Name**
 `type` | **Description** ||
 || **resourceId***
-[`integer`](../../data-types.md) | Resource identifier.
+[`integer`](../../data-types.md) | Resource identifier. The value must be greater than `0`.
 
 You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource listing method [calendar.resource.list](./calendar-resource-list.md) ||
 || **name***
-[`string`](../../data-types.md) | New name of the resource ||
+[`string`](../../data-types.md) | New name of the resource. An empty string is treated as a missing parameter ||
 |#
 
 ## Code Examples
@@ -256,7 +263,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Identifier of the updated resource ||
+[`integer`](../../data-types.md) | The ID from the `resourceId` parameter. The method returns it even when no calendar with this ID exists: there is no error, although nothing changes ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -266,19 +275,20 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The mandatory parameter \"name\" is not specified for the method \"calendar.resource.update\""
+    "error_description": "The mandatory parameter \"id\" is not specified for the method \"calendar.resource.update\""
 }
 ```
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "resourceId" is not specified for the method "calendar.resource.update" | The required parameter `resourceId` is missing ||
-|| Empty value | The mandatory parameter "name" is not specified for the method "calendar.resource.update" | The required parameter `name` is missing ||
-|| Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
-|| Empty value | An error occurred while updating the resource | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "id" is not specified for the method "calendar.resource.update" | The required parameter `resourceId` is missing or its value is not greater than `0`. The error text names the parameter `id` ||
+|| `400` | Empty value | The mandatory parameter "name" is not specified for the method "calendar.resource.update" | The required parameter `name` is missing ||
+|| `400` | Empty value | Access denied | The method is called by an extranet user, or the user has no permission to edit resource calendars ||
+|| `400` | Empty value | Error updating resource | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -288,5 +298,5 @@ HTTP status: **400**
 - [{#T}](./index.md)
 - [{#T}](./calendar-resource-add.md)
 - [{#T}](./calendar-resource-list.md)
-- [{#T}](./calendar-resource-booking-list.md)
 - [{#T}](./calendar-resource-delete.md)
+- [{#T}](./calendar-resource-booking-list.md)

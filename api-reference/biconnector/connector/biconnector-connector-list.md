@@ -612,7 +612,7 @@ One error of the method arrives differently. If the `order` parameter receives a
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter must be an array ||
 || `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter must be an array ||
 || `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter must be an array ||

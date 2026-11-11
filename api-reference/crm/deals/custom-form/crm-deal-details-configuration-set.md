@@ -12,9 +12,9 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - a user can set their personal settings
-> - personal settings for another user can be set if the user has editing rights for that user's personal view
-> - general settings can be set if the user has editing rights for the common view
+> - a user — their own personal settings
+> - a CRM administrator — personal settings of another user
+> - a user with permission to edit the common view of the deal card — general settings
 
 {% note warning "DEPRECATED" %}
 
@@ -22,11 +22,17 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.set` sets the settings for the deal card. It records the personal settings for the specified user or the general settings for all users.
+The method `crm.deal.details.configuration.set` records the personal deal card settings for the specified user or the general settings for all users.
 
 {% note info %}
 
 The settings for deal cards in different Sales Funnels may vary. To select a Sales Funnel, use the `extras.dealCategoryId` parameter.
+
+{% endnote %}
+
+{% note warning "" %}
+
+The method does not add to the current settings but replaces them. To change a single section or field, first retrieve the current structure using [crm.deal.details.configuration.get](./crm-deal-details-configuration-get.md), modify it, and pass it in full.
 
 {% endnote %}
 
@@ -52,7 +58,7 @@ Default is `P`
 If not specified, the current user is used
 ||
 || **data*** 
-[`section[]`](#section) | A list of `section` describing the configuration of the deal card sections. The structure of `section` is described below ||
+[`section[]`](#section) | A list of deal card sections [(detailed description)](#section). Sections and fields not included in `data` are removed from the card ||
 || **extras**
 [`object`](../../../data-types.md) | Additional parameters [(detailed description)](#parameter-extras) ||
 |#
@@ -65,7 +71,7 @@ If not specified, the current user is used
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be retrieved using [crm.category.list](../../universal/category/crm-category-list.md) with `entityTypeId = 2` or [crm.deal.category.list](../../rest-v3/categories/crm-entity-category-list-rest-v3.md) in REST 3.0 — the identifiers are the same
 
 If not specified, the default funnel for deals is used
 ||
@@ -87,7 +93,7 @@ Describes an individual section with fields within the deal card
 || **type***
 [`string`](../../../data-types.md) | Type of the section
 
-Currently, only the value `section` is available
+Always `section`
 ||
 || **elements**
 [`section_element[]`](#section_element) | List of fields displayed in the card with additional settings ||
@@ -105,14 +111,16 @@ Configuration of an individual field within the section
 || **name***
 [`string`](../../../data-types.md) | Field identifier. A list of available fields can be found using [`crm.deal.fields`](../crm-deal-fields.md) ||
 || **optionFlags**
-[`integer`](../../../data-types.md) | Whether to always show the field:
+[```integer|string```](../../../data-types.md) | Whether to always show the field:
 - `1` — yes
 - `0` — no
 
-Default is `0`
+You can also pass it as a string `"1"` or `"0"`. The method does not save a non-numeric value and does not return an error.
+
+If it is not passed, the flag is not saved, and the field behaves as with `0`. In the [crm.deal.details.configuration.get](./crm-deal-details-configuration-get.md) response, such a field has no `optionFlags`
 ||
 || **options**
-[`object`](../../../data-types.md) | Additional options for the field. The composition depends on the field ||
+[`object`](../../../data-types.md) | Additional options for the field. The composition depends on the field, for example, `defaultCountry` for `CLIENT`, `isPayButtonVisible` and `isPaymentDocumentsVisible` for `OPPORTUNITY_WITH_CURRENCY`. If you pass a value that is not an object, the options are not saved, and no error is returned ||
 |#
 
 ## Code Examples
@@ -300,7 +308,42 @@ Set personal configuration for the deal card for the user with `id = 1` in the f
         bitrix_response = client.crm.deal.details.configuration.set(
             scope="P",
             user_id=1,
-            extras={"dealCategoryId": 0},
+            extras={"dealCategoryId": 32},
+            data=[
+                {
+                    "name": "main",
+                    "title": "About the Deal",
+                    "type": "section",
+                    "elements": [
+                        {"name": "TITLE"},
+                        {"name": "OPPORTUNITY_WITH_CURRENCY"},
+                        {"name": "STAGE_ID"},
+                        {"name": "CLOSEDATE"},
+                        {"name": "CLIENT"},
+                    ],
+                },
+                {
+                    "name": "additional",
+                    "title": "Additional Information",
+                    "type": "section",
+                    "elements": [
+                        {"name": "TYPE_ID"},
+                        {"name": "SOURCE_ID"},
+                        {"name": "SOURCE_DESCRIPTION"},
+                        {"name": "OPENED"},
+                        {"name": "ASSIGNED_BY_ID"},
+                        {"name": "COMMENTS"},
+                    ],
+                },
+                {
+                    "name": "products",
+                    "title": "Products",
+                    "type": "section",
+                    "elements": [
+                        {"name": "PRODUCT_ROW_SUMMARY"},
+                    ],
+                },
+            ],
         ).response
         result = bitrix_response.result
         print(result)
@@ -628,7 +671,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No rights to set deal card settings ||
+|| `400` | Empty Value | Access denied. | `scope = P` and the `userId` of another user were passed, and the current user is not a CRM administrator ||
+|| `400` | Empty Value | Access denied. | `scope = C` was passed, and the user does not have permission to edit the common view of the deal card in the `extras.dealCategoryId` funnel ||
 || `400` | Empty Value | Parameter 'data' must be array | A non-array was passed in `data` ||
 || `400` | Empty Value | There are no data to write | An empty array was passed in `data` ||
 || `400` | Empty Value | The data must be indexed array | A non-indexed array was passed in `data` ||

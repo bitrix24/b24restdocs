@@ -35,7 +35,7 @@ You must pass the `["iblockId", "=", 25]` condition with the identifier of the p
 
 You can filter by the fields: `id`, `iblockId`, `name`, `code`, `xmlId`, `active`, `sort`, `createdBy`, `modifiedBy`, `dateCreate`, `timestampX`, `dateActiveFrom`, `dateActiveTo`, `iblockSectionId`, `type`, `available`, `bundle`, `quantity`, `quantityReserved`, `quantityTrace`, `canBuyZero`, `subscribe`, `vatId`, `vatIncluded`, `purchasingPrice`, `purchasingCurrency`, `barcodeMulti`, `weight`, `length`, `width`, `height`, `measure`. Filtering by properties is not supported.
 
-The `=`, `!=`, `>`, `>=`, `<`, and `<=` operators are supported. The `in` operator is not currently applied: the method returns records without taking this condition into account. The `%` operator, `or` logic, and negation are not supported.
+The `=`, `!=`, `>`, `>=`, `<`, `<=`, and `between` operators are supported. For `between`, pass the value as an array of two bounds, for example `["id", "between", [7500, 7600]]`. The `in` operator is not currently applied: the method returns records without taking this condition into account, and an empty array in `in` returns an empty list. The `like` operator and the `!` negation cause the `Unknown filter operator` error, and `or` logic causes the `Filter OR groups are not supported` error.
 
 The `type` field supports the `=`, `!=`, and `in` operators. A value other than `3` or `6` does not narrow the selection.
 
@@ -438,7 +438,7 @@ HTTP status: **200**
         "items": [
             {
                 "id": 7553,
-                "name": "DOCS-V3-SKU Cotton T-shirt",
+                "name": "Cotton T-shirt",
                 "active": "Y",
                 "type": 3
             }
@@ -607,8 +607,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `200040300000` | Iblock Not Found | Pass the `iblockId` condition with the identifier of an existing catalog in `filter` ||
 || `-` | productType is not allowed for this catalog | Pass the product catalog information block in `iblockId` ||
 || `-` | The type field supports only the =, != and in filter operators | Use the `=`, `!=`, or `in` operators for `type` ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
+|| `previewText` | DTO `ProductDto` in field `previewText` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
+|| `vatId` | DTO `ProductDto` in field `vatId` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
+|| `-` | Filter OR groups are not supported | Do not use groups with `"logic": "or"` in `filter`. Send a separate request for each condition ||
 || `-` | pagination.offset must be a non-negative multiple of pagination.limit | Pass an `offset` that is a multiple of `limit`, or use `page` ||
 |#
 
@@ -618,7 +619,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNFILTEROPERATOREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Unknown filter operator `#OPERATOR#` | Use the `=`, `!=`, `>`, `>=`, `<`, `<=` operators ||
+|| `filter` | Unknown filter operator `like` | Use the `=`, `!=`, `>`, `>=`, `<`, `<=`, `between` operators. The `!` negation causes the same error ||
+|#
+
+#### Sort Order Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `order` | Invalid sort order `bad` | Pass the `asc` or `desc` direction ||
 |#
 
 #### Pagination Error
@@ -627,7 +637,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Pass a `limit` greater than `0` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a `limit` greater than `0` ||
 |#
 
 #### Unknown Field Error
@@ -636,7 +646,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `filter`, `order` | Unknown field `#FIELD#` found in entity `ProductDto` | Specify only the fields from the parameter descriptions. `PROPERTY_{id}` keys are not supported ||
+|| `select`, `filter`, `order` | Unknown field `foo` found in entity `ProductDto` | Specify only the fields from the parameter descriptions. `PROPERTY_{id}` keys are not supported ||
 |#
 
 #### Access Error

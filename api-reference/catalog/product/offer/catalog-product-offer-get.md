@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the variation in the information block and one of the permissions: "View product catalog", "View catalog products", or "Edit selling price"
 
-The method returns the field values of a product variation by its identifier.
+The method `catalog.product.offer.get` returns the values of all fields and properties of a product variation by its identifier.
 
 ## Method Parameters
 
@@ -23,17 +23,14 @@ The method returns the field values of a product variation by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
+[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the variation.
 
-To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
- ||
+You can retrieve variation identifiers using the [catalog.product.offer.list](./catalog-product-offer-list.md) method ||
 |#
 
-{% note warning "Working with Product Price" %}
+If you pass the identifier of a product rather than a variation in `id`, the method returns an empty array `{"offer": []}` without an error.
 
-To get the prices of variations, use the methods [catalog.price.*](../../price/index.md).
-
-{% endnote %}
+The method does not return variation prices. To retrieve prices, use the [catalog.price.*](../../price/index.md) methods.
 
 ## Code Examples
 
@@ -47,7 +44,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1286}' \
+    -d '{"id":7695}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.get
     ```
 
@@ -57,7 +54,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1286,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7695,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.offer.get
     ```
 
@@ -71,55 +68,45 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
 
     declare const $b24: B24Frame
 
-    // Shape of the payload returned in result (match the "response handling" section of the page)
-    type OfferResult = {
-      offer: {
-        id: number
-        name: string
-        active: string
-        available: string
-        bundle: string
-        canBuyZero: string
-        code: string
-        createdBy: number
-        dateActiveFrom: ISODate | null
-        dateActiveTo: ISODate | null
-        dateCreate: ISODate | null
-        detailPicture: { id: string; url: string; urlMachine: string } | null
-        detailText: string | null
-        detailTextType: string
-        height: number
-        iblockId: number
-        iblockSectionId: number | null
-        length: number
-        measure: number
-        modifiedBy: number
-        parentId: { value: string; valueId: string }
-        previewPicture: { id: string; url: string; urlMachine: string } | null
-        previewText: string | null
-        previewTextType: string
-        purchasingCurrency: string
-        purchasingPrice: string
-        quantity: number
-        quantityReserved: number
-        quantityTrace: string
-        sort: number
-        subscribe: string
-        timestampX: ISODate | null
-        type: number
-        vatId: number
-        vatIncluded: string
-        weight: number
-        width: number
-        xmlId: string
-      }
+    type OfferProperty = {
+      value: string
+      valueId: string
+      valueEnum?: string
+    }
+
+    type OfferFile = {
+      id: string
+      url: string
+      urlMachine: string
+    }
+
+    // Shape of the offer returned in result (match the "response handling" section of the page)
+    type Offer = {
+      id: number
+      iblockId: number
+      name: string
+      active: string
+      code: string | null
+      xmlId: string
+      sort: number | null
+      type: number
+      available: string
+      parentId: OfferProperty | null
+      quantity: number | null
+      purchasingPrice?: string | null
+      purchasingCurrency?: string | null
+      previewPicture: OfferFile | null
+      detailPicture: OfferFile | null
+      dateCreate: ISODate
+      timestampX: ISODate
+      [key: `property${number}`]: OfferProperty | OfferProperty[] | null
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<OfferResult>({
+      const response = await $b24.actions.v2.call.make<{ offer: Offer }>({
         method: 'catalog.product.offer.get',
         params: {
-          id: 1286,
+          id: 7695,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -129,7 +116,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Product offer:', result.offer.id, result.offer.name, result.offer.active)
+        console.info('Offer:', result.offer.id, result.offer.name, result.offer.parentId?.value)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -143,7 +130,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function getProductOffer() {
+      async function getOffer() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -151,8 +138,8 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.offer.get',
             params: {
-              id: 1286,
-            },
+                  id: 7695,
+                },
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -163,14 +150,14 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
           }
 
           const result = response.getData().result
-          console.info('Product offer:', result.offer.id, result.offer.name, result.offer.active)
+          console.info('Offer:', result.offer.id, result.offer.name, result.offer.parentId?.value)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', getProductOffer)
+      document.addEventListener('DOMContentLoaded', getOffer)
     </script>
     ```
 
@@ -181,7 +168,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
 
     try:
         bitrix_response = client.catalog.product.offer.get(
-            bitrix_id=1286,
+            bitrix_id=7695,
         ).response
         result = bitrix_response.result
         print(result)
@@ -207,21 +194,17 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
             ->call(
                 'catalog.product.offer.get',
                 [
-                    'id' => 1286
+                    'id' => 7695,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting product offer: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -229,15 +212,16 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
 
     ```js
     BX24.callMethod(
-        'catalog.product.offer.get', {
-            'id': 1286
+        'catalog.product.offer.get',
+        {
+            id: 7695,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -250,7 +234,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     $result = CRest::call(
         'catalog.product.offer.get',
         [
-            'id' => 1286
+            'id' => 7695,
         ]
     );
 
@@ -264,7 +248,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.offer.get", b24.Params{
-    	"id": 1286,
+    	"id": 7695,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.product.offer.get: %w", err)
@@ -273,28 +257,40 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     // The method wraps the response in an object with the "offer" key.
     raw, ok := b24.Unwrap(res.Result, "offer")
     if !ok {
-    	return fmt.Errorf("no offer key in the response")
+    	return fmt.Errorf("the response has no offer key")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var item struct {
-    	Active     string `json:"active"`
-    	Available  string `json:"available"`
-    	Bundle     string `json:"bundle"`
-    	CanBuyZero string `json:"canBuyZero"`
-    	Code       string `json:"code"`
-    	CreatedBy  int    `json:"createdBy"`
+    	ID              b24.ID   `json:"id"`
+    	IblockID        int      `json:"iblockId"`
+    	Name            string   `json:"name"`
+    	Active          string   `json:"active"`
+    	Code            *string  `json:"code"`
+    	Sort            *int     `json:"sort"`
+    	Type            int      `json:"type"`
+    	Quantity        *float64 `json:"quantity"`
+    	PurchasingPrice *string  `json:"purchasingPrice"`
+    	ParentID        *struct {
+    		Value   string `json:"value"`
+    		ValueID string `json:"valueId"`
+    	} `json:"parentId"`
+    	PreviewPicture *struct {
+    		ID  string `json:"id"`
+    		URL string `json:"url"`
+    	} `json:"previewPicture"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Available)
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -302,76 +298,82 @@ HTTP Status: **200**
         "offer": {
             "active": "Y",
             "available": "Y",
+            "barcodeMulti": "N",
             "bundle": "N",
             "canBuyZero": "Y",
-            "code": "Product",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
-            "detailPicture": {
-                "id": "6538",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6538\u0026fields%5BproductId%5D=1286",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6538\u0026fields%5BproductId%5D=1286"
-            },
+            "code": "tshirt-red-m",
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-05T19:19:32+01:00",
+            "detailPicture": null,
             "detailText": null,
             "detailTextType": "text",
-            "height": 100,
-            "iblockId": 24,
+            "height": 20,
+            "iblockId": 27,
+            "iblockSection": null,
             "iblockSectionId": null,
-            "id": 1286,
-            "length": 100,
-            "measure": 5,
-            "modifiedBy": 1,
-            "name": "Product Variation",
+            "id": 7695,
+            "length": 700,
+            "measure": 9,
+            "modifiedBy": 1269,
+            "name": "Red T-shirt, M",
             "parentId": {
-                "value": "1275",
-                "valueId": "9867"
+                "value": "7603",
+                "valueId": "4149"
             },
             "previewPicture": {
-                "id": "6537",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6537\u0026fields%5BproductId%5D=1286",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6537\u0026fields%5BproductId%5D=1286"
+                "id": "40057",
+                "url": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40057&fields%5BproductId%5D=7695",
+                "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40057&fields%5BproductId%5D=7695"
             },
-            "previewText": null,
+            "previewText": "100% cotton, density 180 g/m²",
             "previewTextType": "text",
-            "property261": {
-                "value": "test",
-                "valueId": "9868"
+            "property429": null,
+            "property891": {
+                "value": "Dark red",
+                "valueId": "4155"
             },
-            "property262": [
-                {
-                    "value": "test1",
-                    "valueId": "9869"
-                },
-                {
-                    "value": "test2",
-                    "valueId": "9870"
-                }
-            ],
+            "property895": null,
+            "property905": null,
+            "property907": {
+                "value": "1603",
+                "valueEnum": "M",
+                "valueId": "4157"
+            },
+            "property909": null,
+            "property911": null,
+            "property925": null,
+            "property937": null,
             "purchasingCurrency": "EUR",
-            "purchasingPrice": "1000.000000",
-            "quantity": 10,
-            "quantityReserved": 1,
+            "purchasingPrice": "850.00000000",
+            "quantity": 30,
+            "quantityReserved": null,
             "quantityTrace": "Y",
+            "recurSchemeLength": null,
+            "recurSchemeType": "D",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-17T12:29:59+02:00",
+            "timestampX": "2026-11-05T19:19:32+01:00",
+            "trialPriceId": null,
             "type": 4,
-            "vatId": 1,
+            "vatId": 3,
             "vatIncluded": "Y",
-            "weight": 100,
-            "width": 100,
-            "xmlId": "1286"
+            "weight": 200,
+            "width": 500,
+            "withoutOrder": "N",
+            "xmlId": "tshirt-red-m"
         }
     },
     "time": {
-        "start": 1718623874.271071,
-        "finish": 1718623874.871713,
-        "duration": 0.6006419658660889,
-        "processing": 0.1868131160736084,
-        "date_start": "2024-06-17T14:31:14+02:00",
-        "date_finish": "2024-06-17T14:31:14+02:00"
+        "start": 1793895573,
+        "finish": 1793895573.636081,
+        "duration": 0.6360809803009033,
+        "processing": 0,
+        "date_start": "2026-11-05T19:19:33+01:00",
+        "date_finish": "2026-11-05T19:19:33+01:00",
+        "operating_reset_at": 1793896140,
+        "operating": 0
     }
 }
 ```
@@ -383,20 +385,26 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **offer**
-[`catalog_product_offer`](../../data-types.md#catalog_product_offer) | Object with information about the product variation ||
+|| **result.offer**
+[`catalog_product_offer`](../../data-types.md#catalog_product_offer) | Object with all fields and properties of the variation. Empty fields are returned as `null`.
+
+The parent product is returned in the `parentId` field as an object `{"value": ..., "valueId": ...}`, where `value` is the parent product identifier. A property is returned as the same object, for a list property with the option text in `valueEnum`, and for a multiple property as an array of objects.
+
+A picture is returned as an object with the file identifier `id` and relative links `url` and `urlMachine` to the [catalog.product.download](../catalog-product-download.md) method. You can also download the file using the [catalog.product.offer.download](./catalog-product-offer-download.md) method.
+
+The `purchasingPrice` and `purchasingCurrency` fields are returned only if the user has the "View purchase price" permission. The purchasing price is returned as a string ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "",
+    "error_description": "offer does not exist."
 }
 ```
 
@@ -405,19 +413,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300000` | The information block with the specified identifier does not exist
-|| 
-|| `200040300040` | Insufficient rights to read the information block element
-|| 
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | The `id` parameter is not specified
-|| 
-|| `0` | The product variation does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have permission to read this variation in the information block ||
+|| `400` | Empty value | offer does not exist. | No variation exists with the specified `id`. The method returns the same error if a non-numeric value is passed in `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter was not provided ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

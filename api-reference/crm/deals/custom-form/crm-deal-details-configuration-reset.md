@@ -12,17 +12,17 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user can reset their personal settings
-> - resetting another user's personal settings is possible if the user has edit rights for that user's personal view
-> - resetting common settings is possible if the user has edit rights for the common view
+> - a user — their own personal settings
+> - a CRM administrator — personal settings of another user
+> - a user with permission to edit the common view of the deal card — common settings
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md) with `entityTypeId = 2`. REST 3.0 has no reset method.
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.reset` resets the settings of the deal card. It removes the personal settings of the specified user or the common settings defined for all users.
+The method `crm.deal.details.configuration.reset` removes the personal deal card settings of the specified user or the common settings for all users. After the reset, [crm.deal.details.configuration.get](./crm-deal-details-configuration-get.md) with the same `scope` and Sales Funnel returns `null`.
 
 {% note info %}
 
@@ -63,7 +63,7 @@ If not specified, the current user is used
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be retrieved using [crm.category.list](../../universal/category/crm-category-list.md) with `entityTypeId = 2` or [crm.deal.category.list](../../rest-v3/categories/crm-entity-category-list-rest-v3.md) in REST 3.0 — the identifiers are the same
 
 If not specified, the default Sales Funnel for deals is used
 ||
@@ -184,7 +184,7 @@ Reset the personal configuration of the deal card for the user with `id = 1` in 
         bitrix_response = client.crm.deal.details.configuration.reset(
             scope="P",
             user_id=1,
-            extras={"dealCategoryId": 0},
+            extras={"dealCategoryId": 32},
         ).response
         result = bitrix_response.result
         print(result)
@@ -352,7 +352,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No rights to reset deal card settings ||
+|| `400` | Empty Value | Access denied. | `scope = P` and the `userId` of another user were passed, and the current user is not a CRM administrator ||
+|| `400` | Empty Value | Access denied. | `scope = C` was passed, and the user does not have permission to edit the common view of the deal card in the `extras.dealCategoryId` funnel ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

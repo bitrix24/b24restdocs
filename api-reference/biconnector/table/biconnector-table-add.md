@@ -68,15 +68,23 @@ The method works only in the context of an [application](../../../settings/app-i
 [`string`](../../data-types.md) | Unique code of the table in the external source, used when selecting data. The maximum length is 512 characters ||
 || **sourceId***
 [`integer`](../../data-types.md) | Source identifier, can be obtained with the [biconnector.source.list](../source/biconnector-source-list.md) or [biconnector.source.add](../source/biconnector-source-add.md) method. The source must belong to the connector of the current application, otherwise the method returns `SOURCE_NOT_FOUND` ||
+|| **verboseName**
+[`string`](../../data-types.md) | User-friendly table name, for example, `Orders`. The maximum length is 255 characters ||
 || **description**
 [`string`](../../data-types.md) | Table description ||
+|| **tableGroupIds**
+[`array`](../../data-types.md) | Array of identifiers of the table groups to add the table to. Each identifier is a positive integer, and the group must exist.
+
+If the parameter is not passed or an empty array is passed, the table is added to the user tables group.
+
+The list of table groups cannot be retrieved via the REST API. The [biconnector.table.get](./biconnector-table-get.md) and [biconnector.table.list](./biconnector-table-list.md) methods do not return the table groups ||
 || **fields***
 [`array`](../../data-types.md) | Array of table columns [(detailed description)](#field) ||
 |#
 
 ### Element of the fields array {#field}
 
-Each element of the `fields` array is an object with three required fields. Column visibility is not set on creation: all columns are created visible and can be hidden later with the [biconnector.table.fields.update](./biconnector-table-fields-update.md) method.
+Each element of the `fields` array is an object with three required fields and an optional column description. Column visibility is not set on creation: all columns are created visible and can be hidden later with the [biconnector.table.fields.update](./biconnector-table-fields-update.md) method.
 
 #|
 || **Name**
@@ -96,6 +104,8 @@ Each element of the `fields` array is an object with three required fields. Colu
 `timezone` — time zone identifier
 
 The value is case-sensitive: an uppercase `INT` causes the `VALIDATION_FIELD_INVALID_TYPE` error ||
+|| **description**
+[`string`](../../data-types.md) | Column description. If the parameter is not passed, the description stays empty ||
 |#
 
 Column names and external codes must not repeat within one request: on a repeated `name` the method returns the `DUPLICATE_FIELDS` error, and on a repeated `externalCode` — `VALIDATION_DUPLICATE_FIELD_CODE`.
@@ -116,6 +126,7 @@ Column names and external codes must not repeat within one request: on a repeate
         "fields": {
             "sourceId": 3,
             "name": "sales_orders",
+            "verboseName": "Orders",
             "externalName": "Sales orders",
             "externalCode": "sales_orders",
             "description": "Table description",
@@ -163,6 +174,7 @@ Column names and external codes must not repeat within one request: on a repeate
           fields: {
             sourceId: 3,
             name: 'sales_orders',
+            verboseName: 'Orders',
             externalName: 'Sales orders',
             externalCode: 'sales_orders',
             description: 'Table description',
@@ -215,6 +227,7 @@ Column names and external codes must not repeat within one request: on a repeate
               fields: {
                 sourceId: 3,
                 name: 'sales_orders',
+                verboseName: 'Orders',
                 externalName: 'Sales orders',
                 externalCode: 'sales_orders',
                 description: 'Table description',
@@ -270,6 +283,7 @@ Column names and external codes must not repeat within one request: on a repeate
                 "fields": {
                     "sourceId": 3,
                     "name": "sales_orders",
+                    "verboseName": "Orders",
                     "externalName": "Sales orders",
                     "externalCode": "sales_orders",
                     "description": "Table description",
@@ -320,6 +334,7 @@ Column names and external codes must not repeat within one request: on a repeate
                     'fields' => [
                         'sourceId'      => 3,
                         'name'          => 'sales_orders',
+                        'verboseName'   => 'Orders',
                         'externalName'  => 'Sales orders',
                         'externalCode'  => 'sales_orders',
                         'description'   => 'Table description',
@@ -361,6 +376,7 @@ Column names and external codes must not repeat within one request: on a repeate
             fields: {
                 "sourceId": 3,
                 "name": "sales_orders",
+                "verboseName": "Orders",
                 "externalName": "Sales orders",
                 "externalCode": "sales_orders",
                 "description": "Table description",
@@ -404,6 +420,7 @@ Column names and external codes must not repeat within one request: on a repeate
             'fields' => [
                 'sourceId' => 3,
                 'name' => 'sales_orders',
+                'verboseName' => 'Orders',
                 'externalName' => 'Sales orders',
                 'externalCode' => 'sales_orders',
                 'description' => 'Table description',
@@ -438,6 +455,7 @@ Column names and external codes must not repeat within one request: on a repeate
     	"fields": b24.Params{
     		"sourceId":     3,
     		"name":         "sales_orders",
+    		"verboseName":  "Orders",
     		"externalName": "Sales orders",
     		"externalCode": "sales_orders",
     		"description":  "Table description",
@@ -569,14 +587,19 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
 || `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# was not provided ||
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "tableGroupIds" must be an array of positive integers. | The `tableGroupIds` array contains a value that is not a positive integer ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "description" must be of type string. | A column description in the `fields` array is not a string ||
+|| `VALIDATION_TABLE_GROUP_NOT_FOUND` | Table group was not found. | There is no table group with one of the identifiers from `tableGroupIds` ||
+|| `BX_INVALID_VALUE` | The length of "VERBOSE_NAME" should not exceed 255 characters. | The `verboseName` value is longer than 255 characters ||
 || `SOURCE_NOT_FOUND` | Source was not found. | The source does not exist or belongs to another application ||
 || `DATASET_ALREADY_EXIST` | Table with this name already exists. | The name is taken by a table that already exists in BI Builder itself ||
+|| `VALIDATION_DATASET_NAME_RESERVED` | Dataset name is reserved by a system table. | The table name is taken by a BI Builder system table ||
 || `NAME_EXISTS` | A table named "#NAME#" already exists. | The #NAME# name is already taken by another table in Bitrix24. The name is checked across the entire Bitrix24, not within the source ||
 || `FIELDS_EMPTY` | $fields is empty | An empty `fields` array was passed ||
 || `DUPLICATE_FIELDS` | Duplicate column names: #FIELD_NAMES#. | The `name` parameter of the fields contains repeats: the list ||

@@ -431,7 +431,7 @@ HTTP status: **200**
         "items": [
             {
                 "id": 7555,
-                "name": "DOCS-V3-OFFER Blue T-shirt L",
+                "name": "Blue T-shirt L",
                 "type": 4,
                 "properties": {
                     "PROPERTY_101": {
@@ -451,7 +451,7 @@ HTTP status: **200**
             },
             {
                 "id": 7557,
-                "name": "DOCS-V3-OFFER White T-shirt L",
+                "name": "White T-shirt L",
                 "type": 4,
                 "properties": {
                     "PROPERTY_101": {
@@ -634,8 +634,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `200040300000` | Iblock Not Found | Pass an `iblockId` condition with the identifier of an existing catalog in `filter` ||
 || `-` | productType is not allowed for this catalog | Pass the offers catalog information block in `iblockId` ||
 || `-` | The type field supports only the =, != and in filter operators | Use the `=`, `!=`, or `in` operators for `type` ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
+|| `previewText` | DTO `ProductDto` in field `previewText` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
+|| `measure` | DTO `ProductDto` in field `measure` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
 || `-` | pagination.offset must be a non-negative multiple of pagination.limit | Pass an `offset` that is a multiple of `limit`, or use `page` ||
 |#
 
@@ -645,7 +645,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNFILTEROPERATOREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Unknown filter operator `#OPERATOR#` | Use the `=`, `!=`, `>`, `>=`, `<`, `<=` operators ||
+|| `filter` | Unknown filter operator `%` | Use the `=`, `!=`, `>`, `>=`, `<`, `<=` operators ||
 |#
 
 #### Pagination Error
@@ -654,7 +654,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Pass a `limit` greater than `0` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a `limit` greater than `0` ||
+|#
+
+#### Sorting Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `order` | Invalid sort order `bad` | Pass the `asc` or `desc` direction ||
 |#
 
 #### Unknown Field Error
@@ -663,7 +672,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `filter`, `order` | Unknown field `#FIELD#` found in entity `ProductDto` | Specify only the fields from the parameter descriptions. `PROPERTY_{id}` keys are not supported ||
+|| `select`, `filter`, `order` | Unknown field `foo` found in entity `ProductDto` | Specify only the fields from the parameter descriptions. `PROPERTY_{id}` keys are not supported ||
 |#
 
 #### Access Error
@@ -673,6 +682,17 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | Access denied | Check the user's permissions for the catalog and the information block ||
+|#
+
+#### Server Error
+
+HTTP status: **500**
+
+The error is returned in the format of the previous API version: `{"error": "INTERNAL_SERVER_ERROR", "error_description": "Internal server error"}`.
+
+#|
+|| **Code** | **Error description** | **How to Fix** ||
+|| `INTERNAL_SERVER_ERROR` | Internal server error | `select` does not contain the `id` field. Add `id` to `select` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Add a new resource calendar.resource.add
+# Add a Resource calendar.resource.add
 
 {% note tip "" %}
 
@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an administrator or a user with permission to edit resource calendars
 
-This method adds a new resource.
+The `calendar.resource.add` method adds a resource, something that clients book, such as a car or a specialist's office.
+
+The method only creates the resource. To let clients book it, select the resource in the settings of the CRM field of type `resourcebooking` in the lead or deal detail form. The resource cannot be linked to the field through REST. How resource booking works is described in the [methods overview](./index.md).
 
 ## Method Parameters
 
@@ -22,8 +24,8 @@ This method adds a new resource.
 #|
 || **Name**
 `type` | **Description** ||
-|| **name*** 
-[`string`](../../data-types.md) | Resource name ||
+|| **name***
+[`string`](../../data-types.md) | Resource name. An empty string is treated as a missing parameter ||
 |#
 
 ## Code Examples
@@ -246,7 +248,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Identifier of the created resource ||
+[`integer`](../../data-types.md) | Identifier of the created resource.
+
+Use it in the [calendar.resource.update](./calendar-resource-update.md) and [calendar.resource.delete](./calendar-resource-delete.md) methods and in the `filter.resourceTypeIdList` parameter of the [calendar.resource.booking.list](./calendar-resource-booking-list.md) method ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -265,18 +271,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "name" is not specified for the method "calendar.resource.add" | The required parameter `name` was not provided ||
-|| Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
-|| Empty value | An error occurred while creating the resource | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "name" is not specified for the method "calendar.resource.add" | The required parameter `name` was not provided ||
+|| `400` | Empty value | Access denied | The method is called by an extranet user, or the user has no permission to edit resource calendars ||
+|| `400` | Empty value | Error creating resource | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-resource-update.md)
 - [{#T}](./calendar-resource-list.md)
-- [{#T}](./calendar-resource-booking-list.md)
 - [{#T}](./calendar-resource-delete.md)
+- [{#T}](./calendar-resource-booking-list.md)

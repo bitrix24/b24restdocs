@@ -100,12 +100,16 @@ The "Required" column shows when a field has to be passed in `fields`, "Read" sh
 [`string`](../../data-types.md) | Dataset type. For datasets created via the REST API, the value is always `rest` | No | ✅ | ❌ ||
 || **name**
 [`string`](../../data-types.md) | Dataset name. It cannot be changed. The name must start with a letter and may contain only lowercase Latin letters `a-z`, digits, and the `_` sign. The maximum name length is 230 characters | On creation | ✅ | ✅ ||
+|| **verboseName**
+[`string`](../../data-types.md) | User-friendly dataset name. The maximum length is 255 characters | No | ✅ | ✅ ||
 || **description**
-[`string`](../../data-types.md) | Dataset description. It is the only field that the [biconnector.dataset.update](./biconnector-dataset-update.md) method changes | No | ✅ | ✅ ||
+[`string`](../../data-types.md) | Dataset description | No | ✅ | ✅ ||
 || **externalCode**
 [`string`](../../data-types.md) | External code of the dataset — the name the application knows it by. It cannot be changed. The maximum length is 512 characters | On creation | ✅ | ✅ ||
 || **externalName**
 [`string`](../../data-types.md) | External name of the dataset. It cannot be changed. The maximum length is 512 characters | On creation | ✅ | ✅ ||
+|| **tableGroupIds**
+[`array`](../../data-types.md) | Identifiers of the table groups the dataset table belongs to. If they are not passed on creation, the table is added to the user tables group. Read methods do not return the groups | No | ❌ | ✅ ||
 || **dateCreate**
 [`datetime`](../../data-types.md) | Date the dataset was created, in the `Y-m-d H:i:s` format | No | ✅ | ❌ ||
 || **dateUpdate**
@@ -157,9 +161,9 @@ The composition of the response may grow: the module returns the entire object, 
 || **externalCode**
 [`string`](../../data-types.md) | External code of the field — the name the application knows it by. It is set once when the field is created | On creation | ✅ | ✅ ||
 || **visible**
-[`boolean`](../../data-types.md) | Field visibility flag. The default value is `true`. A field with `visible = false` remains in the dataset but is not included in the schema that goes to BI Builder. It is the only field attribute that the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method changes | No | ✅ | ✅ ||
+[`boolean`](../../data-types.md) | Field visibility flag. The default value is `true`. A field with `visible = false` remains in the dataset but is not included in the schema that goes to BI Builder. It is changed with the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method | No | ✅ | ✅ ||
 || **description**
-[`string`](../../data-types.md) | Field description. It is not filled in via the REST API and is always returned as an empty string | No | ✅ | ❌ ||
+[`string`](../../data-types.md) | Field description. It is set when the field is created and is changed with the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method. If it is not set, an empty string is returned | No | ✅ | ✅ ||
 |#
 
 ## Overview of Methods {#all-methods}

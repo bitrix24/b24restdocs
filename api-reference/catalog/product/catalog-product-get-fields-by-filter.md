@@ -282,28 +282,28 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Activity",
+                "name": "Active",
                 "type": "char"
             },
             "available": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Availability for Purchase",
+                "name": "Available for purchase",
                 "type": "char"
             },
             "bundle": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Set Availability",
+                "name": "In bundle",
                 "type": "char"
             },
             "code": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Symbolic Code",
+                "name": "Symbolic code",
                 "type": "string"
             },
             "dateActiveFrom": {
@@ -317,21 +317,21 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Creation Date",
+                "name": "Created on",
                 "type": "datetime"
             },
             "detailPicture": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Detail Picture",
+                "name": "Full image",
                 "type": "file"
             },
             "iblockId": {
                 "isImmutable": true,
                 "isReadOnly": false,
                 "isRequired": true,
-                "name": "Information Block Identifier",
+                "name": "Information block ID",
                 "type": "integer"
             },
             "iblockSection": {
@@ -345,21 +345,21 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Main Section",
+                "name": "Main section",
                 "type": "integer"
             },
             "id": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Identifier",
+                "name": "ID",
                 "type": "integer"
             },
             "measure": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Unit of Measurement",
+                "name": "Unit of measurement",
                 "type": "integer"
             },
             "name": {
@@ -373,7 +373,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Preview Picture",
+                "name": "Preview image",
                 "type": "file"
             },
             "property301": {
@@ -402,49 +402,49 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price Currency",
+                "name": "Purchase price currency",
                 "type": "string"
             },
             "purchasingPrice": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price",
+                "name": "Purchase price",
                 "type": "string"
             },
             "quantity": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Available Quantity",
+                "name": "Quantity in stock",
                 "type": "double"
             },
             "type": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Product Type",
+                "name": "Product type",
                 "type": "integer"
             },
             "vatId": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "VAT Identifier",
+                "name": "Tax ID",
                 "type": "integer"
             },
             "vatIncluded": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "VAT Included in Price",
+                "name": "Tax included",
                 "type": "char"
             },
             "xmlId": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "External Code",
+                "name": "External ID",
                 "type": "string"
             }
         }

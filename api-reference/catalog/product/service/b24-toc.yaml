@@ -1,6 +1,6 @@
 title: Services
 href: index.md
-items: 
+items:
   - name: Overview of Methods
     href: index.md
   - name: Add Service
@@ -11,7 +11,7 @@ items:
     href: catalog-product-service-update.md
   - name: Update Service Fields v 3.0
     href: catalog-product-service-update-rest-v3.md
-  - name: Get Service Field Values 
+  - name: Get Service Field Values
     href: catalog-product-service-get.md
   - name: Get Service Field Values v 3.0
     href: catalog-product-service-get-rest-v3.md

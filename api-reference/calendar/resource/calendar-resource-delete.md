@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an administrator or a user with permission to edit resource calendars
 
-This method deletes a resource.
+The `calendar.resource.delete` method deletes a resource together with all its bookings. A deleted resource and its bookings cannot be restored. How resource booking works is described in the [methods overview](./index.md).
+
+{% note warning "" %}
+
+The method does not check that `resourceId` belongs to a resource. If you pass the ID of another calendar that the user has permission to edit, the method deletes that calendar. Before calling the method, make sure the ID is in the [calendar.resource.list](./calendar-resource-list.md) response.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -22,12 +28,15 @@ This method deletes a resource.
 #|
 || **Name**
 `type` | **Description** ||
-|| **resourceId*** | Resource identifier.
+|| **resourceId***
+[`integer`](../../data-types.md) | Resource identifier. The value must be greater than `0`.
 
 You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource list retrieval method [calendar.resource.list](./calendar-resource-list.md) ||
 |#
 
 ## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -220,8 +229,6 @@ You can obtain the identifier using the resource creation method [calendar.resou
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
-
 ## Response Handling
 
 HTTP Status: **200**
@@ -246,7 +253,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the deletion was successful ||
+[`boolean`](../../data-types.md) | Deletion result. Returns `true` if the resource is deleted ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -265,18 +274,19 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "resourceId" is not specified for the method "calendar.resource.delete" | The required parameter `resourceId` was not provided ||
-|| Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
-|| Empty value | An error occurred while deleting the resource | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "resourceId" is not specified for the method "calendar.resource.delete" | The required parameter `resourceId` was not provided or its value is not greater than `0` ||
+|| `400` | Empty value | Access denied | The method is called by an extranet user, or the user has no permission to edit resource calendars ||
+|| `400` | `ERROR_CORE` | EC_ACCESS_DENIED | The resource with the specified `resourceId` was not found or the user has no permission to modify it: the method does not distinguish these cases ||
+|| `400` | Empty value | Error while deleting section | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-resource-add.md)
 - [{#T}](./calendar-resource-update.md)
-- [{#T}](./calendar-resource-booking-list.md)
 - [{#T}](./calendar-resource-list.md)
+- [{#T}](./calendar-resource-booking-list.md)

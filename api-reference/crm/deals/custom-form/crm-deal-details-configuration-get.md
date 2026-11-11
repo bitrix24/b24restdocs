@@ -12,8 +12,8 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - a user can retrieve their own and shared settings
-> - personal settings of another user can be accessed if the user has edit rights for that user's personal view
+> - a user — their own personal settings and shared settings
+> - a CRM administrator — personal settings of another user
 
 {% note warning "DEPRECATED" %}
 
@@ -21,7 +21,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.get` retrieves the settings of the deal card. It reads the personal settings of the specified user or the shared settings defined for all users.
+The method `crm.deal.details.configuration.get` retrieves the personal deal card settings of the specified user or the shared settings for all users.
 
 {% note info %}
 
@@ -62,7 +62,7 @@ If not specified, the current user's ID is used.
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be retrieved using [crm.category.list](../../universal/category/crm-category-list.md) with `entityTypeId = 2` or [crm.deal.category.list](../../rest-v3/categories/crm-entity-category-list-rest-v3.md) in REST 3.0 — the identifiers are the same
 
 If not specified, the default funnel for deals is used.
 ||
@@ -72,7 +72,7 @@ If not specified, the default funnel for deals is used.
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-Example of retrieving the general configuration of the deal card for the funnel with `id = 32`.
+Retrieve the general configuration of the deal card in the funnel with `id = 32`
 
 {% list tabs %}
 
@@ -116,7 +116,7 @@ Example of retrieving the general configuration of the deal card for the funnel 
 
     type CrmDealDetailsSectionElement = {
       name: string
-      optionFlags?: string
+      optionFlags?: string | number
       options?: Record<string, unknown>
     }
 
@@ -193,9 +193,8 @@ Example of retrieving the general configuration of the deal card for the funnel 
 
     try:
         bitrix_response = client.crm.deal.details.configuration.get(
-            scope="P",
-            user_id=1,
-            extras={"dealCategoryId": 0},
+            scope="C",
+            extras={"dealCategoryId": 32},
         ).response
         result = bitrix_response.result
         print(result)
@@ -417,12 +416,12 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`section[]`](#section)\|`null` | The root element of the response. Contains the configuration of the sections of the deal detail card. Returns `null` if there is no configuration ||
+[```section[]|null```](#section) | The root element of the response. Contains the configuration of the sections of the deal detail card. It is `null` if no settings are saved for the selected `scope` and funnel: for example, the personal card has not been configured or has been reset with [crm.deal.details.configuration.reset](./crm-deal-details-configuration-reset.md) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Section Parameter {#section}
+### Section Object {#section}
 
 Describes an individual section with fields within the deal card
 
@@ -434,12 +433,12 @@ Describes an individual section with fields within the deal card
 || **title**
 [`string`](../../../data-types.md) | Title of the section ||
 || **type**
-[`string`](../../../data-types.md) | Type of the section ||
+[`string`](../../../data-types.md) | Type of the section. Always `section` ||
 || **elements**
 [`section_element[]`](#section_element) | List of fields displayed in the card with additional settings ||
 |#
 
-### Section Element Parameter {#section_element}
+### Section Element Object {#section_element}
 
 Configuration of an individual field within the section
 
@@ -447,14 +446,16 @@ Configuration of an individual field within the section
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../../data-types.md) | Field identifier ||
+[`string`](../../../data-types.md) | Field identifier from the method [crm.deal.fields](../crm-deal-fields.md), for example, `TITLE` or `UF_CRM_1687529546` ||
 || **optionFlags**
-[`string`](../../../data-types.md) | Values:
-- `"1"` — always show
-- `"0"` — not always show
+[```integer|string```](../../../data-types.md) | Whether to always show the field:
+- `"1"` or `1` — yes
+- `"0"` or `0` — no
+
+The value is returned in the type in which it was saved. The Bitrix24 interface saves a string. The method [crm.deal.details.configuration.set](./crm-deal-details-configuration-set.md) saves a number or a numeric string as passed and does not save a non-numeric value — in that case, the field has no `optionFlags` in the response
 ||
 || **options**
-[`object`](../../../data-types.md) | Additional field options ||
+[`object`](../../../data-types.md) | Additional field options. The composition depends on the field, for example, `defaultCountry` for `CLIENT`, `isPayButtonVisible` and `isPaymentDocumentsVisible` for `OPPORTUNITY_WITH_CURRENCY`. Option values are returned as they were saved. The Bitrix24 interface saves them as strings, for example, `"true"` ||
 |#
 
 ## Error Handling
@@ -474,7 +475,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No rights to retrieve deal card settings ||
+|| `400` | Empty Value | Access denied. | `scope = P` and the `userId` of another user were passed, and the current user is not a CRM administrator ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

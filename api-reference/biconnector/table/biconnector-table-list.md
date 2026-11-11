@@ -520,6 +520,8 @@ An element of the selection is the same table that [biconnector.table.get](./bic
 [`string`](../../data-types.md) | Table type. For tables created via the REST API, the value is always `rest` ||
 || **name**
 [`string`](../../data-types.md) | Table name ||
+|| **verboseName**
+[`string`](../../data-types.md) | User-friendly table name. If it is not set, an empty string is returned ||
 || **description**
 [`string`](../../data-types.md) | Table description ||
 || **externalCode**
@@ -551,6 +553,7 @@ This is what an element looks like when the method is called without `select`:
     "id": 27,
     "type": "rest",
     "name": "sales_orders",
+    "verboseName": "Orders",
     "description": "Orders from an external service",
     "externalCode": "sales_orders",
     "externalName": "Sales orders",
@@ -611,7 +614,7 @@ One error of the method arrives differently. If the `order` parameter receives a
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter must be an array ||
 || `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter must be an array ||
 || `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter must be an array ||

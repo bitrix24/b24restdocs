@@ -1,4 +1,4 @@
-# Download Files for Service catalog.product.service.download
+# Download Service Files catalog.product.service.download
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions and the permission to read elements of the catalog information block
 
 The `catalog.product.service.download` method downloads a service file.
 
@@ -34,19 +34,13 @@ The `catalog.product.service.download` method downloads a service file.
 || **Name**
 `type` | **Description** ||
 || **fileId***
-[`integer`](../../../data-types.md) | Identifier of the registered file.
-
-To obtain file identifiers for the service, you need to use [catalog.product.service.get](./catalog-product-service-get.md) or [catalog.product.service.list](./catalog-product-service-list.md)
-||
+[`integer`](../../../data-types.md) | File identifier. You can retrieve it using the [catalog.product.service.get](./catalog-product-service-get.md) or [catalog.product.service.list](./catalog-product-service-list.md) method: the `id` field in `detailPicture`, `previewPicture`, or the file property value ||
 || **productId***
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
-
-To obtain service identifiers, you need to use [catalog.product.service.list](./catalog-product-service-list.md)
-||
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service. You can retrieve the identifier using the [catalog.product.service.list](./catalog-product-service-list.md) method ||
 || **fieldName***
 [`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `detailPicture` — detailed image, field available in the old product form
-- `previewPicture` — preview image, field available in the old product form
+- `detailPicture` — detailed image
+- `previewPicture` — preview image
 - `propertyN` — file property, where `N` is the property identifier or symbolic code, for example, `property258` or `propertyMorePhoto`
 
 You can retrieve service property identifiers and symbolic codes using [catalog.productProperty.list](../../product-property/catalog-product-property-list.md). Only file-type properties can be downloaded
@@ -65,7 +59,8 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"fileId":6497,"productId":1265,"fieldName":"detailPicture"}}' \
+    -d '{"fields":{"fileId":40055,"productId":7623,"fieldName":"previewPicture"}}' \
+    -o service-picture.png \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.download
     ```
 
@@ -75,7 +70,8 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"fileId":6497,"productId":1265,"fieldName":"detailPicture"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"fileId":40055,"productId":7623,"fieldName":"previewPicture"},"auth":"**put_access_token_here**"}' \
+    -o service-picture.png \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.download
     ```
 
@@ -94,9 +90,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
         method: 'catalog.product.service.download',
         params: {
           fields: {
-            fileId: 6497,
-            productId: 1265,
-            fieldName: 'detailPicture',
+            fileId: 40055,
+            productId: 7623,
+            fieldName: 'previewPicture',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -130,9 +126,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
             method: 'catalog.product.service.download',
             params: {
               fields: {
-                fileId: 6497,
-                productId: 1265,
-                fieldName: 'detailPicture',
+                fileId: 40055,
+                productId: 7623,
+                fieldName: 'previewPicture',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -164,9 +160,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
     try:
         bitrix_response = client.catalog.product.service.download(
             fields={
-                "fileId": 6497,
-                "productId": 1265,
-                "fieldName": "detailPicture",
+                "fileId": 40055,
+                "productId": 7623,
+                "fieldName": "previewPicture",
             },
         ).response
         result = bitrix_response.result
@@ -194,21 +190,21 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
                 'catalog.product.service.download',
                 [
                     'fields' => [
-                        'fileId'    => 6497,
-                        'productId' => 1265,
-                        'fieldName' => 'detailPicture',
+                        'fileId'    => 40055,
+                        'productId' => 7623,
+                        'fieldName' => 'previewPicture',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error downloading product service: ' . $e->getMessage();
@@ -222,9 +218,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
         'catalog.product.service.download',
         {
             fields: {
-                fileId: 6497,
-                productId: 1265,
-                fieldName: 'detailPicture',
+                fileId: 40055,
+                productId: 7623,
+                fieldName: 'previewPicture',
             }
         },
         function(result) {
@@ -246,9 +242,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
         'catalog.product.service.download',
         [
             'fields' => [
-                'fileId' => 6497,
-                'productId' => 1265,
-                'fieldName' => 'detailPicture'
+                'fileId' => 40055,
+                'productId' => 7623,
+                'fieldName' => 'previewPicture'
             ]
         ]
     );
@@ -264,9 +260,9 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.download", b24.Params{
     	"fields": b24.Params{
-    		"fileId":    6497,
-    		"productId": 1265,
-    		"fieldName": "detailPicture",
+    		"fileId":    40055,
+    		"productId": 7623,
+    		"fieldName": "previewPicture",
     	},
     })
     if err != nil {
@@ -284,19 +280,19 @@ You can retrieve service property identifiers and symbolic codes using [catalog.
 
 HTTP status: **200**
 
-A file is returned based on the provided parameters.
+The method returns the file itself, not JSON. The `Content-Type` header matches the file, for example `image/png`, and the file name is passed in the `Content-Disposition` header, for example `attachment; filename="ac.png"`.
 
 ### Returned Data
 
-A file is returned based on the provided parameters.
+The file content. Save the response body to a file with the name from the `Content-Disposition` header. You can retrieve the file identifier from `detailPicture`, `previewPicture`, or a file property in the [catalog.product.service.get](./catalog-product-service-get.md) response.
 
 ## Error Handling
 
 HTTP status: **400**
 
 ```json
-{	
-    "error":0,
+{
+    "error":"0",
     "error_description":"Required fields: fileId"
 }
 ```
@@ -306,19 +302,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `0` | The service with the specified identifier does not exist
-|| 
-|| `0` | The specified property does not exist or is not a file
-|| 
-|| `0` | The file with the specified identifier does not exist
-|| 
-|| `0` | Required fields are not provided
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the permission to read the catalog information block element ||
+|| `400` | Empty value | service does not exist. | There is no service with the specified `productId` ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: fileId | A required field is not provided. The text lists the missing fields ||
+|| `400` | `0` | Name file field is not available | `fieldName` contains a field that does not store files ||
+|| `400` | `0` | Product file wrong | The file with the specified `fileId` is not in the `fieldName` field of the service ||
+|| `400` | `0` | Product is empty | The file was not found in the storage ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

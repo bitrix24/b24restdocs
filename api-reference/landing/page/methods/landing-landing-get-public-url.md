@@ -269,6 +269,8 @@ HTTP Status: **200**
 || **result**
 [`string`](../../../data-types.md) | Complete public URL of the page.
 
+The domain in the URL is returned in Unicode, not in Punycode: for example, `https://müller-shop.de/`, not `https://xn--mller-shop-9db.de/`.
+
 For the main page of the site and the index page of the folder, the method returns the address without the `CODE` of the page. If the page has the `RULE` field filled, the address is also returned without adding the `CODE`.
 
 More about the `CODE` and `RULE` fields in the section [Page Object Fields](../fields.md) ||

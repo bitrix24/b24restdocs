@@ -13,13 +13,22 @@ A parent product is a product with variations. For example, a t-shirt is a paren
 
 Differences between a parent product and a simple product:
 
-- A parent product cannot be purchased directly; one must select one of its variations. To work with variations, use the group of methods [catalog.product.offer.*](../offer/index.md).
+- A parent product cannot be purchased directly; one must select one of its variations. To work with variations, use the group of methods [catalog.product.offer.*](../offer/index.md)
+- A simple product is a single item without variations. It can be added to the cart and purchased immediately. To work with simple products, use the group of methods [catalog.product.*](../index.md)
 
-- A simple product is a single item without variations. It can be added to the cart and purchased immediately. To work with simple products, use the group of methods [catalog.product.*](../index.md).
+Parent product methods are available in two API versions: REST 2 and [REST 3.0](../../../rest-v3.md). In the method table, REST 3.0 methods are marked `v 3.0`. The differences between the versions are described in the [Method Specifics](#features) and [Parent Products in REST 3.0](#rest3) sections.
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Add products to the catalog](https://helpdesk.bitrix24.com/open/18532198/)
+
+## How to Start
+
+1. Get the identifier of the product catalog information block using [catalog.catalog.list](../../catalog/catalog-catalog-list.md): it is the catalog with an empty `productIblockId`
+2. Create a parent product using [catalog.product.sku.add](./catalog-product-sku-add.md)
+3. Create variations for the parent product using [catalog.product.offer.add](../offer/catalog-product-offer-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set variation prices using [catalog.price.*](../../price/index.md)
 
 ## Relationship with Other Objects
 
@@ -35,30 +44,25 @@ Differences between a parent product and a simple product:
 
 **CRM.** In parent products, you can specify [leads](../../../crm/leads/index.md), [deals](../../../crm/deals/index.md), [SPAs](../../../crm/universal/index.md), [invoices](../../../crm/universal/invoice.md), [contacts](../../../crm/contacts/index.md), and [companies](../../../crm/companies/index.md) using the property type "Link to CRM entities."
 
-## How to Start
+## Method Specifics {#features}
 
-1. Get the trade catalog identifier using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
-2. Create a parent product using [catalog.product.sku.add](./catalog-product-sku-add.md)
-3. Create variations for the parent product using [catalog.product.offer.add](../offer/catalog-product-offer-add.md)
-4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
-5. Set variation prices using [catalog.price.*](../../price/index.md)
+- A new parent product gets type `6`, a parent product without variations. After the first variation is added, the type changes to `3`. If the last variation is deleted, the parent product becomes a simple product and is no longer returned by the `catalog.product.sku.*` methods
+- The delete methods delete the parent product together with all its variations
+- In REST 2, the [catalog.product.sku.update](./catalog-product-sku-update.md) and [catalog.product.sku.delete](./catalog-product-sku-delete.md) methods do not check the product type: with the identifier of a simple product or a variation, they update or delete that product. Check the identifier using the [catalog.product.sku.get](./catalog-product-sku-get.md) method: for a product of another type, it returns an empty array
+- In REST 2, the trade catalog fields of a parent product, such as VAT, quantity, purchasing price, weight, and dimensions, are not retained in cloud Bitrix24. Set them for variations
+- In REST 2, the [catalog.product.sku.list](./catalog-product-sku-list.md) method returns the list under the `units` key
 
-## Parent Products in REST 3.0
+## Parent Products in REST 3.0 {#rest3}
 
 In [REST 3.0](../../../rest-v3.md), parent products have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.sku.field.list` and `catalog.product.sku.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
 
-Specifics of the new version methods:
-
-- a parent product without variations gets type `6`, and after the first variation is added, type `3`. If the last variation is deleted, the parent product becomes a simple product and is no longer returned by the `catalog.product.sku.*` methods
-- the [catalog.product.sku.delete](./catalog-product-sku-delete-rest-v3.md) method deletes the parent product together with all its variations
+In the new version, the methods check the product type: for a simple product or a variation, they return the `Entity with ID ... was not found` error. The trade catalog fields of a parent product are retained.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving parent products in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
+> Who can execute the methods: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the catalog information block. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||

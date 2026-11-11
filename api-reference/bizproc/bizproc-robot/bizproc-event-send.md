@@ -33,7 +33,9 @@ The process accepts the result only if the step with this token is still waiting
 - [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md)
 - [bizproc.activity.add](../bizproc-activity/bizproc-activity-add.md), [bizproc.activity.update](../bizproc-activity/bizproc-activity-update.md)
 
-Keys are case-insensitive. Bitrix24 converts the value to the `Type` of this parameter. Bitrix24 does not retain keys that are not in `RETURN_PROPERTIES` ||
+Keys are case-insensitive. Bitrix24 converts the value to the `Type` of this parameter. Bitrix24 does not retain keys that are not in `RETURN_PROPERTIES`.
+
+To leave a parameter empty, pass an empty string `""`. If a key is not passed, the parameter receives the `Default` value set at registration. For details, see [How to Return an Empty Value](#empty-value) ||
 || **LOG_MESSAGE**
 [`string`](../../data-types.md) | Text for the business process log.
 
@@ -49,9 +51,29 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
 
 {% endnote %}
 
+## How to Return an Empty Value {#empty-value}
+
+To make an Automation rule or action return a parameter as empty, pass an empty string `""` in `RETURN_VALUES`. This works for a parameter of any type, including a multiple one, and with any way of calling the method. An empty string also overrides the `Default` value set at registration.
+
+The process handles other values differently. The "empty" condition in Automation rules and business processes does not match all of them.
+
+#|
+|| **Value in `RETURN_VALUES`** | **Result in the process** ||
+|| `""` | The parameter is empty ||
+|| Key not passed | The parameter receives the `Default` value set at registration. If `Default` is not set, the parameter is empty ||
+|| `null` | The parameter receives the `Default` value set at registration. If `Default` is not set, the parameter is empty ||
+|| `false` | In a request with a JSON body, the parameter is empty. BX24.js and CRest send `false` as `0`, and the parameter receives the value `0` ||
+|| `[]` | In a request with a JSON body, the parameter is empty. BX24.js and CRest do not send an empty array, and the parameter receives the `Default` value ||
+|| `0` or `"0"` | The parameter is set to `0` ||
+|| `"N"` | For a parameter of the `bool` type, the parameter is set to "No" ||
+|| String of spaces | The parameter is set to the string of spaces ||
+|#
+
 ## Code Examples
 
 {% include [Examples Note](../../../_includes/examples.md) %}
+
+In the example, the `outputString` parameter is returned with a value, and `errorText` is returned empty.
 
 {% list tabs %}
 
@@ -61,7 +83,7 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","return_values":{"outputString":"846c55d14f552180874a628d2615e285"}}' \
+    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","return_values":{"outputString":"846c55d14f552180874a628d2615e285","errorText":""}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.event.send
     ```
 
@@ -71,7 +93,7 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","return_values":{"outputString":"846c55d14f552180874a628d2615e285"},"auth":"**put_access_token_here**"}' \
+    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","return_values":{"outputString":"846c55d14f552180874a628d2615e285","errorText":""},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/bizproc.event.send
     ```
 
@@ -85,7 +107,8 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
     		params: {
     			event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
     			return_values: {
-    				outputString: '846c55d14f552180874a628d2615e285'
+    				outputString: '846c55d14f552180874a628d2615e285',
+    				errorText: ''
     			}
     		}
     	});
@@ -111,6 +134,7 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
             event_token="55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90",
             return_values={
                 "outputString": "846c55d14f552180874a628d2615e285",
+                "errorText": "",
             },
         ).response
         result = bitrix_response.result
@@ -139,7 +163,8 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
                 [
                     'event_token' => '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
                     'return_values' => [
-                        'outputString' => '846c55d14f552180874a628d2615e285'
+                        'outputString' => '846c55d14f552180874a628d2615e285',
+                        'errorText' => ''
                     ]
                 ]
             );
@@ -164,7 +189,8 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
         {
             event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
             return_values: {
-                outputString: '846c55d14f552180874a628d2615e285'
+                outputString: '846c55d14f552180874a628d2615e285',
+                errorText: ''
             }
         },
         function(result) {
@@ -186,7 +212,8 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
         [
             'event_token' => '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
             'return_values' => [
-                'outputString' => '846c55d14f552180874a628d2615e285'
+                'outputString' => '846c55d14f552180874a628d2615e285',
+                'errorText' => ''
             ]
         ]
     );
@@ -204,6 +231,7 @@ The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it
     	"EVENT_TOKEN": "55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90",
     	"RETURN_VALUES": b24.Params{
     		"outputString": "846c55d14f552180874a628d2615e285",
+    		"errorText":    "",
     	},
     })
     if err != nil {

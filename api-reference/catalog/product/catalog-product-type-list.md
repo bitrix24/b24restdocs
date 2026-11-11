@@ -369,8 +369,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id`, `name` | DTO `ProductTypeDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Remove the `filter` parameter ||
-|| `id`, `name` | DTO `ProductTypeDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Remove the `order` parameter ||
+|| `id` | DTO `ProductTypeDto` in field `id` requires attribute `Filterable` to perform this request | The method does not support filtering by `id` or `name`. Remove the `filter` parameter ||
+|| `name` | DTO `ProductTypeDto` in field `name` requires attribute `Sortable` to perform this request | The method does not support sorting by `id` or `name`. Remove the `order` parameter ||
 |#
 
 #### Filter Format Error
@@ -388,7 +388,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Remove the `pagination` parameter: the method returns the whole directory ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Remove the `pagination` parameter: the method returns the whole directory ||
 |#
 
 #### Unknown Field Error
@@ -397,7 +397,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `order` | Unknown field `#FIELD#` found in entity `ProductTypeDto` | Specify only `id` and `name` in `select`. Remove the `order` parameter ||
+|| `select`, `order` | Unknown field `foo` found in entity `ProductTypeDto` | Specify only `id` and `name` in `select`. Remove the `order` parameter ||
 |#
 
 #### Select Format Error
@@ -406,7 +406,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as a flat array of strings without nested arrays, for example `["id","name"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | Pass `select` as a flat array of strings without nested arrays, for example `["id","name"]` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -174,6 +174,28 @@ HTTP Status: **200**
 || **users** | Data about users who were involved in the action ||
 |#
 
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "RPA_ITEM_VIEW_ACCESS_DENIED",
+    "error_description": "You don't have permission to view this item."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `RPA_ITEM_VIEW_ACCESS_DENIED` | You don't have permission to view this item | The user cannot view the element. All Bitrix24 employees can view elements; they are not available to extranet users ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
 ## Continue Learning 
 
 - [{#T}](./index.md)

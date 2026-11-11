@@ -11,9 +11,19 @@ Choose a tool for developing with an AI agent:
 
 Services are intangible goods: consultations, work, or actions. They can be used in CRM entities and be associated with physical products.
 
+Service methods are available in two API versions: REST 2 and [REST 3.0](../../../rest-v3.md). In the method table, REST 3.0 methods are marked as `v 3.0`. The differences between the versions are described in the [Specifics of REST 2 Methods](#rest2) and [Services in REST 3.0](#rest3) sections.
+
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Services in CRM](https://helpdesk.bitrix24.com/open/16680094/)
+
+## How to Start
+
+1. Get the trade catalog identifier using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+2. If services need to be distributed across sections, create sections using [catalog.section.*](../../section/index.md)
+3. Create a service using [catalog.product.service.add](./catalog-product-service-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set the service price using [catalog.price.*](../../price/index.md)
 
 ## Relationship with Other Objects
 
@@ -33,21 +43,17 @@ Services are intangible goods: consultations, work, or actions. They can be used
 
 **CRM.** Services are connected to CRM in the following ways:
 
-- A service can be added to the list of products for a [lead](../../../crm/leads/index.md), [deal](../../../crm/deals/index.md), [invoice](../../../crm/universal/invoice.md), [SPA](../../../crm/universal/index.md), and [estimate](../../../crm/quote/index.md).
-
-- [Leads](../../../crm/leads/index.md), [deals](../../../crm/deals/index.md), [SPAs](../../../crm/universal/index.md), [invoices](../../../crm/universal/invoice.md), [contacts](../../../crm/contacts/index.md), and [companies](../../../crm/companies/index.md) can be specified in services using the property type "Link to CRM entities."
+- A service can be added to the list of products for a [lead](../../../crm/leads/index.md), [deal](../../../crm/deals/index.md), [invoice](../../../crm/universal/invoice.md), [SPA](../../../crm/universal/index.md), and [estimate](../../../crm/quote/index.md)
+- [Leads](../../../crm/leads/index.md), [deals](../../../crm/deals/index.md), [SPAs](../../../crm/universal/index.md), [invoices](../../../crm/universal/invoice.md), [contacts](../../../crm/contacts/index.md), and [companies](../../../crm/companies/index.md) can be specified in services using the property type "Link to CRM entities"
 
 **Order Basket.** A service can be added, modified, or removed from the basket using the [sale.basketitem.*](../../../sale/basket-item/index.md) method group.
 
-## How to Start
+## Specifics of REST 2 Methods {#rest2}
 
-1. Get the trade catalog identifier using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
-2. If services need to be distributed across sections, create sections using [catalog.section.*](../../section/index.md)
-3. Create a service using [catalog.product.service.add](./catalog-product-service-add.md)
-4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
-5. Set the service price using [catalog.price.*](../../price/index.md)
+- The [catalog.product.service.update](./catalog-product-service-update.md) and [catalog.product.service.delete](./catalog-product-service-delete.md) methods do not check the product type: with the identifier of a simple product, they update or delete that product. Check the identifier using the [catalog.product.service.get](./catalog-product-service-get.md) method: for a product of another type, it returns an empty array
+- The `dateActiveFrom` and `dateActiveTo` activity dates cannot be set: a string in any format causes a date format error
 
-## Services in REST 3.0
+## Services in REST 3.0 {#rest3}
 
 In [REST 3.0](../../../rest-v3.md), services have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.service.field.list` and `catalog.product.service.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
 
@@ -57,9 +63,7 @@ The [catalog.product.service.add](./catalog-product-service-add-rest-v3.md) meth
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving services in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
+> Who can execute the methods: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the catalog information block. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||

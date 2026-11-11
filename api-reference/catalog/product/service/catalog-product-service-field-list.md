@@ -23,6 +23,8 @@ The `catalog.product.service.field.list` method returns the list of available se
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -395,7 +397,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | Pass only the properties from the `select` parameter description in `select` ||
+|| `select` | Unknown field `foo` found in entity `DtoFieldDto` | Pass only the properties from the `select` parameter description in `select` ||
 |#
 
 #### `select` Format Errors
@@ -404,7 +406,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 #### Access Error

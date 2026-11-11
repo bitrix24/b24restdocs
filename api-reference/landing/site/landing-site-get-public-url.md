@@ -288,6 +288,8 @@ HTTP Status: **200**
 
 If a single `id` is provided, the method returns a string with the site URL. If an array of `id` is provided, the method returns an object in the form `{"<ID>": "<URL>"}` [(detailed description)](#result-map).
 
+The domain in the URL is returned in Unicode, not in Punycode: for example, `https://müller-shop.de`, not `https://xn--mller-shop-9db.de`.
+
 If the site is not found, an empty string `""` is returned for a single `id`, and an empty array `[]` may be returned for an array of `id` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||

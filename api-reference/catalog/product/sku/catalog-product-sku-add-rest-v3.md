@@ -239,7 +239,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":25,"name":"DOCS-V3-SKU T-shirt","code":"docs-v3-sku-t-shirt","iblockSectionId":31,"previewText":"Cotton T-shirt","sort":100}}' \
+    -d '{"fields":{"iblockId":25,"name":"T-shirt","code":"t-shirt","iblockSectionId":31,"previewText":"Cotton T-shirt","sort":100}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.add
     ```
 
@@ -249,7 +249,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":25,"name":"DOCS-V3-SKU T-shirt","code":"docs-v3-sku-t-shirt","iblockSectionId":31,"previewText":"Cotton T-shirt","sort":100},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"iblockId":25,"name":"T-shirt","code":"t-shirt","iblockSectionId":31,"previewText":"Cotton T-shirt","sort":100},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.product.sku.add
     ```
 
@@ -277,8 +277,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           fields: {
             iblockId: 25,
-            name: 'DOCS-V3-SKU T-shirt',
-            code: 'docs-v3-sku-t-shirt',
+            name: 'T-shirt',
+            code: 't-shirt',
             iblockSectionId: 31,
             previewText: 'Cotton T-shirt',
             sort: 100,
@@ -313,8 +313,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               fields: {
                 iblockId: 25,
-                name: 'DOCS-V3-SKU T-shirt',
-                code: 'docs-v3-sku-t-shirt',
+                name: 'T-shirt',
+                code: 't-shirt',
                 iblockSectionId: 31,
                 previewText: 'Cotton T-shirt',
                 sort: 100,
@@ -349,7 +349,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         bitrix_response = client.catalog.product.sku.add(
             fields={
                 "iblockId": 25,
-                "name": "DOCS-V3-SKU T-shirt",
+                "name": "T-shirt",
                 "code": "docs-v3-sku-t-shirt",
                 "iblockSectionId": 31,
                 "previewText": "Cotton T-shirt",
@@ -384,8 +384,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 [
                     'fields' => [
                         'iblockId' => 25,
-                        'name' => 'DOCS-V3-SKU T-shirt',
-                        'code' => 'docs-v3-sku-t-shirt',
+                        'name' => 'T-shirt',
+                        'code' => 't-shirt',
                         'iblockSectionId' => 31,
                         'previewText' => 'Cotton T-shirt',
                         'sort' => 100,
@@ -413,8 +413,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         {
             fields: {
                 iblockId: 25,
-                name: 'DOCS-V3-SKU T-shirt',
-                code: 'docs-v3-sku-t-shirt',
+                name: 'T-shirt',
+                code: 't-shirt',
                 iblockSectionId: 31,
                 previewText: 'Cotton T-shirt',
                 sort: 100,
@@ -441,8 +441,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         [
             'fields' => [
                 'iblockId' => 25,
-                'name' => 'DOCS-V3-SKU T-shirt',
-                'code' => 'docs-v3-sku-t-shirt',
+                'name' => 'T-shirt',
+                'code' => 't-shirt',
                 'iblockSectionId' => 31,
                 'previewText' => 'Cotton T-shirt',
                 'sort' => 100,
@@ -462,8 +462,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
     res, err := client.Core().Call(ctx, "catalog.product.sku.add", b24.Params{
     	"fields": b24.Params{
     		"iblockId": 25,
-    		"name": "DOCS-V3-SKU T-shirt",
-    		"code": "docs-v3-sku-t-shirt",
+    		"name": "T-shirt",
+    		"code": "t-shirt",
     		"iblockSectionId": 31,
     		"previewText": "Cotton T-shirt",
     		"sort": 100,
@@ -502,8 +502,8 @@ HTTP status: **200**
         "item": {
             "id": 7553,
             "iblockId": 25,
-            "name": "DOCS-V3-SKU T-shirt",
-            "code": "docs-v3-sku-t-shirt",
+            "name": "T-shirt",
+            "code": "t-shirt",
             "xmlId": "7553",
             "active": "Y",
             "sort": 100,
@@ -771,8 +771,8 @@ In some errors, the `field` field contains a numeric error code instead of the f
 || `-` | VAT vatId is not exists | Pass the identifier of an existing VAT rate ||
 || `-` | User createdBy is not exists | Pass the identifier of an existing user. A similar error is returned for `modifiedBy` ||
 || `-` | Currency purchasingCurrency is not exists | Pass the code of an existing currency ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
-|| `-` | The properties field names one property by several keys: #KEYS# | Pass each property under a single key ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: foo | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
+|| `-` | The properties field names one property by several keys: PROPERTY_303, PROPERTY_0303 | Pass each property under a single key ||
 |#
 
 #### Unknown Field Error
@@ -781,7 +781,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
 |#
 
 #### Access Error

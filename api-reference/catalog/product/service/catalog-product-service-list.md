@@ -1,4 +1,4 @@
-# Get a list of services catalog.product.service.list
+# Get List of Services catalog.product.service.list
 
 {% note tip "" %}
 
@@ -11,64 +11,58 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions and the permission to read the catalog information block
 
-The method returns a list of services based on a filter.
+The `catalog.product.service.list` method returns a list of catalog services with filtering, sorting, and pagination.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select**
-[`array`](../../../data-types.md) | 
-An array containing a list of fields that must be selected (see the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object).
+|| **select***
+[`array`](../../../data-types.md) | Fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object to return. Be sure to include `id` and `iblockId`, for example `["id", "iblockId", "name"]`.
 
-Required fields: `id`, `iblockId`
-||
-|| **filter**
-[`object`](../../../data-types.md) | An object for filtering selected services in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
+To retrieve property values, specify `propertyN` keys, where `N` is the property identifier.
 
-Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object. 
+The method skips unknown fields without an error ||
+|| **filter***
+[`object`](../../../data-types.md) | An object for filtering services in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
-Required fields: `iblockId`.
+Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object and the `propertyN` property keys. The method skips unknown fields without an error.
 
-A key can be assigned an additional prefix to specify the filter behavior. Possible prefix values:
+Required field: `iblockId` — the identifier of the trade catalog products information block, a single number. You can retrieve it using the [catalog.catalog.list](../../catalog/catalog-catalog-list.md) method.
+
+A key can be assigned an additional prefix that specifies the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
-    - `"mol%"` — searches for values starting with "mol"
-    - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search is performed from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
-    - `"mol%"` — searches for values that do not start with "mol"
-    - `"%mol"` — searches for values that do not end with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
+- `%` — LIKE, substring search in any position of the string. The `%` character does not need to be passed in the filter value
+- `!%` — NOT LIKE, values without the substring. The `%` character does not need to be passed in the filter value
+- `=` — equal, exact match. Used by default. For IN searches, you can pass multiple values as an array
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, you can pass multiple values as an array
+- `!` — not equal. For NOT IN searches, you can pass multiple values as an array
+
+The method does not support the `=%`, `%=`, `!=%`, `!%=`, `><`, and `!><` prefixes: a condition with such a prefix is skipped without an error, and the method returns services without applying this condition.
 
 For `propertyN` properties, the value format in `filter` depends on the condition type:
 - if you are filtering a date or date-time type property by range, use a prefix in the key and pass the value in the `value` field
-- if you are filtering a numeric, string, or list property by exact match, pass the value directly, without `value`
-- for `IN` and NOT IN searches, you can pass an array of values
+- if you are filtering a numeric, string, or list property by exact match, pass the value directly without `value`
+- for `IN` and `NOT IN` searches, you can pass an array of values
 
-Examples of filtering by properties:
+Example of filtering by properties:
 
 ```js
 filter: {
-    iblockId: 14,
+    iblockId: 25,
     '>=property424': {
-        value: '2025-05-29T12:00:00+03:00'
+        value: '2025-05-29T12:00:00+01:00'
     },
     '<=property424': {
-        value: '2025-05-30T13:00:00+03:00'
+        value: '2025-05-30T13:00:00+01:00'
     },
     property996: 9636,
     property997: [9636, 568, 570, 9658],
@@ -76,10 +70,10 @@ filter: {
 ```
 ||
 || **order**
-[`object`](../../../data-types.md) | 
+[`object`](../../../data-types.md) |
 An object for sorting selected services in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
-Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object.
+Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object. The method skips unknown fields without an error. If the parameter is not passed, services are sorted by `id` in ascending order.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -94,7 +88,9 @@ To select the second page of results, pass the value `50`. To select the third p
 
 Formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the number of the desired page.
+
+If `start` exceeds the number of services found, the method returns the last page
 ||
 |#
 
@@ -116,7 +112,7 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","iblockSectionId","modifiedBy","previewPicture","previewText","previewTextType","sort","timestampX","type","vatId","vatIncluded","xmlId","property94","property95"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"}}' \
+    -d '{"select":["id","iblockId","name","active","available","bundle","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","iblockSectionId","modifiedBy","previewPicture","previewText","previewTextType","sort","timestampX","type","vatId","vatIncluded","xmlId","property301","property305"],"filter":{"iblockId":25,">id":10,"vatId":[1,2]},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.list
     ```
 
@@ -126,7 +122,7 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","iblockSectionId","modifiedBy","previewPicture","previewText","previewTextType","sort","timestampX","type","vatId","vatIncluded","xmlId","property94","property95"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","iblockId","name","active","available","bundle","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","iblockSectionId","modifiedBy","previewPicture","previewText","previewTextType","sort","timestampX","type","vatId","vatIncluded","xmlId","property301","property305"],"filter":{"iblockId":25,">id":10,"vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.list
     ```
 
@@ -208,11 +204,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
             'vatId',
             'vatIncluded',
             'xmlId',
-            'property94',
-            'property95',
+            'property301',
+            'property305',
           ],
           filter: {
-            iblockId: 23,
+            iblockId: 25,
             '>id': 10,
             vatId: [1, 2],
           },
@@ -282,11 +278,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                 'vatId',
                 'vatIncluded',
                 'xmlId',
-                'property94',
-                'property95',
+                'property301',
+                'property305',
               ],
               filter: {
-                iblockId: 23,
+                iblockId: 25,
                 '>id': 10,
                 vatId: [1, 2],
               },
@@ -349,11 +345,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                 "vatId",
                 "vatIncluded",
                 "xmlId",
-                "property94",
-                "property95",
+                "property301",
+                "property305",
             ],
             filter={
-                "iblockId": 23,
+                "iblockId": 25,
                 ">id": 10,
                 "vatId": [
                     1,
@@ -415,11 +411,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                         'vatId',
                         'vatIncluded',
                         'xmlId',
-                        'property94',
-                        'property95',
+                        'property301',
+                        'property305',
                     ],
                     'filter' => [
-                        'iblockId' => 23,
+                        'iblockId' => 25,
                         '>id'      => 10,
                         'vatId'    => [1, 2],
                     ],
@@ -428,13 +424,13 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching service list: ' . $e->getMessage();
@@ -472,11 +468,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                 "vatId",
                 "vatIncluded",
                 "xmlId",
-                "property94",
-                "property95",
+                "property301",
+                "property305",
             ],
             "filter": {
-                "iblockId": 23,
+                "iblockId": 25,
                 ">id": 10,
                 "vatId": [1, 2],
             },
@@ -528,11 +524,11 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
                 'vatId',
                 'vatIncluded',
                 'xmlId',
-                'property94',
-                'property95',
+                'property301',
+                'property305',
             ],
             'filter' => [
-                'iblockId' => 23,
+                'iblockId' => 25,
                 '>id' => 10,
                 'vatId' => [1, 2],
             ],
@@ -552,9 +548,9 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.list", b24.Params{
-    	"select": []string{"id", "iblockId", "name", "active", "available", "bundle", "code", "createdBy", "dateActiveFrom", "dateActiveTo", "dateCreate", "detailPicture", "detailText", "detailTextType", "iblockSectionId", "modifiedBy", "previewPicture", "previewText", "previewTextType", "sort", "timestampX", "type", "vatId", "vatIncluded", "xmlId", "property94", "property95"},
+    	"select": []string{"id", "iblockId", "name", "active", "available", "bundle", "code", "createdBy", "dateActiveFrom", "dateActiveTo", "dateCreate", "detailPicture", "detailText", "detailTextType", "iblockSectionId", "modifiedBy", "previewPicture", "previewText", "previewTextType", "sort", "timestampX", "type", "vatId", "vatIncluded", "xmlId", "property301", "property305"},
     	"filter": b24.Params{
-    		"iblockId": 23,
+    		"iblockId": 25,
     		">id":      10,
     		"vatId":    []int{1, 2},
     	},
@@ -604,45 +600,41 @@ HTTP status: **200**
                 "bundle": "N",
                 "code": "service",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-                "dateActiveTo": "2024-05-29T10:00:00+03:00",
-                "dateCreate": "2024-05-27T10:00:00+03:00",
-                "detailPicture": {
-                    "id": "6497",
-                    "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265",
-                    "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265"
-                },
+                "dateActiveFrom": null,
+                "dateActiveTo": null,
+                "dateCreate": "2025-05-12T12:04:01+01:00",
+                "detailPicture": null,
                 "detailText": null,
                 "detailTextType": "text",
-                "iblockId": 23,
-                "iblockSectionId": 47,
-                "id": 1265,
+                "iblockId": 25,
+                "iblockSectionId": null,
+                "id": 6969,
                 "modifiedBy": 1,
                 "name": "Service",
-                "previewPicture": {
-                    "id": "6496",
-                    "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6496\u0026fields%5BproductId%5D=1265",
-                    "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6496\u0026fields%5BproductId%5D=1265"
-                },
+                "previewPicture": null,
                 "previewText": null,
                 "previewTextType": "text",
+                "property301": null,
+                "property305": null,
                 "sort": 100,
-                "timestampX": "2024-06-14T11:59:04+03:00",
+                "timestampX": "2025-05-12T12:04:01+01:00",
                 "type": 7,
                 "vatId": 1,
                 "vatIncluded": "Y",
-                "xmlId": "1265"
+                "xmlId": "6969"
             }
         ]
     },
     "total": 1,
     "time": {
-        "start": 1718363637.281945,
-        "finish": 1718363637.984081,
-        "duration": 0.7021360397338867,
-        "processing": 0.2966270446777344,
-        "date_start": "2024-06-14T14:13:57+03:00",
-        "date_finish": "2024-06-14T14:13:57+03:00"
+        "start": 1793963897,
+        "finish": 1793963897.165754,
+        "duration": 0.16575407981872559,
+        "processing": 0,
+        "date_start": "2026-11-06T14:18:17+01:00",
+        "date_finish": "2026-11-06T14:18:17+01:00",
+        "operating_reset_at": 1793964360,
+        "operating": 0.13507294654846191
     }
 }
 ```
@@ -654,12 +646,12 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root response item ||
-|| **services**
+|| **result.services**
 [`catalog_product_service[]`](../../data-types.md#catalog_product_service) | Array of objects containing information about the selected services ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -668,7 +660,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
+    "error":"200040300010",
     "error_description":"Access denied"
 }
 ```
@@ -678,11 +670,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
-|| `0` | Fields `id`, `iblockId` are not specified in the selection fields ||
-|| `0` | Field `iblockId` is not specified in the filter ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300030` | Access Denied | The user does not have the permission to read the catalog information block ||
+|| `400` | `0` | Required select fields: id, iblockId | `select` does not contain the `id` or `iblockId` field. The text lists the missing fields ||
+|| `400` | `0` | Required filter fields: iblockId | `filter` does not contain the `iblockId` field ||
+|| `400` | `0` | iblock is not catalog | `iblockId` is not a trade catalog information block ||
+|| `400` | `0` | productType is not allowed for this catalog | `iblockId` contains a variations information block. Services are stored in the products information block ||
+|| `400` | `0` | Wrong format value of filter field `iblockId`. | `iblockId` contains an array. Pass a single number ||
+|| `400` | `100` | Invalid value {...} to match with parameter {select}. Should be value of type array. | The `select` parameter is not an array ||
+|| `400` | `100` | Invalid value {...} to match with parameter {filter}. Should be value of type array. | The `filter` parameter is not an object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

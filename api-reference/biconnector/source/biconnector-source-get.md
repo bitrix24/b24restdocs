@@ -457,7 +457,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `SOURCE_NOT_FOUND` | Source was not found. | The source does not exist or belongs to another application ||

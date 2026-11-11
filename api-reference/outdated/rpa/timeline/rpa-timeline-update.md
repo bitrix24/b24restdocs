@@ -45,6 +45,28 @@ The method only updates the `title` and `description` fields, and only for entri
 [`string`](../../../data-types.md) | Description of the entry. HTML tags can be used ||
 |#
 
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "RPA_ITEM_VIEW_ACCESS_DENIED",
+    "error_description": "You don't have permission to view this item."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `RPA_ITEM_VIEW_ACCESS_DENIED` | You don't have permission to view this item | The user cannot view the element the entry belongs to. All Bitrix24 employees can view elements; they are not available to extranet users ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
 ## Continue Exploring 
 
 - [{#T}](./index.md)

@@ -12,15 +12,15 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - A common detail form can be set if the user has edit permissions for the common view.
+> - a user with permission to edit the common view of the deal detail form
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use the REST 3.0 method [crm.deal.detailpagelayout.setcommonforall](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-set-common-for-all-rest-v3.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.detailpagelayout.setcommonforall](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-set-common-for-all-rest-v3.md). Unlike `forceCommonScopeForAll`, it does not delete users' personal settings.
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets a common deal detail form for all users and removes their personal settings.
+The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets a common deal detail form for all users and removes their personal settings in the selected Sales Funnel.
 
 {% note info %}
 
@@ -28,9 +28,13 @@ The settings for deal detail forms may vary across different Sales Funnels. To s
 
 {% endnote %}
 
-## Method Parameters
+{% note warning "" %}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+This action is irreversible: deleted personal settings in the selected Sales Funnel cannot be restored. Before calling the method, check the common view using [crm.deal.details.configuration.get](./crm-deal-details-configuration-get.md) with `scope = C`. If it returns `null`, the common view is not saved in the Sales Funnel — set it first using [crm.deal.details.configuration.set](./crm-deal-details-configuration-set.md) with `scope = C`.
+
+{% endnote %}
+
+## Method Parameters
 
 #|
 || **Name**
@@ -41,13 +45,11 @@ The settings for deal detail forms may vary across different Sales Funnels. To s
 
 ### extras Parameter {#parameter-extras}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be retrieved using [crm.category.list](../../universal/category/crm-category-list.md) with `entityTypeId = 2` or [crm.deal.category.list](../../rest-v3/categories/crm-entity-category-list-rest-v3.md) in REST 3.0 — the identifiers are the same
 
 If not specified, the default Sales Funnel for deals is used.
 ||
@@ -162,7 +164,7 @@ Set a common deal detail form for all users in the Sales Funnel with `id = 32`
 
     try:
         bitrix_response = client.crm.deal.details.configuration.force_common_scope_for_all(
-            extras={"dealCategoryId": 0},
+            extras={"dealCategoryId": 32},
         ).response
         result = bitrix_response.result
         print(result)
@@ -318,7 +320,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No permissions to set a common detail form for all users ||
+|| `400` | Empty Value | Access denied. | The user does not have permission to edit the common view of the deal detail form in the `extras.dealCategoryId` Sales Funnel ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

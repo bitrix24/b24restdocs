@@ -45,7 +45,7 @@ In user settings, an employee can specify personal preferences, such as a time z
 
 ## Resource Booking
 
-In Bitrix24, resource booking is done through a custom CRM field of type `resourcebooking`. Such a field can be created in the [lead](../crm/leads/userfield/index.md) and [deal](../crm/deals/user-defined-fields/index.md) forms.
+In Bitrix24, resources are booked through a custom CRM field of type `resourcebooking`. Such a field can be created in the [lead](../crm/leads/userfield/index.md) and [deal](../crm/deals/user-defined-fields/index.md) forms.
 
 Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
 
@@ -59,7 +59,7 @@ Resources are managed by the [calendar.resource.*](./resource/index.md) method g
 
 ## Widgets
 
-An application can be embedded into the calendar. In the list of calendar view types, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
+An application can be embedded into the calendar. In the list of calendar view types, there is an embedding point `CALENDAR_GRIDVIEW`, where you can add your own item. The parameters of the embedding point are described on the [Calendar View CALENDAR_GRIDVIEW](../widgets/calendar.md) page.
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -72,9 +72,9 @@ An application can be embedded into the calendar. In the list of calendar view t
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depends on the method
 
-## Main {#base}
+### Main {#base}
 
 {% list tabs %}
 
@@ -102,7 +102,7 @@ An application can be embedded into the calendar. In the list of calendar view t
 
 {% endlist %}
 
-## Calendar Events
+### Calendar Events
 
 {% list tabs %}
 
@@ -114,7 +114,7 @@ An application can be embedded into the calendar. In the list of calendar view t
     || [calendar.event.update](./calendar-event/calendar-event-update.md) | Updates an event ||
     || [calendar.event.getbyid](./calendar-event/calendar-event-get-by-id.md) | Retrieves an event by `id` ||
     || [calendar.event.get](./calendar-event/calendar-event-get.md) | Retrieves a list of calendar events ||
-    || [calendar.event.getNearest](./calendar-event/calendar-event-get-nearest.md) | Retrieves a list of future events ||
+    || [calendar.event.get.nearest](./calendar-event/calendar-event-get-nearest.md) | Retrieves a list of future events ||
     || [calendar.event.delete](./calendar-event/calendar-event-delete.md) | Deletes an event ||
     || [calendar.meeting.status.get](./calendar-event/calendar-meeting-status-get.md) | Retrieves the current user's participation status in an event ||
     || [calendar.meeting.status.set](./calendar-event/calendar-meeting-status-set.md) | Sets event participation status for the current user ||
@@ -132,13 +132,13 @@ An application can be embedded into the calendar. In the list of calendar view t
 
 {% endlist %}
 
-## Resource Booking
+### Methods for Working with Resources
 
 #|
 || **Method** | **Description** ||
 || [calendar.resource.add](./resource/calendar-resource-add.md) | Adds a resource ||
-|| [calendar.resource.update](./resource/calendar-resource-update.md) | Updates a resource ||
+|| [calendar.resource.update](./resource/calendar-resource-update.md) | Changes the resource name ||
 || [calendar.resource.list](./resource/calendar-resource-list.md) | Retrieves a list of resources ||
+|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Deletes a resource together with its bookings ||
 || [calendar.resource.booking.list](./resource/calendar-resource-booking-list.md) | Retrieves resource bookings by filter ||
-|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Deletes a resource ||
 |#

@@ -196,7 +196,7 @@ Possible values:
 
 Used only in the [on-premise version](../../../settings/cloud-and-on-premise/index.md) for selling content ||
 || **propertyN**
-[`object` | `array`](../../data-types.md) | Product property value, where `N` is the property identifier, for example, `property301`.
+[`object`\|`array`](../../data-types.md) | Product property value, where `N` is the property identifier, for example, `property301`.
 
 Value format:
 

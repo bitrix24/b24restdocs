@@ -402,7 +402,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Entity with ID `#ID#` was not found | There is no service with this identifier, or `productId` is not passed. The error is also returned for the identifier of a product of another type ||
+|| `-` | Entity with ID `999999` was not found | There is no service with this identifier, or `productId` is not passed. The error is also returned for the identifier of a product of another type ||
 |#
 
 #### Access Error

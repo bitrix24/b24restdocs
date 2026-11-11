@@ -1,4 +1,4 @@
-# Download Main Product Files catalog.product.sku.download
+# Download Parent Product Files catalog.product.sku.download
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and the permission to read the catalog information block element
 
-This method downloads main product files based on the provided parameters.
+The `catalog.product.sku.download` method returns a parent product file: the preview image, the detailed image, or a file from a "File" type property.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ This method downloads main product files based on the provided parameters.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for downloading main product files ||
+[`object`](../../../data-types.md) | Parameters of the file to download ([detailed description](#fields)) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -34,23 +34,22 @@ This method downloads main product files based on the provided parameters.
 || **Name**
 `type` | **Description** ||
 || **fileId***
-[`integer`](../../../data-types.md) | Identifier of the registered file.
+[`integer`](../../../data-types.md) | File identifier.
 
-To obtain the identifiers of main product files, you need to use [catalog.product.sku.get](./catalog-product-sku-get.md) or [catalog.product.sku.list](./catalog-product-sku-list.md)
-||
+You can retrieve the identifier using the [catalog.product.sku.get](./catalog-product-sku-get.md) method: it is the `id` field in the `previewPicture` or `detailPicture` object or in the file property value ||
 || **productId***
-[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the main product.
+[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
 
-To obtain the identifiers of main products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md)
-||
+You can retrieve parent product identifiers using the [catalog.product.sku.list](./catalog-product-sku-list.md) method ||
 || **fieldName***
-[`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `DETAIL_PICTURE` — detailed image, field available in the old product card
-- `PREVIEW_PICTURE` — preview image, field available in the old product card
-- `PROPERTY_N` — property, where `N` is the property identifier or property code
+[`string`](../../../data-types.md) | Name of the field that stores the file. Pass the name in camelCase:
+- `previewPicture` — preview image
+- `detailPicture` — detailed image
+- `propertyN` — a "File" type property, where `N` is the property identifier, for example `property309`
 
-To obtain existing identifiers or property codes of main products, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
-||
+The method rejects uppercase names, such as `DETAIL_PICTURE` or `PROPERTY_309`, with the `Name file field is not available` error.
+
+You can retrieve property identifiers using the [catalog.product.sku.getFieldsByFilter](./catalog-product-sku-get-fields-by-filter.md) method: for file properties, `propertyType` is `F` ||
 |#
 
 ## Code Examples
@@ -65,7 +64,7 @@ To obtain existing identifiers or property codes of main products, you need to u
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"fileId":6546,"productId":1289,"fieldName":"detailPicture"}}' \
+    -d '{"fields":{"fileId":40051,"productId":7679,"fieldName":"detailPicture"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.download
     ```
 
@@ -75,7 +74,7 @@ To obtain existing identifiers or property codes of main products, you need to u
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"fileId":6546,"productId":1289,"fieldName":"detailPicture"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"fileId":40051,"productId":7679,"fieldName":"detailPicture"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.sku.download
     ```
 
@@ -94,8 +93,8 @@ To obtain existing identifiers or property codes of main products, you need to u
         method: 'catalog.product.sku.download',
         params: {
           fields: {
-            fileId: 6546,
-            productId: 1289,
+            fileId: 40051,
+            productId: 7679,
             fieldName: 'detailPicture',
           },
         },
@@ -130,8 +129,8 @@ To obtain existing identifiers or property codes of main products, you need to u
             method: 'catalog.product.sku.download',
             params: {
               fields: {
-                fileId: 6546,
-                productId: 1289,
+                fileId: 40051,
+                productId: 7679,
                 fieldName: 'detailPicture',
               },
             },
@@ -164,8 +163,8 @@ To obtain existing identifiers or property codes of main products, you need to u
     try:
         bitrix_response = client.catalog.product.sku.download(
             fields={
-                "fileId": 6546,
-                "productId": 1289,
+                "fileId": 40051,
+                "productId": 7679,
                 "fieldName": "detailPicture",
             },
         ).response
@@ -194,24 +193,20 @@ To obtain existing identifiers or property codes of main products, you need to u
                 'catalog.product.sku.download',
                 [
                     'fields' => [
-                        'fileId'     => 6546,
-                        'productId'  => 1289,
+                        'fileId'     => 40051,
+                        'productId'  => 7679,
                         'fieldName'  => 'detailPicture',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error downloading product SKU: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -222,8 +217,8 @@ To obtain existing identifiers or property codes of main products, you need to u
         'catalog.product.sku.download',
         {
             fields: {
-                fileId: 6546,
-                productId: 1289,
+                fileId: 40051,
+                productId: 7679,
                 fieldName: 'detailPicture',
             }
         },
@@ -246,8 +241,8 @@ To obtain existing identifiers or property codes of main products, you need to u
         'catalog.product.sku.download',
         [
             'fields' => [
-                'fileId' => 6546,
-                'productId' => 1289,
+                'fileId' => 40051,
+                'productId' => 7679,
                 'fieldName' => 'detailPicture'
             ]
         ]
@@ -264,8 +259,8 @@ To obtain existing identifiers or property codes of main products, you need to u
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.sku.download", b24.Params{
     	"fields": b24.Params{
-    		"fileId":    6546,
-    		"productId": 1289,
+    		"fileId":    40051,
+    		"productId": 7679,
     		"fieldName": "detailPicture",
     	},
     })
@@ -284,20 +279,20 @@ To obtain existing identifiers or property codes of main products, you need to u
 
 HTTP status: **200**
 
-A file is returned based on the provided parameters.
+The method returns the file itself, not JSON. The `Content-Type` header matches the file type, for example `image/png`, and the file name is passed in the `Content-Disposition` header.
 
 ### Returned Data
 
-A file is returned based on the provided parameters.
+The file content. Save the response body to a file with the name from the `Content-Disposition` header.
 
 ## Error Handling
 
 HTTP status: **400**
 
 ```json
-{	
-    "error":0,
-    "error_description":"Required fields: fileId"
+{
+    "error": "0",
+    "error_description": "Product file wrong"
 }
 ```
 
@@ -306,19 +301,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
-|| 
-|| `0` | The main product with the specified identifier does not exist
-|| 
-|| `0` | The specified property does not exist or is not a file
-|| 
-|| `0` | The file with the specified identifier does not exist
-|| 
-|| `0` | Required fields are not provided
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have a permission to view the catalog ||
+|| `400` | `200040300040` | Access Denied | The user does not have the permission to read the catalog information block element ||
+|| `400` | Empty value | sku does not exist. | No product exists with the specified `productId` ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: fileId | The `fileId` field is not provided in `fields`. The same error with the field name is returned for other required fields: `Required fields: productId`, `Required fields: fieldName` ||
+|| `400` | `0` | Name file field is not available | `fieldName` contains a field that does not store files, or an uppercase name ||
+|| `400` | `0` | Product file wrong | The `fieldName` field of this product has no file with the specified `fileId` ||
+|| `400` | `0` | Product is empty | No file exists with the specified `fileId` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

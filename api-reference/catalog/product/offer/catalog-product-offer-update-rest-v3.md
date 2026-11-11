@@ -59,21 +59,17 @@ Possible values:
 - `Y` — active
 - `N` — inactive
 
-Any value other than `Y` is saved as `N`.
-
-Default: `Y` ||
+Any value other than `Y` is saved as `N` ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort order.
-
-Default: `500` ||
+[`integer`](../../../data-types.md) | Sort order ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the record. The identifier can be retrieved using the [user.get](../../../user/user-get.md) method ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | Identifier of the user who modified the record. Defaults to the current user ||
+[`integer`](../../../data-types.md) | Identifier of the user who modified the record ||
 || **dateActiveFrom**
-[`datetime`](../../../data-types.md) | Activity start date in ISO 8601 format ||
+[`datetime`](../../../data-types.md) | Activity start date. Currently the method rejects this field in any date format with a request validation error, so do not pass it ||
 || **dateActiveTo**
-[`datetime`](../../../data-types.md) | Activity end date in ISO 8601 format ||
+[`datetime`](../../../data-types.md) | Activity end date. Currently the method rejects this field in any date format with a request validation error, so do not pass it ||
 || **previewText**
 [`string`](../../../data-types.md) | Preview description ||
 || **previewTextType**
@@ -82,9 +78,7 @@ Default: `500` ||
 Possible values:
 
 - `text` — text
-- `html` — HTML
-
-Default: `text` ||
+- `html` — HTML ||
 || **previewPicture**
 [`object`](../../../data-types.md) | Preview picture. The method currently does not save the field value, see the warning below for details ||
 || **detailText**
@@ -95,9 +89,7 @@ Default: `text` ||
 Possible values:
 
 - `text` — text
-- `html` — HTML
-
-Default: `text` ||
+- `html` — HTML ||
 || **detailPicture**
 [`object`](../../../data-types.md) | Detail picture. The method currently does not save the field value, see the warning below for details ||
 || **iblockSectionId**
@@ -206,7 +198,7 @@ Possible values:
 - `N` — not allowed
 - `D` — according to the module settings ||
 || **properties**
-[`object`](../../../data-types.md) | Values of the properties to update. The key is `PROPERTY_{id}`, where `{id}` is the property identifier. Pass the value as a `{"VALUE": ...}` object or an array of such objects. The method does not save a value passed as a string or a number.
+[`object`](../../../data-types.md) | Values of the properties to update. The key is `PROPERTY_{id}`, where `{id}` is the property identifier. Pass the value as a `{"VALUE": ...}` object or an array of such objects. The method does not save a value passed as a string or a number and clears the property.
 
 Properties that are not passed keep their current values.
 
@@ -239,7 +231,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7555,"fields":{"name":"DOCS-V3-OFFER Blue T-shirt L","weight":220}}' \
+    -d '{"id":7555,"fields":{"name":"Blue T-shirt L","weight":220}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.update
     ```
 
@@ -249,7 +241,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7555,"fields":{"name":"DOCS-V3-OFFER Blue T-shirt L","weight":220},"auth":"**put_access_token_here**"}' \
+    -d '{"id":7555,"fields":{"name":"Blue T-shirt L","weight":220},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.product.offer.update
     ```
 
@@ -275,7 +267,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           id: 7555,
           fields: {
-            name: 'DOCS-V3-OFFER Blue T-shirt L',
+            name: 'Blue T-shirt L',
             weight: 220,
           },
         },
@@ -308,7 +300,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               id: 7555,
               fields: {
-                name: 'DOCS-V3-OFFER Blue T-shirt L',
+                name: 'Blue T-shirt L',
                 weight: 220,
               },
             },
@@ -341,7 +333,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         bitrix_response = client.catalog.product.offer.update(
             id=7555,
             fields={
-                "name": "DOCS-V3-OFFER Blue T-shirt L",
+                "name": "Blue T-shirt L",
                 "weight": 220,
             },
         ).response
@@ -373,7 +365,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 [
                     'id' => 7555,
                     'fields' => [
-                        'name' => 'DOCS-V3-OFFER Blue T-shirt L',
+                        'name' => 'Blue T-shirt L',
                         'weight' => 220,
                     ],
                 ]
@@ -399,7 +391,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         {
             id: 7555,
             fields: {
-                name: 'DOCS-V3-OFFER Blue T-shirt L',
+                name: 'Blue T-shirt L',
                 weight: 220,
             },
         },
@@ -424,7 +416,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         [
             'id' => 7555,
             'fields' => [
-                'name' => 'DOCS-V3-OFFER Blue T-shirt L',
+                'name' => 'Blue T-shirt L',
                 'weight' => 220,
             ],
         ]
@@ -442,7 +434,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     res, err := client.Core().Call(ctx, "catalog.product.offer.update", b24.Params{
     	"id": 7555,
     	"fields": b24.Params{
-    		"name": "DOCS-V3-OFFER Blue T-shirt L",
+    		"name": "Blue T-shirt L",
     		"weight": 220,
     	},
     })
@@ -479,8 +471,8 @@ HTTP status: **200**
         "item": {
             "id": 7555,
             "iblockId": 27,
-            "name": "DOCS-V3-OFFER Blue T-shirt L",
-            "code": "docs-v3-offer-blue-m",
+            "name": "Blue T-shirt L",
+            "code": "tshirt-blue-m",
             "xmlId": "7555",
             "active": "Y",
             "sort": 500,
@@ -695,8 +687,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass `id`. A second message comes along with this one: "Only one of the following values must be provided: id, filter" ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
-|| `-` | Product - #ID# is not exists in catalog - #IBLOCK_ID# | Remove `iblockId` from `fields` or pass the current information block of the record ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
+|| `-` | Product - 7685 is not exists in catalog - 25 | Remove `iblockId` from `fields` or pass the current information block of the record ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: foo | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
+|| `-` | Wrong format of field `dateActiveFrom`. | Remove `dateActiveFrom` from `fields`: the method currently does not accept activity dates. For `dateActiveTo`, the error text is Wrong format of field `dateActiveTo`. ||
 |#
 
 #### Object Validation Errors
@@ -705,7 +698,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove read-only fields from `fields`: `id`, `type`, `available`, `bundle`, `dateCreate`, `timestampX` ||
+|| `available` | Field "available" is read-only | Remove read-only fields from `fields`: `id`, `type`, `available`, `bundle`, `dateCreate`, `timestampX` ||
 |#
 
 #### Object Not Found Error
@@ -714,7 +707,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | The record does not exist or is not a variation. Check the identifier using the [catalog.product.offer.list](./catalog-product-offer-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | The record does not exist or is not a variation. Check the identifier using the [catalog.product.offer.list](./catalog-product-offer-list-rest-v3.md) method ||
 |#
 
 #### Filter Format Error
@@ -723,7 +716,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass `id` ||
 |#
 
 #### Unknown Field Error
@@ -732,7 +725,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
 |#
 
 #### Access Error

@@ -1,4 +1,4 @@
-# Get a list of all resources calendar.resource.list
+# Get a List of Resources calendar.resource.list
 
 {% note tip "" %}
 
@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user except extranet users
 
-The method retrieves a list of all resources.
+The `calendar.resource.list` method retrieves a list of all resources in Bitrix24. Resources deleted with the [calendar.resource.delete](./calendar-resource-delete.md) method are not included in the list. How resource booking works is described in the [methods overview](./index.md).
+
+The method has no filtering, sorting, or pagination: it returns all resources in a single response and ignores the `start` parameter.
+
+Resource IDs from the response are needed for the [calendar.resource.update](./calendar-resource-update.md) and [calendar.resource.delete](./calendar-resource-delete.md) methods and for the `filter.resourceTypeIdList` parameter of the [calendar.resource.booking.list](./calendar-resource-booking-list.md) method.
+
+## Method Parameters
 
 No parameters.
 
@@ -61,16 +67,10 @@ No parameters.
     }
 
     try {
-      // calendar.resource.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // calendar.resource.list has no pagination: it returns all active resources in one response
       const response = await $b24.actions.v2.call.make<CalendarResourceItem[]>({
         method: 'calendar.resource.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -98,16 +98,10 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // calendar.resource.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // calendar.resource.list has no pagination: it returns all active resources in one response
           const response = await $b24.actions.v2.call.make({
             method: 'calendar.resource.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -179,7 +173,7 @@ No parameters.
     ```js
     BX24.callMethod(
         'calendar.resource.list'
-    )
+    );
     ```
 
 - PHP CRest
@@ -222,12 +216,13 @@ HTTP status: **200**
     "result": [
         {
             "ID": "198",
-            "NAME": "Resource name",
+            "NAME": "Car",
             "CREATED_BY": "1"
         },
         {
             "ID": "199",
-            ...
+            "NAME": "Bowling lane 1",
+            "CREATED_BY": "1"
         }
     ],
     "time": {
@@ -247,10 +242,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of objects. Each object contains a description of the [resource](#resource) ||
+[`array`](../../data-types.md) | Array of objects. Each object describes a [resource](#resource). If there are no resources, an empty array is returned ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Resource Object {#resource}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -278,16 +276,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | Access denied | Access to the method is prohibited for external users ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied | The method is called by an extranet user ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-resource-add.md)
 - [{#T}](./calendar-resource-update.md)
-- [{#T}](./calendar-resource-booking-list.md)
 - [{#T}](./calendar-resource-delete.md)
+- [{#T}](./calendar-resource-booking-list.md)

@@ -119,7 +119,7 @@ Error codes common to the entire section:
 
 #|
 || **Code** | **When it is returned** ||
-|| `ACCESS_DENIED` | There are three reasons: the user lacks one of the two permissions; the method was called via a webhook; the method was called outside the application context. The `*.fields` methods are available to a webhook, so only the permission reason remains for them ||
+|| `ACCESS_DENIED` | There are four reasons: the user lacks one of the two permissions; BI Builder external data sources are not available on this Bitrix24; the method was called via a webhook; the method was called outside the application context. The `*.fields` methods are available to a webhook, so only the permission and external data source reasons remain for them ||
 || `CONNECTOR_NOT_FOUND`, `SOURCE_NOT_FOUND`, `DATASET_NOT_FOUND` | The object does not exist or belongs to another application. An application does not see objects of other applications, so "no access" is returned as "not found". The `biconnector.table.*` methods also report a table that was not found with the `DATASET_NOT_FOUND` code: the module has no separate `TABLE_NOT_FOUND` ||
 || Codes of the `VALIDATION_` family | A required field is not filled in, a read-only or immutable field was passed, or an unknown parameter was specified — this is checked by `add`, `update`, and `fields.update`. The `list` methods have their own codes: an invalid type of `select`, `filter`, or `order` and an invalid field inside them ||
 || `BX_ERROR` | A general error of the module. It is returned, for example, when a source cannot be deleted because of the tables linked to it. For a connector, the same case is returned with the separate `CONNECTOR_DELETE_RESTRICTED` code ||

@@ -1,4 +1,4 @@
-# Get the list of parent products catalog.product.sku.list
+# Get List of Parent Products catalog.product.sku.list
 
 {% note tip "" %}
 
@@ -11,58 +11,58 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and the permission to read the catalog information block
 
-The method returns a list of parent products based on the filter.
+The `catalog.product.sku.list` method returns a list of catalog parent products by filter. The list includes parent products with variations (type `3`) and without variations (type `6`).
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select**
-[`array`](../../../data-types.md) | 
-An array of fields to be selected (see the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object).
+|| **select***
+[`array`](../../../data-types.md) | An array of fields to return. The fields are described in the [catalog_product_sku](../../data-types.md#catalog_product_sku) object.
 
-Required fields: `id`, `iblockId`
-||
-|| **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected parent products in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+Make sure to pass the `id` and `iblockId` fields. Property values are selected with `propertyN` keys, where `N` is the property identifier.
 
-Possible values for `field` correspond to the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object. 
+In `select`, you can list trade catalog fields such as `canBuyZero`, `quantity`, and `vatId`: the `get`, `add`, and `update` methods do not return them.
 
-Required fields: `iblockId`.
+The method skips unknown fields and uppercase names, such as `NAME`, without an error ||
+|| **filter***
+[`object`](../../../data-types.md) | An object for filtering parent products in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+
+Make sure to pass `iblockId`, the identifier of the product catalog information block. You can retrieve it using the [catalog.catalog.list](../../catalog/catalog-catalog-list.md) method.
+
+You can filter by the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object and by single properties, for example `{"property303": "Textile Plus"}`. A filter by a multiple property is not applied.
 
 An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
-- `>=` — greater than or equal to
-- `>` — greater than
-- `<=` — less than or equal to
-- `<` — less than
-- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
-    - `"mol%"` — searches for values starting with "mol"
-    - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character in the filter value does not need to be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
-    - `"mol%"` — searches for values not starting with "mol"
-    - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array 
+- `=` — equal, exact match (used by default). An array of values works as IN: `{"id": [7679, 7637]}`
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, multiple values can be passed as an array ||
-|| **order**
-[`object`](../../../data-types.md) | 
-An object for sorting the selected parent products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+- `!` — not equal. With an array of values, it works as NOT IN
+- `>` — greater than
+- `>=` — greater than or equal to
+- `<` — less than
+- `<=` — less than or equal to
+- `%` — LIKE, substring search in any position. The `%` character does not need to be passed in the value
+- `!%` — NOT LIKE, values without the substring
 
-Possible values for `field` correspond to the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object.
+The method does not apply the `=%`, `%=`, `!=%`, `!%=`, `@`, and `!@` prefixes and returns records without taking such a condition into account.
+
+The `type` field filters only by the `3` and `6` values. Another value does not narrow the selection.
+
+The method skips unknown fields and uppercase names, such as `ID`, without an error and returns products without taking such a condition into account ||
+|| **order**
+[`object`](../../../data-types.md) | An object for sorting parent products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
-||
+
+The direction is case-insensitive. The method skips unknown fields and an invalid direction without an error.
+
+By default, results are sorted in ascending order by `id` ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
@@ -72,13 +72,20 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
-||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
+
+{% note warning "" %}
+
+A `start` value beyond the list returns the first page, not an empty array. Do not stop the iteration on an empty page: the loop will not end. Rely on the `total` field and on whether the `next` field is present in the response.
+
+{% endnote %}
 
 ## Code Examples
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
+
+The example retrieves parent products of section `31` with a sort index of at least `100` and a symbolic code that contains `t-shirt`.
 
 {% list tabs %}
 
@@ -88,7 +95,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"}}' \
+    -d '{"select":["id","iblockId","name","active","sort","code","iblockSectionId","property303"],"filter":{"iblockId":25,"iblockSectionId":31,">=sort":100,"%code":"t-shirt"},"order":{"sort":"asc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.list
     ```
 
@@ -98,7 +105,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","iblockId","name","active","sort","code","iblockSectionId","property303"],"filter":{"iblockId":25,"iblockSectionId":31,">=sort":100,"%code":"t-shirt"},"order":{"sort":"asc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.sku.list
     ```
 
@@ -108,110 +115,37 @@ The formula for calculating the `start` parameter value:
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    type SkuItem = {
+    // Shape of one item returned in result.units (only the selected fields)
+    type SkuListItem = {
       id: number
       iblockId: number
-      iblockSectionId: number | null
       name: string
       active: string
-      available: string
-      bundle: string
-      canBuyZero: string
-      code: string
-      createdBy: number
-      dateActiveFrom: ISODate | null
-      dateActiveTo: ISODate | null
-      dateCreate: ISODate | null
-      detailPicture: { id: string; url: string; urlMachine: string } | null
-      detailText: string | null
-      detailTextType: string
-      height: number | null
-      length: number | null
-      measure: number | null
-      modifiedBy: number
-      previewPicture: { id: string; url: string; urlMachine: string } | null
-      previewText: string | null
-      previewTextType: string
-      purchasingCurrency: string | null
-      purchasingPrice: string | null
-      quantity: number | null
-      sort: number
-      subscribe: string
-      timestampX: ISODate | null
-      type: number
-      vatId: number | null
-      vatIncluded: string
-      weight: number | null
-      width: number | null
-      xmlId: string
-      property258: { value: string; valueId: string } | null
-      property259: Array<{ value: string; valueId: string }>
-    }
-
-    // Shape of the payload returned in result (match the "response handling" section of the page)
-    type SkuListResult = {
-      units: SkuItem[]
+      sort: number | null
+      code: string | null
+      iblockSectionId: number | null
+      property303: { value: string; valueId: string } | null
     }
 
     try {
-      // catalog.product.sku.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
-      const response = await $b24.actions.v2.call.make<SkuListResult>({
+      // catalog.product.sku.list returns a single page (max 50 records).
+      // The list is returned under the "units" key.
+      const response = await $b24.actions.v2.call.make<{ units: SkuListItem[] }>({
         method: 'catalog.product.sku.list',
         params: {
-          select: [
-            'id',
-            'iblockId',
-            'name',
-            'active',
-            'available',
-            'bundle',
-            'canBuyZero',
-            'code',
-            'createdBy',
-            'dateActiveFrom',
-            'dateActiveTo',
-            'dateCreate',
-            'detailPicture',
-            'detailText',
-            'detailTextType',
-            'height',
-            'iblockSectionId',
-            'length',
-            'measure',
-            'modifiedBy',
-            'previewPicture',
-            'previewText',
-            'previewTextType',
-            'purchasingCurrency',
-            'purchasingPrice',
-            'quantity',
-            'sort',
-            'subscribe',
-            'timestampX',
-            'type',
-            'vatId',
-            'vatIncluded',
-            'weight',
-            'width',
-            'xmlId',
-            'property258',
-            'property259',
-          ],
+          select: ['id', 'iblockId', 'name', 'active', 'sort', 'code', 'iblockSectionId', 'property303'],
           filter: {
-            iblockId: 23,
-            '>id': 10,
-            vatId: [1, 2],
+            iblockId: 25,
+            iblockSectionId: 31,
+            '>=sort': 100,
+            '%code': 't-shirt',
           },
           order: {
-            id: 'desc',
+            sort: 'asc',
           },
           start: 0,
         },
@@ -223,7 +157,7 @@ The formula for calculating the `start` parameter value:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('SKUs on this page:', result.units.length, result.units)
+        console.info('SKU products on page:', result.units.length)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -237,65 +171,23 @@ The formula for calculating the `start` parameter value:
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function listProductSkus() {
+      async function listSkuProducts() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // catalog.product.sku.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.sku.list',
             params: {
-              select: [
-                'id',
-                'iblockId',
-                'name',
-                'active',
-                'available',
-                'bundle',
-                'canBuyZero',
-                'code',
-                'createdBy',
-                'dateActiveFrom',
-                'dateActiveTo',
-                'dateCreate',
-                'detailPicture',
-                'detailText',
-                'detailTextType',
-                'height',
-                'iblockSectionId',
-                'length',
-                'measure',
-                'modifiedBy',
-                'previewPicture',
-                'previewText',
-                'previewTextType',
-                'purchasingCurrency',
-                'purchasingPrice',
-                'quantity',
-                'sort',
-                'subscribe',
-                'timestampX',
-                'type',
-                'vatId',
-                'vatIncluded',
-                'weight',
-                'width',
-                'xmlId',
-                'property258',
-                'property259',
-              ],
+              select: ['id', 'iblockId', 'name', 'active', 'sort', 'code', 'iblockSectionId', 'property303'],
               filter: {
-                iblockId: 23,
-                '>id': 10,
-                vatId: [1, 2],
+                iblockId: 25,
+                iblockSectionId: 31,
+                '>=sort': 100,
+                '%code': 't-shirt',
               },
               order: {
-                id: 'desc',
+                sort: 'asc',
               },
               start: 0,
             },
@@ -309,14 +201,14 @@ The formula for calculating the `start` parameter value:
           }
 
           const result = response.getData().result
-          console.info('SKUs on this page:', result.units.length, result.units)
+          console.info('SKU products on page:', result.units.length)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', listProductSkus)
+      document.addEventListener('DOMContentLoaded', listSkuProducts)
     </script>
     ```
 
@@ -327,55 +219,15 @@ The formula for calculating the `start` parameter value:
 
     try:
         bitrix_response = client.catalog.product.sku.list(
-            select=[
-                "id",
-                "iblockId",
-                "name",
-                "active",
-                "available",
-                "bundle",
-                "canBuyZero",
-                "code",
-                "createdBy",
-                "dateActiveFrom",
-                "dateActiveTo",
-                "dateCreate",
-                "detailPicture",
-                "detailText",
-                "detailTextType",
-                "height",
-                "iblockSectionId",
-                "length",
-                "measure",
-                "modifiedBy",
-                "previewPicture",
-                "previewText",
-                "previewTextType",
-                "purchasingCurrency",
-                "purchasingPrice",
-                "quantity",
-                "sort",
-                "subscribe",
-                "timestampX",
-                "type",
-                "vatId",
-                "vatIncluded",
-                "weight",
-                "width",
-                "xmlId",
-                "property258",
-                "property259",
-            ],
+            select=["id", "iblockId", "name", "active", "sort", "code", "iblockSectionId", "property303"],
             filter={
-                "iblockId": 23,
-                ">id": 10,
-                "vatId": [
-                    1,
-                    2,
-                ],
+                "iblockId": 25,
+                "iblockSectionId": 31,
+                ">=sort": 100,
+                "%code": "t-shirt",
             },
             order={
-                "id": "desc",
+                "sort": "asc",
             },
             start=0,
         ).response
@@ -403,65 +255,27 @@ The formula for calculating the `start` parameter value:
             ->call(
                 'catalog.product.sku.list',
                 [
-                    'select' => [
-                        'id',
-                        'iblockId',
-                        'name',
-                        'active',
-                        'available',
-                        'bundle',
-                        'canBuyZero',
-                        'code',
-                        'createdBy',
-                        'dateActiveFrom',
-                        'dateActiveTo',
-                        'dateCreate',
-                        'detailPicture',
-                        'detailText',
-                        'detailTextType',
-                        'height',
-                        'iblockSectionId',
-                        'length',
-                        'measure',
-                        'modifiedBy',
-                        'previewPicture',
-                        'previewText',
-                        'previewTextType',
-                        'purchasingCurrency',
-                        'purchasingPrice',
-                        'quantity',
-                        'sort',
-                        'subscribe',
-                        'timestampX',
-                        'type',
-                        'vatId',
-                        'vatIncluded',
-                        'weight',
-                        'width',
-                        'xmlId',
-                        'property258',
-                        'property259',
-                    ],
+                    'select' => ['id', 'iblockId', 'name', 'active', 'sort', 'code', 'iblockSectionId', 'property303'],
                     'filter' => [
-                        'iblockId' => 23,
-                        '>id'      => 10,
-                        'vatId'    => [1, 2],
+                        'iblockId'        => 25,
+                        'iblockSectionId' => 31,
+                        '>=sort'          => 100,
+                        '%code'           => 't-shirt',
                     ],
                     'order'  => [
-                        'id' => 'desc',
+                        'sort' => 'asc',
                     ],
+                    'start'  => 0,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching product SKUs: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -469,61 +283,26 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        "catalog.product.sku.list", {
-            "select": [
-                "id",
-                "iblockId",
-                "name",
-                "active",
-                "available",
-                "bundle",
-                "canBuyZero",
-                "code",
-                "createdBy",
-                "dateActiveFrom",
-                "dateActiveTo",
-                "dateCreate",
-                "detailPicture",
-                "detailText",
-                "detailTextType",
-                "height",
-                "iblockSectionId",
-                "length",
-                "measure",
-                "modifiedBy",
-                "previewPicture",
-                "previewText",
-                "previewTextType",
-                "purchasingCurrency",
-                "purchasingPrice",
-                "quantity",
-                "sort",
-                "subscribe",
-                "timestampX",
-                "type",
-                "vatId",
-                "vatIncluded",
-                "weight",
-                "width",
-                "xmlId",
-                "property258",
-                "property259",
-            ],
-            "filter": {
-                "iblockId": 23,
-                ">id": 10,
-                "vatId": [1, 2],
+        'catalog.product.sku.list',
+        {
+            select: ['id', 'iblockId', 'name', 'active', 'sort', 'code', 'iblockSectionId', 'property303'],
+            filter: {
+                iblockId: 25,
+                iblockSectionId: 31,
+                '>=sort': 100,
+                '%code': 't-shirt',
             },
-            "order": {
-                "id": "desc",
-            }
+            order: {
+                sort: 'asc',
+            },
+            start: 0,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -536,53 +315,17 @@ The formula for calculating the `start` parameter value:
     $result = CRest::call(
         'catalog.product.sku.list',
         [
-            'select' => [
-                "id",
-                "iblockId",
-                "name",
-                "active",
-                "available",
-                "bundle",
-                "canBuyZero",
-                "code",
-                "createdBy",
-                "dateActiveFrom",
-                "dateActiveTo",
-                "dateCreate",
-                "detailPicture",
-                "detailText",
-                "detailTextType",
-                "height",
-                "iblockSectionId",
-                "length",
-                "measure",
-                "modifiedBy",
-                "previewPicture",
-                "previewText",
-                "previewTextType",
-                "purchasingCurrency",
-                "purchasingPrice",
-                "quantity",
-                "sort",
-                "subscribe",
-                "timestampX",
-                "type",
-                "vatId",
-                "vatIncluded",
-                "weight",
-                "width",
-                "xmlId",
-                "property258",
-                "property259",
-            ],
+            'select' => ['id', 'iblockId', 'name', 'active', 'sort', 'code', 'iblockSectionId', 'property303'],
             'filter' => [
-                "iblockId" => 23,
-                ">id" => 10,
-                "vatId" => [1, 2],
+                'iblockId' => 25,
+                'iblockSectionId' => 31,
+                '>=sort' => 100,
+                '%code' => 't-shirt',
             ],
             'order' => [
-                "id" => "desc",
-            ]
+                'sort' => 'asc',
+            ],
+            'start' => 0,
         ]
     );
 
@@ -596,39 +339,47 @@ The formula for calculating the `start` parameter value:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.sku.list", b24.Params{
-    	"select": []string{"id", "iblockId", "name", "active", "available", "bundle", "canBuyZero", "code", "createdBy", "dateActiveFrom", "dateActiveTo", "dateCreate", "detailPicture", "detailText", "detailTextType", "height", "iblockSectionId", "length", "measure", "modifiedBy", "previewPicture", "previewText", "previewTextType", "purchasingCurrency", "purchasingPrice", "quantity", "sort", "subscribe", "timestampX", "type", "vatId", "vatIncluded", "weight", "width", "xmlId", "property258", "property259"},
+    	"select": []string{"id", "iblockId", "name", "active", "sort", "code", "iblockSectionId", "property303"},
     	"filter": b24.Params{
-    		"iblockId": 23,
-    		">id":      10,
-    		"vatId":    []int{1, 2},
+    		"iblockId":        25,
+    		"iblockSectionId": 31,
+    		">=sort":          100,
+    		"%code":           "t-shirt",
     	},
     	"order": b24.Params{
-    		"id": "desc",
+    		"sort": "asc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.product.sku.list: %w", err)
     }
 
-    // The method wraps the response in an object with the "units" key.
+    // The method returns the list under the "units" key.
     raw, ok := b24.Unwrap(res.Result, "units")
     if !ok {
     	return fmt.Errorf("no units key in the response")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var items []struct {
-    	Active     string `json:"active"`
-    	Available  string `json:"available"`
-    	Bundle     string `json:"bundle"`
-    	CanBuyZero string `json:"canBuyZero"`
-    	Code       string `json:"code"`
-    	CreatedBy  int    `json:"createdBy"`
+    	ID              b24.ID  `json:"id"`
+    	IblockID        int     `json:"iblockId"`
+    	Name            string  `json:"name"`
+    	Active          string  `json:"active"`
+    	Sort            *int    `json:"sort"`
+    	Code            *string `json:"code"`
+    	IblockSectionID *int    `json:"iblockSectionId"`
+    	Property303     *struct {
+    		Value   string `json:"value"`
+    		ValueID string `json:"valueId"`
+    	} `json:"property303"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
-    	fmt.Println(it.Active)
+    	fmt.Println(it.ID, it.Name)
     }
     ```
 
@@ -644,73 +395,29 @@ HTTP status: **200**
         "units": [
             {
                 "active": "Y",
-                "available": "N",
-                "bundle": "N",
-                "canBuyZero": "N",
-                "code": "product_sku",
-                "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-                "dateActiveTo": "2024-05-29T10:00:00+02:00",
-                "dateCreate": "2024-05-27T10:00:00+02:00",
-                "detailPicture": {
-                    "id": "6546",
-                    "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6546\u0026fields%5BproductId%5D=1289",
-                    "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6546\u0026fields%5BproductId%5D=1289"
+                "code": "basic-t-shirt",
+                "iblockId": 25,
+                "iblockSectionId": 31,
+                "id": 7679,
+                "name": "Basic T-shirt",
+                "property303": {
+                    "value": "Cotton Yard",
+                    "valueId": "4117"
                 },
-                "detailText": null,
-                "detailTextType": "text",
-                "height": null,
-                "iblockId": 23,
-                "iblockSectionId": 47,
-                "id": 1289,
-                "length": null,
-                "measure": null,
-                "modifiedBy": 1,
-                "name": "Parent Product",
-                "previewPicture": {
-                    "id": "6545",
-                    "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6545\u0026fields%5BproductId%5D=1289",
-                    "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6545\u0026fields%5BproductId%5D=1289"
-                },
-                "previewText": null,
-                "previewTextType": "text",
-                "property258": {
-                    "value": "test",
-                    "valueId": "9877"
-                },
-                "property259": [
-                    {
-                        "value": "test1",
-                        "valueId": "9878"
-                    },
-                    {
-                        "value": "test2",
-                        "valueId": "9879"
-                    }
-                ],
-                "purchasingCurrency": null,
-                "purchasingPrice": null,
-                "quantity": null,
-                "sort": 100,
-                "subscribe": "Y",
-                "timestampX": "2024-06-17T14:30:33+02:00",
-                "type": 6,
-                "vatId": null,
-                "vatIncluded": "N",
-                "weight": null,
-                "width": null,
-                "xmlId": "1289"
+                "sort": 300
             }
         ]
     },
     "total": 1,
     "time": {
-        "start": 1718631434.15105,
-        "finish": 1718631434.921837,
-        "duration": 0.7707870006561279,
-        "processing": 0.3575417995452881,
-        "date_start": "2024-06-17T16:37:14+02:00",
-        "date_finish": "2024-06-17T16:37:14+02:00"
+        "start": 1793893107,
+        "finish": 1793893107.413658,
+        "duration": 0.41365790367126465,
+        "processing": 0,
+        "date_start": "2026-11-05T18:38:27+01:00",
+        "date_finish": "2026-11-05T18:38:27+01:00",
+        "operating_reset_at": 1793893200,
+        "operating": 0.13479113578796387
     }
 }
 ```
@@ -721,13 +428,17 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response ||
-|| **units**
-[`catalog_product_sku[]`](../../data-types.md#catalog_product_sku) | An array of objects with information about the selected parent products ||
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **result.units**
+[`catalog_product_sku[]`](../../data-types.md#catalog_product_sku) | Array of parent products. The method returns the list under the `units` key, not `skus`.
+
+Each product contains only the fields from `select`. The value of a filled property is a `{"value": ..., "valueId": ...}` object, of a multiple property — an array of such objects ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | Total number of parent products found ||
+|| **next**
+[`integer`](../../../data-types.md) | The `start` value for the next page. Returned if more than 50 records are found and the page is not the last one ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -736,8 +447,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access denied"
+    "error": "0",
+    "error_description": "Required filter fields: iblockId"
 }
 ```
 
@@ -746,15 +457,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `0` | Fields `id`, `iblockId` not specified in the selection fields
-|| 
-|| `0` | Field `iblockId` not specified in the filter
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have a permission to view the catalog ||
+|| `400` | `200040300030` | Access Denied | The user does not have the permission to read the catalog information block ||
+|| `400` | `0` | Required filter fields: iblockId | `iblockId` is not provided in `filter` ||
+|| `400` | `0` | Required select fields: iblockId | `select` does not contain the `iblockId` field. If the `id` field is missing, the `Required select fields: id` error is returned ||
+|| `400` | `0` | iblock is not catalog | The `iblockId` information block is not a trade catalog ||
+|| `400` | `0` | productType is not allowed for this catalog | `iblockId` contains the variation information block ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {filter}. Should be value of type array. | `filter` is not an object. The same error with `{select}` is returned if `select` is not an array ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -767,4 +477,3 @@ HTTP status: **400**
 - [{#T}](./catalog-product-sku-download.md)
 - [{#T}](./catalog-product-sku-delete.md)
 - [{#T}](./catalog-product-sku-get-fields-by-filter.md)
-
