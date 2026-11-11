@@ -17,7 +17,7 @@ This document describes all events that an application or a user receives via [i
 
 Bitrix24 records events only after [im.v2.Event.subscribe](./event-subscribe.md) is called on behalf of the user, and delivers them only in polling mode — by calls to [im.v2.Event.get](./event-get.md). The subscription and polling procedure is described in the overview [Working with Chat](../index.md).
 
-Each event arrives as an element of the `result.events` array with the fields `eventId`, `type`, `date`, and `data`. The tables and examples below describe the contents of `data`; the element wrapper is described on the [im.v2.Event.get](./event-get.md) page. The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
+Each event is an element of the `result.events` array with the `eventId`, `type`, `date`, and `data` fields. The tables and examples below describe the contents of `data`; the other fields are described on the [im.v2.Event.get](./event-get.md) page. The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
 
 > Quick navigation: [All Events](#all-events)
 
@@ -34,15 +34,14 @@ Each event arrives as an element of the `result.events` array with the fields `e
 
 ## Differences from Method Responses
 
-In these events, the `chat` and `user` objects are returned in a simplified format:
+In event data, the `chat` and `user` objects are shortened:
 
-- the `chat` object does not contain the `role` and `muteList` fields — these depend on the specific user and cannot be the same for all recipients
-- the `user` object does not contain the `network`, `botData`, and `avatarHr` fields
-- the online status fields (`idle`, `lastActivityDate`, `mobileLastDate`, `desktopLastDate`) are always set to `false`
+- `chat` — without the `role` and `muteList` fields: they depend on the specific user and cannot be the same for all recipients
+- `user` — without the `network`, `botData`, and `avatarHr` fields, and the online status fields `idle`, `lastActivityDate`, `mobileLastDate`, `desktopLastDate` are always `false`
 
 {% note info "" %}
 
-There is no `auth` field in the event data: `im.v2` events do not call the application handler but arrive in the [im.v2.Event.get](./event-get.md) response, so authorization is passed in the request itself.
+There is no `auth` field in the event data. `im.v2` events arrive in the [im.v2.Event.get](./event-get.md) response rather than in the application handler, so authorization is passed in the request itself.
 
 {% endnote %}
 
@@ -50,7 +49,7 @@ There is no `auth` field in the event data: `im.v2` events do not call the appli
 
 ## ONIMV2MESSAGEADD {#onimv2messageadd}
 
-A new message in the chat that the subscribed user is part of.
+A new message in a chat that the subscribed user is part of, including a message sent by the user.
 
 #| 
 || **Field** | **Type** | **Description** ||
@@ -58,6 +57,7 @@ A new message in the chat that the subscribed user is part of.
 || **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was sent. Field descriptions for the object — [Chat](../../entities.md#chat) ||
 || **user** | [`User`](../../entities.md#user) | The author of the message. Field descriptions for the object — [User](../../entities.md#user) ||
 || **language** | `string` | The language of Bitrix24 (e.g., `en`, `de`) ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects. If `message` is a reply to another message, the array contains the original message; otherwise, the array is empty. If the original message has been deleted, it comes with a deletion notice as its text ||
 |#
 
 ### Example Data
@@ -71,9 +71,9 @@ A new message in the chat that the subscribed user is part of.
         "date": "2025-01-15T10:30:00+02:00",
         "text": "Hello everyone!",
         "isSystem": false,
-        "uuid": "",
+        "uuid": null,
         "forward": null,
-        "params": {},
+        "params": [],
         "viewedByOthers": false
     },
     "chat": {
@@ -93,13 +93,27 @@ A new message in the chat that the subscribed user is part of.
         "entityData1": "",
         "entityData2": "",
         "entityData3": "",
-        "entityLink": {},
+        "entityLink": {
+            "type": "",
+            "url": "",
+            "id": ""
+        },
         "diskFolderId": 42,
-        "permissions": {},
+        "permissions": {
+            "manageUsersAdd": "member",
+            "manageUsersDelete": "manager",
+            "manageUi": "member",
+            "manageSettings": "owner",
+            "manageMessages": "member",
+            "manageMessagesAutoDelete": "manager",
+            "manageGuestInvites": "manager",
+            "manageDelete": "member",
+            "canPost": "member"
+        },
         "parentChatId": 0,
         "parentMessageId": 0,
         "isNew": false,
-        "textFieldEnabled": "Y",
+        "textFieldEnabled": true,
         "backgroundId": null
     },
     "user": {
@@ -127,9 +141,10 @@ A new message in the chat that the subscribed user is part of.
         "phones": false,
         "website": "",
         "email": "john@example.com",
-        "type": "employee"
+        "type": "user"
     },
-    "language": "en"
+    "language": "en",
+    "additionalMessages": []
 }
 ```
 
@@ -137,7 +152,7 @@ A new message in the chat that the subscribed user is part of.
 
 ## ONIMV2MESSAGEUPDATE {#onimv2messageupdate}
 
-A message in the chat has been edited.
+A message in the chat has been edited. If the message is updated with the [im.message.update](../../../../chats/messages/im-message-update.md) method, the event is not sent.
 
 #| 
 || **Field** | **Type** | **Description** ||
@@ -145,9 +160,10 @@ A message in the chat has been edited.
 || **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was edited. Field descriptions for the object — [Chat](../../entities.md#chat) ||
 || **user** | [`User`](../../entities.md#user) | The author of the message. Field descriptions for the object — [User](../../entities.md#user) ||
 || **language** | `string` | The language of Bitrix24 ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects. If `message` is a reply to another message, the array contains the original message; otherwise, the array is empty. If the original message has been deleted, it comes with a deletion notice as its text ||
 |#
 
-The data format is identical to [ONIMV2MESSAGEADD](#onimv2messageadd). The `message` field contains the updated text.
+The data has the same structure as in [ONIMV2MESSAGEADD](#onimv2messageadd), except that `message` contains the message with the updated text.
 
 ---
 
@@ -165,7 +181,7 @@ A message in the chat has been deleted.
 
 ### Example Data
 
-The `chat` and `user` objects here and in the examples below are shortened. The complete structure is shown in the [ONIMV2MESSAGEADD](#onimv2messageadd) example.
+The `chat` and `user` objects here and in the examples below are shortened. The [ONIMV2MESSAGEADD](#onimv2messageadd) example shows the most fields; all fields are described on the [{#T}](../../entities.md) page.
 
 ```json
 {
@@ -179,7 +195,7 @@ The `chat` and `user` objects here and in the examples below are shortened. The 
     "user": {
         "id": 1,
         "name": "John Smith",
-        "type": "employee"
+        "type": "user"
     },
     "language": "en"
 }
@@ -194,11 +210,12 @@ A reaction to a message in the chat has been added or removed.
 #| 
 || **Field** | **Type** | **Description** ||
 || **reaction** | `string` | Reaction code (e.g., `like`) ||
-|| **action** | `string` | Action: `add` — reaction added, `delete` — removed ||
-|| **message** | [`Message`](../../entities.md#message) | The message to which the reaction has changed. Field descriptions for the object — [Message](../../entities.md#message) ||
+|| **action** | `string` | Action with the reaction. In `im.v2` events, it comes as an empty string both when a reaction is added and when it is removed: the two cannot be distinguished by this field ||
+|| **message** | [`Message`](../../entities.md#message) | The message to which a reaction was added or from which it was removed. Field descriptions for the object — [Message](../../entities.md#message) ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat. Field descriptions for the object — [Chat](../../entities.md#chat) ||
 || **user** | [`User`](../../entities.md#user) | The user who changed the reaction. Field descriptions for the object — [User](../../entities.md#user) ||
 || **language** | `string` | The language of Bitrix24 ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects. If `message` is a reply to another message, the array contains the original message; otherwise, the array is empty. If the original message has been deleted, it comes with a deletion notice as its text ||
 |#
 
 ### Example Data
@@ -206,7 +223,7 @@ A reaction to a message in the chat has been added or removed.
 ```json
 {
     "reaction": "like",
-    "action": "add",
+    "action": "",
     "message": {
         "id": 5012,
         "chatId": 5,
@@ -214,9 +231,9 @@ A reaction to a message in the chat has been added or removed.
         "date": "2025-01-15T10:30:00+03:00",
         "text": "Hello everyone!",
         "isSystem": false,
-        "uuid": "",
+        "uuid": null,
         "forward": null,
-        "params": {},
+        "params": [],
         "viewedByOthers": false
     },
     "chat": {
@@ -228,9 +245,10 @@ A reaction to a message in the chat has been added or removed.
     "user": {
         "id": 2,
         "name": "Jane Doe",
-        "type": "employee"
+        "type": "user"
     },
-    "language": "en"
+    "language": "en",
+    "additionalMessages": []
 }
 ```
 
@@ -242,7 +260,7 @@ A new participant has been added to the chat.
 
 #| 
 || **Field** | **Type** | **Description** ||
-|| **dialogId** | `string` | ID of the dialog (e.g., `chat5`) ||
+|| **dialogId** | `string` | Dialog ID. For a group chat — `chat` followed by the chat ID, for example `chat5`. For a one-on-one chat — the ID of the other participant ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat to which the participant has been added. Field descriptions for the object — [Chat](../../entities.md#chat) ||
 || **user** | [`User`](../../entities.md#user) | The added user. Field descriptions for the object — [User](../../entities.md#user) ||
 || **language** | `string` | The language of Bitrix24 ||
@@ -262,7 +280,7 @@ A new participant has been added to the chat.
     "user": {
         "id": 3,
         "name": "Alex Brown",
-        "type": "employee"
+        "type": "user"
     },
     "language": "en"
 }
@@ -271,6 +289,7 @@ A new participant has been added to the chat.
 ## Continue Learning
 
 - [API Change Log imbot.v2](../../change-log.md)
+- [im.v2 Events](./index.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-subscribe.md)
 - [{#T}](../../entities.md)

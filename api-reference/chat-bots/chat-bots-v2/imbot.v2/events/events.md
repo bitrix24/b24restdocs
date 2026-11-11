@@ -9,13 +9,32 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-This document describes all events that the bot receives through [imbot.v2.Event.get](./event-get.md) (FETCH mode) or via webhook.
+> Scope: [`imbot`](../../../../scopes/permissions.md)
+>
+> Who receives events: the application that registered the bot, or a webhook with the same `botToken`
 
-The fields of the objects `message`, `chat`, and `user` are described in [{#T}](../../entities.md).
+Where to find the event type and its data depends on the delivery mode:
+
+- `fetch` — the [imbot.v2.Event.get](./event-get.md) response: the type is in the `result.events[].type` field, the data is in `result.events[].data`
+- `webhook` — a request to the bot URL: the type is in the `event` field, the data is in `data`
+
+How to choose a mode is described in the [Event Delivery Modes](./index.md#event-modes) overview.
+
+The examples are shortened and show the data in `fetch` mode, while the `ONIMBOTV2DELETE` example shows it in `webhook` mode. The `bot` and `user` objects are shown most fully in the [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd) example. All fields of `message`, `chat`, and `user` are described in the [{#T}](../../entities.md) article.
 
 ## Automatic Subscription Management
 
-The bot's subscription to events `ONIMBOTV2*` is automatically created when [imbot.v2.Bot.register](../bots/bot-register.md) is called with `eventMode: "webhook"`, updated when [imbot.v2.Bot.update](../bots/bot-update.md) is called (when `webhookUrl` or `eventMode` changes), and removed when [imbot.v2.Bot.unregister](../bots/bot-unregister.md) is called or when switching to `fetch` mode. Manual calls to [event.bind](../../../../events/event-bind.md) / [event.unbind](../../../../events/event-unbind.md) are not required and may lead to discrepancies with internal accounting.
+Bitrix24 manages the bot's subscription to `ONIMBOTV2*` events itself:
+
+- creates it on [imbot.v2.Bot.register](../bots/bot-register.md) with `fields.eventMode: "webhook"` and the required `fields.webhookUrl`
+- adds a subscription for the new address on [imbot.v2.Bot.update](../bots/bot-update.md) if a new `fields.webhookUrl` is passed
+- removes it on [imbot.v2.Bot.unregister](../bots/bot-unregister.md) or when switching to `fetch` mode, if the application has no other bots left: subscriptions are shared by all bots of the application
+
+An event of any bot is sent to the `webhookUrl` of all bots of the application. Therefore, after the address is changed or the bot is removed, the previous address keeps receiving events as long as the application has other bots.
+
+If you switch a bot from `fetch` mode back to `webhook`, pass `fields.webhookUrl` together with `fields.eventMode`. Without an address, the subscription is not created, and the bot stops receiving events if the application has no other bots with a subscription.
+
+Do not call [event.bind](../../../../events/event-bind.md) and [event.unbind](../../../../events/event-unbind.md) manually: otherwise, the subscriptions will diverge from those managed by Bitrix24.
 
 ## Which Events to Handle First
 
@@ -24,7 +43,7 @@ The minimum set of events for a working bot:
 - [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd) — incoming messages from users
 - [ONIMBOTV2COMMANDADD](#onimbotv2commandadd) — calls to slash commands
 - [ONIMBOTV2JOINCHAT](#onimbotv2joinchat) — the bot being added to a chat (usually sends a greeting)
-- [ONIMBOTV2DELETE](#onimbotv2delete) — the bot being removed (cleaning up resources)
+- [ONIMBOTV2DELETE](#onimbotv2delete) — the bot being deleted (cleaning up resources), only in `webhook` mode
 
 Additionally, based on the scenario:
 
@@ -36,17 +55,17 @@ Additionally, based on the scenario:
 
 The content of the `bot` field depends on the event delivery mode.
 
-- **FETCH** (`imbot.v2.Event.get`) — full bot object, as in the response from [imbot.v2.Bot.get](../bots/bot-get.md)
-- **Webhook** — simplified object `{id, code, auth}`, where `auth` contains the OAuth token for callbacks
+- **`fetch`** (`imbot.v2.Event.get`) — full bot object, as in the response from [imbot.v2.Bot.get](../bots/bot-get.md)
+- **`webhook`** — the `{id, code}` object, plus `auth` if the bot was registered by an application. `auth` contains OAuth tokens that the handler uses to call methods in response to the event, for example to send a message
 
 Each webhook call contains data for **one** bot. If the application has registered multiple bots and the event concerns several of them, the webhook is called separately for each.
 
-Example of the `bot` object in webhook mode:
+Example of the `bot` object in webhook mode. The values come as strings, as described in the "Data Types in Webhook Mode" section; the other data fields are omitted in the example:
 
 ```json
 {
     "bot": {
-        "id": 456,
+        "id": "456",
         "code": "support_bot",
         "auth": {
             "access_token": "0b02a0690000071b0008440001b0007a16b39202c2490f015",
@@ -58,37 +77,45 @@ Example of the `bot` object in webhook mode:
             "status": "F",
             "client_endpoint": "https://some-domain.bitrix24.com/rest/",
             "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
-            "user_id": "27",
+            "user_id": "456",
             "application_token": "831c76b092f9f135d9b6b36c3a720757"
         }
-    },
-    "message": {},
-    "chat": {},
-    "user": {}
+    }
 }
 ```
 
 ### Webhook Notification Structure {#webhook-payload}
 
-In webhook mode, the POST request contains **two different `auth`**:
+Bitrix24 sends a POST request with the following fields to the bot's `webhookUrl`:
 
-- **top-level `auth`** — the entire request's conversion, always present;
-- **`data.bot.auth`** — OAuth tokens for the specific bot for callbacks.
+#|
+|| **Field** | **Type** | **Description** ||
+|| **event** | `string` | Event type, for example `ONIMBOTV2MESSAGEADD` ||
+|| **event_handler_id** | `string` | ID of the event handler in Bitrix24 ||
+|| **data** | `object` | Event data. The contents depend on the event and are described below ||
+|| **ts** | `string` | Time the event was sent, Unix timestamp ||
+|| **auth** | `object` | Bitrix24 data — `domain`, `client_endpoint`, `server_endpoint`, `member_id` — and `application_token` for verifying the request. For details, see [below](#auth) ||
+|#
+
+The request may contain **two different `auth` objects**:
+
+- **top-level `auth`** — Bitrix24 data and a token for verifying the request, always present
+- **`data.bot.auth`** — the bot's OAuth tokens for calling methods in response to the event. Present only if the bot was registered by an application
+
+The example shows only the `bot` object from `data`:
 
 ```json
 {
     "event": "ONIMBOTV2MESSAGEADD",
+    "event_handler_id": "1335",
     "data": {
         "bot": {
-            "id": 456,
+            "id": "456",
             "code": "support_bot",
             "auth": {"access_token": "...", "refresh_token": "...", "application_token": "..."}
-        },
-        "message": {},
-        "chat": {},
-        "user": {}
+        }
     },
-    "ts": 1772093963,
+    "ts": "1772093963",
     "auth": {
         "domain": "your-account.bitrix24.com",
         "application_token": "..."
@@ -98,11 +125,11 @@ In webhook mode, the POST request contains **two different `auth`**:
 
 {% note warning "" %}
 
-To verify the authenticity of the webhook, use the `application_token` from the **top level** — `auth.application_token`, not from `data.bot.auth.application_token`.
+To verify that the request was sent by Bitrix24, check the `application_token` from the **top level** — `auth.application_token`, not `data.bot.auth.application_token`.
 
 {% endnote %}
 
-The request arrives as `application/x-www-form-urlencoded` via `http_build_query`, so the keys have PHP format: `data[bot][id]=...`, `auth[application_token]=...`.
+The request arrives as `application/x-www-form-urlencoded`, not JSON: the example above shows only the data structure. The keys are written in PHP format, as encoded by `http_build_query`: `data[bot][id]=...`, `auth[application_token]=...`.
 
 ### Chat Object in Events {#chat-in-events}
 
@@ -110,36 +137,39 @@ The `chat` object in events does not contain the fields `role` and `muteList` �
 
 ### Auth Parameter {#auth}
 
+In bot events, the top-level `auth` contains only `domain`, `client_endpoint`, `server_endpoint`, `member_id`, and `application_token`. Access tokens come in `data.bot.auth`. The table below is the general list of `auth` keys for all Bitrix24 events.
+
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
 {% note info "" %}
 
-The `auth` field depends on the event delivery mode:
+Whether the `bot.auth` field is present depends on the delivery mode and on who registered the bot:
 
-- In **Webhook** mode (the `bot` is sent to the specified handler), the `auth` field is present and contains tokens for authorizing callbacks.
-- In **FETCH** mode (`imbot.v2.Event.get`), the `auth` field in the `bot` object is not returned, as tokens are not required.
+- `webhook` — the field is present if the bot was registered by an application. A bot registered via an inbound webhook does not have this field: it calls methods with the same webhook
+- `fetch` — the field is absent: the application or webhook calls `imbot.v2.Event.get` and other methods with its own authorization, so separate tokens are not needed
 
 {% endnote %}
 
 ## Data Types in Webhook Mode
 
-Webhook events are delivered through the Bitrix24 event system, which serializes data via `http_build_query`. Because of this, **all scalar values in webhook mode are transmitted as strings**.
+In `webhook` mode, **all scalar values come as strings**: numbers, `true`, and `false`. Fields with a `null` value and empty arrays are not included in the request.
 
 #|
-|| **Type** | **Value in FETCH** | **Value in Webhook** ||
+|| **Type** | **Value in `fetch`** | **Value in `webhook`** ||
 || `integer` | `789` | `"789"` ||
 || `boolean` | `true` / `false` | `"1"` / `"0"` ||
 || ```string|false``` | `false` | `"0"` ||
-|| `null` | `null` | `""` ||
+|| `null` | `null` | The field is absent from the request ||
+|| Empty array | `[]` | The field is absent from the request ||
 |#
 
-When processing webhook events, it is recommended to cast types explicitly: `(int)$data['messageId']`, `$data['user']['active'] !== '0'`. In FETCH mode, types correspond to the documentation.
+When processing events in `webhook` mode, cast types explicitly: `(int)$data['message']['id']`, `$data['user']['active'] !== '0'`. Treat a missing field as `null` or an empty array, for example `$data['message']['params'] ?? []`. In `fetch` mode, types correspond to the documentation.
 
 ---
 
 ## ONIMBOTV2MESSAGEADD {#onimbotv2messageadd}
 
-A new message addressed to the bot. This occurs when a user sends a message in a chat that the bot is part of.
+A user wrote to the bot: in a one-on-one chat, with a bot mention, or as a reply to its message. Bots of type `personal` and `supervisor` receive all user messages in chats they belong to, except messages from other bots.
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -148,6 +178,7 @@ A new message addressed to the bot. This occurs when a user sends a message in a
 || **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was sent ||
 || **user** | [`User`](../../entities.md#user) | The author of the message ||
 || **language** | `string` | Bitrix24 language (e.g., `en`, `de`) ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects: the original message if `message` is a reply to it. If it is not a reply, an empty array is returned, and in `webhook` mode the field is absent ||
 |#
 
 ### Example Data
@@ -175,11 +206,11 @@ A new message addressed to the bot. This occurs when a user sends a message in a
         "chatId": 5,
         "authorId": 1,
         "date": "2025-01-15T10:30:00+02:00",
-        "text": "Hello bot!",
+        "text": "[USER=456]Support Bot[/USER] Hello!",
         "isSystem": false,
-        "uuid": "",
+        "uuid": null,
         "forward": null,
-        "params": {},
+        "params": [],
         "viewedByOthers": false
     },
     "chat": {
@@ -209,13 +240,14 @@ A new message addressed to the bot. This occurs when a user sends a message in a
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+02:00",
+        "lastActivityDate": false,
         "absent": false,
         "departments": [1],
         "phones": false,
-        "type": "employee"
+        "type": "user"
     },
-    "language": "en"
+    "language": "en",
+    "additionalMessages": []
 }
 ```
 
@@ -223,7 +255,7 @@ A new message addressed to the bot. This occurs when a user sends a message in a
 
 ## ONIMBOTV2MESSAGEUPDATE {#onimbotv2messageupdate}
 
-A message in the bot's chat has been edited.
+A message has been edited. Bitrix24 selects the recipients by the same rules as for [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd).
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -232,6 +264,7 @@ A message in the bot's chat has been edited.
 || **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was edited ||
 || **user** | [`User`](../../entities.md#user) | The author of the message ||
 || **language** | `string` | Bitrix24 language ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects: the original message if `message` is a reply to it. If it is not a reply, an empty array is returned, and in `webhook` mode the field is absent ||
 |#
 
 The data format is identical to [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd). The `message` field contains the updated text.
@@ -240,7 +273,7 @@ The data format is identical to [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd). The
 
 ## ONIMBOTV2MESSAGEDELETE {#onimbotv2messagedelete}
 
-A message in the bot's chat has been deleted.
+A message has been deleted. Bitrix24 selects the recipients by the same rules as for [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd).
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -250,6 +283,30 @@ A message in the bot's chat has been deleted.
 || **user** | [`User`](../../entities.md#user) | The author of the deleted message ||
 || **language** | `string` | Bitrix24 language ||
 |#
+
+### Example Data
+
+```json
+{
+    "bot": {
+        "id": 456,
+        "code": "support_bot",
+        "type": "bot",
+        "eventMode": "fetch"
+    },
+    "messageId": 789,
+    "chat": {
+        "id": 112,
+        "dialogId": "129",
+        "type": "private"
+    },
+    "user": {
+        "id": 129,
+        "name": "Anna Schmidt"
+    },
+    "language": "en"
+}
+```
 
 ---
 
@@ -274,51 +331,20 @@ The bot has been added to a chat or received an invitation.
         "id": 456,
         "code": "support_bot",
         "type": "bot",
-        "isHidden": false,
-        "isSupportOpenline": false,
-        "isReactionsEnabled": true,
-        "backgroundId": null,
-        "language": "en",
-        "moduleId": "rest",
-        "eventMode": "fetch",
-        "countMessage": 150,
-        "countCommand": 3,
-        "countChat": 12,
-        "countUser": 45
+        "eventMode": "fetch"
     },
     "dialogId": "chat5",
     "chat": {
         "id": 5,
         "dialogId": "chat5",
         "type": "chat",
-        "name": "Project Chat",
-        "entityType": "",
-        "owner": 1,
-        "avatar": "",
-        "color": "#ab7761"
+        "name": "Project Chat"
     },
     "user": {
         "id": 1,
-        "active": true,
         "name": "John Smith",
-        "firstName": "John",
-        "lastName": "Smith",
-        "workPosition": "Developer",
-        "color": "#df532d",
-        "avatar": "",
-        "gender": "M",
-        "birthday": "",
-        "extranet": false,
         "bot": false,
-        "connector": false,
-        "externalAuthId": "default",
-        "status": "online",
-        "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+02:00",
-        "absent": false,
-        "departments": [1],
-        "phones": false,
-        "type": "employee"
+        "type": "user"
     },
     "language": "en"
 }
@@ -328,7 +354,7 @@ The bot has been added to a chat or received an invitation.
 
 ## ONIMBOTV2DELETE {#onimbotv2delete}
 
-The bot has been removed from the system. This is the last event the bot will receive.
+The bot has been deleted from the system. In `webhook` mode, this is the last event the bot receives. In `fetch` mode, the event is not sent: Bitrix24 deletes the queue together with the bot. After the bot is deleted, [imbot.v2.Event.get](./event-get.md) returns the `BOT_NOT_FOUND` error.
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -340,20 +366,13 @@ The bot has been removed from the system. This is the last event the bot will re
 ```json
 {
     "bot": {
-        "id": 456,
+        "id": "456",
         "code": "support_bot",
-        "type": "bot",
-        "isHidden": false,
-        "isSupportOpenline": false,
-        "isReactionsEnabled": true,
-        "backgroundId": null,
-        "language": "en",
-        "moduleId": "rest",
-        "eventMode": "fetch",
-        "countMessage": 150,
-        "countCommand": 3,
-        "countChat": 12,
-        "countUser": 45
+        "auth": {
+            "access_token": "...",
+            "refresh_token": "...",
+            "application_token": "..."
+        }
     }
 }
 ```
@@ -362,12 +381,12 @@ The bot has been removed from the system. This is the last event the bot will re
 
 ## ONIMBOTV2CONTEXTGET {#onimbotv2contextget}
 
-The user has opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when navigating via a link with the `BOT_CONTEXT` parameter. For more details, refer to the article [{#T}](../bot-context.md).
+The user has opened a dialog with the bot, and the bot has received arbitrary data — the context. The context is set when the dialog is opened, for example in a link with the `BOT_CONTEXT` parameter. For details, see the article [{#T}](../bot-context.md).
 
 #|
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
-|| **dialogId** | `string` | ID of the dialog from which the context was received. In a private chat with the bot — the numeric ID of the user, in a group chat — `chat5` ||
+|| **dialogId** | `string` | ID of the dialog from which the context was received. In a one-on-one chat with the bot — the numeric ID of the user, in a group chat — for example, `chat5` ||
 || **context** | `object` | Arbitrary data passed when opening the dialog ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat ||
 || **user** | [`User`](../../entities.md#user) | The user who opened the dialog ||
@@ -382,17 +401,7 @@ The user has opened a dialogue with the bot, passing arbitrary context data. The
         "id": 456,
         "code": "support_bot",
         "type": "bot",
-        "isHidden": false,
-        "isSupportOpenline": false,
-        "isReactionsEnabled": true,
-        "backgroundId": null,
-        "language": "en",
-        "moduleId": "rest",
-        "eventMode": "fetch",
-        "countMessage": 150,
-        "countCommand": 3,
-        "countChat": 12,
-        "countUser": 45
+        "eventMode": "fetch"
     },
     "dialogId": "1",
     "context": {
@@ -404,34 +413,13 @@ The user has opened a dialogue with the bot, passing arbitrary context data. The
         "id": 5,
         "dialogId": "1",
         "type": "private",
-        "name": "",
-        "entityType": "",
-        "owner": 456,
-        "avatar": "",
-        "color": "#ab7761"
+        "name": ""
     },
     "user": {
         "id": 1,
-        "active": true,
         "name": "John Smith",
-        "firstName": "John",
-        "lastName": "Smith",
-        "workPosition": "Developer",
-        "color": "#df532d",
-        "avatar": "",
-        "gender": "M",
-        "birthday": "",
-        "extranet": false,
         "bot": false,
-        "connector": false,
-        "externalAuthId": "default",
-        "status": "online",
-        "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+02:00",
-        "absent": false,
-        "departments": [1],
-        "phones": false,
-        "type": "employee"
+        "type": "user"
     },
     "language": "en"
 }
@@ -451,6 +439,7 @@ The user has invoked a slash command for the bot.
 || **chat** | [`Chat`](../../entities.md#chat) | The chat from which the command was invoked ||
 || **user** | [`User`](../../entities.md#user) | The user who invoked the command ||
 || **language** | `string` | Bitrix24 language ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects: the original message if `message` is a reply to it. If it is not a reply, an empty array is returned, and in `webhook` mode the field is absent ||
 |#
 
 ### Command Object {#command-object}
@@ -460,12 +449,16 @@ The user has invoked a slash command for the bot.
 || **id** | `integer` | ID of the registered command ||
 || **command** | `string` | The invoked command (e.g., `/help`) ||
 || **params** | `string` | Command parameters — text following the command ||
-|| **context** | `string` | Invocation context: `textarea` — entered manually, `keyboard` — button pressed, `menu` — selected from context menu ||
+|| **context** | `string` | How the command was called:
+
+- `textarea` — entered manually
+- `keyboard` — a bot keyboard button under a message was pressed
+- `menu` — selected from the context menu ||
 |#
 
 {% note info "" %}
 
-If a single message contains multiple slash commands, an event is generated separately for each command.
+If a single message contains multiple slash commands, the bot receives a separate event for each.
 
 {% endnote %}
 
@@ -477,17 +470,7 @@ If a single message contains multiple slash commands, an event is generated sepa
         "id": 456,
         "code": "support_bot",
         "type": "bot",
-        "isHidden": false,
-        "isSupportOpenline": false,
-        "isReactionsEnabled": true,
-        "backgroundId": null,
-        "language": "en",
-        "moduleId": "rest",
-        "eventMode": "fetch",
-        "countMessage": 150,
-        "countCommand": 3,
-        "countChat": 12,
-        "countUser": 45
+        "eventMode": "fetch"
     },
     "command": {
         "id": 78,
@@ -502,45 +485,25 @@ If a single message contains multiple slash commands, an event is generated sepa
         "date": "2025-01-15T10:30:00+02:00",
         "text": "/help topic",
         "isSystem": false,
-        "uuid": "",
+        "uuid": null,
         "forward": null,
-        "params": {},
+        "params": [],
         "viewedByOthers": false
     },
     "chat": {
         "id": 5,
         "dialogId": "chat5",
         "type": "chat",
-        "name": "Support Chat",
-        "entityType": "",
-        "owner": 1,
-        "avatar": "",
-        "color": "#ab7761"
+        "name": "Support Chat"
     },
     "user": {
         "id": 1,
-        "active": true,
         "name": "John Smith",
-        "firstName": "John",
-        "lastName": "Smith",
-        "workPosition": "Developer",
-        "color": "#df532d",
-        "avatar": "",
-        "gender": "M",
-        "birthday": "",
-        "extranet": false,
         "bot": false,
-        "connector": false,
-        "externalAuthId": "default",
-        "status": "online",
-        "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+02:00",
-        "absent": false,
-        "departments": [1],
-        "phones": false,
-        "type": "employee"
+        "type": "user"
     },
-    "language": "en"
+    "language": "en",
+    "additionalMessages": []
 }
 ```
 
@@ -548,7 +511,7 @@ If a single message contains multiple slash commands, an event is generated sepa
 
 ## ONIMBOTV2REACTIONCHANGE {#onimbotv2reactionchange}
 
-A reaction to the bot's message has been added or removed.
+A reaction to the bot's message has been added or removed. The event is sent only if reactions are enabled for the bot — the `fields.isReactionsEnabled` field in [imbot.v2.Bot.register](../bots/bot-register.md) or [imbot.v2.Bot.update](../bots/bot-update.md).
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -559,6 +522,7 @@ A reaction to the bot's message has been added or removed.
 || **chat** | [`Chat`](../../entities.md#chat) | The chat ||
 || **user** | [`User`](../../entities.md#user) | The user who changed the reaction ||
 || **language** | `string` | Bitrix24 language ||
+|| **additionalMessages** | `array` | Array of [`Message`](../../entities.md#message) objects: the original message if `message` is a reply to it. If it is not a reply, an empty array is returned, and in `webhook` mode the field is absent ||
 |#
 
 ### Example Data
@@ -569,17 +533,7 @@ A reaction to the bot's message has been added or removed.
         "id": 456,
         "code": "support_bot",
         "type": "bot",
-        "isHidden": false,
-        "isSupportOpenline": false,
-        "isReactionsEnabled": true,
-        "backgroundId": null,
-        "language": "en",
-        "moduleId": "rest",
-        "eventMode": "fetch",
-        "countMessage": 150,
-        "countCommand": 3,
-        "countChat": 12,
-        "countUser": 45
+        "eventMode": "fetch"
     },
     "reaction": "like",
     "action": "add",
@@ -590,51 +544,32 @@ A reaction to the bot's message has been added or removed.
         "date": "2025-01-15T10:30:00+02:00",
         "text": "Hello! How can I help?",
         "isSystem": false,
-        "uuid": "",
+        "uuid": null,
         "forward": null,
-        "params": {},
+        "params": [],
         "viewedByOthers": true
     },
     "chat": {
         "id": 5,
         "dialogId": "chat5",
         "type": "chat",
-        "name": "Support Chat",
-        "entityType": "",
-        "owner": 1,
-        "avatar": "",
-        "color": "#ab7761"
+        "name": "Support Chat"
     },
     "user": {
         "id": 1,
-        "active": true,
         "name": "John Smith",
-        "firstName": "John",
-        "lastName": "Smith",
-        "workPosition": "Developer",
-        "color": "#df532d",
-        "avatar": "",
-        "gender": "M",
-        "birthday": "",
-        "extranet": false,
         "bot": false,
-        "connector": false,
-        "externalAuthId": "default",
-        "status": "online",
-        "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+02:00",
-        "absent": false,
-        "departments": [1],
-        "phones": false,
-        "type": "employee"
+        "type": "user"
     },
-    "language": "en"
+    "language": "en",
+    "additionalMessages": []
 }
 ```
 
 ## Continue Learning
 
 - [API Change Log for imbot.v2](../../change-log.md)
+- [Events imbot.v2](./index.md)
 - [{#T}](./event-get.md)
 - [{#T}](../../entities.md)
 - [{#T}](../messages/chat-message-reaction-add.md)
