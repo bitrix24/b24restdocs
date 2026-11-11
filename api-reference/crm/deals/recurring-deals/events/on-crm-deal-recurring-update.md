@@ -1,4 +1,4 @@
-# Event on Regular Deal Template Change onCrmDealRecurringUpdate
+# Event on Changing Recurrence Settings of a Recurring Deal onCrmDealRecurringUpdate
 
 {% note tip "" %}
 
@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGUPDATE` will trigger when the template of a recurring deal is updated.
+The event `ONCRMDEALRECURRINGUPDATE` will trigger in three cases:
+
+- when the recurrence settings are modified manually or via the method [crm.deal.recurring.update](../crm-deal-recurring-update.md)
+- when a deal is created from the template, right after [onCrmDealRecurringExpose](./on-crm-deal-recurring-expose.md)
+- when a scheduled deal could not be created — Bitrix24 disables the recurrence, and the event arrives without `onCrmDealRecurringExpose`
+
+After a deal is created from the template, Bitrix24 writes the repeat counter and the last run date to the settings. On a scheduled run, it also recalculates the next run date.
+
+The event is not triggered when fields of the template deal itself are modified, such as its title or amount. Such changes are tracked by the [onCrmDealUpdate](../../events/on-crm-deal-update.md) event.
+
+The event does not contain a list of changed settings — request the current values by the `ID` from the [FIELDS parameter](#fields).
 
 {% note info "" %}
 
@@ -45,7 +55,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -61,11 +70,11 @@ In this case — `ONCRMDEALRECURRINGUPDATE` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the modified template.
+[`object`](../../../../data-types.md) | Object containing information about the modified recurrence settings.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about the fields of the modified template.
+[`object`](../../../../data-types.md) | Object with the identifiers of the modified recurrence settings and the template deal.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -82,9 +91,9 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the recurring deals settings table ||
+[`integer`](../../../../data-types.md) | Identifier of the recurrence settings. Pass it to the `id` parameter of [crm.deal.recurring.get](../crm-deal-recurring-get.md) to retrieve the settings ||
 || **RECURRING_DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the recurring deal template ||
+[`integer`](../../../../data-types.md) | Identifier of the template deal whose field values are copied. Matches the `DEAL_ID` field in the [crm.deal.recurring.get](../crm-deal-recurring-get.md) response. Fields of the template deal are returned by [crm.deal.get](../../crm-deal-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -95,6 +104,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./on-crm-deal-recurring-add.md)
 - [{#T}](./on-crm-deal-recurring-delete.md)
 - [{#T}](./on-crm-deal-recurring-expose.md)
-- [{#T}](./on-crm-deal-recurring-add.md)

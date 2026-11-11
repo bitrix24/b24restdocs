@@ -1,4 +1,4 @@
-# Event When Creating a New Deal from a Recurring Deal Template onCrmDealRecurringExpose
+# Event When Creating a Deal from a Recurring Deal Template onCrmDealRecurringExpose
 
 {% note tip "" %}
 
@@ -13,7 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGEXPOSE` will trigger when a new deal is created from a recurring deal template.
+The event `ONCRMDEALRECURRINGEXPOSE` will trigger when a deal is created from a recurring deal template, on schedule or via the method [crm.deal.recurring.expose](../crm-deal-recurring-expose.md).
+
+A deal is created from the template as a regular deal. The events arrive in the following order:
+
+1. [onCrmDealAdd](../../events/on-crm-deal-add.md) with the `ID` of the new deal
+2. `onCrmDealRecurringExpose`
+3. [onCrmDealRecurringUpdate](./on-crm-deal-recurring-update.md) — Bitrix24 writes the repeat counter and the last run date to the settings
+
+To avoid processing a new deal twice, match `DEAL_ID` from this event against `ID` from `onCrmDealAdd`.
 
 {% note info "" %}
 
@@ -46,7 +54,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -62,11 +69,11 @@ In this case — `ONCRMDEALRECURRINGEXPOSE` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the created deal.
+[`object`](../../../../data-types.md) | Object containing information about the deal created from the template and the recurrence settings.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about the fields of the created deal and the template used to create the deal.
+[`object`](../../../../data-types.md) | Object with the identifiers of the recurrence settings, the template deal, and the created deal.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -83,11 +90,11 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the recurring deals settings table ||
+[`integer`](../../../../data-types.md) | Identifier of the recurrence settings. Pass it to the `id` parameter of [crm.deal.recurring.get](../crm-deal-recurring-get.md) to retrieve the settings ||
 || **RECURRING_DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the recurring deal template ||
+[`integer`](../../../../data-types.md) | Identifier of the template deal whose field values are copied. Matches the `DEAL_ID` field in the [crm.deal.recurring.get](../crm-deal-recurring-get.md) response. Fields of the template deal are returned by [crm.deal.get](../../crm-deal-get.md) ||
 || **DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the deal created from the template ||
+[`integer`](../../../../data-types.md) | Identifier of the deal created from the template. Fields of the deal are returned by [crm.deal.get](../../crm-deal-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -98,6 +105,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
-- [{#T}](./on-crm-deal-recurring-delete.md)
 - [{#T}](./on-crm-deal-recurring-add.md)
 - [{#T}](./on-crm-deal-recurring-update.md)
+- [{#T}](./on-crm-deal-recurring-delete.md)

@@ -1,4 +1,4 @@
-# Events: Overview of Methods
+# Overview of imbot.v2 Methods and Events
 
 {% note tip "" %}
 
@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The bot can operate in `fetch` mode, where it retrieves events through polling requests, or in `webhook` mode, where Bitrix24 sends events to the bot's URL.
+Events tell the bot what is happening in chats: a user wrote to the bot, called a command, or added the bot to a chat. The bot can collect events itself — `fetch` mode, or receive them from Bitrix24 at its URL — `webhook` mode.
 
 > Quick navigation: [all methods and events](#all-methods)
 
@@ -18,24 +18,33 @@ The bot can operate in `fetch` mode, where it retrieves events through polling r
 #|
 || **Mode** | **Description** | **When to use** ||
 || `fetch` | The bot receives events via [imbot.v2.Event.get](./event-get.md) | For AI agents, server-side bots, and integrations without a persistent HTTP server ||
-|| `webhook` | Bitrix24 sends events to the bot's URL via HTTP POST | For bots with a persistent HTTP server ||
+|| `webhook` | Bitrix24 sends events to the bot's URL via HTTP POST. The address is set in the required `fields.webhookUrl` field | For bots with a persistent HTTP server ||
 |#
 
-The mode is set during bot registration with the `eventMode` parameter of the [imbot.v2.Bot.register](../bots/bot-register.md) method.
+The mode is set in the `fields.eventMode` field when registering the bot with the [imbot.v2.Bot.register](../bots/bot-register.md) method, and changed with the [imbot.v2.Bot.update](../bots/bot-update.md) method.
 
-The data format depends on the mode. In `fetch` mode, the full bot object arrives; in `webhook` mode, a simplified object `{id, code, auth}`. In webhook mode, all scalar values arrive as strings, so the types have to be cast explicitly. More details — [Format of the bot Object](./events.md#bot-format).
+Event data differs between the two modes:
+
+- `fetch` — the event contains the full bot object, without the `auth` field
+- `webhook` — the event contains a shortened bot object `{id, code}`. If the bot was registered by an application, the bot object contains the `auth` field with tokens
+
+In `webhook` mode, all scalar values, such as numbers and `true`/`false`, come as strings, so the types have to be cast explicitly. For details, see [Bot Object Format](./events.md#bot-format).
 
 ## Event Subscription {#subscription}
 
 Subscriptions to `ONIMBOTV2*` events are managed by the platform itself:
 
 - it creates the subscription on [imbot.v2.Bot.register](../bots/bot-register.md) with `eventMode: "webhook"`
-- it rebuilds the subscription on [imbot.v2.Bot.update](../bots/bot-update.md) if `webhookUrl` or `eventMode` changes
-- it removes the subscription on [imbot.v2.Bot.unregister](../bots/bot-unregister.md) or when the bot switches to `fetch` mode
+- it creates a subscription for the new address on [imbot.v2.Bot.update](../bots/bot-update.md) if a new `webhookUrl` is passed
+- it removes the subscription on [imbot.v2.Bot.unregister](../bots/bot-unregister.md) or when the bot switches to `fetch` mode, if the application has no other bots left: subscriptions are shared by all bots of the application
+
+An event of any bot is sent to the `webhookUrl` of all bots of this application. Identify the bot by the `data.bot.id` field. If the application has other bots, the previous address keeps receiving events even after `webhookUrl` is changed or the bot is removed.
+
+Before switching a bot from `fetch` mode to `webhook`, collect the accumulated events: the `fetch` queue is deleted on the switch. Pass `webhookUrl` together with `eventMode`. Without it, a new subscription is not created. If the application has no other bots with a subscription, events stop arriving.
 
 {% note warning "" %}
 
-There is no need to call `event.bind` and `event.unbind` manually — doing so may lead to a mismatch with the internal subscription records.
+Do not call `event.bind` and `event.unbind` manually: otherwise, the subscriptions may diverge from those managed by Bitrix24.
 
 {% endnote %}
 
@@ -44,21 +53,30 @@ There is no need to call `event.bind` and `event.unbind` manually — doing so m
 #|
 || **Limit** | **Value** ||
 || Events per single [imbot.v2.Event.get](./event-get.md) call | 1–1000, 100 by default ||
+|| Event retention period in `fetch` mode | 24 hours. Bitrix24 deletes older events even if the bot has not received them ||
 || Recommended polling interval in `fetch` mode | 5–30 seconds when there are no new events ||
 || Delivery in `webhook` mode | The platform expects HTTP 200. Retries on failure are not guaranteed ||
 |#
 
-An example of a polling cycle and a webhook handler is available in [Chatbots 2.0: Overview of Methods](../../index.md#polling).
+For a polling cycle example in `fetch` mode, see [Polling Cycle](../../index.md#polling); for a handler example in `webhook` mode, see [Webhook Handler](../../index.md#webhook-handler).
+
+## Server Availability for Sending and Receiving Events
+
+In `webhook` mode, Bitrix24 sends events to the bot's address. How to verify that the request came from Bitrix24 is described in the [Webhook Notification Structure](./events.md#webhook-payload) section.
+
+{% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}
 
 ## Relationship with Other Objects {#relations}
 
-**Bot.** Events are delivered to a specific bot, so `botId` is passed to [imbot.v2.Event.get](./event-get.md), and for webhook authorization, `botToken` as well — [Bots](../bots/index.md).
+Events connect the bot with chats: through them, the bot learns about messages and commands, and it responds with methods of other groups.
 
-**Messages.** The `ONIMBOTV2MESSAGE*` and `ONIMBOTV2REACTIONCHANGE` events are the main incoming flow for the bot. Responses to them are sent by the methods of the [Messages](../messages/index.md) group.
+**Bot.** Events are delivered to a specific bot, so its `botId` is passed to [imbot.v2.Event.get](./event-get.md), and when calling via an inbound webhook, `botToken` as well. For details, see [Bots](../bots/index.md).
 
-**Commands.** A slash command call arrives as the `ONIMBOTV2COMMANDADD` event, and the response is sent by the [imbot.v2.Command.answer](../commands/command-answer.md) method — [Commands](../commands/index.md).
+**Messages.** Most often, the bot processes the `ONIMBOTV2MESSAGE*` message events and the `ONIMBOTV2REACTIONCHANGE` reaction events. You can respond to them with the methods of the [Messages](../messages/index.md) group. Bots of type `supervisor` and `personal` can read a message by its ID with the [imbot.v2.Chat.Message.get](../messages/chat-message-get.md) method, and the neighboring messages with the [imbot.v2.Chat.Message.getContext](../messages/chat-message-get-context.md) method.
 
-**Bot context.** The `ONIMBOTV2CONTEXTGET` event delivers to the bot the arbitrary data passed when the chat was opened — [Passing Context to a Bot](../bot-context.md).
+**Commands.** A slash command call arrives as the `ONIMBOTV2COMMANDADD` event. You can respond to the command with the [imbot.v2.Command.answer](../commands/command-answer.md) method. For details, see [Commands](../commands/index.md).
+
+**Bot context.** If arbitrary data was passed to the bot when the chat was opened, for example about the task from which the chat was opened, it arrives in the `ONIMBOTV2CONTEXTGET` event. For details, see [Passing Context to a Bot](../bot-context.md).
 
 **User events.** If you need to read the messenger event flow on behalf of a user rather than a bot, use the [im.v2.Event.*](../../im.v2/events/index.md) methods.
 
@@ -72,29 +90,30 @@ An example of a polling cycle and a webhook handler is available in [Chatbots 2.
 
 #|
 || **Method** | **Description** ||
-|| [imbot.v2.Event.get](./event-get.md) | Returns bot events in polling mode ||
-|| [Event Formats](./events.md) | Description of events and data structures ||
+|| [imbot.v2.Event.get](./event-get.md) | Returns bot events in `fetch` mode ||
 |#
 
 ### Events
 
-The minimum set for a working bot is `ONIMBOTV2MESSAGEADD`, `ONIMBOTV2COMMANDADD`, `ONIMBOTV2JOINCHAT`, and `ONIMBOTV2DELETE`. Connect the remaining events as your scenario requires.
+For the bot to work, it is enough to process `ONIMBOTV2MESSAGEADD`, `ONIMBOTV2COMMANDADD`, and `ONIMBOTV2JOINCHAT`, and in `webhook` mode also `ONIMBOTV2DELETE`. Process the remaining events if your bot needs them. The data of each event is described on the [Event Formats for imbot.v2](./events.md) page.
 
 #|
 || **Event** | **Triggered** ||
-|| [ONIMBOTV2MESSAGEADD](./events.md#onimbotv2messageadd) | When a user sends a message to a chat the bot belongs to ||
-|| [ONIMBOTV2MESSAGEUPDATE](./events.md#onimbotv2messageupdate) | When a message is edited in the bot's chat ||
-|| [ONIMBOTV2MESSAGEDELETE](./events.md#onimbotv2messagedelete) | When a message is deleted in the bot's chat ||
-|| [ONIMBOTV2REACTIONCHANGE](./events.md#onimbotv2reactionchange) | When a reaction to the bot's message is added or removed ||
+|| [ONIMBOTV2MESSAGEADD](./events.md#onimbotv2messageadd) | When a message is sent to the bot in a one-on-one chat, with a bot mention, or as a reply to its message. Bots of type `personal` and `supervisor` receive all user messages in group chats they belong to, except messages from other bots ||
+|| [ONIMBOTV2MESSAGEUPDATE](./events.md#onimbotv2messageupdate) | When a message is edited. Bitrix24 selects the recipients by the same rules as for `ONIMBOTV2MESSAGEADD` ||
+|| [ONIMBOTV2MESSAGEDELETE](./events.md#onimbotv2messagedelete) | When a message is deleted. Only `messageId` comes instead of the `message` object: if you need the text of the deleted message, store it when you receive the message. Bitrix24 selects the recipients by the same rules as for `ONIMBOTV2MESSAGEADD` ||
+|| [ONIMBOTV2REACTIONCHANGE](./events.md#onimbotv2reactionchange) | When a reaction to the bot's message is added or removed, if reactions are enabled for the bot ||
 || [ONIMBOTV2COMMANDADD](./events.md#onimbotv2commandadd) | When a user calls a slash command of the bot ||
 || [ONIMBOTV2JOINCHAT](./events.md#onimbotv2joinchat) | When the bot is added to a chat or invited to one ||
 || [ONIMBOTV2CONTEXTGET](./events.md#onimbotv2contextget) | When a dialog with the bot is opened, if context data is passed ||
-|| [ONIMBOTV2DELETE](./events.md#onimbotv2delete) | When the bot is deleted from the system. The last event the bot receives ||
+|| [ONIMBOTV2DELETE](./events.md#onimbotv2delete) | When the bot is deleted from the system. The last event the bot receives in `webhook` mode. Not sent in `fetch` mode: the queue is deleted together with the bot ||
 |#
 
 ## Continue Your Exploration
 
 - [API Change Log for imbot.v2](../../change-log.md)
+- [Events: Overview of Methods and Events](../../../../events/index.md)
+- [Event Formats for imbot.v2](./events.md)
 - [{#T}](../../index.md)
 - [{#T}](../../entities.md)
 - [{#T}](../../migration.md)

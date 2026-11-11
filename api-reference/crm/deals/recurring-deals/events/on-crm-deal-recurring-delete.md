@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGDELETE` will trigger when a recurring deal template is deleted.
+The event `ONCRMDEALRECURRINGDELETE` will trigger when the recurrence settings of a recurring deal are deleted.
+
+The settings are deleted together with the template deal when it is deleted manually, via the method [crm.deal.delete](../../crm-deal-delete.md) or [crm.item.delete](../../../universal/crm-item-delete.md). The [onCrmDealDelete](../../events/on-crm-deal-delete.md) event arrives right after `onCrmDealRecurringDelete`.
+
+The [crm.deal.recurring.delete](../crm-deal-recurring-delete.md) method deletes the settings only if the template deal no longer exists. In this case, the event arrives as well.
 
 {% note info "" %}
 
@@ -44,7 +48,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -60,11 +63,11 @@ In this case — `ONCRMDEALRECURRINGDELETE` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the deleted template.
+[`object`](../../../../data-types.md) | Object containing information about the deleted recurrence settings.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about remote template fields.
+[`object`](../../../../data-types.md) | Object with the identifier of the deleted recurrence settings.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -81,7 +84,9 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the deleted record in the recurring deals settings table ||
+[`integer`](../../../../data-types.md) | Identifier of the deleted recurrence settings. This is the same `ID` that arrived in the [onCrmDealRecurringAdd](./on-crm-deal-recurring-add.md), [onCrmDealRecurringUpdate](./on-crm-deal-recurring-update.md), and [onCrmDealRecurringExpose](./on-crm-deal-recurring-expose.md) events.
+
+The settings no longer exist, so [crm.deal.recurring.get](../crm-deal-recurring-get.md) with this `ID` returns the `Recurring deal is not found` error ||
 |#
 
 ### Parameter auth {#auth}
@@ -93,5 +98,5 @@ The structure is described [below](#auth) ||
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
 - [{#T}](./on-crm-deal-recurring-add.md)
-- [{#T}](./on-crm-deal-recurring-expose.md)
 - [{#T}](./on-crm-deal-recurring-update.md)
+- [{#T}](./on-crm-deal-recurring-expose.md)

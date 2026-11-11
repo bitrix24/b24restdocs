@@ -13,9 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: authorized user
 
-The method `im.v2.Event.unsubscribe` cancels the current user's subscription to event logging. It stops recording new events in the log. Already recorded events remain accessible through [im.v2.Event.get](./event-get.md) until the retention period expires (24 hours) or until confirmed via `offset`.
+The method `im.v2.Event.unsubscribe` cancels the current user's subscription to messenger events: Bitrix24 stops recording new events and deletes the accumulated ones.
 
-The method is idempotent: repeated calls are safe and do not result in an error.
+{% note warning "" %}
+
+Before unsubscribing, collect unprocessed events with the [im.v2.Event.get](./event-get.md) method. After unsubscribing, they are deleted and cannot be recovered: even after a new subscription, `im.v2.Event.get` returns only new events.
+
+{% endnote %}
+
+Calling the method again does not result in an error.
 
 ## Method Parameters
 
@@ -46,17 +52,72 @@ No parameters.
       https://**put_your_bitrix24_address**/rest/im.v2.Event.unsubscribe
     ```
 
-- JS
+- JS (TS)
 
-    ```js
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UnsubscribeResult = boolean
+
     try {
-      const response = await $b24.callMethod('im.v2.Event.unsubscribe', {});
+      const response = await $b24.actions.v2.call.make<UnsubscribeResult>({
+        method: 'im.v2.Event.unsubscribe',
+        params: {},
+        requestId: Text.getUuidRfc4122()
+      })
 
-      const { result } = response.getData();
-      console.log('result:', result);
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Unsubscribed:', result)
+      }
     } catch (error) {
-      console.error('Error:', error);
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function unsubscribeEvents() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'im.v2.Event.unsubscribe',
+            params: {},
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Unsubscribed:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', unsubscribeEvents)
+    </script>
     ```
 
 - Python
@@ -159,8 +220,8 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1728626400.123,
-        "finish": 1728626400.234,
+        "start": 1728630000.123,
+        "finish": 1728630000.234,
         "duration": 0.111,
         "processing": 0.045,
         "date_start": "2024-10-11T10:00:00+02:00",
@@ -189,5 +250,7 @@ HTTP Status: **200**
 ## Continue Learning
 
 - [API imbot.v2 Change Log](../../change-log.md)
+- [im.v2 Events](./index.md)
 - [{#T}](./event-subscribe.md)
 - [{#T}](./event-get.md)
+- [{#T}](./events.md)
