@@ -48,4 +48,5 @@ If the application does not have a user interface, disable the "Add your own pag
 
 - [Mass-Market Application Installation Wizard](./installation-master.md) — how to perform one-time configurations during application installation
 - [Installation Callback](./installation-callback.md) — how to obtain OAuth tokens for an application without an interface
+- [{#T}](../../app-update.md) — what happens to application registrations when a new version is released
 - [{#T}](../../system-user.md)

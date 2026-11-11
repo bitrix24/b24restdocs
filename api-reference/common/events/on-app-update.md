@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONAPPUPDATE` event is triggered after a new version of the application is installed in Bitrix24. The handler receives the current and previous versions of the application and the `application_token`.
+The `ONAPPUPDATE` event is triggered after a new version of the application is installed in Bitrix24. The handler receives the current and previous versions of the application and the `application_token`. How a new application version is released and what happens on Bitrix24 during an update is described in the [Application Updates](../../../settings/app-update.md) article.
 
 {% note info "" %}
 

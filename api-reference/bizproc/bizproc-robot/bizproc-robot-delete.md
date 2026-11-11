@@ -23,6 +23,12 @@ If a robot is already used in an automation workflow, it remains in the workflow
 
 After the application is reinstalled or updated, it must register the robot again using the [bizproc.robot.add](./bizproc-robot-add.md) method. Bitrix24 links a workflow step to a robot by the application ID and `CODE`: workflow steps work again only if the same application registers the robot with the same `CODE`.
 
+{% note warning "" %}
+
+On an unavailable robot's card, Bitrix24 displays the message "The automation rule is not available because the application of origin has been deleted." The message appears whenever the robot is not among the available robots — including after calling `bizproc.robot.delete` while the application is installed. Keep this in mind when removing a robot from code: the user will see a message about application removal even though the application continues working.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -235,3 +241,4 @@ HTTP status: **400**
 - [{#T}](./bizproc-robot-update.md)
 - [{#T}](./bizproc-robot-list.md)
 - [{#T}](./bizproc-event-send.md)
+- [{#T}](../../../settings/app-update.md)

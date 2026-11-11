@@ -17,7 +17,7 @@ The `bizproc.activity.delete` method deletes an action for workflows that was ad
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
-When the application is deleted or updated, the associated actions are removed from the list of actions in the workflow designer. If the action is used in a workflow, it is blocked and can only be removed from the scheme. Upon reinstalling the application, the action becomes available again.
+When the application is deleted or updated, Bitrix24 removes only the actions registered by this application from the list of available actions in the workflow designer. Actions of other applications and standard actions are not affected. If an action is already used in a workflow, it remains in the scheme as unavailable: it can be removed but cannot be configured or run as an available action. Here, update means updating the application, not calling the [bizproc.activity.update](./bizproc-activity-update.md) method. Upon reinstalling the application, an action with the same code becomes available again.
 
 ## Method Parameters
 
@@ -233,3 +233,4 @@ HTTP Status: **400**
 - [{#T}](./bizproc-activity-update.md)
 - [{#T}](./bizproc-activity-list.md)
 - [{#T}](./bizproc-activity-log.md)
+- [{#T}](../../../settings/app-update.md)

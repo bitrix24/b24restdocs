@@ -52,6 +52,7 @@ Choose the appropriate scenario and follow the instructions for local, mass-mark
 - How to create and install a mass-market solution — [Overview of Mass-Market Application Installation](app-installation/mass-market-apps/index.md).
 - When to call `installFinish` and what to check before launching — [Completing Application Installation](app-installation/installation-finish.md).
 - How to publish ready-made sites, industry CRMs, and Smart scripts — [Installing Site Templates](app-installation/site-templates-installation.md), [Installing Industry CRMs](app-installation/vertical-crm-installation.md), [Installing Solutions with Smart Scripts](app-installation/smart-scripts-installation.md).
+- What happens to application registrations when a new version is released — [Application Updates](app-update.md).
 - Which data is deleted when an application is removed and how to handle the deletion event — [Deleting Applications](app-uninstallation.md).
 
 ## Configure Application Operation in Cloud and Self-Hosted {#box}

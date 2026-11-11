@@ -13,6 +13,8 @@ When an administrator uninstalls an application, Bitrix24 removes its event subs
 
 For example, if an administrator uninstalls a mass-market payment system application without selecting data deletion, the application stops working, but its payment system remains in Bitrix24.
 
+What happens when an application is updated to a new version is described in the [{#T}](app-update.md) article.
+
 ## How an Application Learns About Uninstallation
 
 An application learns about its uninstallation from the [OnAppUninstall](../api-reference/common/events/on-app-uninstall.md) event if it has subscribed to it in advance. A mass-market application needs this event to stop sending requests to that Bitrix24 in time: after uninstallation, the application loses access to the REST API. For example, Bitrix24 responds to a call with the old token with the `APPLICATION_NOT_FOUND` error.
@@ -68,5 +70,6 @@ A local application can only be created again after deletion. The new applicatio
 
 ## Continue Learning
 
+- [{#T}](app-update.md)
 - [{#T}](../api-reference/common/events/on-app-uninstall.md)
 - [{#T}](system-user.md)

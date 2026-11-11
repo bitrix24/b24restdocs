@@ -167,7 +167,7 @@ The widget interface is limited by the frame size: a popup wider than this area 
 || Remove the handler registration | [placement.unbind](./placement-unbind.md) ||
 |#
 
-Handlers are removed together with the application, there is no need to remove the registration separately. What else Bitrix24 clears when an application is removed is described in the [Application Removal](../../settings/app-uninstallation.md) article.
+Handlers are removed together with the application, there is no need to remove the registration separately. What else Bitrix24 clears when an application is removed is described in the [Application Removal](../../settings/app-uninstallation.md) article. Updating an application does not remove handler registrations — see the [Application Updates](../../settings/app-update.md) article for details.
 
 ## Common Mistakes
 
@@ -194,4 +194,5 @@ Handlers are removed together with the application, there is no need to remove t
 - [{#T}](./bx24-widget-methods.md)
 - [{#T}](./ui-interaction/index.md)
 - [{#T}](./ui-kit/index.md)
+- [{#T}](../../settings/app-update.md)
 - [{#T}](../../tutorials/crm/crm-widgets/index.md)

@@ -32,7 +32,7 @@ The method can be called via [BX24.callBind](../../sdk/bx24-js-sdk/how-to-call-r
 
 {% note info %}
 
-When an application is deleted, its event handlers are removed; when it is updated, they are retained. If the installer of a new version registers the same handler again, the method returns the `ERROR_CORE` error. Before registering, check the current handlers with the [event.get](./event-get.md) method.
+When an application is deleted, its event handlers are removed; when it is updated, they are retained. If the installer of a new version registers the same handler again, the method returns the `ERROR_CORE` error. Before registering, check the current handlers with the [event.get](./event-get.md) method. How a new application version is released and what to consider in its installer is described in the [Application Updates](../../settings/app-update.md) article.
 
 {% endnote %}
 

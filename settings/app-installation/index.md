@@ -23,6 +23,8 @@ The process consists of three stages:
 2. **Installing on Bitrix24** — The server registers the application and issues OAuth 2.0 tokens. The installation is performed by a user with administrator rights. A Local application is installed by the developer on their own Bitrix24; a mass-market application is installed by an administrator from the Bitrix24 Market or by a developer from the developer console on any Bitrix24 with administrative access.
 3. **Completing Installation** — An application without an interface is installed automatically; an application with an interface and a setup wizard completes the installation using the `installFinish` method. Details can be found in the [Completing Application Installation](./installation-finish.md) article.
 
+After installation, the application continues its lifecycle: new versions are released, and the application may be removed from Bitrix24. What happens in these cases is described in [{#T}](../app-update.md) and [{#T}](../app-uninstallation.md).
+
 ## Installation Options
 
 The installation scenario depends on the solution type. There are two types of solutions:
