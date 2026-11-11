@@ -29,86 +29,54 @@ The method `crm.activity.update` updates an existing activity.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999`. Use [crm.activity.list](./crm-activity-list.md) to retrieve the identifier ||
 || **fields***
-[`array`](../../../../data-types.md) | Array of values for [activity fields](#fields) in the following structure:
+[`object`](../../../../data-types.md) | Object containing the activity fields to update [(detailed description)](#fields). Example structure:
 
 ```json
-fields:
 {
-    "OWNER_TYPE_ID": 2, 
-    "OWNER_ID": 102, 
-    "TYPE_ID": 2, 
-    "SUBJECT": "New Call",
+    "fields": {
+        "SUBJECT": "New Call"
+    }
 }
 ```
 ||
+|| **params**
+[`object`](../../../../data-types.md) | Optional update parameters. The `REGISTER_HISTORY_EVENT` field accepts `Y` to register an event in the history or `N` to skip it. By default, the event is registered ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+Pass only the fields you need to change in `fields`. The full list of fields and their descriptions is available in [crm.activity.fields](./crm-activity-fields.md). A field marked as required in the metadata does not need to be passed with every update.
+
+Field behavior during updates:
 
 #|
 || **Field** `type` | **Description** ||
-|| **OWNER_ID***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object ||
-|| **OWNER_TYPE_ID***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
-|| **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Type of the activity ||
+|| **OWNER_ID**
+[`integer`](../../../../data-types.md) | Identifier of the current CRM item. The value passed during an update is ignored ||
+|| **OWNER_TYPE_ID**
+[`crm_enum_ownertype`](../../../data-types.md#object_type) | [Identifier of the current CRM object type](../../../data-types.md#object_type). The value passed during an update is ignored ||
+|| **TYPE_ID**
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | The activity type cannot be changed. The value passed is ignored ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
-|| **COMMUNICATIONS***
-[`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
+[`integer`](../../../../data-types.md) | Read-only. The value passed is ignored ||
+|| **COMMUNICATIONS**
+[`crm_activity_communication[]`](../../../data-types.md) | Array of [communications](./crm-activity-communication-fields.md). If provided, it must contain a valid communication. An empty array or a list without valid communications causes an error ||
+|| **COMPLETED**
+[`char`](../../../../data-types.md) | Activity completion flag: `Y` — completed, `N` — not completed ||
 || **DEADLINE**
-[`datetime`](../../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings, and from END_TIME for tasks ||
-|| **DESCRIPTION**
-[`string`](../../../../data-types.md) | Text description of the activity ||
-|| **DESCRIPTION_TYPE**
-[`crm_enum_contenttype`](../../../data-types.md#activity-enums) | Type of description ||
-|| **DIRECTION**
-[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
-|| **END_TIME**
-[`datetime`](../../../../data-types.md) | End time of the activity ||
+[`datetime`](../../../../data-types.md) | Cannot be changed directly: the value passed is ignored ||
 || **FILES**
-[`diskfile`](../../../data-types.md) | Files added to the activity ||
-|| **LOCATION**
-[`string`](../../../../data-types.md) | Location ||
-|| **NOTIFY_TYPE**
-[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Type of notification ||
-|| **ORIGINATOR_ID**
-[`string`](../../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
-|| **ORIGIN_ID**
-[`string`](../../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
-|| **ORIGIN_VERSION**
-[`string`](../../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
-|| **PRIORITY**
-[`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority ||
-|| **PROVIDER_DATA**
-[`string`](../../../../data-types.md) | Additional provider data ||
-|| **PROVIDER_GROUP_ID**
-[`string`](../../../../data-types.md) | Identifier of the provider group ||
+[`diskfile[]`](../../../data-types.md) | Array of files. For each file, pass an object with `FILE_ID`, the file identifier in Drive ||
 || **PROVIDER_ID**
-[`string`](../../../../data-types.md) | Identifier of the provider ||
-|| **PROVIDER_TYPE_ID**
-[`string`](../../../../data-types.md) | Identifier of the provider type, status from the directory ||
-|| **PROVIDER_PARAMS**
-[`object`](../../../../data-types.md) | Additional provider parameters ||
-|| **RESPONSIBLE_ID***
-[`user`](../../../../data-types.md) | Identifier of the user responsible for the activity ||
-|| **SETTINGS**
-[`object`](../../../../data-types.md) | Additional settings ||
-|| **START_TIME**
-[`datetime`](../../../../data-types.md) | Start time of the activity ||
-|| **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Status of the activity ||
+[`string`](../../../../data-types.md) | The activity provider cannot be changed. The value passed is ignored ||
+|| **RESPONSIBLE_ID**
+[`user`](../../../../data-types.md) | Identifier of the responsible user. Not required for every update ||
 || **SUBJECT**
-[`string`](../../../../data-types.md) | Additional description of the activity ||
-|| **WEBDAV_ELEMENTS**
-[`diskfile`](../../../data-types.md) | Added files. Deprecated, retained for compatibility ||
+[`string`](../../../../data-types.md) | Activity subject. Not required for every update ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../../data-types.md) | Read-only. The value passed is ignored ||
 |#
 
 ## Code Examples
@@ -227,7 +195,7 @@ fields:
             bitrix_id=999,
             fields={
                 "SUBJECT": "Updated follow-up",
-                "DEADLINE": (datetime.now() + timedelta(days=1)).isoformat(timespec="seconds"),
+                "START_TIME": (datetime.now() + timedelta(days=1)).isoformat(timespec="seconds"),
                 "DESCRIPTION": "Updated activity description",
                 "RESPONSIBLE_ID": 1,
                 "COMPLETED": "N",
@@ -372,19 +340,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully updated, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Returns `true` if the activity was successfully updated. On failure, the method returns an error response; the error description may be empty ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+For example, when `id = 0`, the method returns an error:
+
 HTTP Status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "Access denied."
+    "error_description": "ID is not defined or invalid."
 }
 ```
 
@@ -393,27 +363,26 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `Activity is not found` | The activity with the specified identifier was not found for the entity in CRM ||
-|| `The field SUBJECT is not defined or empty` | The `SUBJECT` field is not set ||
-|| `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
-|| `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
-|| `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
-|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the specified context ||
-|| `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to update the entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The activity identifier is missing or invalid ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The `fields` parameter was not passed as an object ||
+|| `400` | Empty value | `Parameter 'params' must be array.` | The `params` parameter was not passed as an object ||
+|| `400` | Empty value | `Activity is not found.` | The activity with the specified identifier was not found ||
+|| `400` | Empty value | `The field COMMUNICATIONS is not defined or invalid.` | An empty `COMMUNICATIONS` array or a list without valid communications was passed ||
+|| `400` | Empty value | `Use crm.activity.configurable.update for this activity provider` | Use `crm.activity.configurable.update` to update a configurable activity ||
+|| `400` | Empty value | `Access denied.` | No permission to update the current CRM item; for an app activity, the call was made by another app ||
+|| `400` | Empty value | `Application context required.` | Updating an activity with the `REST_APP` provider requires the context of the app that created it ||
 |#
+
+When accessing a nonexistent activity, the response may also contain empty `error` and `error_description` values with HTTP status `400`.
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
 - [{#T}](./crm-activity-add.md)
-- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-get.md)
 - [{#T}](./crm-activity-list.md)
+- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](./crm-activity-fields.md)

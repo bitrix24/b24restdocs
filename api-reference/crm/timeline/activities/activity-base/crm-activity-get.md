@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with permission to read the activity
 
 {% note warning "DEPRECATED" %}
 
@@ -21,6 +21,8 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.activity.get` returns information about the activity by its ID.
 
+For a configurable activity, use the [crm.activity.configurable.get](../configurable/crm-activity-configurable-get.md) method.
+
 ## Method parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
@@ -29,7 +31,7 @@ The method `crm.activity.get` returns information about the activity by its ID.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | The ID of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | The ID of the activity in the timeline — a positive integer, for example `999` ||
 |#
 
 ## Code examples
@@ -93,13 +95,13 @@ The method `crm.activity.get` returns information about the activity by its ID.
       DESCRIPTION: string
       DESCRIPTION_TYPE: string
       DIRECTION: string
-      LOCATION: string
-      SETTINGS: unknown[]
+      LOCATION: string | null
+      SETTINGS: Record<string, unknown> | unknown[]
       ORIGINATOR_ID: string | null
       ORIGIN_ID: string | null
       AUTHOR_ID: string
       EDITOR_ID: string
-      PROVIDER_PARAMS: unknown[]
+      PROVIDER_PARAMS: Record<string, unknown> | unknown[]
       PROVIDER_DATA: string | null
       RESULT_MARK: string
       RESULT_VALUE: unknown | null
@@ -345,7 +347,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](./crm-activity-fields.md#all-fields) ||
+[`object`](../../../../data-types.md) | An object containing the activity data. For field descriptions, see the [fields of the object](./crm-activity-fields.md#all-fields) reference. If files are attached to the activity, the method returns them in the `FILES` field for Bitrix24 Drive storage or in the `WEBDAV_ELEMENTS` field for WebDAV storage. The `STORAGE_ELEMENT_IDS` field is removed from the response ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -357,7 +359,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Access denied."
+    "error_description": "ID is not defined or invalid."
 }
 ```
 
@@ -366,10 +368,10 @@ HTTP status: **400**
 ### Possible error codes
 
 #|
-|| **Code** | **Description** ||
-|| `Activity is not found` | The activity with the specified ID was not found for the entity in CRM ||
-|| `Access denied` | No rights to edit the entity in CRM ||
-|| `Application context required` | Invalid `PROVIDER_ID` parameter for the activity created in the context of the application ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The activity ID is missing or invalid ||
+|| `400` | Empty value | `Use crm.activity.configurable.get for this activity provider` | The activity was created by a configurable activity provider. Use [crm.activity.configurable.get](../configurable/crm-activity-configurable-get.md) ||
+|| `400` | Empty value | Empty value | The activity with the specified `id` was not found, or the user does not have permission to read it. The method returns empty `error` and `error_description` values ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
@@ -378,7 +380,7 @@ HTTP status: **400**
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-update.md)
-- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-list.md)
+- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](./crm-activity-fields.md)

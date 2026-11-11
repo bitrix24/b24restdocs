@@ -21,6 +21,10 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.activity.delete` removes an activity of any type.
 
+Deleting an activity from an application provider requires the context of the application that owns the activity.
+
+To delete a Voximplant telephony call, the user must be an administrator of at least one object type linked to the activity. If there are no links, the activity's primary object type, `OWNER_TYPE_ID`, is checked.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
@@ -29,7 +33,7 @@ The method `crm.activity.delete` removes an activity of any type.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline — a positive integer, for example `999` ||
 |#
 
 ## Code Examples
@@ -255,7 +259,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully deleted, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully deleted. If the activity could not be deleted, the method returns an error ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -276,11 +280,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `Activity is not found` | The activity with the specified identifier was not found for the entity in CRM ||
-|| `Access denied` | No permission to edit the entity in CRM ||
-|| `Application context required` | Invalid parameter `PROVIDER_ID` for the activity created in the context of the application ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The activity identifier is missing or invalid ||
+|| `400` | Empty value | `Activity is not found.` | The activity with the specified identifier was not found ||
+|| `400` | Empty value | `Access denied.` | The user lacks permission to delete the activity, the application activity belongs to another application, or a call deletion restriction applies ||
+|| `400` | Empty value | `Application context required.` | Deleting an activity from an application provider requires an application context ||
 |#
+
+If the internal deletion operation fails, `error_description` contains the last deletion error message. If there is no message, the string is empty.
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to add activities
+> Who can execute the method: a user with permission to modify each linked CRM entity
 
 {% note warning "DEPRECATED" %}
 
@@ -29,51 +29,59 @@ The `crm.activity.add` method creates a new system activity.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../../../data-types.md) | An array of values for the [activity fields](#fields) in the following structure:
+[`object`](../../../../data-types.md) | An object containing activity field values [(Detailed Description)](#fields). Example structure:
 
 ```json
-fields:
 {
-    "OWNER_TYPE_ID": 2, 
-    "OWNER_ID": 102, 
-    "TYPE_ID": 2, 
-    "SUBJECT": "New Call",
+    "fields": {
+        "OWNER_TYPE_ID": 2,
+        "OWNER_ID": 102,
+        "TYPE_ID": 2,
+        "COMMUNICATIONS": [{"VALUE": "+499990000000"}],
+        "SUBJECT": "New Call"
+    }
 }
 ```
-There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to forcibly disable sending a copy of the message to the recipient from MESSAGE_FROM. If the parameter is not filled or any value other than `Y` is specified, a copy will be sent. Example:
+The `SETTINGS.DISABLE_SENDING_MESSAGE_COPY` field disables sending a copy of the email to the recipient from `MESSAGE_FROM` when set to `Y`. Example:
 
-```js
-[
-    'fields'=> array(
-        'SETTINGS'=> array(
-            'DISABLE_SENDING_MESSAGE_COPY'=>'Y'
-        )
-    )
-]
+```json
+{
+    "fields": {
+        "SETTINGS": {
+            "DISABLE_SENDING_MESSAGE_COPY": "Y"
+        }
+    }
+}
 ```
  ||
 |#
 
 ### Parameter fields {#fields}
 
+For the full list of fields and their descriptions, see [crm.activity.fields](./crm-activity-fields.md). The fields below include details on how to pass them when creating an activity.
+
+Specify a CRM entity using `OWNER_TYPE_ID` and `OWNER_ID`, or pass a valid link in `COMMUNICATIONS`. Creating an activity requires at least one link to a CRM entity.
+
+The linked CRM entities must exist, and the user must have permission to modify each of them. In the examples, replace `OWNER_TYPE_ID`, `OWNER_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID` with the types and identifiers of accessible entities. If a communication includes `VALUE` but omits `ENTITY_TYPE_ID` or `ENTITY_ID`, the method uses `OWNER_TYPE_ID` and `OWNER_ID` for it.
+
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||
-|| **OWNER_ID***
+|| **OWNER_ID**
 [`integer`](../../../../data-types.md) | Identifier of the CRM entity ||
-|| **OWNER_TYPE_ID***
+|| **OWNER_TYPE_ID**
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
-|| **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
+|| **TYPE_ID**
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Type of the activity. Required if `PROVIDER_ID` is not specified. If `PROVIDER_ID` is specified but `TYPE_ID` is omitted, the method uses the "provider activity" type. Available values are described in the [Activity Type Reference](../../../data-types.md#activity-enums).
 
 To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
-|| **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
-|| **COMMUNICATIONS***
-[`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) ||
+|| **COMMUNICATIONS**
+[`crm_activity_communication`](../../../data-types.md) | An array of [Communications](./crm-activity-communication-fields.md). Required for calls, meetings, and emails; can be omitted for provider activities. Calls and meetings allow no more than one communication ||
+|| **COMPLETED**
+[`char`](../../../../data-types.md) | Activity completion flag: `Y` — completed, `N` — not completed ||
 || **DEADLINE**
-[`datetime`](../../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../../data-types.md) | Date and time of the activity's deadline. The value passed is ignored: the activity provider calculates the deadline, and if it does not set one, `START_TIME` is used ||
 || **DESCRIPTION**
 [`string`](../../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
@@ -87,13 +95,13 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 || **LOCATION**
 [`string`](../../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
-[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Type of notification ||
+[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Time unit for the reminder: `1` — minutes, `2` — hours, `3` — days, `0` — no reminder set ||
+|| **NOTIFY_VALUE**
+[`integer`](../../../../data-types.md) | Number of `NOTIFY_TYPE` units for the reminder. Required if `NOTIFY_TYPE` is greater than `0` ||
 || **ORIGINATOR_ID**
 [`string`](../../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
 [`string`](../../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
-|| **ORIGIN_VERSION**
-[`string`](../../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
 [`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority ||
 || **PROVIDER_DATA**
@@ -106,27 +114,25 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 [`string`](../../../../data-types.md) | Identifier of the provider type, status from the directory ||
 || **PROVIDER_PARAMS**
 [`object`](../../../../data-types.md) | Additional provider parameters ||
-|| **RESPONSIBLE_ID***
-[`user`](../../../../data-types.md) | Identifier of the user responsible for the activity ||
+|| **RESPONSIBLE_ID**
+[`user`](../../../../data-types.md) | Identifier of the user responsible for the activity. If omitted, the method tries to use the user responsible for the CRM entity, then the current user ||
 || **SETTINGS**
 [`object`](../../../../data-types.md) | Additional settings ||
 || **START_TIME**
 [`datetime`](../../../../data-types.md) | Time when the activity starts ||
 || **STATUS**
 [`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Status of the activity ||
-|| **SUBJECT**
-[`string`](../../../../data-types.md) | Additional description of the activity ||
+|| **SUBJECT***
+[`string`](../../../../data-types.md) | Activity subject. This field is required and cannot be empty ||
 || **WEBDAV_ELEMENTS**
-[`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
-|| **IS_INCOMING_CHANNEL**
-[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`diskfile`](../../../data-types.md) | Added files. For Drive storage, this field is deprecated and retained for compatibility; pass files in `FILES`. For WebDAV storage, pass objects with `ELEMENT_ID` ||
 |#
 
 ### Field Value Usage Options
 
 For activities of type `e-mail`:
-- if the e-mail should not be sent, set the `DIRECTION=2` and `COMPLETED='N'` parameters;
-- if it is necessary to mark e-mails as completed, perform an activity update by setting the completion flag.
+- if the e-mail should not be sent, set the `DIRECTION=2` and `COMPLETED='N'` parameters
+- if it is necessary to mark e-mails as completed, perform an activity update by setting the completion flag
 
 ## Code Examples
 
@@ -285,10 +291,10 @@ For activities of type `e-mail`:
                 "OWNER_TYPE_ID": 2,
                 "OWNER_ID": 101,
                 "TYPE_ID": 2,
+                "COMMUNICATIONS": [{"VALUE": "+499990000000"}],
                 "SUBJECT": "Follow up with customer",
                 "START_TIME": datetime.now().isoformat(timespec="seconds"),
                 "END_TIME": (datetime.now() + timedelta(hours=1)).isoformat(timespec="seconds"),
-                "DEADLINE": (datetime.now() + timedelta(hours=1)).isoformat(timespec="seconds"),
                 "COMPLETED": "N",
                 "RESPONSIBLE_ID": 1,
                 "PRIORITY": 2,
@@ -532,6 +538,8 @@ HTTP status: **200**
 
 ## Error Handling
 
+When creating an outgoing completed email (`TYPE_ID=4`, `COMPLETED=Y`, `DIRECTION=2`), the method first saves the activity, then sends the email. If sending fails with an `Email send error. ...` error, the activity has already been created. Before calling the method again, check the [Activity List](./crm-activity-list.md) to avoid creating a duplicate.
+
 HTTP status: **400**
 
 ```json
@@ -546,28 +554,30 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `The field SUBJECT is not defined or empty` | The `SUBJECT` field is not set ||
-|| `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
-|| `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
-|| `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
-|| 
-- `Email send error. Failed to load module "subscribe"`
-- `Email send error. Invalid data`
-- `Email send error. Invalid email is specified`
-- `Email send error. "From" is not found`
-- `Email send error. "To" is not found`
-- `Email send error. Failed to add posting. Please see details below`
-- `Email send error. Failed to save posting file. Please see details below`
-- `Email send error. Failed to update activity`
-- `Email send error. General error`
- | Errors related to "email" activities ||
-|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the specified context ||
-|| `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to add entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `The field SUBJECT is not defined or empty.` | The `SUBJECT` field is empty ||
+|| `400` | Empty value | `The field RESPONSIBLE_ID is not defined or invalid.` | The user responsible for the activity could not be determined ||
+|| `400` | Empty value | `The field TYPE_ID is not defined or invalid.` | The `TYPE_ID` field is missing or contains an invalid value ||
+|| `400` | Empty value | `The field COMMUNICATIONS is not defined or invalid.` | No valid communications were provided for the call, meeting, or email ||
+|| `400` | Empty value | `The only one communication is allowed for activity of specified type.` | More than one communication was provided for a call or meeting ||
+|| `400` | Empty value | `Could not build binding. Please ensure that owner info and communications are defined correctly.` | A link to a CRM entity could not be built from the owner and communications ||
+|| `400` | Empty value | `Entity type '<type>' is not supported in current context` | The linked CRM entity type is not supported; `<type>` is the type name or its identifier in square brackets ||
+|| `400` | Empty value | `Could not find '<type>' with ID: <ID>` | The linked CRM entity was not found; `<type>` is the type name, `<ID>` is the entity identifier ||
+|| `400` | Empty value | `The activity type "<type> is not supported in current context".` | The activity type is not supported; `<type>` is the activity type name ||
+|| `400` | Empty value | `Email send error. Failed to load module "subscribe".` | The subscribe module could not be loaded ||
+|| `400` | Empty value | `Email send error. Invalid data.` | Invalid email data ||
+|| `400` | Empty value | `Email send error. Invalid email is specified.` | An invalid email address was specified ||
+|| `400` | Empty value | `Email send error. "From" is not found.` | The email sender was not found ||
+|| `400` | Empty value | `Email send error. "To" is not found.` | The email recipient was not found ||
+|| `400` | Empty value | `Email send error. Failed to add posting. Please see details below.` | The mailing could not be created; details are provided in the error message ||
+|| `400` | Empty value | `Email send error. Failed to save posting file. Please see details below.` | The mailing file could not be saved; details are provided in the error message ||
+|| `400` | Empty value | `Email send error. Failed to update activity.` | The activity could not be updated when sending the email ||
+|| `400` | Empty value | `Email send error. General error.` | General email sending error ||
+|| `400` | Empty value | `The custom activity without provider is not supported in current context.` | No provider was found for the provider activity ||
+|| `400` | Empty value | `Use crm.activity.configurable.add for this activity provider` | Use `crm.activity.configurable.add` for configurable activities ||
+|| `400` | Empty value | `Access denied.` | No permission to modify the linked CRM entity ||
+|| `400` | Empty value | `Application context required.` | An activity with an application provider can only be created in the application context ||
+|| `400` | `ERROR_CORE` | `NOTIFY_VALUE is not assigned.<br>` | `NOTIFY_VALUE` was not provided for the selected notification type ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
@@ -575,9 +585,9 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-activity-update.md)
-- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-get.md)
 - [{#T}](./crm-activity-list.md)
+- [{#T}](./crm-activity-delete.md)
 - [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](./crm-activity-fields.md)
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)

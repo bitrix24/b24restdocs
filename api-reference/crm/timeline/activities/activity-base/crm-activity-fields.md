@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to read CRM items or digital workspaces
 
 {% note warning "DEPRECATED" %}
 
@@ -23,7 +23,7 @@ The method `crm.activity.fields` returns the description of the fields of the sy
 
 ## Method Parameters
 
-No parameters
+No parameters.
 
 ## Code Examples
 
@@ -646,47 +646,63 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](#all-fields). ||
+[`object`](../../../../data-types.md) | An object whose keys are [Activity Field Names](#all-fields) and whose values are [Field Metadata Objects](#field-metadata) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
+#### Field Metadata {#field-metadata}
+
+#|
+|| **Name** `type` | **Description** ||
+|| **type** `string` | Field value type ||
+|| **isRequired** `boolean` | Indicates whether the field is required in the metadata. Actual requirements when creating an activity depend on the activity type and whether a value can be assigned automatically ||
+|| **isReadOnly** `boolean` | The field is read-only. Any value passed when creating or updating an activity is ignored ||
+|| **isImmutable** `boolean` | Indicates whether the field is immutable after creation ||
+|| **isMultiple** `boolean` | The field supports multiple values ||
+|| **isDynamic** `boolean` | Indicates whether the field is dynamic ||
+|| **title** `string` | Field name ||
+|| **isDeprecated** `boolean` | Indicates whether the field is deprecated. Returned only for deprecated fields with the value `true` ||
+|#
+
 #### Overview of System Activity Fields {#all-fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+An asterisk marks fields with `isRequired: true` in the metadata. This is not a list of parameters that must be passed in every call. When [Creating an Activity](./crm-activity-add.md), the clarifications in the notes below apply. When [Updating an Activity](./crm-activity-update.md), pass only the fields to be changed.
+
+The set of file fields depends on the storage. The table and response example are for Drive: `FILES` is returned, and `WEBDAV_ELEMENTS` is marked as deprecated. For WebDAV storage, `FILES` is absent, and `WEBDAV_ELEMENTS` has the type `webdav` without the `isDeprecated` flag.
 
 #|
 || **Field** `type` | **Description** | **Note** ||
-|| **ID***
+|| **ID**
 [`integer`](../../../../data-types.md) | Activity ID | Read-only ||
-|| **OWNER_ID***
-[`integer`](../../../../data-types.md) | CRM object ID | Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
-|| **OWNER_TYPE_ID***
-[`integer`](../../../../data-types.md) | [CRM object type ID](../../../data-types.md#object_type) | Immutable ||
+|| **OWNER_ID**
+[`integer`](../../../../data-types.md) | CRM object ID | Together with `OWNER_TYPE_ID`, defines the binding when creating an activity. The binding can also be built from `COMMUNICATIONS`. Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
+|| **OWNER_TYPE_ID**
+[`crm_enum_ownertype`](../../../data-types.md#object_type) | [CRM object type ID](../../../data-types.md#object_type) | Immutable according to the metadata. Together with `OWNER_ID`, defines the binding when creating an activity if it is not built from `COMMUNICATIONS` ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Activity type | Required, immutable ||
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Activity type | Immutable. Can be omitted when creating an activity if `PROVIDER_ID` is specified: `6` is then assigned for a provider activity ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Integer ID of the associated entity | Read-only ||
-|| **AUTHOR_ID***
-[`integer`](../../../../data-types.md) | Integer ID of the user who created the activity | ||
+[`integer`](../../../../data-types.md) | Integer ID of the associated object | Read-only ||
+|| **AUTHOR_ID**
+[`user`](../../../../data-types.md) | Integer ID of the user who created the activity | Read-only ||
 || **AUTOCOMPLETE_RULE**
 [`integer`](../../../../data-types.md) | Integer ID of the rule that triggered the autocomplete | ||
 || **BINDINGS**
 [`crm_activity_binding`](../../../data-types.md) | Bindings to CRM entities | Multiple, read-only ||
 || **COMMUNICATIONS***
-[`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) | Multiple, required ||
-|| **COMPLETED***
-[`char`](../../../../data-types.md) | Flag indicating whether the activity is completed (`Y`\|`N`) | ||
-|| **CREATED***
-[`datetime`](../../../../data-types.md) | Date and time the activity was created | ||
+[`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) | Multiple. Required when creating calls, meetings, and emails; can be omitted for a provider activity if a binding is specified through `OWNER_ID` and `OWNER_TYPE_ID` ||
+|| **COMPLETED**
+[`char`](../../../../data-types.md) | Activity completion flag: `Y` — completed, `N` — not completed | Optional ||
+|| **CREATED**
+[`datetime`](../../../../data-types.md) | Date and time the activity was created | Read-only ||
 || **DEADLINE**
-[`datetime`](../../../../data-types.md) | Date and time of the activity's execution deadline | This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../../data-types.md) | Date and time of the activity's execution deadline | Any value passed when creating or updating an activity is removed. The provider calculates the deadline. When creating an activity, if the provider has not set a deadline, `START_TIME` is used, or the maximum database date if it is absent. The maximum database date is used for activities with `IS_INCOMING_CHANNEL = Y` ||
 || **DESCRIPTION**
 [`string`](../../../../data-types.md) | Text description of the activity | ||
 || **DESCRIPTION_TYPE**
 [`crm_enum_contenttype`](../../../data-types.md#activity-enums) | Description type | ||
 || **DIRECTION**
-[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. | Relevant for calls and emails, not used for meetings ||
+[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming or outgoing | Relevant for calls and emails, not used for meetings ||
 || **EDITOR_ID**
 [`user`](../../../../data-types.md) | Integer ID of the user who edited the activity | Read-only ||
 || **END_TIME**
@@ -700,13 +716,11 @@ HTTP status: **200**
 || **NOTIFY_TYPE**
 [`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Notification type | ||
 || **NOTIFY_VALUE**
-[`integer`](../../../../data-types.md) | Notification value | Read-only ||
+[`integer`](../../../../data-types.md) | Notification value | Used together with `NOTIFY_TYPE` ||
 || **ORIGINATOR_ID**
 [`string`](../../../../data-types.md) | Data source ID | Used only for binding to an external source ||
 || **ORIGIN_ID**
 [`string`](../../../../data-types.md) | ID of the element in the data source | Used only for binding to an external source ||
-|| **ORIGIN_VERSION**
-[`string`](../../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
 [`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority | ||
 || **PROVIDER_DATA**
@@ -714,39 +728,39 @@ HTTP status: **200**
 || **PROVIDER_GROUP_ID**
 [`string`](../../../../data-types.md) | Provider group ID | ||
 || **PROVIDER_ID**
-[`string`](../../../../data-types.md) | Provider ID | Read-only ||
+[`string`](../../../../data-types.md) | Provider ID | Requirements depend on the activity type and provider ||
 || **PROVIDER_TYPE_ID**
-[`string`](../../../../data-types.md) | Provider type ID | Status from the directory ||
+[`string`](../../../../data-types.md) | Provider type ID | If the value is empty and a provider is defined, it is populated automatically by the provider's `getTypeId` method ||
 || **PROVIDER_PARAMS**
 [`object`](../../../../data-types.md) | Additional provider parameters | ||
 || **RESPONSIBLE_ID***
-[`user`](../../../../data-types.md) | Integer ID of the user responsible for the activity | Required ||
+[`user`](../../../../data-types.md) | Integer ID of the user responsible for the activity | When creating an activity without a positive value, the user responsible for the CRM item is used, or the current user if no responsible user is defined ||
 || **RESULT_CURRENCY_ID**
-[`string`](../../../../data-types.md) | | ||
+[`string`](../../../../data-types.md) | ID of the currency for the result amount | Used together with `RESULT_SUM` ||
 || **RESULT_MARK**
-[`integer`](../../../../data-types.md) | | ||
+[`integer`](../../../../data-types.md) | Activity result rating: `0` — no rating, `1` — negative, `2` — positive, `3` — neutral | Used in activity statistics ||
 || **RESULT_SOURCE_ID**
-[`string`](../../../../data-types.md) | | ||
+[`string`](../../../../data-types.md) | Result source ID | Used to group ratings in activity statistics ||
 || **RESULT_STATUS**
-[`integer`](../../../../data-types.md) | | ||
+[`integer`](../../../../data-types.md) | Result status: `0` — not specified, `1` — unanswered, `2` — answered | Used in activity statistics ||
 || **RESULT_STREAM**
-[`integer`](../../../../data-types.md) | Report statistics | ||
+[`integer`](../../../../data-types.md) | Statistics stream: `0` — not specified, `1` — incoming, `2` — outgoing, `3` — reverse, `4` — missed | Used in activity statistics ||
 || **RESULT_SUM**
-[`double`](../../../../data-types.md) | | ||
+[`double`](../../../../data-types.md) | Result amount | The currency is specified in `RESULT_CURRENCY_ID` ||
 || **RESULT_VALUE**
-[`double`](../../../../data-types.md) | | ||
+[`double`](../../../../data-types.md) | Numeric value of the activity result | A `double` field with no fixed set of values in the metadata ||
 || **SETTINGS**
 [`object`](../../../../data-types.md) | Additional settings | ||
 || **START_TIME**
 [`datetime`](../../../../data-types.md) | Time the activity starts | ||
 || **STATUS**
 [`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Activity status | ||
-|| **SUBJECT**
-[`string`](../../../../data-types.md) | Additional description of the activity | Required ||
+|| **SUBJECT***
+[`string`](../../../../data-types.md) | Activity subject | A non-empty string is required when creating an activity ||
 || **WEBDAV_ELEMENTS**
-[`diskfile`](../../../data-types.md) | Added files | Multiple. Deprecated, kept for compatibility ||
+[`diskfile`](../../../data-types.md) | Added files | Multiple. For Drive storage, the field is deprecated and retained for compatibility; files are passed in `FILES`. For WebDAV storage, the type `webdav` is used ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) |  ||
+[`char`](../../../../data-types.md) | Indicates whether the activity was created from an incoming channel: `Y` — yes, `N` — no | Read-only ||
 |#
 
 ## Error Handling
@@ -764,13 +778,19 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
+#|
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `Access denied.` | No permission to read CRM items or digital workspaces ||
+|#
+
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-update.md)
-- [{#T}](./crm-activity-delete.md)
-- [{#T}](./crm-activity-list.md)
-- [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](./crm-activity-get.md)
+- [{#T}](./crm-activity-list.md)
+- [{#T}](./crm-activity-delete.md)
+- [{#T}](./crm-activity-call-get-transcript.md)
+- [{#T}](./crm-activity-communication-fields.md)

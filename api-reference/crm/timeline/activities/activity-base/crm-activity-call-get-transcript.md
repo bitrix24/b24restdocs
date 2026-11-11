@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to the CRM object
+> Who can execute the method: a user with read access to at least one linked CRM object
 
 The `crm.activity.call.getTranscript` method returns the text of a completed call transcription using a CRM activity identifier.
 
@@ -250,13 +250,17 @@ You can obtain the identifier using the [crm.activity.list](./crm-activity-list.
     	return fmt.Errorf("crm.activity.call.getTranscript: %w", err)
     }
 
-    var item struct {
+    var item *struct {
     	Transcription string `json:"transcription"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Transcription)
+    if item == nil {
+        fmt.Println("There is no transcript for this call")
+    } else {
+        fmt.Println(item.Transcription)
+    }
     ```
 
 {% endlist %}
@@ -303,7 +307,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP status: **400**
 
 ```json
 {
@@ -318,14 +322,17 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {activityId} | The required parameter `activityId` was not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {activityId}. Should be value of type int. | The `activityId` value cannot be converted to an integer. The error message includes the supplied value, for example `abc` ||
 || `400` | `NOT_FOUND` | Item not found | Activity with the specified `activityId` was not found or is not linked to CRM objects ||
-|| `403` | `ACCESS_DENIED` | Access denied | The user does not have permission to read linked CRM objects or AI call processing is disabled in Bitrix24 ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to read any linked CRM object or AI call processing is disabled in Bitrix24 ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [CRM Activities in the Timeline: Methods Overview](./index.md)
 - [{#T}](./crm-activity-get.md)
 - [{#T}](./crm-activity-list.md)
 - [{#T}](./crm-activity-delete.md)

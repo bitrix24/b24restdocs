@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read permission for at least one CRM item or at least one SPA in automated solutions
 
 {% note warning "DEPRECATED" %}
 
@@ -23,7 +23,7 @@ The `crm.activity.communication.fields` method returns a communication descripti
 
 ## Method Parameters
 
-No parameters
+No parameters.
 
 ## Code Examples
 
@@ -304,7 +304,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](#all-fields) ||
+[`object`](../../../../data-types.md) | An object whose keys are [Communication Field Names](#all-fields) and whose values are metadata objects: `type`, `isRequired`, `isReadOnly`, `isImmutable`, `isMultiple`, `isDynamic`, `title`. The properties are described in the [Activity Field Reference](./crm-activity-fields.md#field-metadata) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -342,13 +342,18 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
+#|
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `Access denied.` | No read permission for any CRM item or any SPA in automated solutions. Check the user's permissions ||
+|#
+
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-update.md)
-- [{#T}](./crm-activity-delete.md)
-- [{#T}](./crm-activity-list.md)
-- [{#T}](./crm-activity-fields.md)
 - [{#T}](./crm-activity-get.md)
+- [{#T}](./crm-activity-list.md)
+- [{#T}](./crm-activity-delete.md)
+- [{#T}](./crm-activity-fields.md)
