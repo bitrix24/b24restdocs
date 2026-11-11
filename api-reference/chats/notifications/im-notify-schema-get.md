@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.notify.schema.get` returns the schema of available notification types by modules.
+The method `im.notify.schema.get` returns the notification types of the Bitrix24 account, grouped by module.
 
 ## Method Parameters
 
-No parameters
+No parameters.
 
 ## Code Examples
 
@@ -55,14 +55,15 @@ No parameters
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
+    // Keys of result are module codes: blog, calendar, tasks and so on
     type NotificationSchemaResult = Record<string, ModuleSchema>
 
     type ModuleSchema = {
-      name: string
-      module_id: string
-      list: Array<{
-        id: string
-        name: string
+      NAME: string
+      MODULE_ID: string
+      LIST: Array<{
+        ID: string
+        NAME: string
       }>
     }
 
@@ -78,7 +79,9 @@ No parameters
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(Object.keys(result), result)
+        for (const module of Object.values(result)) {
+          console.info(module.NAME, module.LIST.map((item) => item.ID))
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -110,7 +113,9 @@ No parameters
           }
 
           const result = response.getData().result
-          console.info(Object.keys(result), result)
+          for (const module of Object.values(result)) {
+            console.info(module.NAME, module.LIST.map((item) => item.ID))
+          }
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -191,20 +196,21 @@ No parameters
     	return fmt.Errorf("im.notify.schema.get: %w", err)
     }
 
-    // The method wraps the response in an object with the "tasks" key.
-    raw, ok := b24.Unwrap(res.Result, "tasks")
-    if !ok {
-    	return fmt.Errorf("no tasks key in the response")
+    // The keys of result are module codes: blog, calendar, tasks, and others
+    var modules map[string]struct {
+    	Name     string `json:"NAME"`
+    	ModuleID string `json:"MODULE_ID"`
+    	List     []struct {
+    		ID   string `json:"ID"`
+    		Name string `json:"NAME"`
+    	} `json:"LIST"`
     }
-
-    var item struct {
-    	Name     string `json:"name"`
-    	ModuleID string `json:"module_id"`
-    }
-    if err := json.Unmarshal(raw, &item); err != nil {
+    if err := json.Unmarshal(res.Result, &modules); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Name, item.ModuleID)
+    for code, module := range modules {
+    	fmt.Println(code, module.Name, len(module.List))
+    }
     ```
 
 {% endlist %}
@@ -221,24 +227,60 @@ HTTP Status: **200**
             "MODULE_ID": "tasks",
             "LIST": [
                 {
-                    "ID": "tasks|task_update",
-                    "NAME": "Task Updates"
+                    "ID": "tasks|comment",
+                    "NAME": "New comment added to a task"
+                },
+                {
+                    "ID": "tasks|reminder",
+                    "NAME": "Task reminder"
+                },
+                {
+                    "ID": "tasks|manage",
+                    "NAME": "Task created or updated"
+                },
+                {
+                    "ID": "tasks|task_assigned",
+                    "NAME": "Task assigned to you"
+                },
+                {
+                    "ID": "tasks|task_expired_soon",
+                    "NAME": "Task almost overdue"
+                }
+            ]
+        },
+        "rest": {
+            "NAME": "Market",
+            "MODULE_ID": "rest",
+            "LIST": [
+                {
+                    "ID": "rest|app_install",
+                    "NAME": "New app installed"
+                },
+                {
+                    "ID": "rest|app_install_request",
+                    "NAME": "App installation request"
+                },
+                {
+                    "ID": "rest|vi_user_data_request",
+                    "NAME": "App requested data access"
                 }
             ]
         }
     },
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-03T10:00:00+01:00",
-        "date_finish": "2026-03-03T10:00:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317532,
+        "finish": 1794317532.176408,
+        "duration": 0.176408052444458,
+        "processing": 0,
+        "date_start": "2026-11-10T14:32:12+01:00",
+        "date_finish": "2026-11-10T14:32:12+01:00",
+        "operating_reset_at": 1794318120,
         "operating": 0
     }
 }
 ```
+
+The example shows two modules from the response. The full response contains all modules of the Bitrix24 account that send notifications, for example `blog`, `calendar`, `crm`, `disk`, `im`, `tasks`.
 
 ### Returned Data
 
@@ -246,14 +288,12 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The notification schema object, with the top-level key being `MODULE_ID`. 
-
-The structure of the module object is described in detail [below](#module-object) ||
+[`object`](../../data-types.md) | Object in which the key is a module code, for example `tasks`, and the value is a description of the module and its notification types [(detailed description)](#module-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Object \{MODULE_ID\} {#module-object}
+#### Module Object {#module-object}
 
 #|
 || **Name**
@@ -261,11 +301,9 @@ The structure of the module object is described in detail [below](#module-object
 || **NAME**
 [`string`](../../data-types.md) | The name of the module ||
 || **MODULE_ID**
-[`string`](../../data-types.md) | The module identifier ||
+[`string`](../../data-types.md) | Module code. Matches the object key in `result` and the `notify_module` field of a notification ||
 || **LIST**
-[`array`](../../data-types.md) | A list of notification types for the module. 
-
-The structure of the list item is described in detail [below](#list-item-object) ||
+[`array`](../../data-types.md) | Array of the module's notification types [(detailed description)](#list-item-object) ||
 |#
 
 #### LIST Item {#list-item-object}
@@ -274,7 +312,11 @@ The structure of the list item is described in detail [below](#list-item-object)
 || **Name**
 `Type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | The identifier of the notification type in the format ```MODULE|EVENT``` ||
+[`string`](../../data-types.md) | Notification type code in the format ```MODULE|EVENT```, for example ```tasks|comment```.
+
+Use it in the `SEARCH_TYPE` and `SEARCH_TYPES` parameters of the [im.notify.history.search](./im-notify-history-search.md) method. Matches the `setting_name` field of a notification in the [im.notify.get](./im-notify-get.md) response.
+
+The schema does not contain all codes that occur in notifications: for example, app notifications come with the ```rest|rest_notify``` code, which is not in `LIST` ||
 || **NAME**
 [`string`](../../data-types.md) | The name of the notification type ||
 |#
@@ -290,7 +332,7 @@ HTTP Status: **401**
 }
 ```
 
-The method has no error codes of its own — only system REST API errors are possible.
+The method has no error codes of its own, only system REST API errors are possible.
 
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 

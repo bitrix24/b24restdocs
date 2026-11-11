@@ -29,22 +29,25 @@ The method cannot be called with session authorization — it returns the `WRONG
 || **Name**
 `Type` | **Description** ||
 || **USER_ID***
-[`integer`](../../data-types.md) | Identifier of the user receiving the notification. 
+[`integer`](../../data-types.md) | Identifier of the user receiving the notification. The recipient must be an active Bitrix24 user: if the user is not found or is inactive, the method returns `result: false`.
 
 You can obtain the user ID using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.user.get](../users/im-user-get.md) ||
 || **MESSAGE***
-[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the edges of the string before sending. Supports BB codes — see more in the [Message Formatting](../messages/formatting.md) section ||
+[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the edges of the string; a string consisting only of spaces causes the `MESSAGE_EMPTY` error. Supports BB codes — see more in the [Message Formatting](../messages/formatting.md) section ||
 || **MESSAGE_OUT**
-[`string`](../../data-types.md) | The text of the notification for external channels, such as email. If not provided, an empty value is sent ||
+[`string`](../../data-types.md) | The text of the notification for external channels, such as email ||
 || **TAG**
-[`string`](../../data-types.md) | A unique tag for the notification within the application. When adding a notification with an existing tag, other notifications will be removed. Pass with `CLIENT_ID` when calling via webhook ||
+[`string`](../../data-types.md) | The notification tag. If the recipient already has a notification from this application with the same tag, the previous notification is deleted.
+
+The tag is retained only when the method is called from an application: the method appends the application key to it, so tags of different applications do not overlap. When the method is called via a webhook, the parameter is ignored ||
 || **SUB_TAG**
-[`string`](../../data-types.md) | An additional tag for the notification without uniqueness checks. Pass with `CLIENT_ID` when calling via webhook ||
+[`string`](../../data-types.md) | An additional tag for the notification without uniqueness checks. Notifications can be deleted by the `TAG` and `SUB_TAG` tags using the [im.notify.delete](./im-notify-delete.md) method.
+
+The tag is retained only when the method is called from an application. When the method is called via a webhook, the parameter is ignored ||
 || **ATTACH**
+[`array`](../../data-types.md)
 [`object`](../../data-types.md) 
-[`string`](../../data-types.md) | Attachment for the notification in object format or JSON string. See more in the [Attachments](../messages/attachments.md) section ||
-|| **CLIENT_ID**
-[`string`](../../data-types.md) | The application identifier. The parameter is required only when calling via a webhook: pass it together with `TAG` and `SUB_TAG` ||
+[`string`](../../data-types.md) | A notification attachment: an array of blocks, an object with the `BLOCKS` key, or a JSON string. The attachment size in JSON must be less than 60,000 characters. The block format is described in the [Attachments](../messages/attachments.md) section ||
 |#
 
 ## Code Examples
@@ -59,7 +62,7 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"USER_ID":5,"MESSAGE":"Task Reminder","MESSAGE_OUT":"Task Reminder (email)","TAG":"TASK_REMINDER_42","SUB_TAG":"TASK_REMINDER|42"}' \
+      -d '{"USER_ID":5,"MESSAGE":"Approve invoice [B]#42[/B]","MESSAGE_OUT":"Approve invoice #42","ATTACH":[{"MESSAGE":"Amount: 15,000 EUR"},{"LINK":{"NAME":"Open invoice","LINK":"https://example.com/invoice/42"}}]}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.notify.personal.add
     ```
 
@@ -69,7 +72,7 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"USER_ID":5,"MESSAGE":"Task Reminder","MESSAGE_OUT":"Task Reminder (email)","TAG":"TASK_REMINDER_42","SUB_TAG":"TASK_REMINDER|42","auth":"**put_access_token_here**"}' \
+      -d '{"USER_ID":5,"MESSAGE":"Approve invoice [B]#42[/B]","MESSAGE_OUT":"Approve invoice #42","ATTACH":[{"MESSAGE":"Amount: 15,000 EUR"},{"LINK":{"NAME":"Open invoice","LINK":"https://example.com/invoice/42"}}],"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/im.notify.personal.add
     ```
 
@@ -88,10 +91,12 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
         method: 'im.notify.personal.add',
         params: {
           USER_ID: 5,
-          MESSAGE: 'Task reminder',
-          MESSAGE_OUT: 'Task reminder (email)',
-          TAG: 'TASK_REMINDER_42',
-          SUB_TAG: 'TASK_REMINDER|42',
+          MESSAGE: 'Approve invoice [B]#42[/B]',
+          MESSAGE_OUT: 'Approve invoice #42',
+          ATTACH: [
+            { MESSAGE: 'Amount: 15,000 EUR' },
+            { LINK: { NAME: 'Open invoice', LINK: 'https://example.com/invoice/42' } },
+          ],
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -124,10 +129,12 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
             method: 'im.notify.personal.add',
             params: {
               USER_ID: 5,
-              MESSAGE: 'Task reminder',
-              MESSAGE_OUT: 'Task reminder (email)',
-              TAG: 'TASK_REMINDER_42',
-              SUB_TAG: 'TASK_REMINDER|42',
+              MESSAGE: 'Approve invoice [B]#42[/B]',
+              MESSAGE_OUT: 'Approve invoice #42',
+              ATTACH: [
+                { MESSAGE: 'Amount: 15,000 EUR' },
+                { LINK: { NAME: 'Open invoice', LINK: 'https://example.com/invoice/42' } },
+              ],
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -158,10 +165,12 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
     try:
         bitrix_response = client.im.notify.personal.add(
             user_id=5,
-            message="Task notification",
-            message_out="Task notification (email)",
-            tag="TASK_REMINDER_42",
-            sub_tag="TASK_REMINDER|42",
+            message="Approve invoice [B]#42[/B]",
+            message_out="Approve invoice #42",
+            attach=[
+                {"MESSAGE": "Amount: 15,000 EUR"},
+                {"LINK": {"NAME": "Open invoice", "LINK": "https://example.com/invoice/42"}},
+            ],
         ).response
         result = bitrix_response.result
         print(result)
@@ -186,10 +195,12 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
             'im.notify.personal.add',
             [
                 'USER_ID' => 5,
-                'MESSAGE' => 'Task Reminder',
-                'MESSAGE_OUT' => 'Task Reminder (email)',
-                'TAG' => 'TASK_REMINDER_42',
-                'SUB_TAG' => 'TASK_REMINDER|42',
+                'MESSAGE' => 'Approve invoice [B]#42[/B]',
+                'MESSAGE_OUT' => 'Approve invoice #42',
+                'ATTACH' => [
+                    ['MESSAGE' => 'Amount: 15,000 EUR'],
+                    ['LINK' => ['NAME' => 'Open invoice', 'LINK' => 'https://example.com/invoice/42']],
+                ],
             ]
         );
 
@@ -208,10 +219,12 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
         'im.notify.personal.add',
         {
             USER_ID: 5,
-            MESSAGE: 'Task Reminder',
-            MESSAGE_OUT: 'Task Reminder (email)',
-            TAG: 'TASK_REMINDER_42',
-            SUB_TAG: 'TASK_REMINDER|42',
+            MESSAGE: 'Approve invoice [B]#42[/B]',
+            MESSAGE_OUT: 'Approve invoice #42',
+            ATTACH: [
+                { MESSAGE: 'Amount: 15,000 EUR' },
+                { LINK: { NAME: 'Open invoice', LINK: 'https://example.com/invoice/42' } },
+            ],
         },
         function(result) {
             if (result.error()) {
@@ -232,15 +245,19 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
         'im.notify.personal.add',
         [
             'USER_ID' => 5,
-            'MESSAGE' => 'Task Reminder',
-            'MESSAGE_OUT' => 'Task Reminder (email)',
-            'TAG' => 'TASK_REMINDER_42',
-            'SUB_TAG' => 'TASK_REMINDER|42',
+            'MESSAGE' => 'Approve invoice [B]#42[/B]',
+            'MESSAGE_OUT' => 'Approve invoice #42',
+            'ATTACH' => [
+                ['MESSAGE' => 'Amount: 15,000 EUR'],
+                ['LINK' => ['NAME' => 'Open invoice', 'LINK' => 'https://example.com/invoice/42']],
+            ],
         ]
     );
 
     if (!empty($result['error'])) {
         echo 'Error: ' . $result['error_description'];
+    } elseif ($result['result'] === false) {
+        echo 'Notification not sent';
     } else {
         echo 'Notification ID: ' . $result['result'];
     }
@@ -252,18 +269,21 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "im.notify.personal.add", b24.Params{
     	"USER_ID":     5,
-    	"MESSAGE":     "Task Reminder",
-    	"MESSAGE_OUT": "Task Reminder (email)",
-    	"TAG":         "TASK_REMINDER_42",
-    	"SUB_TAG":     "TASK_REMINDER|42",
+    	"MESSAGE":     "Approve invoice [B]#42[/B]",
+    	"MESSAGE_OUT": "Approve invoice #42",
+    	"ATTACH": []map[string]any{
+    		{"MESSAGE": "Amount: 15,000 EUR"},
+    		{"LINK": map[string]any{"NAME": "Open invoice", "LINK": "https://example.com/invoice/42"}},
+    	},
     })
     if err != nil {
     	return fmt.Errorf("im.notify.personal.add: %w", err)
     }
 
+    // result is the notification ID, or false if the notification was not created
     var newID b24.ID
     if err := json.Unmarshal(res.Result, &newID); err != nil {
-    	return fmt.Errorf("parse response: %w", err)
+    	return fmt.Errorf("notification not created: %s", res.Result)
     }
     fmt.Println("id:", newID)
     ```
@@ -276,15 +296,33 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": 12345,
+    "result": 44001,
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317394,
+        "finish": 1794317394.658411,
+        "duration": 0.6584110260009766,
+        "processing": 0,
+        "date_start": "2026-11-10T16:29:54+01:00",
+        "date_finish": "2026-11-10T16:29:54+01:00",
+        "operating_reset_at": 1794317940,
+        "operating": 0
+    }
+}
+```
+
+If the recipient is not found or is inactive, the method returns HTTP status **200** and `false`:
+
+```json
+{
+    "result": false,
+    "time": {
+        "start": 1794317624,
+        "finish": 1794317624.580945,
+        "duration": 0.5809450149536133,
+        "processing": 0,
+        "date_start": "2026-11-10T16:33:44+01:00",
+        "date_finish": "2026-11-10T16:33:44+01:00",
+        "operating_reset_at": 1794318180,
         "operating": 0
     }
 }
@@ -297,7 +335,9 @@ HTTP Status: **200**
 `Type` | **Description** ||
 || **result**
 [`integer`](../../data-types.md) 
-[`boolean`](../../data-types.md) | Identifier of the created notification. If the notification is not created, it may return `false` ||
+[`boolean`](../../data-types.md) | Identifier of the created notification. Pass it in `ID` of the [im.notify.delete](./im-notify-delete.md) method to delete the notification.
+
+The `false` value means that the notification was not created: the recipient is not found or is inactive ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -318,12 +358,12 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization, which is prohibited for it ||
-|| `USER_ID_EMPTY` | User ID can't be empty | Parameter `USER_ID` not provided or `USER_ID <= 0` ||
-|| `MESSAGE_EMPTY` | Message can't be empty | Message text not provided ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | Exceeded the allowable size of attachment `ATTACH` — 60,000 characters ||
-|| `ATTACH_ERROR` | Incorrect attach params | Incorrect format of attachment `ATTACH` provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | Method called with session authorization, which is prohibited for it ||
+|| `400` | `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter is not passed or its value is not greater than `0` ||
+|| `400` | `MESSAGE_EMPTY` | Message can't be empty | The `MESSAGE` parameter is not passed, is not a string, or contains only spaces ||
+|| `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of the `ATTACH` attachment in JSON is 60,000 characters or more ||
+|| `400` | `ATTACH_ERROR` | Incorrect attach params | The `ATTACH` attachment contains no valid blocks, or a string that is not JSON is passed ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

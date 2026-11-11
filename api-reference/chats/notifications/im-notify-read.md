@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.notify.read` marks a notification or all notifications as read or unread based on the specified parameters.
+The method `im.notify.read` marks the current user's notifications as read or unread.
 
 ## Method Parameters
 
@@ -23,16 +23,32 @@ The method `im.notify.read` marks a notification or all notifications as read or
 || **Name**
 `Type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | The identifier of the notification. When `ID >= 0`, the status is changed; if `ID` is absent, the method will return `true` without any changes ||
+[`integer`](../../data-types.md) | The identifier of the notification. You can retrieve the identifier using the [im.notify.get](./im-notify-get.md) method.
+
+If the parameter is not provided or its value is less than `0`, the method changes nothing and returns `true`.
+
+The value `0` with `ACTION` = `Y` marks all of the user's notifications as read ||
 || **ACTION**
 [`string`](../../data-types.md) | Action on the notifications:
 - `Y` — mark as read
 - `N` — mark as unread
 
+Any value other than the string `Y` is treated as `N`, including the boolean `true`.
+
 Default value is `Y` ||
 || **ONLY_CURRENT**
-[`string`](../../data-types.md) | The value `Y` changes only the notification with the specified `ID`. Any other value changes notifications whose identifiers are equal to or greater than this `ID` ||
+[`string`](../../data-types.md) | Which notifications to change:
+- `Y` — only the notification with the specified `ID`
+- any other value — the notification with the specified `ID` and all notifications with a greater identifier
+
+If the parameter is not provided, the method behaves as with any value other than `Y` ||
 |#
+
+{% note warning "" %}
+
+By default, the method changes the status of the notification with the specified `ID` and of all notifications with a greater identifier. To change only one notification, pass `ONLY_CURRENT` with the value `Y`
+
+{% endnote %}
 
 ## Code Examples
 
@@ -251,13 +267,13 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317405,
+        "finish": 1794317406.001192,
+        "duration": 1.0011920928955078,
+        "processing": 1,
+        "date_start": "2026-11-10T16:30:05+01:00",
+        "date_finish": "2026-11-10T16:30:06+01:00",
+        "operating_reset_at": 1794318000,
         "operating": 0
     }
 }
@@ -269,7 +285,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` after executing the method ||
+[`boolean`](../../data-types.md) | Always `true`. The method returns `true` even if the notification with the specified `ID` is not found or its status has not changed. To check the status, use the `notify_read` field in the response of the [im.notify.get](./im-notify-get.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

@@ -9,9 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of [contacts](../index.md).
-
-In all three events, the handler receives only the contact identifier in `data.FIELDS.ID`, without the field values. After a contact is created or updated, request its data with the method [crm.contact.get](../crm-contact-get.md) or [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 3`. After deletion, the contact is no longer available, so retain the data you need on your side in advance.
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of [contacts](../index.md). Events for creating, updating, and deleting custom contact fields are grouped separately — see [Overview of Events When Working with Custom Contact Fields](../userfield/events/index.md).
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
@@ -25,6 +23,33 @@ You can subscribe to contact events through:
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
+
+## What Data the Events Deliver
+
+All three events share the same request structure — only the code in `event` differs. `data.FIELDS.ID` contains the contact ID; the event carries no field values.
+
+```json
+{
+    "event": "ONCRMCONTACTADD",
+    "event_handler_id": "11",
+    "data": {
+        "FIELDS": {
+            "ID": "89"
+        }
+    },
+    "ts": "1724695689",
+    "auth": {
+        "domain": "some-domain.bitrix24.com",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
+```
+
+Bitrix24 sends the request with content-type `application/x-www-form-urlencoded`, and all values are transmitted as strings. The example is abridged: the full set of `auth` keys, including tokens, is described on the event pages in the [Parameter auth](./on-crm-contact-add.md#auth) section.
+
+After a contact is created or updated, retrieve its data with the [crm.contact.get](../crm-contact-get.md) method or the [crm.item.get](../../universal/crm-item-get.md) method with `entityTypeId = 3`. After deletion, the contact is no longer available, so retain the data you need on your side in advance.
 
 ## Server Availability for Sending and Receiving Events
 

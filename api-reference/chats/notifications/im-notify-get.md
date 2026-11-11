@@ -13,9 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.notify.get` returns a list of user notifications in parts. The next part is requested using `LAST_ID` and `LAST_TYPE`.
-
-Notification sorting: first by descending creation date, then by descending identifiers.
+The method `im.notify.get` returns the current user's notifications page by page.
 
 ## Method Parameters
 
@@ -25,33 +23,34 @@ Notification sorting: first by descending creation date, then by descending iden
 || **Name**
 `Type` | **Description** ||
 || **LAST_ID**
-[`integer`](../../data-types.md) | Identifier of the last notification from the previous page to load the next one. Typically taken from the `id` field of the last element in the `notifications` array in the response of the previous selection step or in the response of [im.notify.history.search](./im-notify-history-search.md)
+[`integer`](../../data-types.md) | Identifier of the last notification on the previous page — the `id` field of the last element in the `notifications` array. The method returns notifications with an identifier less than `LAST_ID`.
 
-The notification identifier is also returned by the methods [im.notify](./im-notify.md), [im.notify.personal.add](./im-notify-personal-add.md), and [im.notify.system.add](./im-notify-system-add.md).
-
-This parameter should be used together with `LAST_TYPE` ||
+Do not pass it for the first page. Pass it together with `LAST_TYPE`, otherwise the method returns the `LAST_ID_AND_LAST_TYPE` error. The value must contain digits only, otherwise the method returns the `LAST_ID_STRING` error ||
 || **LAST_TYPE**
-[`integer`](../../data-types.md) | Technical pagination cursor.
+[`integer`](../../data-types.md) | Type of the last notification on the previous page. Allowed values:
+- `1` — the last notification requires confirmation, its `notify_type` field equals `1`
+- `3` — the last notification is a regular one, its `notify_type` field equals `2` or `4`
 
-Allowed values: 
-- `1` — continue selection from the confirmations stage
-- `3` — continue selection from the regular notifications stage
+Do not pass it for the first page. Pass it together with `LAST_ID`.
 
-This parameter should be used together with `LAST_ID`.
-
-For values other than `1` and `3`, the server does not return a separate error ||
+If you pass `1` when the last notification was a regular one, the method returns regular notifications from the beginning of the list, and they are repeated. For other values, the method returns an empty `notifications` array ||
 || **LIMIT**
-[`integer`](../../data-types.md) | Number of notifications per page. Default value is `50`. Maximum value is `50` ||
+[`integer`](../../data-types.md) | Number of notifications per page. Default is `50`, maximum is `50`. The method reduces a larger value to `50`.
+
+Do not pass `0` or negative values: the method will not return regular notifications ||
 || **CONVERT_TEXT**
-[`string`](../../data-types.md) | Convert notification text. Value `Y` enables conversion, any other value disables it ||
+[`string`](../../data-types.md) | The method accepts the parameter but ignores it ||
 |#
 
-On one page, the method can return a mixed set of notifications: first confirmations, then regular notifications to reach `LIMIT`.
+### How to Retrieve All Notifications {#pagination}
 
-For stable pagination:
+The method sorts notifications by descending creation date, then by descending `id`. Notifications that require confirmation go on the page first, then the method fills the rest of the page with regular notifications.
 
-- pass `LAST_ID` of the last element from the previous page
-- use `LAST_TYPE` from the previous pagination step
+1. Request the first page without `LAST_ID` and `LAST_TYPE`
+2. Take the last element of the `notifications` array. Pass its `id` in `LAST_ID`. If its `notify_type` equals `1`, pass `LAST_TYPE` = `1`, otherwise `LAST_TYPE` = `3`
+3. Repeat step 2 until the method returns fewer notifications than `LIMIT`
+
+The response does not contain a ready-made cursor for the next page: calculate `LAST_ID` and `LAST_TYPE` from the last element.
 
 ## Code Examples
 
@@ -65,7 +64,7 @@ For stable pagination:
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"LAST_ID":1500,"LAST_TYPE":3,"LIMIT":20,"CONVERT_TEXT":"Y"}' \
+      -d '{"LAST_ID":1500,"LAST_TYPE":3,"LIMIT":20}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.notify.get
     ```
 
@@ -75,7 +74,7 @@ For stable pagination:
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"LAST_ID":1500,"LAST_TYPE":3,"LIMIT":20,"CONVERT_TEXT":"Y","auth":"**put_access_token_here**"}' \
+      -d '{"LAST_ID":1500,"LAST_TYPE":3,"LIMIT":20,"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/im.notify.get
     ```
 
@@ -102,9 +101,9 @@ For stable pagination:
       notify_title: string
       setting_name: string
       text: string
-      notify_read: string
-      notify_buttons?: string
       params: object | null
+      notify_read: 'Y' | 'N'
+      notify_buttons?: string
     }
 
     type UserItem = {
@@ -113,20 +112,22 @@ For stable pagination:
       name: string
       first_name: string
       last_name: string
-      work_position: string
+      work_position: string | null
       color: string
       avatar: string
       avatar_hr: string
-      gender: string
+      gender: 'M' | 'F'
       birthday: string
       extranet: boolean
       network: boolean
       bot: boolean
       connector: boolean
       external_auth_id: string
+      internal_account: boolean
+      intranet_user: boolean
       status: string
       idle: ISODate | false
-      last_activity_date: ISODate
+      last_activity_date: ISODate | false
       mobile_last_date: ISODate | false
       desktop_last_date: ISODate | false
       absent: ISODate | false
@@ -139,10 +140,11 @@ For stable pagination:
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
+    // total_count, total_unread_count and chat_id are absent when the user has no notifications
     type ImNotifyGetResult = {
-      total_count: number
-      total_unread_count: number
-      chat_id: number
+      total_count?: number
+      total_unread_count?: number
+      chat_id?: number
       notifications: NotificationItem[]
       users: UserItem[]
     }
@@ -154,7 +156,6 @@ For stable pagination:
           LAST_ID: 1500,
           LAST_TYPE: 3,
           LIMIT: 20,
-          CONVERT_TEXT: 'Y',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -164,8 +165,13 @@ For stable pagination:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Total notifications:', result.total_count, 'Unread:', result.total_unread_count)
         console.info('Notifications on page:', result.notifications.length)
+
+        // Cursor for the next page is built from the last notification
+        const last = result.notifications.at(-1)
+        if (last && result.notifications.length === 20) {
+          console.info('Next page:', { LAST_ID: last.id, LAST_TYPE: last.notify_type === 1 ? 1 : 3 })
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -190,7 +196,6 @@ For stable pagination:
               LAST_ID: 1500,
               LAST_TYPE: 3,
               LIMIT: 20,
-              CONVERT_TEXT: 'Y',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -202,8 +207,13 @@ For stable pagination:
           }
 
           const result = response.getData().result
-          console.info('Total notifications:', result.total_count, 'Unread:', result.total_unread_count)
           console.info('Notifications on page:', result.notifications.length)
+
+          // Cursor for the next page is built from the last notification
+          const last = result.notifications.at(-1)
+          if (last && result.notifications.length === 20) {
+            console.info('Next page:', { LAST_ID: last.id, LAST_TYPE: last.notify_type === 1 ? 1 : 3 })
+          }
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -224,7 +234,6 @@ For stable pagination:
             last_id=1500,
             last_type=3,
             limit=20,
-            convert_text=True,
         ).response
         result = bitrix_response.result
         print(result)
@@ -251,7 +260,6 @@ For stable pagination:
                 'LAST_ID' => 1500,
                 'LAST_TYPE' => 3,
                 'LIMIT' => 20,
-                'CONVERT_TEXT' => 'Y',
             ]
         );
 
@@ -272,7 +280,6 @@ For stable pagination:
             LAST_ID: 1500,
             LAST_TYPE: 3,
             LIMIT: 20,
-            CONVERT_TEXT: 'Y',
         },
         function(result) {
             if (result.error()) {
@@ -295,7 +302,6 @@ For stable pagination:
             'LAST_ID' => 1500,
             'LAST_TYPE' => 3,
             'LIMIT' => 20,
-            'CONVERT_TEXT' => 'Y',
         ]
     );
 
@@ -311,10 +317,9 @@ For stable pagination:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "im.notify.get", b24.Params{
-    	"LAST_ID":      1500,
-    	"LAST_TYPE":    3,
-    	"LIMIT":        20,
-    	"CONVERT_TEXT": "Y",
+    	"LAST_ID":   1500,
+    	"LAST_TYPE": 3,
+    	"LIMIT":     20,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("im.notify.get: %w", err)
@@ -324,11 +329,26 @@ For stable pagination:
     	TotalCount       int `json:"total_count"`
     	TotalUnreadCount int `json:"total_unread_count"`
     	ChatID           int `json:"chat_id"`
+    	Notifications    []struct {
+    		ID         int    `json:"id"`
+    		NotifyType int    `json:"notify_type"`
+    		Text       string `json:"text"`
+    	} `json:"notifications"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.TotalCount, item.TotalUnreadCount)
+    fmt.Println(item.TotalCount, item.TotalUnreadCount, len(item.Notifications))
+
+    // The next page cursor is built from the last notification
+    if n := len(item.Notifications); n == 20 {
+    	last := item.Notifications[n-1]
+    	lastType := 3
+    	if last.NotifyType == 1 {
+    		lastType = 1
+    	}
+    	fmt.Println("LAST_ID:", last.ID, "LAST_TYPE:", lastType)
+    }
     ```
 
 {% endlist %}
@@ -340,72 +360,103 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "total_count": 120,
-        "total_unread_count": 5,
-        "chat_id": 77,
+        "total_count": 34,
+        "total_unread_count": 13,
+        "chat_id": 2535,
         "notifications": [
             {
-                "id": 1500,
-                "chat_id": 77,
-                "author_id": 1,
-                "date": "2026-03-03T09:00:00+00:00",
+                "id": 1499,
+                "chat_id": 2535,
+                "author_id": 0,
+                "date": "2026-11-10T14:30:11+01:00",
+                "notify_type": 4,
+                "notify_module": "rest",
+                "notify_event": "rest_notify",
+                "notify_tag": "",
+                "notify_sub_tag": "",
+                "notify_title": "",
+                "setting_name": "rest|rest_notify",
+                "text": "Invoice [B]#42[/B] has been paid",
+                "params": {
+                    "ATTACH": [
+                        {
+                            "ID": 1794317528,
+                            "BLOCKS": [
+                                {
+                                    "MESSAGE": "Amount: 15,000 EUR"
+                                }
+                            ],
+                            "DESCRIPTION": "",
+                            "COLOR": "#29619b",
+                            "COLOR_TOKEN": "base"
+                        }
+                    ]
+                },
+                "notify_read": "N"
+            },
+            {
+                "id": 1497,
+                "chat_id": 2535,
+                "author_id": 15,
+                "date": "2026-11-10T14:29:54+01:00",
                 "notify_type": 2,
                 "notify_module": "rest",
                 "notify_event": "rest_notify",
-                "notify_tag": "MP|12345|TASK_42",
-                "notify_sub_tag": "MP|12345|TASK|42",
+                "notify_tag": "",
+                "notify_sub_tag": "",
                 "notify_title": "",
                 "setting_name": "rest|rest_notify",
-                "text": "Reminder",
-                "notify_read": "N",
-                "params": null
+                "text": "Check the contract by the end of the day",
+                "params": null,
+                "notify_read": "N"
             }
         ],
         "users": [
             {
-                "id": 1,
+                "id": 15,
                 "active": true,
-                "name": "John Smith",
-                "first_name": "John",
-                "last_name": "Smith",
-                "work_position": "",
-                "color": "#1eb4aa",
-                "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
-                "avatar_hr": "https://example.bitrix24.com/upload/main/avatar.png",
+                "name": "Klaus Weber",
+                "first_name": "Klaus",
+                "last_name": "Weber",
+                "work_position": null,
+                "color": "#58cc47",
+                "avatar": "https://cdn.bitrix24.com/b1234567/main/avatar.png",
+                "avatar_hr": "https://cdn.bitrix24.com/b1234567/main/avatar.png",
                 "gender": "M",
-                "birthday": "15-05",
+                "birthday": "",
                 "extranet": false,
                 "network": false,
                 "bot": false,
                 "connector": false,
                 "external_auth_id": "socservices",
+                "internal_account": true,
+                "intranet_user": false,
                 "status": "online",
                 "idle": false,
-                "last_activity_date": "2026-03-03T15:04:20+02:00",
+                "last_activity_date": "2026-11-10T14:28:38+01:00",
                 "mobile_last_date": false,
                 "desktop_last_date": false,
                 "absent": false,
-                "departments": [1],
+                "departments": [],
                 "phones": {
-                    "work_phone": "+11234567890",
-                    "inner_phone": "22"
+                    "personal_mobile": "4915112345678"
                 },
                 "bot_data": null,
                 "type": "user",
-                "website": "example.com",
-                "email": "john@example.com"
+                "website": "",
+                "email": ""
             }
         ]
     },
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-03T10:00:00+02:00",
-        "date_finish": "2026-03-03T10:00:00+02:00",
-        "operating_reset_at": 1760030000,
-        "operating": 0
+        "start": 1794317458,
+        "finish": 1794317458.62455,
+        "duration": 0.6245501041412354,
+        "processing": 0,
+        "date_start": "2026-11-10T14:30:58+01:00",
+        "date_finish": "2026-11-10T14:30:58+01:00",
+        "operating_reset_at": 1794317940,
+        "operating": 0.120635986328125
     }
 }
 ```
@@ -416,9 +467,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing notification data.
-
-The structure of the object is described in detail [below](#result-object) ||
+[`object`](../../data-types.md) | Object with notifications and their authors [(detailed description)](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -429,22 +478,18 @@ The structure of the object is described in detail [below](#result-object) ||
 || **Name**
 `Type` | **Description** ||
 || **total_count**
-[`integer`](../../data-types.md) | Total number of notifications ||
+[`integer`](../../data-types.md) | Total number of the user's notifications ||
 || **total_unread_count**
 [`integer`](../../data-types.md) | Number of unread notifications ||
 || **chat_id**
-[`integer`](../../data-types.md) | Identifier of the system notification chat ||
+[`integer`](../../data-types.md) | Identifier of the user's system notification chat ||
 || **notifications**
-[`array`](../../data-types.md) | List of notifications.
-
-The structure of the object is described in detail [below](#notification-object) ||
+[`array`](../../data-types.md) | Array of notifications on the page [(detailed description)](#notification-object) ||
 || **users**
-[`array`](../../data-types.md) | Array of objects containing data about notification authors.
-
-The structure of the object is described in detail [below](#users-object) ||
+[`array`](../../data-types.md) | Array of notification authors on the page [(detailed description)](#users-object). System notifications with `author_id` = `0` are not included in the array ||
 |#
 
-If the user does not have a system notification chat or it contains no messages, the method returns only the `notifications` and `users` fields.
+If the user has no notifications, `result` contains only the empty `notifications` and `users` arrays.
 
 #### Notification Object {#notification-object}
 
@@ -452,36 +497,40 @@ If the user does not have a system notification chat or it contains no messages,
 || **Name**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the notification ||
+[`integer`](../../data-types.md) | Identifier of the notification. Use the `id` of the last element as `LAST_ID` for the next page ||
 || **chat_id**
-[`integer`](../../data-types.md) | Identifier of the system notification chat ||
+[`integer`](../../data-types.md) | Identifier of the user's system notification chat ||
 || **author_id**
-[`integer`](../../data-types.md) | Identifier of the notification author ||
+[`integer`](../../data-types.md) | Identifier of the notification author. For system notifications — `0` ||
 || **date**
-[`string`](../../data-types.md) | Date and time of the notification in ISO 8601 format (RFC3339) ||
+[`datetime`](../../data-types.md) | Date and time the notification was created ||
 || **notify_type**
-[`integer`](../../data-types.md) | Type of notification ||
+[`integer`](../../data-types.md) | Type of notification. Possible values:
+- `1` — notification with buttons, requires confirmation
+- `2` — personal notification from a user
+- `4` — system notification
+
+Use the value of the last element to choose `LAST_TYPE` for the next page ||
 || **notify_module**
-[`string`](../../data-types.md) | Identifier of the notification module ||
+[`string`](../../data-types.md) | Identifier of the module that sent the notification ||
 || **notify_event**
 [`string`](../../data-types.md) | Code of the notification event ||
 || **notify_tag**
-[`string`](../../data-types.md) | Notification tag ||
+[`string`](../../data-types.md) | Notification tag or an empty string ||
 || **notify_sub_tag**
-[`string`](../../data-types.md) | Additional notification tag ||
+[`string`](../../data-types.md) | Additional notification tag or an empty string ||
 || **notify_title**
-[`string`](../../data-types.md) | Title of the notification ||
+[`string`](../../data-types.md) | Title of the notification or an empty string ||
 || **setting_name**
-[`string`](../../data-types.md) | Code of the setting in the format ```MODULE|EVENT``` ||
+[`string`](../../data-types.md) | Notification type code in the format ```MODULE|EVENT```. The list of codes is returned by the [im.notify.schema.get](./im-notify-schema-get.md) method ||
 || **text**
-[`string`](../../data-types.md) | Text of the notification ||
-|| **notify_read**
-[`string`](../../data-types.md) | Read status of the notification: `Y` or `N` ||
-|| **notify_buttons**
-[`string`](../../data-types.md) | JSON keyboard for confirmation type notifications. This field is not always present ||
+[`string`](../../data-types.md) | Text of the notification. Formatting is passed as BB codes, for example `[B]...[/B]` ||
 || **params**
-[`object`](../../data-types.md) 
-[`null`](../../data-types.md) | Additional parameters of the notification ||
+[`object`](../../data-types.md) | Additional parameters of the notification, for example an `ATTACH` attachment, or `null` ||
+|| **notify_read**
+[`string`](../../data-types.md) | Read status of the notification. Possible values: `Y` — read, `N` — unread ||
+|| **notify_buttons**
+[`string`](../../data-types.md) | JSON string with the notification buttons. The field is present only in notifications with `notify_type` = `1` ||
 |#
 
 #### Users Object {#users-object}
@@ -500,15 +549,15 @@ If the user does not have a system notification chat or it contains no messages,
 || **last_name**
 [`string`](../../data-types.md) | User's last name ||
 || **work_position**
-[`string`](../../data-types.md) | User's position ||
+[`string`](../../data-types.md) | User's position or `null` ||
 || **color**
 [`string`](../../data-types.md) | User's color in hex format ||
 || **avatar**
-[`string`](../../data-types.md) | Link to the avatar ||
+[`string`](../../data-types.md) | Link to the avatar or an empty string ||
 || **avatar_hr**
-[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+[`string`](../../data-types.md) | Link to the high-resolution avatar or an empty string ||
 || **gender**
-[`string`](../../data-types.md) | User's gender ||
+[`string`](../../data-types.md) | User's gender. Possible values: `M` — male, `F` — female ||
 || **birthday**
 [`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
 || **extranet**
@@ -521,26 +570,30 @@ If the user does not have a system notification chat or it contains no messages,
 [`boolean`](../../data-types.md) | Open Channels user status ||
 || **external_auth_id**
 [`string`](../../data-types.md) | External authorization code ||
+|| **internal_account**
+[`boolean`](../../data-types.md) | Internal account flag: `external_auth_id` does not belong to external authorization types ||
+|| **intranet_user**
+[`boolean`](../../data-types.md) | Employee flag: the user has a department and an internal account ||
 || **status**
 [`string`](../../data-types.md) | User's status ||
 || **idle**
-[`datetime`](../../data-types.md) | User's idle date or `false` ||
+[`boolean`](../../data-types.md) | Always `false` in this method ||
 || **last_activity_date**
-[`datetime`](../../data-types.md) | User's last activity date ||
+[`datetime`](../../data-types.md) | User's last activity date or `false` ||
 || **mobile_last_date**
-[`datetime`](../../data-types.md) | User's last activity date in the mobile app or `false` ||
+[`boolean`](../../data-types.md) | Always `false` in this method ||
 || **desktop_last_date**
-[`datetime`](../../data-types.md) | User's last activity date in the desktop app or `false` ||
+[`boolean`](../../data-types.md) | Always `false` in this method ||
 || **absent**
 [`datetime`](../../data-types.md) | User's absence end date or `false` ||
 || **departments**
 [`array`](../../data-types.md) | Array of department identifiers ||
 || **phones**
-[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+[`object`](../../data-types.md) | User's phones [(detailed description)](#phones) or `false` if the user has no phones ||
 || **bot_data**
 [`object`](../../data-types.md) | Bot data or `null` ||
 || **type**
-[`string`](../../data-types.md) | User type ||
+[`string`](../../data-types.md) | User type. Possible values: `user`, `bot`, `extranet`, `collaber`, `guest` ||
 || **website**
 [`string`](../../data-types.md) | User's website ||
 || **email**
@@ -548,6 +601,8 @@ If the user does not have a system notification chat or it contains no messages,
 |#
 
 #### Phones Object {#phones}
+
+The object contains only the phones that are filled in.
 
 #|
 || **Name**
@@ -576,9 +631,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `LAST_ID_AND_LAST_TYPE` | Parameters LAST_ID and LAST_TYPE should be used together | Only one parameter from the pair `LAST_ID` and `LAST_TYPE` was passed ||
-|| `LAST_ID_STRING` | Last notification ID can't be string | The `LAST_ID` parameter contains a non-numeric value ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `LAST_ID_AND_LAST_TYPE` | Parameters LAST_ID and LAST_TYPE should be used together | Only one parameter from the pair `LAST_ID` and `LAST_TYPE` was passed ||
+|| `400` | `LAST_ID_STRING` | Last notification ID can't be string | The `LAST_ID` value contains characters other than digits, for example `abc` or `-5` ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

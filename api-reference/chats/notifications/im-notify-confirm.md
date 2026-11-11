@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.notify.confirm` sends the selected value of the notification button.
+The method `im.notify.confirm` clicks a button in a notification of the current user and deletes that notification.
+
+{% note info "" %}
+
+Notifications with buttons are created by Bitrix24 modules, for example meeting invitations in the calendar. The [im.notify.personal.add](./im-notify-personal-add.md) and [im.notify.system.add](./im-notify-system-add.md) methods do not create such notifications
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,17 +29,16 @@ The method `im.notify.confirm` sends the selected value of the notification butt
 || **Name**
 `Type` | **Description** ||
 || **NOTIFY_ID***
-[`integer`](../../data-types.md) | Identifier of the notification with buttons. 
+[`integer`](../../data-types.md) | Identifier of the notification with buttons. You can retrieve the identifier using the [im.notify.get](./im-notify-get.md) method; for such notifications, the `notify_type` field equals `1`.
 
-You can obtain the notification identifier using the [im.notify.get](./im-notify-get.md) method. ||
+Instead of `NOTIFY_ID`, you can pass the `ID` parameter. If both are passed, the method uses `ID` ||
 || **NOTIFY_VALUE***
-[`string`](../../data-types.md) | Value of the selected button. ||
+[`string`](../../data-types.md) | Value of the selected button. The values are set by the module that sent the notification.
+
+For example, a notification with the "Accept" and "Decline" buttons has the values `Y` and `N`.
+
+The method treats the string `0` as an empty value and returns the `NOTIFY_VALUE_ERROR` error ||
 |#
-
-For example, consider a notification that supports buttons:
-- Accept — value `'Y'`
-- Decline — value `'N'`
-
 
 ## Code Examples
 
@@ -252,17 +257,37 @@ HTTP Status: **200**
 {
     "result": {
         "result_message": [
-            "Invitation accepted"
+            "Your selection: \"Accept\""
         ]
     },
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317487,
+        "finish": 1794317487.750427,
+        "duration": 0.7504270076751709,
+        "processing": 0,
+        "date_start": "2026-11-10T16:31:27+01:00",
+        "date_finish": "2026-11-10T16:31:27+01:00",
+        "operating_reset_at": 1794318060,
+        "operating": 0
+    }
+}
+```
+
+If the notification is not found among the current user's notifications or has no buttons, the method returns HTTP status **200** and `false` in the `result_message` field:
+
+```json
+{
+    "result": {
+        "result_message": false
+    },
+    "time": {
+        "start": 1794317487,
+        "finish": 1794317487.750427,
+        "duration": 0.7504270076751709,
+        "processing": 0,
+        "date_start": "2026-11-10T16:31:27+01:00",
+        "date_finish": "2026-11-10T16:31:27+01:00",
+        "operating_reset_at": 1794318060,
         "operating": 0
     }
 }
@@ -274,9 +299,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the result of the button press. 
-
-The structure of the object is described in detail [below](#result-object) ||
+[`object`](../../data-types.md) | Object containing the result of the button press [(detailed description)](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -288,7 +311,11 @@ The structure of the object is described in detail [below](#result-object) ||
 `Type` | **Description** ||
 || **result_message**
 [`array`](../../data-types.md) 
-[`boolean`](../../data-types.md) | Response from the notification button handler. May contain an array of strings or `false` ||
+[`boolean`](../../data-types.md) | Result of the button press:
+- an array of strings — messages from the module that processed the button press. If the module returned no message, the array contains the text `Your selection: "<button name>"`. If the `NOTIFY_VALUE` value does not match any button, the array may be empty
+- `false` — the notification with the specified identifier is not found among the current user's notifications, or the notification has no buttons
+
+After the button is pressed, the notification is deleted, even if the array is empty ||
 |#
 
 ## Error Handling
@@ -307,9 +334,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ID_ERROR` | Notification ID can't be empty | Parameter `NOTIFY_ID` is not provided or `<= 0` ||
-|| `NOTIFY_VALUE_ERROR` | Notification Value can't be empty | Empty parameter `NOTIFY_VALUE` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ID_ERROR` | Notification ID can't be empty | The `NOTIFY_ID` and `ID` parameters are not provided, or the value is less than or equal to `0` ||
+|| `400` | `NOTIFY_VALUE_ERROR` | Notification Value  can't be empty | The `NOTIFY_VALUE` parameter is not provided, is empty, or equals the string `0` ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
