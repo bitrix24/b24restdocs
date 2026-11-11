@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.notify.answer` sends a text quick response to a notification.
+The method `im.notify.answer` sends a text quick response to a notification of the current user.
+
+{% note info "" %}
+
+The response is processed by the module that sent the notification. Notifications with a quick response are created by Bitrix24 modules; the [im.notify.personal.add](./im-notify-personal-add.md) and [im.notify.system.add](./im-notify-system-add.md) methods do not create such notifications
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,11 +29,13 @@ The method `im.notify.answer` sends a text quick response to a notification.
 || **Name**
 `Type` | **Description** ||
 || **NOTIFY_ID*** 
-[`integer`](../../data-types.md) | The identifier of the notification that supports a quick response.
+[`integer`](../../data-types.md) | The identifier of the notification that supports a quick response. You can retrieve the identifier using the [im.notify.get](./im-notify-get.md) method.
 
-You can obtain the notification identifier using the [im.notify.get](./im-notify-get.md) method. ||
+Instead of `NOTIFY_ID`, you can pass the `ID` parameter. If both are passed, the method uses `ID` ||
 || **ANSWER_TEXT*** 
-[`string`](../../data-types.md) | The text of the quick response. ||
+[`string`](../../data-types.md) | The text of the quick response.
+
+If the author of the notification is a user, the method adds a mention of the author at the beginning of the response ||
 |#
 
 ## Code Examples
@@ -68,7 +76,7 @@ You can obtain the notification identifier using the [im.notify.get](./im-notify
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type NotifyAnswerResult = {
-      result_message: string[] | boolean
+      result_message: string[] | false
     }
 
     try {
@@ -251,13 +259,33 @@ HTTP Status: **200**
         ]
     },
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317469,
+        "finish": 1794317469.716437,
+        "duration": 0.7164371013641357,
+        "processing": 0,
+        "date_start": "2026-11-10T16:31:09+01:00",
+        "date_finish": "2026-11-10T16:31:09+01:00",
+        "operating_reset_at": 1794318060,
+        "operating": 0
+    }
+}
+```
+
+If the notification is not found among the current user's notifications, the method returns HTTP status **200** and `false` in the `result_message` field:
+
+```json
+{
+    "result": {
+        "result_message": false
+    },
+    "time": {
+        "start": 1794317474,
+        "finish": 1794317474.076111,
+        "duration": 0.0761110782623291,
+        "processing": 0,
+        "date_start": "2026-11-10T16:31:14+01:00",
+        "date_finish": "2026-11-10T16:31:14+01:00",
+        "operating_reset_at": 1794318060,
         "operating": 0
     }
 }
@@ -269,9 +297,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object containing the result of the response submission. 
-
-The structure of the object is described in detail [below](#result-object) ||
+[`object`](../../data-types.md) | An object containing the result of the response submission [(detailed description)](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -283,7 +309,9 @@ The structure of the object is described in detail [below](#result-object) ||
 `Type` | **Description** ||
 || **result_message**
 [`array`](../../data-types.md) 
-[`boolean`](../../data-types.md) | The response from the quick response handler. It may contain an array of strings or `false`. ||
+[`boolean`](../../data-types.md) | Result of sending the response:
+- an array of strings — messages from the module that processed the response. If the module returned no message, the array contains the text `Your reply has been sent.`
+- `false` — the notification with the specified identifier is not found among the current user's notifications, or `ANSWER_TEXT` consists of whitespace only ||
 |#
 
 ## Error Handling
@@ -302,9 +330,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ID_ERROR` | Notification ID can't be empty | The `NOTIFY_ID` parameter is not provided or is `<= 0`. ||
-|| `ANSWER_TEXT_ERROR` | ANSWER_TEXT can't be empty | The `ANSWER_TEXT` parameter is empty. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ID_ERROR` | Notification ID can't be empty | The `NOTIFY_ID` and `ID` parameters are not provided, or the value is less than or equal to `0` ||
+|| `400` | `ANSWER_TEXT_ERROR` | ANSWER_TEXT can't be empty | The `ANSWER_TEXT` parameter is not provided or is empty ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

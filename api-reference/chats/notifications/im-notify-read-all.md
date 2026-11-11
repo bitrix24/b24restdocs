@@ -226,9 +226,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with the result of the method execution. 
-
-The structure of the object is described in detail [below](#result-object) ||
+[`object`](../../data-types.md) | Object with the result of the method execution [(detailed description)](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -239,9 +237,11 @@ The structure of the object is described in detail [below](#result-object) ||
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Flag indicating successful operation execution ||
+[`boolean`](../../data-types.md) | Result of the operation:
+- `true` — the notifications are marked as read
+- `false` — the operation was not performed, in which case `newCounter` is `0` ||
 || **newCounter**
-[`integer`](../../data-types.md) | Current value of the unread notifications counter after the operation ||
+[`integer`](../../data-types.md) | The user's unread notifications counter after the operation ||
 |#
 
 ## Error Handling

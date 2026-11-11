@@ -15,12 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The method `im.notify.delete` removes a notification by `ID` or by tags `TAG` and `SUB_TAG`.
 
-{% note warning "" %}
-
-You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -29,20 +23,27 @@ You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
 || **Name**
 `Type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the notification to be deleted.
+[`integer`](../../data-types.md)
+[`array`](../../data-types.md) | A notification identifier or an array of identifiers. The identifier is returned in the `result` field by the sending methods [im.notify](./im-notify.md), [im.notify.personal.add](./im-notify-personal-add.md), and [im.notify.system.add](./im-notify-system-add.md), and also by the [im.notify.get](./im-notify-get.md) method.
 
-Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
+The method deletes only notifications whose recipient is the current user. If no such notification is found, the method returns `false` ||
 || **TAG**
-[`string`](../../data-types.md) | Unique tag of the notification within the application. Only notifications from the current application are deleted.
+[`string`](../../data-types.md) | The tag passed in `TAG` when the notification was sent. The method deletes notifications of the current application with this tag for all recipients.
 
-Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
+Notifications sent via a webhook have no tags — delete them by `ID` ||
 || **SUB_TAG**
-[`string`](../../data-types.md) | Additional tag of the notification. Only notifications from the current application are deleted.
-
-Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
+[`string`](../../data-types.md) | The tag passed in `SUB_TAG` when the notification was sent. The method deletes notifications of the current application with this tag for all recipients ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same `CLIENT_ID` that was specified during the chat bot registration ||
+[`string`](../../data-types.md) | The identifier the method uses to determine the application key when deleting by `TAG` or `SUB_TAG` via a webhook. Without it, a webhook call without `ID` returns the `ACCESS_DENIED` error.
+
+Not required when calling from an application ||
 |#
+
+{% note warning "" %}
+
+Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG`. If several are passed, the method uses the first one in this order: `ID`, then `TAG`, then `SUB_TAG`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -247,13 +248,13 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317795,
+        "finish": 1794317795.872754,
+        "duration": 0.8727540969848633,
+        "processing": 0,
+        "date_start": "2026-11-10T16:36:35+01:00",
+        "date_finish": "2026-11-10T16:36:35+01:00",
+        "operating_reset_at": 1794318360,
         "operating": 0
     }
 }
@@ -265,7 +266,10 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns the result of the notification deletion ||
+[`boolean`](../../data-types.md) | The deletion result. The value depends on the deletion method:
+- by `ID` — `true` if at least one notification is deleted, `false` if the notification is not found or its recipient is another user
+- by `TAG` — always `true`, even if there are no notifications with this tag
+- by `SUB_TAG` — `true` if at least one notification is deleted, `false` if there are no notifications with this tag ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -276,8 +280,8 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": "PARAMS_ERROR",
-    "error_description": "Incorrect params"
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Client ID not specified"
 }
 ```
 
@@ -286,9 +290,9 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `PARAMS_ERROR` | Incorrect params | `ID`, `TAG`, or `SUB_TAG` not provided, or the request was made with session authorization without `ID` ||
-|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: missing `clientId` authorization and `CLIENT_ID` not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Client ID not specified | A webhook call without `ID` and without `CLIENT_ID`, including an empty request ||
+|| `400` | `PARAMS_ERROR` | Incorrect params | None of the parameters `ID`, `TAG`, and `SUB_TAG` is passed, or the request was made with session authorization without `ID` ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

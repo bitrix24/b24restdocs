@@ -23,15 +23,17 @@ The method `im.notify.read.list` marks a list of notifications as read or unread
 || **Name**
 `Type` | **Description** ||
 || **IDS***
-[`array`](../../data-types.md) | An array of notification identifiers. If any value in the array is `<= 0`, processing stops at that element ||
+[`integer[]`](../../data-types.md) | An array of notification identifiers, for example `[101, 102, 103]`. You can retrieve the identifiers using the [im.notify.get](./im-notify-get.md) method.
+
+The method processes the elements in order. If it encounters a value less than or equal to `0`, processing stops: this element and all subsequent ones are not changed ||
 || **ACTION**
 [`string`](../../data-types.md) | Action on the notifications:
 - `Y` — mark as read
 - `N` — mark as unread
 
-The default value is `Y`.
+Any value other than the string `Y` is treated as `N`, including the boolean `true`.
 
-If any value other than `Y` is provided, the method applies the action as for `N` ||
+The default value is `Y` ||
 |#
 
 ## Code Examples
@@ -226,7 +228,7 @@ If any value other than `Y` is provided, the method applies the action as for `N
     res, err := client.Core().Call(ctx, "im.notify.read.list", b24.Params{
     	"IDS":    []int{101, 102, 103},
     	"ACTION": "Y",
-    }, b24.WithIdempotent())
+    })
     if err != nil {
     	return fmt.Errorf("im.notify.read.list: %w", err)
     }
@@ -248,13 +250,13 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1760000000.0,
-        "finish": 1760000000.1,
-        "duration": 0.1,
-        "processing": 0.04,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
-        "operating_reset_at": 1760030000,
+        "start": 1794317450,
+        "finish": 1794317450.275195,
+        "duration": 0.2751948833465576,
+        "processing": 0,
+        "date_start": "2026-11-10T16:30:50+01:00",
+        "date_finish": "2026-11-10T16:30:50+01:00",
+        "operating_reset_at": 1794318000,
         "operating": 0
     }
 }
@@ -266,7 +268,7 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` after processing the list of notifications ||
+[`boolean`](../../data-types.md) | Always `true` if the `IDS` parameter is passed as an array. The method returns `true` even if notifications with the specified identifiers are not found. To check the status, use the `notify_read` field in the response of the [im.notify.get](./im-notify-get.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -287,8 +289,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `PARAMS_ERROR` | No IDS param or it is not an array | The `IDS` parameter is not provided or is not an array ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `PARAMS_ERROR` | No IDS param or it is not an array | The `IDS` parameter is not provided or is not passed as an array, for example as the number `101` ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
