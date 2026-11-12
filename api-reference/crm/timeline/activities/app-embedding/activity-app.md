@@ -2,10 +2,10 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Permissions are checked for the CRM item linked to the activity:
+> Who can execute the methods: a user with the permissions required for the specific action:
 >
-> - [crm.activity.add](../activity-base/crm-activity-add.md) and [crm.activity.update](../activity-base/crm-activity-update.md) — permission to modify the item
-> - [crm.activity.delete](../activity-base/crm-activity-delete.md) — permission to delete the item
+> - [crm.activity.add](../activity-base/crm-activity-add.md) and [crm.activity.update](../activity-base/crm-activity-update.md) — permission to modify the linked CRM item
+> - [crm.activity.delete](../activity-base/crm-activity-delete.md) — permission to delete the linked CRM item
 
 {% note tip "" %}
 
@@ -38,11 +38,16 @@ The scenario uses the following methods:
 - [crm.activity.update](../activity-base/crm-activity-update.md) — updates or completes the activity
 - [crm.activity.delete](../activity-base/crm-activity-delete.md) — deletes the activity
 
-Next, build the application page step by step: prepare the file, determine the opening mode, add the interface, and set up the work with the activity. To call REST methods and interface functions, use the [BX24.js](../../../../../sdk/bx24-js-sdk/index.md) JavaScript library.
+Next, build the application page step by step: prepare the file, determine the opening mode, add the interface, and set up the work with the activity. To call REST API methods and interface functions, use the [BX24.js](../../../../../sdk/bx24-js-sdk/index.md) JavaScript library.
 
 ## 1. Prepare the Application {#start}
 
-Create an [application](../../../../../settings/app-installation/index.md) with the [`crm`](../../../../scopes/permissions.md) scope and prepare a server accessible from the external network.
+Create an [application](../../../../../settings/app-installation/index.md) with the [`crm`](../../../../scopes/permissions.md) scope and prepare a server with an HTTPS address accessible from the external network. An application installation URL is not required for this scenario.
+
+Before you begin, prepare:
+
+- the identifier of an existing employee who will be responsible for the activity. Substitute it into the `responsibleId` variable in step four
+- access to the leads you will use to test the scenario. The application user must have permissions to modify and delete the selected lead
 
 Create the `index.php` file on the server. In the following steps, add the code blocks to it one after another. After the last step, you will have a complete application page.
 
@@ -120,7 +125,7 @@ Right after the PHP block, add the HTML markup. It displays the required buttons
 <p id="status" role="status"></p>
 ```
 
-When the user launches the application in Bitrix24, the page displays buttons for selecting a lead and creating an activity. When the user opens the created activity from the timeline, the page displays its identifier and the actions to complete or delete it.
+The `$isActivityView` branch displays actions for the opened activity, while the alternative branch displays lead selection and activity creation. The `#status` element displays result messages in both modes.
 
 ## 4. Initialize BX24.js {#initialize}
 
@@ -154,12 +159,11 @@ The [BX24.js](../../../../../sdk/bx24-js-sdk/index.md) library is already includ
 </script>
 ```
 
-After `BX24.init` runs, the page becomes visible. The `showStatus` and `showError` functions display the result of the REST calls.
+After `BX24.init` runs, the page becomes visible. The `showStatus` and `showError` functions display the result of REST API calls.
 
 ## 5. Add Activity Creation {#create}
 
-To create an application activity, call the [crm.activity.add](../activity-base/crm-activity-add.md) method with the `PROVIDER_ID=REST_APP` field. An activity with `PROVIDER_ID=REST_APP` can be created only from an installed application. It can be updated or deleted only by the application that created it.
-When called through a webhook, Bitrix24 returns the error `Application context required.`, and when called from another application — `Access denied.`
+To create an application activity, call the [crm.activity.add](../activity-base/crm-activity-add.md) method with the `PROVIDER_ID=REST_APP` field. An activity with `PROVIDER_ID=REST_APP` can be created only from an installed application. It can be updated or deleted only by the application that created it. When called through a webhook, Bitrix24 returns the error `Application context required.`, and when called from another application, it returns `Access denied.`
 
 The [crm.activity.add](../activity-base/crm-activity-add.md) method is marked as deprecated, but in this scenario it cannot be replaced with [crm.activity.todo.add](../todo/crm-activity-todo-add.md): that method does not accept the `PROVIDER_ID` field.
 
@@ -176,7 +180,7 @@ The main fields for creating an activity:
 - `PROVIDER_ID*` — the provider identifier. For an application activity, pass `REST_APP`
 - `PROVIDER_TYPE_ID` — the type of the application activity. If the field is not passed, Bitrix24 uses the value `LINK`
 - `SUBJECT*` — the name of the activity in the timeline
-- `RESPONSIBLE_ID*` — the identifier of the employee responsible for the activity
+- `RESPONSIBLE_ID` — the identifier of the employee responsible for the activity. Pass it explicitly in this scenario
 
 The `TYPE_ID` field is normally required for [crm.activity.add](../activity-base/crm-activity-add.md). For `REST_APP`, it can be omitted: the method automatically sets the activity type to "Provider".
 
@@ -249,11 +253,37 @@ After the previous block, add the functions for selecting a lead and creating an
 
 After a successful call to [crm.activity.add](../activity-base/crm-activity-add.md), the page displays the numeric identifier of the created activity.
 
+Example of a successful response with HTTP status `200`:
+
+```json
+{
+    "result": 123,
+    "time": {
+        "start": 1712132792.910734,
+        "finish": 1712132793.530359,
+        "duration": 0.6196250915527344,
+        "processing": 0.032338857650756836,
+        "date_start": "2024-04-03T10:26:32+02:00",
+        "date_finish": "2024-04-03T10:26:33+02:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
+}
+```
+
+The `result` field contains the activity identifier, which is `123` in this example. The `time` field contains request timing information. When the user opens this activity in the timeline, Bitrix24 passes the same identifier to the application page in `PLACEMENT_OPTIONS.activity_id`.
+
 ## 6. Add Activity Update and Deletion {#manage}
 
 To complete an activity, pass its identifier to the [crm.activity.update](../activity-base/crm-activity-update.md) method and set the `COMPLETED=Y` field.
 
 To delete an activity, pass the same identifier to the [crm.activity.delete](../activity-base/crm-activity-delete.md) method.
+
+{% note warning "" %}
+
+The `crm.activity.delete` source code has a defect: when checking ownership of a `REST_APP` activity, the application identifier is read as a string and compared strictly to a numeric identifier without type casting. Therefore, in normal operation, when the activity is loaded from the database, the method returns `Access denied.` even for the application that created it. Until the method is fixed, deleting such an activity through this scenario does not work, while updating the activity remains available.
+
+{% endnote %}
 
 Add the following block after the activity creation functions. It also closes the `body` and `html` elements, so place it at the end of the file:
 
@@ -309,11 +339,29 @@ Add the following block after the activity creation functions. It also closes th
 </html>
 ```
 
-The methods return `true` after the activity is successfully updated or deleted. The page displays a message about the completed action.
+After a successful update or deletion, the [crm.activity.update](../activity-base/crm-activity-update.md) and [crm.activity.delete](../activity-base/crm-activity-delete.md) methods return a response with HTTP status `200` and the same structure:
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1712132792.910734,
+        "finish": 1712132793.530359,
+        "duration": 0.6196250915527344,
+        "processing": 0.032338857650756836,
+        "date_start": "2024-04-03T10:26:32+02:00",
+        "date_finish": "2024-04-03T10:26:33+02:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
+}
+```
+
+The `result=true` value confirms a successful update or deletion. The `time` field contains request timing information. The page displays a message about the completed action.
 
 ## 7. Deploy and Check the Application {#check}
 
-Save `index.php` and place it on a server accessible from the external network. Specify the resulting URL as the address of the main page of the application, then install the application in Bitrix24.
+Save `index.php` and place it on a server accessible from the external network. Specify the resulting HTTPS address as the address of the main page of the application.
 
 Check the scenario:
 
@@ -321,4 +369,16 @@ Check the scenario:
 2. Check that the application displayed the numeric identifier of the new activity
 3. Open the card of the selected lead and find the activity in the timeline
 4. Click the activity and check that Bitrix24 opened the application with the same identifier
-5. Complete or delete the activity and check the result in the timeline
+5. Complete the activity and check its status in the timeline
+
+## Errors and Diagnostics {#errors}
+
+The `showError` function displays the error code and description returned by the method. Resolve the issue based on the message:
+
+- `Application context required.` — the call was made outside the application context, for example, through an inbound webhook. Open the installed application page and repeat the action from step five or six
+- `Access denied.` — the user lacks permissions for the action: creating and updating an activity requires permission to modify the linked CRM item, and deleting an activity requires permission to delete this item. This error also occurs if another application created the activity. Check the permissions and activity ownership, then repeat the action
+- `Activity is not found.` — the activity with the identifier from `activity_id` was not found or has already been deleted. Open the current activity from the timeline and repeat step six
+- `Could not build binding. Please ensure that owner info and communications are defined correctly.` — the activity owner is not specified. Check that `OWNER_TYPE_ID=1` and `OWNER_ID` contains a positive numeric identifier without the `L_` prefix, then repeat step five
+- `Could not find 'LEAD' with ID: N` — no lead with the identifier `N` was found. Select an existing lead and repeat step five
+
+If the page remains hidden and the buttons are unavailable, check the application's HTTPS address and make sure that BX24.js loads and `BX24.init` runs. After correcting the issue, reload the application page. Until you receive an identifier in the `crm.activity.add` response, do not consider the activity created and do not blindly repeat the call: check the timeline of the selected lead first.

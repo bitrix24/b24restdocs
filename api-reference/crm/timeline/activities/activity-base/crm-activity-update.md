@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to update the activity
+> Who can execute the method: any user with permission to modify each linked CRM item
 
 {% note warning "DEPRECATED" %}
 

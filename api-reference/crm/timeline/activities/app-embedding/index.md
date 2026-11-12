@@ -27,14 +27,19 @@ To ensure the application opens inside Bitrix24, it requires its own web page �
 
 ## Getting Started
 
-1. Prepare a handler — an application page with a URL accessible from an external network.
-2. Select a scenario and an embedding point in the [How to Choose a Scenario and an Embedding Point](#all-placements) table.
+1. Prepare a handler — an application page with an HTTPS address accessible from an external network
+2. Create and install an application with the [`crm`](../../../../scopes/permissions.md) scope. To register an embedding point, add the `placement` scope
+3. Select a scenario and an embedding point in the [How to Choose a Scenario and an Embedding Point](#all-placements) table
 
-**If the application adds an item to the activity menu.** Register the handler using the [placement.bind](../../../../widgets/placement-bind.md) method and pass the required placement code to `PLACEMENT`. See the request example in the [Code Examples](../../../../widgets/placement-bind.md#code-examples) block of the [placement.bind](../../../../widgets/placement-bind.md) method. After registration, verify that the menu item appears in the CRM activity list or in the CRM card timeline.
+**If the application adds an item to the activity menu.** Register the handler using the [placement.bind](../../../../widgets/placement-bind.md) method in the application context and pass the required placement code to `PLACEMENT`. The method is unavailable through an inbound webhook.
 
-**If the application creates its own activity in the CRM.** Use the [crm.activity.add](../activity-base/crm-activity-add.md) method within the installed application and pass the value `PROVIDER_ID=REST_APP` to `fields`. This allows Bitrix24 to recognize that the activity belongs to the application and, upon opening, display the application page in a slider.
+The handler can be registered by a Bitrix24 administrator, by an employee with permission to create applications for everyone (in a local application available to them), or by the owner of a personal application (in their own application). For details and a request example, see [placement.bind](../../../../widgets/placement-bind.md).
 
-Activities with provider `REST_APP` can only be created, updated, or deleted from within the application. If [crm.activity.add](../activity-base/crm-activity-add.md), [crm.activity.update](../activity-base/crm-activity-update.md), or [crm.activity.delete](../activity-base/crm-activity-delete.md) methods are called via a webhook, Bitrix24 will return error `Application context required`.
+After registration, [complete the application installation](../../../../../settings/app-installation/installation-finish.md) if it is not completed yet. Then verify that the menu item appears in the CRM activity list or in the CRM card timeline.
+
+**If the application creates its own activity in the CRM.** Use the [crm.activity.add](../activity-base/crm-activity-add.md) method within the installed application and pass the value `PROVIDER_ID=REST_APP` to `fields`. This allows Bitrix24 to recognize that the activity belongs to the application and, upon opening, display the application page in a slider. To create and update the activity, the user must have permission to modify the CRM item linked to it; to delete the activity, the user must have permission to delete this item.
+
+Activities with provider `REST_APP` can only be created, updated, or deleted from within the application. If [crm.activity.add](../activity-base/crm-activity-add.md), [crm.activity.update](../activity-base/crm-activity-update.md), or [crm.activity.delete](../activity-base/crm-activity-delete.md) methods are called via a webhook, Bitrix24 will return error `Application context required.`.
 
 You can pass the application activity type in `PROVIDER_TYPE_ID`, for example, `LINK`. The type helps the application distinguish between different types of created activities. If the parameter is not passed, Bitrix24 uses `LINK` by default. After creation, open the activity and verify that Bitrix24 opens the application page in a slider.
 
@@ -48,12 +53,14 @@ You can pass the application activity type in `PROVIDER_TYPE_ID`, for example, `
 
 When Bitrix24 opens a handler, it passes the call data to the page in `PLACEMENT_OPTIONS`. This is a set of parameters through which the application understands where it was opened from and which activity it needs to work with. The composition `PLACEMENT_OPTIONS` depends on the selected embedding point.
 
-The `CRM_XXX_ACTIVITY_TIMELINE_MENU` code in the table is a template for embedding points in the CRM card timeline. Instead of `XXX`, the card type is used. 
+For standard cards, use the `CRM_XXX_ACTIVITY_TIMELINE_MENU` template, where `XXX` is the card type. For an SPA, use `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU`, where `XXX` is the numeric identifier of the custom object type.
+
 A complete list of codes can be found on the [CRM Activity Context Menu Item Page](../../../../widgets/crm/activity-timeline-menu.md).
 
 #|
 || **If needed** | **Use** | **What the handler receives** ||
 || Add an item to the activity in the CRM activity list | [`CRM_ACTIVITY_LIST_MENU`](../../../../widgets/crm/list-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/list-menu.md#placement_options) with activity ID `ID` ||
-|| Add an item to the activity in the CRM card timeline | [`CRM_XXX_ACTIVITY_TIMELINE_MENU`](../../../../widgets/crm/activity-timeline-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/activity-timeline-menu.md#placement_options) with CRM card ID `ENTITY_ID` and activity ID `ASSOCIATED_ENTITY_ID` ||
-|| Create an activity that opens the application | [How to create an activity from the application](./activity-app.md) | [`PLACEMENT_OPTIONS`](./activity-app.md) with activity ID `activity_id` ||
+|| Add an item to the activity in a standard CRM card timeline | [`CRM_XXX_ACTIVITY_TIMELINE_MENU`](../../../../widgets/crm/activity-timeline-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/activity-timeline-menu.md#placement_options) with CRM card ID `ENTITY_ID` and activity ID `ASSOCIATED_ENTITY_ID` ||
+|| Add an item to the activity in the SPA timeline | [`CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU`](../../../../widgets/crm/activity-timeline-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/activity-timeline-menu.md#placement_options) with the item ID `ENTITY_ID` and activity ID `ASSOCIATED_ENTITY_ID` ||
+|| Create an activity that opens the application | [How to create an activity from the application](./activity-app.md) | [`PLACEMENT_OPTIONS`](./activity-app.md#placement-options) with the action `view_activity` and activity ID `activity_id` ||
 |#
