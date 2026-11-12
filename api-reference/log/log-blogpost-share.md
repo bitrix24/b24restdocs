@@ -310,7 +310,7 @@ HTTP Status: **400**
 || — | `Blog module not installed` | `blog` module is not installed ||
 || — | `Wrong destinations` | Invalid list of recipients `DEST` ||
 || — | `No read perms` | Insufficient permissions to read the message ||
-|| — | No access to one or more message recipients | No permissions for one or more recipients from `DEST` ||
+|| — | `Access to one or more message recipients was denied` | `DEST` contains an external user who is not accessible to the current user. The error can occur if the `extranet` module is installed. Portal administrators and department employees are always valid recipients ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

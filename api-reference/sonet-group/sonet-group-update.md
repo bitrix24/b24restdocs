@@ -65,6 +65,12 @@ Possible values:
 [`datetime`](../data-types.md) | Project start date in ISO-8601 format. ||
 || **PROJECT_DATE_FINISH**
 [`datetime`](../data-types.md) | Project end date in ISO-8601 format. ||
+|| **SCRUM_MASTER_ID**
+[`integer`](../data-types.md) | Scrum master identifier.
+
+If the project does not have a scrum master yet, the assignment counts toward the Scrum project limit of the plan. When the limit is reached and no trial is available, the method returns the `Cannot update group` error.
+
+The user identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **OWNER_ID**
 [`integer`](../data-types.md) | New owner of the group.
 
@@ -345,7 +351,8 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || — | `Wrong group ID` | Incorrect `GROUP_ID` provided. ||
 || — | `User has no permissions to update group` | Insufficient rights to modify the group or project. ||
-|| — | `Cannot update group` | Failed to update the group or project. ||
+|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `OWNER_ID` or the new members include a user who is not an employee. ||
+|| — | `Cannot update group` | Failed to update the group or project. For example, the Scrum project limit is reached when assigning `SCRUM_MASTER_ID`. ||
 || `ERROR_IMAGE_ID` | `Image is incorrect: Invalid file type` | Incorrect `IMAGE` provided. ||
 |#
 
