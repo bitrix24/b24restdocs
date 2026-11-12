@@ -1,4 +1,4 @@
-# Add a New Sales Funnel crm.category.add
+# Add a New Pipeline crm.category.add
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a user with the permission to manage pipelines. For an SPA of a digital workplace, the permission is checked within that workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method creates a new sales funnel (direction) for the CRM object type with the identifier `entityTypeId`.
+The `crm.category.add` method creates a new pipeline for the CRM object type with the identifier `entityTypeId`.
 
 ## Method Parameters
 
@@ -29,22 +29,22 @@ This method creates a new sales funnel (direction) for the CRM object type with 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the new funnel will be created ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the new pipeline will be created ||
 || **fields***
-[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parameter-fields)) for adding a new funnel in the form of a structure:
+[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parametr-fields)) for adding a new pipeline in the form of a structure:
 
 ```js
 fields: {
-    name: "value",
-    sort: "value",
-    isDefault: "value",
+    name: "New pipeline",
+    sort: 50,
+    isDefault: "N",
 },
 ```
 
  ||
 |#
 
-### Parameter fields
+### Parameter fields {#parametr-fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -52,40 +52,29 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../../data-types.md) | Name of the funnel. The name can be:
-- length cannot exceed `255` characters
-- cannot be empty
-- cannot consist solely of spaces, tabs, etc.
-
-Defaults to `-` ||
+[`string`](../../../data-types.md) | Pipeline name:
+- no longer than `255` characters
+- not empty
+- not consisting solely of whitespace characters ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort index. 
+[`integer`](../../../data-types.md) | Sort index. A negative value is ignored.
 
-Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and set to `sort = 0`
-
-Defaults to `500` || 
+For a deal pipeline, if `sort` is not passed or is negative, `0` is used. For contact, company, and SPA pipelines, `500` is used in these cases ||
 || **isDefault**
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel. Can have values:
-- `Y` — yes, it is
-- `N` — no
+[`boolean`](../../../data-types.md) | Default pipeline flag. Can have values:
+- `Y` or `true` — yes
+- `N` or `false` — no
 
 Defaults to `N`.
 
-In deals, the `isDefault` field is not available for modification. 
+In deals, the `isDefault` field is ignored. A default pipeline cannot be created for contacts and companies: the value `Y` or `true` causes an error.
 
-Restrictions on changing the `isDefault` field in SPAs:
-- the default direction cannot be deleted,
-- when creating a new direction and passing it the flag `isDefault: "Y"`, the old default direction will cease to be the default direction,
-- when changing the default direction, it cannot be made a non-default direction,
-- when changing a non-default direction and passing it the flag `isDefault: "Y"`, the old default direction will cease to be the default direction.
-
-If the display of directions in the interface is disabled for an existing SPA, working with directions via REST is still possible.
-||
+For an SPA, when a pipeline is created with `isDefault: "Y"`, the previous default pipeline loses this flag. Restrictions on changing and deleting are described in [crm.category.update](./crm-category-update.md#parametr-fields) and [crm.category.delete](./crm-category-delete.md) ||
 |#
 
 ## Code Examples
 
-Create a new default funnel in the SPA with `entityTypeId = 1152`.
+Create a new default pipeline in the SPA with `entityTypeId = 1152`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -97,7 +86,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId": 1152, "fields": {"name": "New Default Funnel", "sort": 50, "isDefault": "Y"}}' \
+    -d '{"entityTypeId": 1152, "fields": {"name": "New Default Pipeline", "sort": 50, "isDefault": "Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.category.add
     ```
 
@@ -107,7 +96,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId": 1152, "fields": {"name": "New Default Funnel", "sort": 50, "isDefault": "Y"}, "auth": "**put_access_token_here**"}' \
+    -d '{"entityTypeId": 1152, "fields": {"name": "New Default Pipeline", "sort": 50, "isDefault": "Y"}, "auth": "**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.category.add
     ```
 
@@ -242,7 +231,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
                 [
                     'entityTypeId' => 1152,
                     'fields' => [
-                        'name'     => 'New Default Funnel',
+                        'name'     => 'New Default Pipeline',
                         'sort'     => 50,
                         'isDefault' => 'Y',
                     ],
@@ -271,7 +260,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
         {
             entityTypeId: 1152,
             fields: {
-                name: "New Default Funnel",
+                name: "New Default Pipeline",
                 sort: 50,
                 isDefault: 'Y',
             },
@@ -300,7 +289,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
         [
             'entityTypeId' => 1152,
             'fields' => [
-                'name' => "New Default Funnel",
+                'name' => "New Default Pipeline",
                 'sort' => 50,
                 'isDefault' => 'Y',
             ]
@@ -319,7 +308,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
     res, err := client.Core().Call(ctx, "crm.category.add", b24.Params{
     	"entityTypeId": 1152,
     	"fields": b24.Params{
-    		"name":      "New Default Funnel",
+    		"name":      "New Default Pipeline",
     		"sort":      50,
     		"isDefault": "Y",
     	},
@@ -358,7 +347,7 @@ HTTP Status: **200**
     "result": {
         "category": {
             "id": 5,
-            "name": "New Default Funnel",
+            "name": "New Default Pipeline",
             "sort": 50,
             "entityTypeId": 1152,
             "isDefault": "Y"
@@ -376,14 +365,15 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Values
+### Returned Data
+
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](#category) object with information about the funnel ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](#category) object with information about the pipeline ||
 || **time**
-[`object`](../../../data-types.md) | Object containing information about the execution time of the request  ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Object category {#category}
@@ -392,41 +382,41 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Identifier of the funnel (direction) ||
+[`integer`](../../../data-types.md) | Identifier of the pipeline ||
 || **name**
-[`string`](../../../data-types.md) | Name of the funnel ||
+[`string`](../../../data-types.md) | Name of the pipeline ||
 || **sort**
 [`integer`](../../../data-types.md) | Sort index ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the pipeline belongs ||
 || **isDefault**
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel ||
+[`boolean`](../../../data-types.md) | Default pipeline flag: `Y` — yes, `N` — no ||
 || **originId**
-[`string`](../../../data-types.md) | Identifier of the data source.
+[`string`](../../../data-types.md) | Identifier of the item in the data source.
 
 Exists only in deals ||
 || **originatorId**
-[`string`](../../../data-types.md) | Identifier of the element in the data source.
+[`string`](../../../data-types.md) | Identifier of the data source.
 
 Exists only in deals ||
 || **isSystem** 
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is a system funnel.
+[`boolean`](../../../data-types.md) | Indicates whether the pipeline is a system pipeline.
 
-Exists only in SPAs ||
+The field is present for contact and company pipelines ||
 || **code**
-[`string`](../../../data-types.md) | Alias for system funnels.
+[`string`](../../../data-types.md) | Alias for system pipelines.
 
-Exists only in SPAs ||
+The field is present for contact and company pipelines ||
 |#
 
 ## Error Handling
 
-HTTP Status: **160**, **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "NOT_FOUND", 
-    "error_description": "SPA not found"
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
@@ -435,19 +425,20 @@ HTTP Status: **160**, **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `ADDING_DISABLED` | Adding a system category is prohibited | Occurs when attempting to create a system funnel in SPAs ||
-|| `ACCESS_DENIED` | Access denied | Occurs if the user does not have sufficient rights to add a funnel ||
-|| `0` | Field 'NAME' is required | Occurs if the required field `name` is not provided ||
-|| `0` | Default client category does not support updating default state | Occurs when attempting to create a default funnel for `contacts` or `companies` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | The CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. `{entityTypeName}` is replaced with the name of the object type ||
+|| `400` | `ADDING_DISABLED` | Cannot add a system pipeline | Occurs when `fields.isSystem = "Y"` is passed: creating system pipelines is prohibited ||
+|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have sufficient rights to add a pipeline ||
+|| `400` | `0` | Field 'NAME' is required. | Occurs if the `name` field is not passed or is empty when creating a deal pipeline ||
+|| `400` | `160` | Internal server error. | Occurs when attempting to create a default pipeline for contacts or companies: the common pipeline does not support changing the `isDefault` flag ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [CRM Pipelines: Overview of Methods](./index.md)
 - [{#T}](./crm-category-update.md)
 - [{#T}](./crm-category-get.md)
 - [{#T}](./crm-category-list.md)

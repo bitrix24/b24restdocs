@@ -1,4 +1,4 @@
-# Get Fields of the Sales Funnel crm.category.fields
+# Get Pipeline Fields crm.category.fields
 
 {% note tip "" %}
 
@@ -11,15 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an administrator or an intranet user if the `intranet` module is installed; without this module, any user
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.category.field.list](../../rest-v3/categories/index.md). Pipelines of invoices, CRM documents, and B2E documents are not available in REST 3.0 yet, so use this method for them.
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.category.field.list](../../rest-v3/categories/index.md#field-methods). Pipelines of invoices, CRM documents, and B2E documents are not available in REST 3.0 yet, so use this method for them.
 
 {% endnote %}
 
-The method retrieves information about the fields of the sales funnels (directions) of the CRM object.
+The `crm.category.fields` method retrieves information about the pipeline fields of a CRM object.
 
 ## Method Parameters
 
@@ -29,7 +29,7 @@ The method retrieves information about the fields of the sales funnels (directio
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM objects for which to retrieve information about the funnel fields ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which to retrieve information about the pipeline fields. The object type must support pipelines: [list of supported objects](./index.md#which-objects-support-pipelines) ||
 |#
 
 ## Code Examples
@@ -255,6 +255,8 @@ The method retrieves information about the fields of the sales funnels (directio
 
 HTTP status: **200**
 
+Example response for a deal with `entityTypeId = 2`:
+
 ```json
 {
     "result": {
@@ -349,7 +351,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [object field](#fields), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | Root object of the result. Contains the `fields` key ||
+|| **fields**
+[`object`](../../../data-types.md) | Object where each key is the identifier of a [pipeline field](#fields) and each value is its description in the [crm_rest_field_description](../../data-types.md#crm_rest_field_description) format ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -360,41 +364,43 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Identifier of the funnel (direction) ||
+[`integer`](../../../data-types.md) | Identifier of the pipeline ||
 || **name**
-[`string`](../../../data-types.md) | Name of the funnel ||
+[`string`](../../../data-types.md) | Name of the pipeline ||
 || **sort**
 [`integer`](../../../data-types.md) | Sort index ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the pipeline belongs ||
 || **isDefault**
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel ||
+[`boolean`](../../../data-types.md) | Indicates whether the pipeline is the default pipeline ||
 || **originId**
-[`string`](../../../data-types.md) | Identifier of the data source.
-
-Exists only in deals ||
-|| **originatorId**
 [`string`](../../../data-types.md) | Identifier of the item in the data source.
 
 Exists only in deals ||
+|| **originatorId**
+[`string`](../../../data-types.md) | Identifier of the data source.
+
+Exists only in deals ||
 || **isSystem** 
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is a system funnel.
+[`boolean`](../../../data-types.md) | Indicates whether the pipeline is a system pipeline.
 
-Exists only in SPAs ||
+Returned in the metadata of contacts, companies, invoices, CRM documents, B2E documents, and SPAs ||
 || **code**
-[`string`](../../../data-types.md) | Alias for system funnels.
+[`string`](../../../data-types.md) | Alias for system pipelines.
 
-Exists only in SPAs ||
+Returned in the metadata of contacts, companies, invoices, CRM documents, B2E documents, and SPAs ||
 |#
+
+The presence of `isSystem` and `code` in the metadata does not guarantee that they are present in the [crm.category.list](./crm-category-list.md) response: for contacts and companies these fields are returned, while for SPAs they may be missing.
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status of the example: **400**
 
 ```json
 {
     "error": "NOT_FOUND", 
-    "error_description": "SPA not found"
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
@@ -403,9 +409,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` |  Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {entityTypeId} | The required `entityTypeId` parameter is not provided ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | A CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. The name of the object type is returned in place of `{entityTypeName}` ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | The user is not an administrator or an intranet user while the `intranet` module is installed ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}

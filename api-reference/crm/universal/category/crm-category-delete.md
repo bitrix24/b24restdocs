@@ -1,4 +1,4 @@
-# Delete Sales Funnel crm.category.delete
+# Delete a Pipeline crm.category.delete
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a user with the permission to manage pipelines. For an SPA of a digital workplace, the permission is checked within that workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -19,12 +19,11 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method deletes a funnel (direction) with the identifier `id`.
+The method `crm.category.delete` deletes a pipeline with the identifier `id`.
 
-{% note warning "Cannot delete:" %}
+{% note warning "Deletion restrictions" %}
 
-* Default funnels
-* Funnels that have at least one element
+You cannot delete a system pipeline or a pipeline that contains items. In deals, you also cannot delete the default pipeline. In an SPA, the default pipeline cannot be deleted if this object type has at least one item.
 
 {% endnote %}
 
@@ -36,14 +35,14 @@ This method deletes a funnel (direction) with the identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM object from which the funnel will be deleted   ||
+[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM object for which the pipeline will be deleted. The object type must support pipelines: [list of supported objects](./index.md#which-objects-support-pipelines) ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the pipeline to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a pipeline with the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
 
-Delete the funnel with `id = 5`, located in deals.
+Delete the pipeline with `id = 5`, located in deals.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -277,17 +276,17 @@ HTTP status: **200**
 || **result**
 [`null`](../../../data-types.md) | Root element of the response, equal to `null` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **160**, **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error_description": "Item was not found."
 }
 ```
 
@@ -296,24 +295,28 @@ HTTP status: **160**, **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `NOT_FOUND` | Element not found | Occurs if the funnel to be deleted does not exist ||
-|| `REMOVING_DISABLED` | Deletion of system category is prohibited | Occurs when attempting to delete a system funnel ||
-|| `ACCESS_DENIED` | Access denied | Occurs if the user deleting the funnel does not have sufficient rights ||
-|| `0` | Deals related to the funnel `{categoryName}` found | Occurs if the funnel to be deleted has at least one element. Relevant only for `deals` ||
-|| `0` | Default deal category cannot be deleted | Occurs when attempting to delete a default funnel. Relevant only for `deals` ||
-|| `BX_ERROR` | Elements related to the funnel found | Occurs if the funnel to be deleted has at least one element. Relevant for `SPAs` ||
-|| `BX_ERROR` | This funnel is the default funnel | Occurs when attempting to delete a default funnel. Relevant for `SPAs` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `100` | Could not find value for parameter {entityTypeId} | The required parameter `entityTypeId` is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | A value of the wrong type is provided. Example: `id=abc` instead of an integer ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | The CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. The object type name is returned instead of `{entityTypeName}` ||
+|| `400` | `NOT_FOUND` | Item was not found | Occurs if the pipeline to be deleted does not exist ||
+|| `400` | `REMOVING_DISABLED` | Cannot delete a system pipeline | Occurs when attempting to delete a system pipeline ||
+|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have the permission to manage pipelines in the corresponding CRM or digital workplace ||
+|| `400` | `0` | Found "{categoryName}" pipeline deals | Occurs if the deal pipeline to be deleted contains at least one deal. The pipeline name is returned instead of `{categoryName}` ||
+|| `400` | `BX_ERROR` | There are items in this pipeline | Occurs if the SPA pipeline to be deleted contains at least one item ||
+|| `400` | `BX_ERROR` | This is a default pipeline | Occurs when attempting to delete the default SPA pipeline if this object type has at least one item ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [CRM Pipelines: Overview of Methods](./index.md)
 - [{#T}](./crm-category-add.md)
 - [{#T}](./crm-category-update.md)
 - [{#T}](./crm-category-get.md)
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-fields.md)
+- [How to Create a New Pipeline with Stages in an SPA](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)

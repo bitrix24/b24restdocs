@@ -1,4 +1,4 @@
-# Get the list of Sales Funnels crm.category.list
+# Get a List of Pipelines crm.category.list
 
 {% note tip "" %}
 
@@ -19,11 +19,11 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method retrieves a list of sales funnels (directions) that belong to the CRM object type with the identifier `entityTypeId`.
+The `crm.category.list` method retrieves a list of pipelines that belong to the CRM object type with the identifier `entityTypeId`.
 
-{% note warning "Which funnels will be included in the list" %}
+{% note warning "Which pipelines will be included in the list" %}
 
-The list of returned funnels is filtered by access permissions. This means that if a user does not have permission to read a specific funnel, it will not be included in the response.
+The method returns only the pipelines the user has read permission for.
 
 {% endnote %}
 
@@ -35,12 +35,27 @@ The list of returned funnels is filtered by access permissions. This means that 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which to retrieve the list of funnels ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which to retrieve the list of pipelines. The object type must support pipelines: [list of supported objects](./index.md#which-objects-support-pipelines) ||
+|| **filter**
+[`object`](../../../data-types.md) | Optional pipeline filter [(detailed description)](#filter). Empty by default ||
+|| **isCategoryMenu**
+[`boolean`](../../../data-types.md) | If `true`, returns pipeline data for the menu with the `counter` field. Optional parameter, `false` by default ||
 |#
+
+### Filter Parameter {#filter}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../data-types.md) | Exact pipeline code. For example, `CATALOG_CONTRACTOR_CONTACT` for the contact vendors pipeline. If omitted, no filtering by code is applied. Other filter fields and operators are not supported ||
+|#
+
+The method returns the full list of pipelines available to the user that match the filter, without pagination.
 
 ## Code Examples
 
-Get the list of funnels for deals.
+Get the list of pipelines for deals.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -90,16 +105,11 @@ Get the list of funnels for deals.
     }
 
     try {
-      // crm.category.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // The method returns the list of pipelines available to the user
       const response = await $b24.actions.v2.call.make<CategoryListResult>({
         method: 'crm.category.list',
         params: {
           entityTypeId: 2,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -128,16 +138,11 @@ Get the list of funnels for deals.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.category.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // The method returns the list of pipelines available to the user
           const response = await $b24.actions.v2.call.make({
             method: 'crm.category.list',
             params: {
               entityTypeId: 2,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -292,7 +297,7 @@ HTTP status: **200**
         "categories": [
             {
                 "id": 9,
-                "name": "Funnel with Original Name",
+                "name": "Pipeline with Original Name",
                 "sort": 200,
                 "entityTypeId": 2,
                 "isDefault": "N",
@@ -345,12 +350,25 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of funnels belonging to a specific `entityTypeId` ||
+[`integer`](../../../data-types.md) | The number of pipelines available to the user that match the filter ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **categories**
+[`array`](../../../data-types.md) | Array of pipelines. With `isCategoryMenu=false`, the pipeline fields are described in the [`category`](./crm-category-add.md#category) object. With `isCategoryMenu=true`, the menu fields described below are returned ||
+|#
+
+With `isCategoryMenu=false`, the `isSystem` and `code` fields are returned only for contacts and companies — `entityTypeId=3` and `entityTypeId=4`. For deals and SPAs, these fields are not included in the response. The `isSystem` field is a `boolean` with the values `Y` or `N`; the `code` field is the string code of the pipeline.
+
+With `isCategoryMenu=true`, each pipeline contains only `id`, `name`, `sort`, `entityTypeId`, `isDefault`, and `counter`. The `counter` field of type `integer` is the current user's counter value in this pipeline.
 
 ## Error Handling
 
@@ -359,7 +377,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Smart process not found"
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
@@ -368,15 +386,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | Smart process not found | Occurs when invalid values for `entityTypeId` are provided ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {entityTypeId} | The required `entityTypeId` parameter is not provided ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | The CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. `{entityTypeName}` is replaced with the name of the object type ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [CRM Pipelines: Overview of Methods](./index.md)
 - [{#T}](./crm-category-add.md)
 - [{#T}](./crm-category-update.md)
 - [{#T}](./crm-category-get.md)

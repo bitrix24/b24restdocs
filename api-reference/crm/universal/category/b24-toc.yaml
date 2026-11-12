@@ -1,17 +1,17 @@
-title: Sales Funnel
+title: CRM Pipelines
 href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Add a New Funnel
+  - name: Add a New Pipeline
     href: crm-category-add.md
-  - name: Update Funnel
+  - name: Update a Pipeline
     href: crm-category-update.md
-  - name: Get Funnel by Id
+  - name: Get a Pipeline by ID
     href: crm-category-get.md
-  - name: Get List of Funnels
+  - name: Get a List of Pipelines
     href: crm-category-list.md
-  - name: Delete Funnel
+  - name: Delete a Pipeline
     href: crm-category-delete.md
-  - name: Get Funnel Fields
+  - name: Get Pipeline Fields
     href: crm-category-fields.md

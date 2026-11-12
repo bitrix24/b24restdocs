@@ -1,4 +1,4 @@
-# Get the funnel by Id crm.category.get
+# Get a Pipeline by ID crm.category.get
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "Read" access permission to the funnel
+> Who can execute the method: any user with "Read" access permission to the pipeline
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method retrieves information about the funnel (direction) with the identifier `id`.
+The method `crm.category.get` retrieves information about the pipeline with the identifier `id`.
 
 ## Method Parameters
 
@@ -29,14 +29,14 @@ This method retrieves information about the funnel (direction) with the identifi
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which we want to get the funnel ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which you need to get the pipeline. The object type must support pipelines: [list of supported objects](./index.md#which-objects-support-pipelines) ||
 || **id***
-[`integer`](../../../data-types.md) | Funnel identifier. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel using the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Pipeline identifier. For the general pipeline of deals, contacts, or companies, specify `0`. The identifier can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a pipeline using the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
 
-How to get information about the funnel with `id` = `1`, located in deals.
+How to get information about the pipeline with `id` = `1`, located in deals.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -80,8 +80,8 @@ How to get information about the funnel with `id` = `1`, located in deals.
         sort: number
         entityTypeId: number
         isDefault: string
-        originId: string
-        originatorId: string
+        originId?: string | null
+        originatorId?: string | null
       }
     }
 
@@ -280,7 +280,7 @@ HTTP status: **200**
     "result": {
         "category": {
             "id": 1,
-            "name": "New funnel #1",
+            "name": "New pipeline #1",
             "sort": 200,
             "entityTypeId": 2,
             "isDefault": "N",
@@ -306,10 +306,29 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the `category` object with information about the pipeline ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+The `result.category` object contains the main fields:
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | Pipeline identifier. For the general pipeline of deals, it may be `0` ||
+|| **name**
+[`string`](../../../data-types.md) | Pipeline name ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **entityTypeId**
+[`integer`](../../../data-types.md) | Identifier of the CRM object type to which the pipeline belongs ||
+|| **isDefault**
+[`boolean`](../../../data-types.md) | Default pipeline flag: `Y` — yes, `N` — no ||
+|#
+
+Other fields depend on the object type and the pipeline. The `originId` and `originatorId` fields are returned for deal pipelines but are absent for the general pipeline with `id = 0`. The `isSystem` and `code` fields are returned for contacts and companies; they are absent in responses for deals and SPAs. For a detailed description of the fields, see the [category object table](./crm-category-add.md#category); for the fields available for an object type, see the [crm.category.fields](./crm-category-fields.md) method.
 
 ## Error Handling
 
@@ -318,7 +337,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error_description": "Item was not found."
 }
 ```
 
@@ -327,17 +346,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `NOT_FOUND` | Element not found | Occurs if no funnels exist with such parameters ||
-|| `ACCESS_DENIED` | Access denied | Occurs if the user does not have permission to view elements of this funnel ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `100` | Could not find value for parameter {entityTypeId} | The required parameter `entityTypeId` is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | A value of the wrong type is provided. Example: `id=abc` instead of an integer ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | The CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. The name of the object type is returned instead of `{entityTypeName}` ||
+|| `400` | `NOT_FOUND` | Item was not found | A pipeline with the specified `entityTypeId` and `id` does not exist ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to view elements of this pipeline ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [CRM Pipelines: Overview of Methods](./index.md)
 - [{#T}](./crm-category-add.md)
 - [{#T}](./crm-category-update.md)
 - [{#T}](./crm-category-list.md)
