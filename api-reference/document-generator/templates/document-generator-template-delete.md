@@ -13,10 +13,19 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.template.delete` removes a template.
+The method `documentgenerator.template.delete` deletes a template, or marks it as deleted if documents have been created from it.
 
-1. If there are documents in the system associated with the specified template, the template is marked as deleted to preserve the document associations. You can retrieve a list of templates marked as deleted using the method [documentgenerator.template.list](./document-generator-template-list.md) with a filter for the parameter `isDeleted = "Y"`.
-2. If the template has no associated documents, the record for the template is completely removed.
+{% note info "" %}
+
+If documents have been created from the template, the method does not delete the template but marks it as deleted to preserve the document links: `isDeleted` = `Y`, `fileId` = `0`. The documents remain available. Such a template:
+
+- is not returned by [documentgenerator.template.list](./document-generator-template-list.md) unless the `"isDeleted": "Y"` filter is set
+- is returned by [documentgenerator.template.get](./document-generator-template-get.md) with `isDeleted` = `Y`
+- cannot be used with [documentgenerator.template.getfields](./document-generator-template-get-fields.md): the method returns the error `Cannot get fields from deleted template`
+
+If there are no documents created from the template, the template is deleted permanently
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -28,7 +37,9 @@ The method `documentgenerator.template.delete` removes a template.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the template.
 
-You can obtain the template identifier after [creating a template](./document-generator-template-add.md) or by using the [get template list](./document-generator-template-list.md) method ||
+You can obtain the template identifier after [creating a template](./document-generator-template-add.md) or by using the [get template list](./document-generator-template-list.md) method.
+
+You can pass the ID of a template that is already marked as deleted. If no documents are left for it, the template is deleted permanently; if documents remain, the method returns `null` and changes nothing ||
 |#
 
 ## Code Examples
@@ -133,7 +144,7 @@ You can obtain the template identifier after [creating a template](./document-ge
 
   try:
       bitrix_response = client.documentgenerator.template.delete(
-          bitrix_id=57,
+          bitrix_id=59,
       ).response
       result = bitrix_response.result
       print(result)
@@ -249,7 +260,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-`null` | The method deletes the template and returns `null` ||
+`null` | Always `null` on success, whether the template was deleted permanently or marked as deleted. To find out which one happened, call [documentgenerator.template.get](./document-generator-template-get.md): for a permanently deleted template it returns the error `Template was not found.`, for a template marked as deleted it returns the template with `isDeleted` = `Y` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -272,8 +283,9 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
-|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found, already deleted permanently, or `id` is not a positive integer ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify templates ||
+|| `400` | `0` | You do not have permissions to modify this template | Insufficient permissions to modify the specified template ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

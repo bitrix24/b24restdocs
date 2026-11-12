@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.template.getfields` returns the detail form of the template fields.
+The method `documentgenerator.template.getfields` returns the template fields: placeholders from the template file and system document fields.
+
+{% note info "" %}
+
+The method works only with templates uploaded via the REST API, which have `moduleId` set to `rest`. For CRM templates and templates of other modules, the method returns the `DOCGEN_ACCESS_ERROR` error.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,8 +31,16 @@ The method `documentgenerator.template.getfields` returns the detail form of the
 || **id***
 [`integer`](../../data-types.md) | Identifier of the template.
 
-You can obtain the template identifier after [creating a template](./document-generator-template-add.md) or by using the [method to get the list of templates](./document-generator-template-list.md) ||
+You can obtain the template identifier after [creating a template](./document-generator-template-add.md) or by using the [method to get the list of templates](./document-generator-template-list.md).
+
+The template must not be marked as deleted. You can check this in the `isDeleted` field of the [documentgenerator.template.get](./document-generator-template-get.md) method response ||
 |#
+
+{% note info "" %}
+
+Instead of `id`, you can pass the `templateId` parameter with the same value. If neither is passed, the method returns an error with code `100`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -66,10 +80,10 @@ You can obtain the template identifier after [creating a template](./document-ge
 
     type TemplateField = {
       title?: string
-      value: unknown
-      default: unknown
-      required?: string
-      type?: string
+      value: string
+      default: string
+      required?: 'Y'
+      type?: 'IMAGE' | 'STAMP' | 'DATE' | 'TEXT' | 'NAME' | 'PHONE'
       group?: string[]
       chain?: string | unknown[]
     }
@@ -249,23 +263,25 @@ HTTP Status: **200**
         "templateFields": {
             "DocumentNumber": {
                 "title": "Number",
-                "value": "9",
+                "value": "A015//11/2026",
                 "required": "Y",
                 "group": [
                     "Document"
                 ],
                 "chain": "this.DOCUMENT.DOCUMENT_NUMBER",
-                "default": "9"
+                "default": "A015//11/2026"
             },
-            "CurrentDate": {
-                "value": "",
-                "default": ""
+            "DocumentCreateTime": {
+                "title": "Created on",
+                "value": "2026-11-11",
+                "type": "DATE",
+                "group": [
+                    "Document"
+                ],
+                "chain": "this.DOCUMENT.DOCUMENT_CREATE_TIME",
+                "default": "2026-11-11"
             },
             "ClientName": {
-                "value": "",
-                "default": ""
-            },
-            "ClientPhone": {
                 "value": "",
                 "default": ""
             },
@@ -273,17 +289,9 @@ HTTP Status: **200**
                 "value": "",
                 "default": ""
             },
-            "Comment": {
-                "value": "",
-                "default": ""
-            },
-            "UserName": {
-                "value": "",
-                "default": ""
-            },
             "DocumentTitle": {
-                "title": "Document Title",
-                "value": "SUPPLY_CONTRACT_NEW Template 1773843147554 9",
+                "title": "Document name",
+                "value": "Supply contract A015//11/2026",
                 "group": [
                     "Document"
                 ],
@@ -292,19 +300,19 @@ HTTP Status: **200**
                     "getTitle"
                 ],
                 "required": "Y",
-                "default": "SUPPLY_CONTRACT_NEW Template 1773843147554 9"
+                "default": "Supply contract A015//11/2026"
             }
         }
     },
     "time": {
-        "start": 1774332782,
-        "finish": 1774332783.055467,
-        "duration": 1.055466890335083,
-        "processing": 1,
-        "date_start": "2026-03-24T09:13:02+01:00",
-        "date_finish": "2026-03-24T09:13:03+01:00",
-        "operating_reset_at": 1774333382,
-        "operating": 0
+        "start": 1794393620,
+        "finish": 1794393620.625241,
+        "duration": 0.6252410411834717,
+        "processing": 0,
+        "date_start": "2026-11-11T13:40:20+01:00",
+        "date_finish": "2026-11-11T13:40:20+01:00",
+        "operating_reset_at": 1794394080,
+        "operating": 0.3588840961456299
     }
 }
 ```
@@ -326,9 +334,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **templateFields**
-[`object`](../../data-types.md) | Object of template fields. Key — template field, value — field description [(detailed description)](#templatefield).
+[`object`](../../data-types.md) | Template fields. Key — the placeholder name without curly braces, for example `DocumentNumber` for `{DocumentNumber}`, value — field description [(detailed description)](#templatefield).
 
-The set of fields in the description depends on the field type ||
+Keys:
+- `DocumentTitle` — document title, always returned
+- `DocumentNumber` — document number, returned if the template file contains the `{DocumentNumber}` placeholder
+- `DocumentCreateTime` — document creation date, returned if the template file contains the `{DocumentCreateTime}` placeholder
+- other placeholders from the template file, for example `{ClientName}`. Only the `value` and `default` fields with an empty string are returned for them — the values are passed when creating a document with the [documentgenerator.document.add](../document-generator-document-add.md) method
+||
 |#
 
 #### Object templateField {#templatefield}
@@ -337,21 +350,30 @@ The set of fields in the description depends on the field type ||
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | Field name, may be absent ||
+[`string`](../../data-types.md) | Field name. Returned only for the `DocumentTitle`, `DocumentNumber`, and `DocumentCreateTime` fields ||
 || **value**
-[`any`](../../data-types.md) | Current value of the field ||
+[`string`](../../data-types.md) | Field value to be inserted into a new document. For `DocumentNumber`, the next number from the template numerator; for `DocumentCreateTime`, the current date in the `YYYY-MM-DD` format; for `DocumentTitle`, the template name and the document number separated by a space. For other placeholders, an empty string ||
 || **default**
-[`any`](../../data-types.md) | Default value of the field ||
+[`string`](../../data-types.md) | Default value of the field. In the method response, it matches `value` ||
 || **required**
-[`char`](../../data-types.md) | Indicator of mandatory status.
--  `Y` — mandatory
--  `N` — optional ||
+[`char`](../../data-types.md) | Required field flag. Returned with the value `Y` for the `DocumentTitle` and `DocumentNumber` fields. If the field is optional, the key is absent ||
 || **type**
-[`string`](../../data-types.md) | Field type, for example `IMAGE` ||
+[`string`](../../data-types.md) | Field type. Returned only for some fields, for example `DATE` for `DocumentCreateTime`.
+
+Possible values:
+- `DATE` — date
+- `TEXT` — text
+- `NAME` — name
+- `PHONE` — phone
+- `IMAGE` — image
+- `STAMP` — stamp or signature
+||
 || **group**
-[`array`](../../data-types.md) | Groups to which the field belongs ||
+[`array`](../../data-types.md) | Names of the groups to which the field belongs, for example `["Document"]` ||
 || **chain**
-[`string`](../../data-types.md) \| [`array`](../../data-types.md) | Path of the field in the data provider ||
+[`string`](../../data-types.md) \| [`array`](../../data-types.md) | Path to the field value in the data provider, for example `this.DOCUMENT.DOCUMENT_NUMBER`.
+
+For the `DocumentTitle` field, the array `[{}, "getTitle"]` is returned ||
 |#
 
 ## Error Handling
@@ -371,10 +393,12 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
-|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
-|| `400` | `0` | Cannot get fields from deleted template | Cannot retrieve fields from a deleted template ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to work with templates ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` or `templateId` not provided ||
+|| `400` | `0` | Template was not found | A template with the specified `id` does not exist, or `id` is not a positive integer, for example `0` or `"abc"` ||
+|| `400` | `0` | Cannot get fields from deleted template | The template is marked as deleted: the `isDeleted` field is `Y` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | The template does not belong to the `rest` module, for example it is a CRM template ||
+|| `400` | `0` | You do not have permissions to modify templates | The user does not have permission to modify document generator templates ||
+|| `400` | `0` | You do not have permissions to modify this template | The user does not have permission to modify this template ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

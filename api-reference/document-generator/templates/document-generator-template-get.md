@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The method `documentgenerator.template.get` returns information about a template by its ID.
 
+{% note info "" %}
+
+The method works only with templates uploaded via the REST API, which have `moduleId` set to `rest`. For CRM templates and templates of other modules, the method returns the `DOCGEN_ACCESS_ERROR` error.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -25,8 +31,16 @@ The method `documentgenerator.template.get` returns information about a template
 || **id***
 [`integer`](../../data-types.md) | Template ID.
 
-You can obtain the template ID after [creating a template](./document-generator-template-add.md) or by using the [get template list method](./document-generator-template-list.md) ||
+You can obtain the template ID after [creating a template](./document-generator-template-add.md) or by using the [get template list method](./document-generator-template-list.md).
+
+The method also returns templates marked as deleted: their `isDeleted` field is `Y` ||
 |#
+
+{% note info "" %}
+
+Instead of `id`, you can pass the `templateId` parameter with the same value. If neither is passed, the method returns an error with code `100`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -40,7 +54,7 @@ You can obtain the template ID after [creating a template](./document-generator-
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":57}' \
+    -d '{"id":325}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.template.get
   ```
 
@@ -50,7 +64,7 @@ You can obtain the template ID after [creating a template](./document-generator-
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":57,"auth":"**put_access_token_here**"}' \
+    -d '{"id":325,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.template.get
   ```
 
@@ -83,6 +97,7 @@ You can obtain the template ID after [creating a template](./document-generator-
         createTime: ISODate | null
         updateTime: ISODate | null
         timezone: string | null
+        downloadMachine: string
       }
     }
 
@@ -90,7 +105,7 @@ You can obtain the template ID after [creating a template](./document-generator-
       const response = await $b24.actions.v2.call.make<TemplateGetResult>({
         method: 'documentgenerator.template.get',
         params: {
-          id: 57,
+          id: 325,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -122,7 +137,7 @@ You can obtain the template ID after [creating a template](./document-generator-
           const response = await $b24.actions.v2.call.make({
             method: 'documentgenerator.template.get',
             params: {
-              id: 57,
+              id: 325,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -152,7 +167,7 @@ You can obtain the template ID after [creating a template](./document-generator-
 
   try:
       bitrix_response = client.documentgenerator.template.get(
-          bitrix_id=57,
+          bitrix_id=325,
       ).response
       result = bitrix_response.result
       print(result)
@@ -176,7 +191,7 @@ You can obtain the template ID after [creating a template](./document-generator-
       $response = $b24Service->core->call(
           'documentgenerator.template.get',
           [
-              'id' => 57,
+              'id' => 325,
           ]
       );
 
@@ -193,7 +208,7 @@ You can obtain the template ID after [creating a template](./document-generator-
   BX24.callMethod(
       'documentgenerator.template.get',
       {
-          id: 57
+          id: 325
       },
       function(result)
       {
@@ -217,7 +232,7 @@ You can obtain the template ID after [creating a template](./document-generator-
   $result = CRest::call(
       'documentgenerator.template.get',
       [
-          'id' => 57,
+          'id' => 325,
       ]
   );
 
@@ -229,7 +244,7 @@ You can obtain the template ID after [creating a template](./document-generator-
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "documentgenerator.template.get", b24.Params{
-    	"id": 57,
+    	"id": 325,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("documentgenerator.template.get: %w", err)
@@ -265,37 +280,37 @@ HTTP Status: **200**
 {
     "result": {
         "template": {
-            "id": "57",
-            "name": "SUPPLY_CONTRACT_NEW Template",
+            "id": "325",
+            "name": "Supply contract",
             "region": "de",
-            "code": "REST_TEMPLATE",
-            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=57&ts=0",
+            "code": "TEST_DG_GET",
+            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=325&ts=1794393617",
             "active": "Y",
             "moduleId": "rest",
-            "numeratorId": "3",
+            "numeratorId": "1",
             "withStamps": "N",
             "providers": {
                 "bitrix\\documentgenerator\\dataprovider\\rest": "bitrix\\documentgenerator\\dataprovider\\rest"
             },
             "users": {
-                "U503": "U503"
+                "UA": "UA"
             },
             "isDeleted": "N",
-            "sort": "700",
-            "createTime": "2026-03-23T16:51:25+02:00",
-            "updateTime": "2026-03-23T17:26:39+02:00",
+            "sort": "500",
+            "createTime": "2026-11-11T13:38:10+01:00",
+            "updateTime": "2026-11-11T13:40:17+01:00",
             "timezone": null,
-            "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=6d53c1690000071b00000844000001f7f0f1075612a492ef6fe0b4127e521b543e4376&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3JnRzPTAmXz00a1NkZTRVdWtNZk1XODVrVlczS2dTc2x5c1lyMmRGag%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZHxkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKblJ6UFRBbVh6MDBhMU5rWlRSVmRXdE5aazFYT0RWclZsY3pTMmRUYzJ4NWMxbHlNbVJHYWc9PXw2ZDUzYzE2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzU2MTJhNDkyZWY2ZmUwYjQxMjdlNTIxYjU0M2U0Mzc2Ig%3D%3D.9JnHSEVzH2jcCA1zZA%2BlsYJCTGs6V3dGLNsnjfbnuNs%3D"
+            "downloadMachine": "https://mysite.com/rest/1/xxxxxxxxxxxxxxxx/documentgenerator.api.template.download/?token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTMyNSZ0cz0xNzk0MzkzNjE3Jl89S01PNnhjOHFVakZ1QmpjUlI3dXFvS1B4ZmNrME1nZHA%3D%7C..."
         }
     },
     "time": {
-        "start": 1774276994,
-        "finish": 1774276994.504076,
-        "duration": 0.5040760040283203,
+        "start": 1794393619,
+        "finish": 1794393619.555549,
+        "duration": 0.555548906326294,
         "processing": 0,
-        "date_start": "2026-03-23T17:43:14+02:00",
-        "date_finish": "2026-03-23T17:43:14+02:00",
-        "operating_reset_at": 1774277594,
+        "date_start": "2026-11-11T13:40:19+01:00",
+        "date_finish": "2026-11-11T13:40:19+01:00",
+        "operating_reset_at": 1794394200,
         "operating": 0
     }
 }
@@ -331,44 +346,57 @@ HTTP Status: **200**
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **region**
-[`string`](../../data-types.md) | Template region ||
+[`string`](../../data-types.md) | Template region, for example `de`. The list of regions is returned by the [documentgenerator.region.list](../region/document-generator-region-list.md) method ||
 || **code**
 [`string`](../../data-types.md) | Template symbolic code ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template file ||
+[`string`](../../data-types.md) | Link to download the template file in a browser under a Bitrix24 user's authorization ||
+|| **downloadMachine**
+[`string`](../../data-types.md) | Link to download the template file via the REST API. Contains the webhook address or the application authorization and a signed `token` ||
 || **active**
 [`char`](../../data-types.md) | Template activity. Possible values:
 - `Y` — active
 - `N` — inactive
 ||
 || **moduleId**
-[`string`](../../data-types.md) | Module code to which the template is linked ||
+[`string`](../../data-types.md) | Module code to which the template is linked. For templates uploaded via the REST API, it is always `rest` ||
 || **numeratorId**
-[`string`](../../data-types.md) | Numerator ID ||
+[`string`](../../data-types.md) | Numerator ID. The numerator data is returned by the [documentgenerator.numerator.get](../numerators/document-generator-numerator-get.md) method ||
 || **withStamps**
 [`char`](../../data-types.md) | Include stamps and signatures. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **providers**
-[`object`](../../data-types.md) | Template data providers. 
+[`object`](../../data-types.md) | Template data providers. Key and value are equal to the provider class name in lowercase.
 
-Key and value are equal to the name of the data provider class ||
+For templates uploaded via the REST API, the object contains a single provider, `bitrix\documentgenerator\dataprovider\rest` ||
 || **users**
-[`object`](../../data-types.md) | Access codes for the template. 
+[`object`](../../data-types.md) | Access codes for the template. Key and value are equal to the access code.
 
-Key and value are equal to the access code ||
+Possible codes:
+- `U{id}` — user
+- `G{id}` — user group
+- `AU` — all authorized users
+- `UA` — all users
+- `D{id}` — department
+- `DR{id}` — department with subdepartments
+- `SG{id}` — workgroup or project
+- `SG{id}_A` — owner of the workgroup or project
+- `SG{id}_E` — moderators of the workgroup or project
+- `SG{id}_K` — all members of the workgroup or project
+||
 || **isDeleted**
 [`char`](../../data-types.md) | Template deletion flag. Possible values:
-- `Y` — deleted
+- `Y` — deleted. A template is marked as deleted if documents had already been created from it when [documentgenerator.template.delete](./document-generator-template-delete.md) was called. The file of such a template is detached, and its fields cannot be retrieved with [documentgenerator.template.getfields](./document-generator-template-get-fields.md)
 - `N` — not deleted
 ||
 || **sort**
 [`string`](../../data-types.md) | Sort index ||
 || **createTime**
-[`datetime`](../../data-types.md) | Template creation time ||
+[`datetime`](../../data-types.md) | Template creation date and time ||
 || **updateTime**
-[`datetime`](../../data-types.md) | Template last update time ||
+[`datetime`](../../data-types.md) | Template last update date and time ||
 || **timezone**
 [`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin`.
 
@@ -392,9 +420,11 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
-|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify templates ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` or `templateId` not provided ||
+|| `400` | `0` | Template was not found | A template with the specified `id` does not exist, or `id` is not a positive integer, for example `0` or `"abc"` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | The template does not belong to the `rest` module, for example it is a CRM template ||
+|| `400` | `0` | You do not have permissions to modify templates | The user does not have permission to modify document generator templates ||
+|| `400` | `0` | You do not have permissions to modify this template | The user does not have permission to modify this template ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
