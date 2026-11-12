@@ -11,25 +11,25 @@ items:
     href: keyboards.md
   - name: Working with Context Menu
     href: menu.md
-  - name: Add Message
+  - name: Send Message
     href: im-message-add.md
-  - name: Edit Sent Message
+  - name: Update Message
     href: im-message-update.md
-  - name: Change "Like" Status of a Message
-    href: im-message-like.md
-  - name: Create Object Based on Message
-    href: im-message-share.md
-  - name: Get List of Recent Messages
-    href: im-dialog-messages-get.md
-  - name: Find Message in Chat
-    href: im-dialog-messages-search.md
-  - name: Mark Messages as "Read"
-    href: im-dialog-read.md
-  - name: Mark Messages as "Unread"
-    href: im-dialog-unread.md
-  - name: Send "User is Typing" Status
-    href: im-dialog-writing.md
   - name: Delete Message
     href: im-message-delete.md
+  - name: Set or Remove "Like"
+    href: im-message-like.md
+  - name: Create a Chat, Task, Post, or Event from a Message
+    href: im-message-share.md
   - name: Execute Chatbot Command
     href: im-message-command.md
+  - name: Get Chat Messages
+    href: im-dialog-messages-get.md
+  - name: Find Messages in Chat
+    href: im-dialog-messages-search.md
+  - name: Mark Messages as Read
+    href: im-dialog-read.md
+  - name: Mark Messages as Unread
+    href: im-dialog-unread.md
+  - name: Send "User Is Typing" Indicator
+    href: im-dialog-writing.md

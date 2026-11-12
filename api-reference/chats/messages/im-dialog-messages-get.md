@@ -1,4 +1,4 @@
-# Retrieve a List of Recent Messages im.dialog.messages.get
+# Get Chat Messages im.dialog.messages.get
 
 {% note tip "" %}
 
@@ -11,13 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: chat participant
+> Who can execute the method: a chat participant or a user with access to an open chat
 
-The `im.dialog.messages.get` method retrieves messages from the specified conversation, including system messages. It does not support standard pagination due to the potentially large volume of data.
+The `im.dialog.messages.get` method returns chat messages, including system messages.
 
 {% note info "" %}
 
-Messages can only be retrieved without participating in the chat for Open Channel chats via the [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md) method.
+Without chat membership, the method returns messages of open chats, for example, the General chat. The history of an Open Channel chat is retrieved with the [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md) method. An Open Channel chat is a conversation with a client from an external channel, for example, Telegram.
 
 {% endnote %}
 
@@ -28,29 +28,45 @@ Messages can only be retrieved without participating in the chat for Open Channe
 #|
 || **Name**
 `type` | **Description** ||
-|| **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — user identifier for personal chat
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `sgXXX` — group or project chat, where `XXX` is the group identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
 
-The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
+|| **CHAT_ID**
+[`integer`](../../data-types.md) | Chat identifier without the `chat` prefix, for example, `2935` ||
 || **LAST_ID**
-[`integer`](../../data-types.md) | Message identifier relative to which older messages should be loaded. The method will return messages with an identifier smaller than the specified one.
+[`integer`](../../data-types.md) | Message identifier. The method returns messages older than this one — with an identifier smaller than the specified one.
 
-To sequentially load history backwards, first request the latest messages without `LAST_ID` and `FIRST_ID`. Then pass to `LAST_ID` the minimum `id` from the received `messages` array ||
+Do not pass it in the first request. How to page through the history is described in the [How to Get the Entire History](#pagination) section ||
 || **FIRST_ID**
-[`integer`](../../data-types.md) | Message identifier relative to which newer messages should be loaded. The method will return messages with an identifier larger than the specified one.
+[`integer`](../../data-types.md) | Message identifier. The method returns messages newer than this one — with an identifier larger than the specified one. For example, with `FIRST_ID=123` and `LIMIT=10`, the method returns up to 10 messages with an `id` greater than `123`.
 
-For example, with `FIRST_ID=123` and `LIMIT=10`, the method will return up to 10 messages with an identifier larger than `123`. To receive messages added after the already uploaded sample, pass to `FIRST_ID` the maximum `id` from the received `messages` array ||
+If both `FIRST_ID` and `LAST_ID` are passed, the method uses only `FIRST_ID` ||
 || **LIMIT**
-[`integer`](../../data-types.md) | Limit on the number of messages in the response. If `LAST_ID` and `FIRST_ID` are not provided — the method will return the latest messages of the dialogue, taking into account `LIMIT`.
-
-The method may return more messages than specified in `LIMIT` if there are unread messages in the chat.
+[`integer`](../../data-types.md) | How many messages to return. If there are unread messages in the chat, the method may return more than specified in `LIMIT`.
 
 Default — `20`. The maximum value is —`50` ||
+|| **CONVERT_TEXT**
+[`string`](../../data-types.md) | `Y` — add the `text_converted` field with the text in which BB codes are converted to HTML to each message ||
 |#
+
+{% note warning "" %}
+
+Pass one of the parameters: `DIALOG_ID` or `CHAT_ID`. If both are passed, the method uses `CHAT_ID`.
+
+{% endnote %}
+
+### How to Get the Entire History {#pagination}
+
+The method has no standard pagination: the history is loaded in parts with `LAST_ID` and `FIRST_ID`.
+
+1. Request chat messages without `LAST_ID` and `FIRST_ID`. If there are more unread messages than `LIMIT`, the method returns messages starting from the first unread one, otherwise — the latest messages
+2. To load older messages, pass the smallest `id` from the `messages` array to `LAST_ID`. Repeat until the method returns an empty `messages` array
+3. To load newer messages, pass the largest `id` from the `messages` array to `FIRST_ID`. Repeat until the method returns an empty `messages` array
 
 ## Code Examples
 
@@ -64,7 +80,7 @@ Default — `20`. The maximum value is —`50` ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84869,"LIMIT":10}' \
+      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84868,"LIMIT":10}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.messages.get
     ```
 
@@ -74,7 +90,7 @@ Default — `20`. The maximum value is —`50` ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84869,"LIMIT":10,"auth":"**put_access_token_here**"}' \
+      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84868,"LIMIT":10,"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/im.dialog.messages.get
     ```
 
@@ -100,7 +116,7 @@ Default — `20`. The maximum value is —`50` ||
         unread: boolean
         uuid: string | null
         replaces: unknown[]
-        params: Record<string, unknown>
+        params: Record<string, unknown> | unknown[]
         disappearing_date: ISODate | null
       }[]
       users: {
@@ -110,7 +126,7 @@ Default — `20`. The maximum value is —`50` ||
         first_name: string
         last_name: string
         status: string
-        last_activity_date: ISODate
+        last_activity_date: ISODate | false
         type: string
       }[]
       files: {
@@ -135,7 +151,7 @@ Default — `20`. The maximum value is —`50` ||
         method: 'im.dialog.messages.get',
         params: {
           DIALOG_ID: 'chat1489',
-          FIRST_ID: 84869,
+          FIRST_ID: 84868,
           LIMIT: 10,
         },
         requestId: Text.getUuidRfc4122()
@@ -169,7 +185,7 @@ Default — `20`. The maximum value is —`50` ||
             method: 'im.dialog.messages.get',
             params: {
               DIALOG_ID: 'chat1489',
-              FIRST_ID: 84869,
+              FIRST_ID: 84868,
               LIMIT: 10,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -201,7 +217,7 @@ Default — `20`. The maximum value is —`50` ||
     try:
         bitrix_response = client.im.dialog.messages.get(
             dialog_id="chat1489",
-            first_id=84869,
+            first_id=84868,
             limit=10,
         ).response
         result = bitrix_response.result
@@ -227,7 +243,7 @@ Default — `20`. The maximum value is —`50` ||
             'im.dialog.messages.get',
             [
                 'DIALOG_ID' => 'chat1489',
-                'FIRST_ID' => 84869,
+                'FIRST_ID' => 84868,
                 'LIMIT' => 10,
             ]
         );
@@ -246,7 +262,7 @@ Default — `20`. The maximum value is —`50` ||
         'im.dialog.messages.get',
         {
             DIALOG_ID: 'chat1489',
-            FIRST_ID: 84869,
+            FIRST_ID: 84868,
             LIMIT: 10
         },
         function(result)
@@ -272,7 +288,7 @@ Default — `20`. The maximum value is —`50` ||
         'im.dialog.messages.get',
         [
             'DIALOG_ID' => 'chat1489',
-            'FIRST_ID' => 84869,
+            'FIRST_ID' => 84868,
             'LIMIT' => 10,
         ]
     );
@@ -286,7 +302,7 @@ Default — `20`. The maximum value is —`50` ||
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "im.dialog.messages.get", b24.Params{
     	"DIALOG_ID": "chat1489",
-    	"FIRST_ID":  84869,
+    	"FIRST_ID":  84868,
     	"LIMIT":     10,
     }, b24.WithIdempotent())
     if err != nil {
@@ -490,15 +506,15 @@ HTTP status: **200**
 || **messages**
 [`array`](../../data-types.md) | Array of messages [(detailed description)](#message).
 
-The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID` ||
+The method returns an empty array if there are no messages in the chat before `LAST_ID` or after `FIRST_ID` ||
 || **users**
 [`array`](../../data-types.md) | Users from the selection [(detailed description)](#user).
 
-The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID` ||
+An empty array in the same cases as `messages` ||
 || **files**
 [`array`](../../data-types.md) | Files from the selection [(detailed description)](#file).
 
-The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID` ||
+An empty array in the same cases as `messages` ||
 |#
 
 #### Message Object {#message}
@@ -516,16 +532,18 @@ The method will return an empty array if a non-existent identifier is specified 
 [`datetime`](../../data-types.md) | Date of the message in ISO 8601 format ||
 || **text**
 [`string`](../../data-types.md) | Text of the message ||
+|| **text_converted**
+[`string`](../../data-types.md) | Text of the message in HTML. Returned if `CONVERT_TEXT=Y` is passed ||
 || **unread**
 [`boolean`](../../data-types.md) | Indicator of unread message ||
 || **uuid**
 [`string`](../../data-types.md) | Unique identifier of the message, `null` for system messages ||
 || **replaces**
-[`array`](../../data-types.md) | Array of text replacements for the message ||
+[`array`](../../data-types.md) | Dates that Bitrix24 recognized in the message text [(detailed description)](#replaces). If there are no dates, an empty array is returned ||
 || **params**
 [`object`](../../data-types.md) | Additional parameters of the message [(detailed description)](#params).
 
-The set of fields in the object depends on the type of message: regular or system ||
+The set of fields in the object depends on the type of message: regular or system. If there are no parameters, an empty array `[]` is returned ||
 || **disappearing_date**
 [`datetime`](../../data-types.md) | Date of disappearance of the message, `null` if not set ||
 |#
@@ -538,13 +556,48 @@ The set of fields in the object depends on the type of message: regular or syste
 || **LIKE**
 [`array`](../../data-types.md) | Identifiers of users who reacted to the message ||
 || **CODE**
-[`array`](../../data-types.md) | Codes of system events:
+[`array`](../../data-types.md) | Codes of system events, for example:
 - `CHAT_JOIN` — user added to the chat
 - `CHAT_LEAVE` — user left the chat ||
 || **NOTIFY**
 [`string`](../../data-types.md) | Indicator of notification sending. Value `N` — notification is not sent ||
 || **FILE_ID**
 [`array`](../../data-types.md) | Identifiers of files attached to the message ||
+|| **ATTACH**
+[`array`](../../data-types.md) | Message attachments. The format is described in the [Attachments](./attachments.md) article ||
+|| **KEYBOARD**
+[`array`](../../data-types.md) | Buttons under the message. The format is described in the [Working with Keyboards](./keyboards.md) article ||
+|| **MENU**
+[`array`](../../data-types.md) | Message context menu items. The format is described in the [Context Menu](./menu.md) article ||
+|| **IS_EDITED**
+[`string`](../../data-types.md) | `Y` if the message has been edited ||
+|| **IS_DELETED**
+[`string`](../../data-types.md) | `Y` if the message has been deleted ||
+|| **DATE_TEXT**
+[`array`](../../data-types.md) | Dates from the message text as they are written ||
+|| **DATE_TS**
+[`array`](../../data-types.md) | The same dates in Unix timestamp format ||
+|| **CHAT_ID**
+[`integer`](../../data-types.md) | Identifier of the chat created from this message by the [im.message.share](./im-message-share.md) method. Returned in the system message about the chat creation ||
+|#
+
+Keys with empty and default values are not returned in `params`.
+
+#### Replaces Object {#replaces}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../data-types.md) | Replacement type. Currently always `DATE` ||
+|| **text**
+[`string`](../../data-types.md) | Text fragment with a date, for example, `12.11.2026 at 15:00` ||
+|| **value**
+[`datetime`](../../data-types.md) | Recognized date in ISO 8601 format ||
+|| **start**
+[`integer`](../../data-types.md) | Start position of the fragment in the message text ||
+|| **end**
+[`integer`](../../data-types.md) | End position of the fragment in the message text ||
 |#
 
 #### User Object {#user}
@@ -578,6 +631,10 @@ The set of fields in the object depends on the type of message: regular or syste
 [`string`](../../data-types.md) | Date of birth ||
 || **extranet**
 [`boolean`](../../data-types.md) | Extranet user status ||
+|| **intranet_user**
+[`boolean`](../../data-types.md) | `true` if the user is an employee: they belong to a company department and their account is not external ||
+|| **internal_account**
+[`boolean`](../../data-types.md) | `true` if the account is not external, for example, if it does not belong to an Open Channel client ||
 || **network**
 [`boolean`](../../data-types.md) | Indicator of Bitrix24 network user ||
 || **bot**
@@ -589,19 +646,19 @@ The set of fields in the object depends on the type of message: regular or syste
 || **status**
 [`string`](../../data-types.md) | User's status ||
 || **idle**
-[`boolean`](../../data-types.md) | Indicator of user inactivity ||
+[`datetime`](../../data-types.md) | Date in ISO 8601 format if the user is idle, otherwise `false` ||
 || **last_activity_date**
-[`datetime`](../../data-types.md) | Date of last activity ||
+[`datetime`](../../data-types.md) | Date of last activity or `false` ||
 || **mobile_last_date**
 [`datetime`](../../data-types.md) | Date of last activity in the mobile app, `false` if the app was not used ||
 || **desktop_last_date**
 [`datetime`](../../data-types.md) | Date of last activity in the desktop app, `false` if the app was not used ||
 || **absent**
-[`boolean`](../../data-types.md) | Indicator of user absence ||
+[`datetime`](../../data-types.md) | Date in ISO 8601 format if the user is absent, otherwise `false` ||
 || **departments**
 [`array`](../../data-types.md) | Identifiers of user departments ||
 || **phones**
-[`object`](../../data-types.md) | User phones, `false` if not specified ||
+[`object`](../../data-types.md) | User phones or `false` if no phones are specified ||
 || **bot_data**
 [`object`](../../data-types.md) | Bot data, `null` for regular users ||
 || **type**
@@ -706,7 +763,7 @@ The set of fields in the object depends on the type of message: regular or syste
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -722,15 +779,21 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The `DIALOG_ID` parameter is not provided, is empty, or is in an incorrect format ||
-|| `400` | `FIRST_ID_STRING` | First ID can't be string | The `FIRST_ID` parameter is provided with a non-numeric value ||
-|| `400` | `LAST_ID_STRING` | Last ID can't be string | The `LAST_ID` parameter is provided with a non-numeric value ||
-|| `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | The user does not have access to the dialog ||
+|| `400` | `FIRST_ID_STRING` | First ID can't be string | The `FIRST_ID` value contains characters other than digits, for example, `abc`, `-1`, or `1.5` ||
+|| `400` | `LAST_ID_STRING` | Last ID can't be string | The `LAST_ID` value contains characters other than digits, for example, `abc`, `-1`, or `1.5` ||
+|| `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | The user does not have access to the chat ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
 - [{#T}](./im-dialog-messages-search.md)
 - [{#T}](./im-dialog-read.md)
 - [{#T}](./im-dialog-unread.md)

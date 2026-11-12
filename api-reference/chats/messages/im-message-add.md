@@ -23,30 +23,32 @@ The method `im.message.add` sends a message to a chat.
 || **Name**
 `type` | **Description** ||
 || **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — identifier of the personal chat user
-  
-The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `sgXXX` — group or project chat, where `XXX` is the group identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
+
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
 || **MESSAGE***
 [`string`](../../data-types.md) | The text of the message. Required if `ATTACH` is not provided.
 
+If the text is longer than 20,006 characters, the method keeps the first 20,000 without an error and appends ` (...)` at the end.
+
 [Formatting](./formatting.md) is supported ||
 || **ATTACH**
-[`object`](../../data-types.md) 
-[`string`](../../data-types.md) | Attachment with content blocks: images, links, files. Required if `MESSAGE` is not provided.
+[`object`](../../data-types.md)
+[`string`](../../data-types.md) | Attachment with content blocks: images, links, files. The parameter is required if `MESSAGE` is not provided.
 
-Read more in the [Attachments](./attachments.md) section ||
+Read more in the [Attachments](./attachments.md) article ||
 || **KEYBOARD**
-[`object`](../../data-types.md) 
+[`object`](../../data-types.md)
 [`string`](../../data-types.md) | Buttons under the message that the user can interact with.
 
 Read more in the [Working with Keyboards](./keyboards.md) article ||
 || **MENU**
-[`object`](../../data-types.md) 
-[`string`](../../data-types.md) | Additional items in the chat's context menu.
+[`object`](../../data-types.md)
+[`string`](../../data-types.md) | Custom items in the message context menu, for example, a link or an option to copy text.
 
 Read more in the [Context Menu](./menu.md) article ||
 || **SYSTEM**
@@ -55,20 +57,20 @@ Read more in the [Context Menu](./menu.md) article ||
 Allowed values:
 - `Y` — system message
 - `N` — regular message
-  
+
 Default is `N` ||
 || **URL_PREVIEW**
-[`string`](../../data-types.md) | Conversion of links into rich links.
+[`string`](../../data-types.md) | Whether to show a card with the page title, description, and image under a link in the message.
 
 Allowed values:
-- `Y` — enabled
-- `N` — disabled
+- `Y` — show the card
+- `N` — do not show
 
 Default is `Y` ||
 || **REPLY_ID**
-[`integer`](../../data-types.md) | Identifier of the message to which the reply is sent. The message for the reply must be in the same chat.
+[`integer`](../../data-types.md) | Identifier of the message you are replying to. The message must be in the same chat.
 
-The identifier can be obtained using the [im.dialog.messages.get](./im-dialog-messages-get.md) method ||
+The identifier is returned by the [im.dialog.messages.get](./im-dialog-messages-get.md) method ||
 |#
 
 ## Code Examples
@@ -311,8 +313,8 @@ HTTP Status: **200**
         "finish": 1772552939.091396,
         "duration": 0.09139609336853027,
         "processing": 0,
-        "date_start": "2026-03-03T17:48:59+01:00",
-        "date_finish": "2026-03-03T17:48:59+01:00",
+        "date_start": "2026-03-03T16:48:59+01:00",
+        "date_finish": "2026-03-03T16:48:59+01:00",
         "operating_reset_at": 1772553539,
         "operating": 0
     }
@@ -332,7 +334,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -346,19 +348,24 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MESSAGE_EMPTY` | Message can't be empty | Empty `MESSAGE` and `ATTACH` not provided ||
-|| `USER_ID_EMPTY` | User ID can't be empty | User identifier in `DIALOG_ID` is not provided or is invalid ||
-|| `USER_NOT_FOUND` | User not found | User not found ||
-|| `CHAT_ID` | Error creating message | Failed to create message. Ensure that a chat with such `ID` exists ||
-|| `ACCESS_ERROR` | Action unavailable | Insufficient permissions to send the message ||
-|| `PARAMS_ERROR` | Incorrect params | Invalid set of request parameters ||
-|| `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
-|| `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
-|| `MENU_ERROR` | Incorrect menu params | Invalid `MENU` object ||
-|| `REPLY_ACCESS_ERROR` | Action unavailable | No access to the message in `REPLY_ID` ||
-|| `REPLY_FROM_OTHER_CHAT_ERROR` | You can only reply to a message within the same chat | Cannot reply to a message from another chat ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MESSAGE_EMPTY` | Message can't be empty | The `MESSAGE` parameter is empty, and `ATTACH` is not passed ||
+|| `400` | `MESSAGE_EMPTY` | Wrong message type | `MESSAGE` is not passed as a string ||
+|| `400` | `USER_ID_EMPTY` | User ID can't be empty | The user identifier in `DIALOG_ID` is not greater than `0` ||
+|| `400` | `USER_NOT_FOUND` | User not found | The user is not found ||
+|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | The chat could not be determined by `DIALOG_ID`, for example, the `sgXXX` group has no chat ||
+|| `400` | `CHAT_ID` | Error creating a message | A chat with this identifier is not found. The error text is returned in the language used in Bitrix24 ||
+|| `400` | `CANCELED` | You cannot send messages to the specified chat | The current user cannot write to this chat. The error text is returned in the language used in Bitrix24 ||
+|| `403` | `ACCESS_ERROR` | Action unavailable | Insufficient permissions to send the message ||
+|| `403` | `ACCESS_ERROR` | It is forbidden to send messages to this chat | Sending messages is prohibited in the chat settings ||
+|| `400` | `PARAMS_ERROR` | Incorrect params | The `DIALOG_ID` parameter is not passed ||
+|| `400` | `PARAMS_ERROR` | Message isn't added | The message could not be created ||
+|| `400` | `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
+|| `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
+|| `400` | `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
+|| `400` | `MENU_ERROR` | Incorrect menu params | Invalid `MENU` object ||
+|| `403` | `REPLY_ACCESS_ERROR` | Action unavailable | The `REPLY_ID` message is not found or there is no access to it ||
+|| `403` | `REPLY_FROM_OTHER_CHAT_ERROR` | You can only reply to a message within the same chat | The `REPLY_ID` message is in another chat ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -368,6 +375,10 @@ HTTP Status: **400**
 - [{#T}](./im-message-update.md)
 - [{#T}](./im-message-delete.md)
 - [{#T}](./im-message-like.md)
-- [{#T}](./attachments.md)
-- [{#T}](./keyboards.md)
-- [{#T}](./menu.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

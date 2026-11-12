@@ -9,19 +9,18 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The context menu is a set of actions within a message. You can add your own items to the context menu to open links or send commands to the bot.
+The context menu is a list of actions for a message. Custom menu items can open a link, insert or copy text, make a call, open a chat, or send a command to a bot.
 
-Methods that support context menu functionality:
+The menu is passed in the `MENU` parameter when a message is sent or updated:
 
-- [imbot.message.add](../../chat-bots/outdated/messages/imbot-message-add.md) — send a message on behalf of the chat bot
-- [imbot.message.update](../../chat-bots/outdated/messages/imbot-message-update.md) — modify a sent message from the chat bot
-- [imbot.command.answer](../../chat-bots/outdated/commands/imbot-command-answer.md) — send a response to a command from the chat bot
 - [im.message.add](./im-message-add.md) — send a message in chat
 - [im.message.update](./im-message-update.md) — modify a sent message
 
-## How to Add an Item to the Context Menu
+[Keyboard](./keyboards.md) buttons are visible under the message right away, while menu items appear only when the user opens the message menu. Use a keyboard for an action expected in response to the message, and a menu for additional actions that should not take up space in the chat.
 
-To add an item to the context menu, pass the `MENU` parameter when creating or updating a message.
+A menu item with the `COMMAND` bot command works only in messages sent by the chat bot itself. Such messages are sent by the deprecated methods [imbot.message.add](../../chat-bots/outdated/messages/imbot-message-add.md), [imbot.message.update](../../chat-bots/outdated/messages/imbot-message-update.md), and [imbot.command.answer](../../chat-bots/outdated/commands/imbot-command-answer.md). The [Chatbots 2.0](../../chat-bots/chat-bots-v2/imbot.v2/messages/index.md) methods do not support the context menu.
+
+## How to Add an Item to the Context Menu
 
 `MENU` can be passed as:
 
@@ -29,7 +28,7 @@ To add an item to the context menu, pass the `MENU` parameter when creating or u
 - an object with the root key `ITEMS`
 - an array of items without wrapping
 
-If the `MENU` does not contain the key `ITEMS`, the server will automatically assume that a shortened format has been provided and will wrap the array in `ITEMS`.
+An array without the `ITEMS` key is the shortened format: the server wraps it in `ITEMS` itself.
 
 {% list tabs %}
 
@@ -65,27 +64,25 @@ If the `MENU` does not contain the key `ITEMS`, the server will automatically as
 || **TEXT**
 [`string`](../../data-types.md) | The text of the menu item.
 
-For menu items, it is mandatory to specify `TEXT` and one action field — `LINK`, `COMMAND`, `ACTION + ACTION_VALUE`, or `APP_ID` ||
+Each item requires `TEXT` and one action field: `LINK`, `COMMAND`, `ACTION + ACTION_VALUE`, or `APP_ID` ||
 || **LINK**
 [`string`](../../data-types.md) | The link for the menu item. `http/https` and relative paths `/...` are allowed. ||
 || **COMMAND**
-[`string`](../../data-types.md) | The command for the bot.
+[`string`](../../data-types.md) | The command for the chat bot. Works only in messages sent by the chat bot.
 
-For more details on command processing by the chat bot, see [below](#command-processing) ||
+How the chat bot processes the command is described in the [Command Processing by the Chat Bot](#command-processing) section ||
 || **COMMAND_PARAMS**
 [`string`](../../data-types.md) | Command parameters. Pass together with `COMMAND` ||
 || **APP_ID**
 [`integer`](../../data-types.md) | The application identifier for the chat.
 
-Deprecated scenario. To open an application from chat, use widgets. ||
+Deprecated scenario. To open an application from chat, use [messenger widgets](../../widgets/im/index.md) ||
 || **APP_PARAMS**
 [`string`](../../data-types.md) | Parameters for launching the application in chat. Pass together with `APP_ID`.
 
-Deprecated scenario. To open an application from chat, use widgets.
-
 {% note info "" %}
 
-Currently, the option with parameters `APP_ID` and `APP_PARAMS` is used in chats [Open Channels](../../imopenlines/openlines/index.md)
+The `APP_ID` and `APP_PARAMS` parameters are currently used in [Open Channels](../../imopenlines/openlines/index.md) chats — conversations with clients from messengers and social networks
 
 {% endnote %}
 ||
@@ -102,15 +99,15 @@ Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
 || **ACTION_VALUE**
 [`string`](../../data-types.md) | Value for `ACTION`:
 
-- `PUT` — text to be inserted into the input field
-- `SEND` — text to be sent
-- `COPY` — text to be copied to clipboard
+- `PUT` — text to insert into the input field
+- `SEND` — text to send
+- `COPY` — text to copy to the clipboard
 - `CALL` — phone number in international format
-- `DIALOG` — chat identifier in the format `chatXXX` for group chat and `ID` of the user for personal chat
+- `DIALOG` — chat identifier in the `chatXXX` format for a group chat, user identifier for a personal dialog
 
 Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
 || **CONTEXT**
-[`string`](../../data-types.md) | Display context.
+[`string`](../../data-types.md) | Where to show the menu item.
 
 Allowed values:
 - `MOBILE` — show only on mobile devices
@@ -150,7 +147,7 @@ Default is `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"DIALOG_ID":"chat2725","MESSAGE":"Select an action from the menu","URL_PREVIEW":"Y","MENU":{"ITEMS":[{"TEXT":"Open Website","LINK":"https://www.example.com/"},{"TEXT":"Send Text","ACTION":"SEND","ACTION_VALUE":"Done"}]}},"auth":"**put_access_token_here**"}' \
+    -d '{"DIALOG_ID":"chat2725","MESSAGE":"Select an action from the menu","URL_PREVIEW":"Y","MENU":{"ITEMS":[{"TEXT":"Open Website","LINK":"https://www.example.com/"},{"TEXT":"Send Text","ACTION":"SEND","ACTION_VALUE":"Done"}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/im.message.add
     ```
 
@@ -424,8 +421,8 @@ Default is `N` ||
     	return fmt.Errorf("im.message.add: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage: result contains the identifier
+    // of the created message
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -433,29 +430,28 @@ Default is `N` ||
 
 ## How to Update or Remove the Context Menu
 
-To update menu items, use the methods:
+You can change menu items only in your own message and only within three days after sending it — the same as the message text. Use these methods:
 
 - [im.message.update](./im-message-update.md)
 - [imbot.message.update](../../chat-bots/outdated/messages/imbot-message-update.md)
 
-To disable the display of additional menu items, pass:
-
-- `MENU: 'N'`
-- an empty value for `MENU`
+To remove custom items from the menu, pass `MENU: 'N'` or an empty string `MENU: ''`.
 
 ## Command Processing by the Chat Bot {#command-processing}
 
-1. To ensure the command works in the menu, register it using the method [imbot.command.register](../../chat-bots/outdated/commands/imbot-command-register.md).
+The [im.message.add](./im-message-add.md) and [im.message.update](./im-message-update.md) methods do not retain an item whose only action is `COMMAND`. If `MENU` contains no other items, the method returns an error: `MENU_ERROR` for `im.message.add`, `menu_ERROR` for `im.message.update`.
 
-    In the menu item, specify the following keys:
+1. To make the command work from the menu, register it with the [imbot.command.register](../../chat-bots/outdated/commands/imbot-command-register.md) method
+
+    In the menu item, specify the keys:
 
     ```php
     "COMMAND" => "example", // command that will be sent to the chat bot
     "COMMAND_PARAMS" => "example", // parameters for the command
-     ```
+    ```
 
-2. Clicking on the menu item will generate the event [ONIMCOMMANDADD](../../chat-bots/outdated/commands/events/on-im-command-add.md).
-3. Inside the event, the array `data[COMMAND]` will contain data about the invoked event. The value `COMMAND_CONTEXT` will indicate the context in which the command was invoked:
+2. When the user clicks the menu item, the [ONIMCOMMANDADD](../../chat-bots/outdated/commands/events/on-im-command-add.md) event arrives
+3. The event data arrives in the `data[COMMAND][<COMMAND_ID>]` array. The `COMMAND_CONTEXT` value shows where the command was invoked from:
    - `TEXTAREA` — command entered manually
    - `KEYBOARD` — command invoked by button
    - `MENU` — command invoked from the context menu

@@ -25,42 +25,50 @@ The method `im.message.update` modifies the text and parameters of an already se
 || **MESSAGE_ID***
 [`integer`](../../data-types.md) | Identifier of the message.
 
-The identifier is returned by the method [im.message.add](./im-message-add.md) ||
+The identifier is returned by the methods [im.message.add](./im-message-add.md) and [im.dialog.messages.get](./im-dialog-messages-get.md).
+
+You can edit only your own message and only within three days after sending it. A forwarded message cannot be edited ||
 || **MESSAGE**
 [`string`](../../data-types.md) | New text of the message. If an empty value is provided, the message will be deleted.
 
 If the parameter is not provided, the message text will remain unchanged ||
 || **ATTACH**
 [`object`](../../data-types.md)
-[`string`](../../data-types.md) | Attachment with content blocks: images, links, files. To remove the attachment, pass `N` or an empty value.
+[`string`](../../data-types.md) | Attachment with content blocks: images, links, files.
 
-Read more in the [Attachments](./attachments.md) section ||
+Pass an object with an array of blocks as the value of the `BLOCKS` key, for example, `{"BLOCKS":[{"MESSAGE":"Block text"}]}`, or the array of blocks itself. To remove the attachment, pass `N` or an empty value.
+
+Read more in the [Attachments](./attachments.md) article ||
 || **KEYBOARD**
 [`object`](../../data-types.md)
-[`string`](../../data-types.md) | Buttons below the message that the user can interact with. To disable button display, pass `N` or an empty value.
+[`string`](../../data-types.md) | Buttons below the message that the user can interact with.
+
+Pass an object with an array of buttons as the value of the `BUTTONS` key, for example, `{"BUTTONS":[{"TEXT":"Open","LINK":"https://example.com"}]}`, or the array of buttons itself. To remove the buttons, pass `N` or an empty value.
 
 Read more in the [Working with Keyboards](./keyboards.md) article ||
 || **MENU**
 [`object`](../../data-types.md)
-[`string`](../../data-types.md) | Additional items in the chat's context menu. To disable the display of additional menu items, pass `N` or an empty value.
+[`string`](../../data-types.md) | Custom items in the message context menu, for example, a link or an option to copy text.
+
+Pass an object with an array of items as the value of the `ITEMS` key, for example, `{"ITEMS":[{"TEXT":"Open","LINK":"https://example.com"}]}`, or the array of items itself. To remove the custom items, pass `N` or an empty value.
 
 Read more in the [Context Menu](./menu.md) article ||
 || **URL_PREVIEW**
-[`string`](../../data-types.md) | Conversion of links into rich links.
+[`string`](../../data-types.md) | Whether to show a card with the page title, description, and image under a link in the message.
 
 Allowed values:
-- `Y` — enabled
-- `N` — disabled ||
+- `Y` — show the card
+- `N` — do not show ||
 || **IS_EDITED**
-[`string`](../../data-types.md) | Flag for marking "edited":
-- `Y` — mark
-- `N` — do not mark
+[`string`](../../data-types.md) | Whether to show the "edited" label on the message:
+- `Y` — show
+- `N` — do not show
 
-Default is `Y` 
+Default is `Y`
 
 {% note info "" %}
 
-The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "edited" label may appear even if `IS_EDITED = 'N'` is provided.
+The parameter applies when `ATTACH` is changed. When `MESSAGE` is changed, the label may appear even if you pass `N`
 
 {% endnote %} ||
 |#
@@ -77,7 +85,7 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"MESSAGE_ID":34239,"MESSAGE":"Updated text","KEYBOARD":"N"}' \
+    -d '{"MESSAGE_ID":34239,"MESSAGE":"Updated text"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.update
     ```
 
@@ -87,7 +95,7 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"MESSAGE_ID":34239,"MESSAGE":"Updated text","KEYBOARD":"N","auth":"**put_access_token_here**"}' \
+    -d '{"MESSAGE_ID":34239,"MESSAGE":"Updated text","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/im.message.update
     ```
 
@@ -107,7 +115,6 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
         params: {
           MESSAGE_ID: 34239,
           MESSAGE: 'Updated text',
-          KEYBOARD: 'N',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -141,7 +148,6 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
             params: {
               MESSAGE_ID: 34239,
               MESSAGE: 'Updated text',
-              KEYBOARD: 'N',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -173,7 +179,6 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
         bitrix_response = client.im.message.update(
             message_id=34239,
             message="Updated text",
-            keyboard="N",
         ).response
         result = bitrix_response.result
         print(result)
@@ -200,8 +205,7 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
                 'im.message.update',
                 [
                     'MESSAGE_ID' => 34239,
-                    'MESSAGE' => 'Updated text',
-                    'KEYBOARD' => 'N'
+                    'MESSAGE' => 'Updated text'
                 ]
             );
 
@@ -225,8 +229,7 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
         'im.message.update',
         {
             MESSAGE_ID: 34239,
-            MESSAGE: 'Updated text',
-            KEYBOARD: 'N'
+            MESSAGE: 'Updated text'
         },
         function(result)
         {
@@ -247,8 +250,7 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
         'im.message.update',
         [
             'MESSAGE_ID' => 34239,
-            'MESSAGE' => 'Updated text',
-            'KEYBOARD' => 'N'
+            'MESSAGE' => 'Updated text'
         ]
     );
 
@@ -264,7 +266,6 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
     res, err := client.Core().Call(ctx, "im.message.update", b24.Params{
     	"MESSAGE_ID": 34239,
     	"MESSAGE":    "Updated text",
-    	"KEYBOARD":   "N",
     })
     if err != nil {
     	return fmt.Errorf("im.message.update: %w", err)
@@ -305,7 +306,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the message was updated ||
+[`boolean`](../../data-types.md) | `true` if the request completed without an error. If only `MESSAGE_ID` is passed, the method also returns `true`, but the message does not change ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -326,15 +327,15 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or invalid ||
-|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | No permission to edit the message or the modification period has expired ||
-|| `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
-|| `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
-|| `KEYBOARD_OVERSIZE` | You have exceeded the maximum allowable size of keyboard | The size of `KEYBOARD` exceeds the allowable limit ||
-|| `menu_ERROR` | Incorrect menu params | Invalid `MENU` object ||
-|| `MENU_OVERSIZE` | You have exceeded the maximum allowable size of menu | The size of `MENU` exceeds the allowable limit ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MESSAGE_ID_ERROR` | Message ID can't be empty | The `MESSAGE_ID` parameter is missing or its value is not greater than `0` ||
+|| `403` | `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | The message was not found, has been deleted, was forwarded, was sent by another user, or was sent more than three days ago ||
+|| `400` | `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
+|| `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
+|| `400` | `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
+|| `400` | `KEYBOARD_OVERSIZE` | You have exceeded the maximum allowable size of keyboard | The size of `KEYBOARD` exceeds the allowable limit ||
+|| `400` | `menu_ERROR` | Incorrect menu params | Invalid `MENU` object ||
+|| `400` | `MENU_OVERSIZE` | You have exceeded the maximum allowable size of menu | The size of `MENU` exceeds the allowable limit ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -343,6 +344,11 @@ HTTP Status: **400**, **403**
 
 - [{#T}](./im-message-add.md)
 - [{#T}](./im-message-delete.md)
-- [{#T}](./keyboards.md)
-- [{#T}](./attachments.md)
-- [{#T}](./menu.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

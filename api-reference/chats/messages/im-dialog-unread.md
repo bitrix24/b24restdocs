@@ -1,4 +1,4 @@
-# Set the "unread" flag for messages im.dialog.unread
+# Mark Messages as Unread im.dialog.unread
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.dialog.unread` sets the "unread" flag for messages in a dialog starting from the specified message.
+The method `im.dialog.unread` marks chat messages as unread, starting from the specified one.
 
 ## Method Parameters
 
@@ -23,15 +23,15 @@ The method `im.dialog.unread` sets the "unread" flag for messages in a dialog st
 || **Name**
 `type` | **Description** ||
 || **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — user identifier for personal chat
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `sgXXX` — group or project chat, where `XXX` is the group identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
 
-The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
 || **MESSAGE_ID***
-[`integer`](../../data-types.md) | Identifier of the first unread message ||
+[`integer`](../../data-types.md) | Identifier of the first message to mark as unread. This message and all subsequent messages are marked as unread ||
 |#
 
 ## Code Examples
@@ -85,7 +85,7 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Unread flag set:', result)
+        console.info('Request completed:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -120,7 +120,7 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
           }
 
           const result = response.getData().result
-          console.info('Unread flag set:', result)
+          console.info('Request completed:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -261,7 +261,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the unread message flag was successfully set ||
+[`boolean`](../../data-types.md) | Always `true`, even if the message is not found or the current user is not a chat member. The response does not indicate whether the messages were marked as unread. You can verify this using the chat counter returned by the [im.counters.get](../im-counters-get.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -273,7 +273,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MESSAGE_ID_ERROR",
-    "error_description": "Message ID can't be empty"
+    "error_description": "First unread message id can't be empty"
 }
 ```
 
@@ -283,7 +283,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `MESSAGE_ID_ERROR` | First unread message id can't be empty | The `MESSAGE_ID` parameter is not provided or is provided with a value less than or equal to `0` ||
+|| `400` | `MESSAGE_ID_ERROR` | First unread message id can't be empty | The `MESSAGE_ID` parameter is not provided or is less than or equal to `0` ||
 || `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The `DIALOG_ID` parameter is not provided, is empty, or is in an incorrect format ||
 |#
 
@@ -291,6 +291,12 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
 - [{#T}](./im-dialog-messages-get.md)
 - [{#T}](./im-dialog-messages-search.md)
 - [{#T}](./im-dialog-read.md)

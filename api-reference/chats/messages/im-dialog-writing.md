@@ -1,4 +1,4 @@
-# Send "User is typing" indicator im.dialog.writing
+# Send "User Is Typing" Indicator im.dialog.writing
 
 {% note tip "" %}
 
@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The method `im.dialog.writing` sends a "User is typing" indicator to the chat.
 
+{% note info "" %}
+
+The indicator disappears when the user sends a message. If no message is sent, the indicator disappears on its own in the Bitrix24 web version after about 25 seconds. To keep the indicator on while the user is typing, repeat the call.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -22,15 +28,24 @@ The method `im.dialog.writing` sends a "User is typing" indicator to the chat.
 #|
 || **Name**
 `type` | **Description** ||
-|| **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — user identifier for personal chat 
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
 
-The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be retrieved using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
+The method does not support the `sgXXX` format and returns the `ACCESS_ERROR` error. For a workgroup chat, pass that chat's identifier in the `chatXXX` format.
+
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
+|| **CHAT_ID**
+[`integer`](../../data-types.md) | Chat identifier without the `chat` prefix, for example, `2935` ||
 |#
+
+{% note warning "" %}
+
+Pass one of the parameters: `DIALOG_ID` or `CHAT_ID`. If both are passed, the method uses `DIALOG_ID`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -244,8 +259,8 @@ HTTP Status: **200**
         "finish": 1772548455.702725,
         "duration": 0.7027249336242676,
         "processing": 0,
-        "date_start": "2026-03-03T14:34:15+01:00",
-        "date_finish": "2026-03-03T14:34:15+01:00",
+        "date_start": "2026-03-03T15:34:15+01:00",
+        "date_finish": "2026-03-03T15:34:15+01:00",
         "operating_reset_at": 1772549055,
         "operating": 0
     }
@@ -279,9 +294,11 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | Invalid `DIALOG_ID` ||
-|| `ACCESS_ERROR` | Action unavailable | No access to the specified chat ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | `DIALOG_ID` is passed in an invalid format ||
+|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` is passed, but its value is not a positive number ||
+|| `403` | `ACCESS_ERROR` | You don't have access to this dialog | Neither `DIALOG_ID` nor `CHAT_ID` is passed, the chat is not found, or the current user has no access to it ||
+|| `403` | `ACCESS_ERROR` | Action unavailable | The indicator is not sent: the identifier of the current user or an identifier in the `sgXXX` format is passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -289,5 +306,12 @@ HTTP Status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
 - [{#T}](./im-dialog-read.md)
 - [{#T}](./im-dialog-unread.md)

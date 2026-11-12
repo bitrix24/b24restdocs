@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: the author of the message or an administrator in a group chat
+> Who can execute the method: the author of the message or an administrator in the General chat
 
 The method `im.message.delete` removes a message.
 
@@ -25,7 +25,7 @@ The method `im.message.delete` removes a message.
 || **MESSAGE_ID***
 [`integer`](../../data-types.md) | Identifier of the message.
 
-The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
+The identifier is returned by the methods [im.message.add](./im-message-add.md) and [im.dialog.messages.get](./im-dialog-messages-get.md) ||
 |#
 
 ## Code Examples
@@ -254,7 +254,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the message was deleted ||
+[`boolean`](../../data-types.md) | `true` if the message was deleted. Usually the message stays in the chat with the text "This message has been deleted", and `IS_DELETED: "Y"` appears in its `params`. If an administrator deletes a message in the General chat, the message is deleted completely ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -275,9 +275,9 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or invalid ||
-|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | No permission to delete the message or the editing time has expired ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MESSAGE_ID_ERROR` | Message ID can't be empty | The `MESSAGE_ID` parameter is missing or its value is not greater than `0` ||
+|| `403` | `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | The message is not found, is already deleted, or the current user cannot delete it ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -287,3 +287,10 @@ HTTP Status: **400**, **403**
 - [{#T}](./im-message-add.md)
 - [{#T}](./im-message-update.md)
 - [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)
