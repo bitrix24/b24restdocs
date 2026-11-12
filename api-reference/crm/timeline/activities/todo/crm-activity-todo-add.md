@@ -47,7 +47,7 @@ By default, and also when the value is `0`, the user on whose behalf the request
 
 The new activity is linked to the previous one, and the previous activity is closed. If no activity with this identifier is found, the parameter is ignored ||
 || **pingOffsets**
-[`array`](../../../../data-types.md) | Array of integers: how many minutes before the deadline to send reminders. For example, `[0, 15]` creates 2 reminders: 15 minutes before the deadline and at the moment it occurs.
+[`array`](../../../../data-types.md) | Array of integers: how many minutes before the deadline to send reminders. For example, `[0, 15]` creates two reminders: 15 minutes before the deadline and at the moment it occurs.
 
 The method discards negative and non-numeric values and merges duplicates. Default is an empty array, with no reminders ||
 || **colorId**

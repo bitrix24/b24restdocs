@@ -50,14 +50,14 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
   - "%mol" — searching for values ending with "mol"
   - "%mol%" — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
   - "%mol%" — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
 - `=` — equal, exact match (used by default)
-- `!=` - not equal
+- `!=` — not equal
 - `!` — not equal
 ||
 || **order**
@@ -82,7 +82,7 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-See the description of [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
+For details, see [list method specifics](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% note info "" %}
 
@@ -245,8 +245,8 @@ Each array item can contain `OWNER_TYPE_ID` — the object type identifier, `OWN
 
     try:
         bitrix_response = client.crm.activity.list(
-            select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "STATUS", "DEADLINE", "RESPONSIBLE_ID"],
-            filter={"OWNER_TYPE_ID": 2, "OWNER_ID": 101, "COMPLETED": "N"},
+            select=["*", "COMMUNICATIONS"],
+            filter={"OWNER_TYPE_ID": 3, "OWNER_ID": 102},
             order={"ID": "DESC"},
             start=0,
         ).response
@@ -303,7 +303,6 @@ Each array item can contain `OWNER_TYPE_ID` — the object type identifier, `OWN
         bitrix_response = client.crm.activity.list(
             select=["ID", "SUBJECT", "STATUS", "DEADLINE"],
             filter={"OWNER_TYPE_ID": 2, "OWNER_ID": 101},
-            order={"ID": "DESC"},
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
@@ -548,11 +547,11 @@ HTTP status: **400**, **403**
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
-### Using BINGINDS {#example-bindings}
+### Using BINDINGS {#example-bindings}
 
-Retrieve fields: Identifier, Title, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
+Retrieve all fields and communications of activities
 
-Filter condition: the activity is linked to both a deal and a contact simultaneously
+Filter condition: the activity is linked to a deal or a contact
 
 {% note info %}
 
@@ -796,9 +795,6 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
                         "OWNER_TYPE_ID": 3,
                     },
                 ],
-            },
-            order={
-                "ID": "DESC",
             },
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
@@ -1690,6 +1686,12 @@ HTTP status: **200**
 
 ## Continue Learning
 
+- [{#T}](./crm-activity-add.md)
+- [{#T}](./crm-activity-update.md)
+- [{#T}](./crm-activity-get.md)
+- [{#T}](./crm-activity-delete.md)
+- [{#T}](./crm-activity-fields.md)
+- [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)
 - [{#T}](../../../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)

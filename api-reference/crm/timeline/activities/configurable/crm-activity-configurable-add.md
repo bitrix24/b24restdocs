@@ -795,6 +795,7 @@ HTTP status: **400**
 || `ACCESS_DENIED` | Insufficient permissions to create an activity in the CRM object ||
 || `100` | The required `ownerTypeId`, `ownerId`, `fields`, or `layout` parameter is missing ||
 || `ERROR_WRONG_CONTEXT` | The method was called outside an application, for example via an inbound webhook ||
+|| `WRONG_DATETIME_FORMAT` | The date in `fields.deadline` could not be parsed ||
 || `WRONG_FIELD_VALUE` | Incorrect field value: an unknown `badgeCode` or `typeId` in `fields`, an unsupported nested block type, an invalid color format in `sliderParams` ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
 || `ERROR_EMPTY_LAYOUT` | An empty `layout` was passed ||

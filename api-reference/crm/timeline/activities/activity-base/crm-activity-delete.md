@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to delete each linked CRM item
+> Who can execute the method: any user with permission to delete the primary linked CRM item
 
 {% note warning "DEPRECATED" %}
 

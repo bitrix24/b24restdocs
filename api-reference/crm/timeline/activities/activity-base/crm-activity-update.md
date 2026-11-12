@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to modify each linked CRM item
+> Who can execute the method: any user with permission to modify the current CRM item and, when the owner changes, the new item as well
 
 {% note warning "DEPRECATED" %}
 
@@ -186,19 +186,14 @@ Field behavior during updates:
 
     ```python
 
-    from datetime import datetime, timedelta
-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.activity.update(
             bitrix_id=999,
             fields={
-                "SUBJECT": "Updated follow-up",
-                "START_TIME": (datetime.now() + timedelta(days=1)).isoformat(timespec="seconds"),
-                "DESCRIPTION": "Updated activity description",
                 "RESPONSIBLE_ID": 1,
-                "COMPLETED": "N",
+                "DESCRIPTION": "New description of the activity",
             },
         ).response
         result = bitrix_response.result

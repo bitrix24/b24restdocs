@@ -132,7 +132,7 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 
 For activities of type `e-mail`:
 - if the e-mail should not be sent, set the `DIRECTION=2` and `COMPLETED='N'` parameters
-- if it is necessary to mark e-mails as completed, perform an activity update by setting the completion flag
+- to mark the e-mail as completed, call the [crm.activity.update](./crm-activity-update.md) method and pass `COMPLETED='Y'`
 
 ## Code Examples
 
@@ -281,26 +281,29 @@ For activities of type `e-mail`:
 
     ```python
 
-    from datetime import datetime, timedelta
-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.activity.add(
             fields={
                 "OWNER_TYPE_ID": 2,
-                "OWNER_ID": 101,
+                "OWNER_ID": 102,
                 "TYPE_ID": 2,
-                "COMMUNICATIONS": [{"VALUE": "+499990000000"}],
-                "SUBJECT": "Follow up with customer",
-                "START_TIME": datetime.now().isoformat(timespec="seconds"),
-                "END_TIME": (datetime.now() + timedelta(hours=1)).isoformat(timespec="seconds"),
+                "COMMUNICATIONS": [
+                    {"VALUE": "+499832322323", "ENTITY_ID": 134, "ENTITY_TYPE_ID": 3},
+                ],
+                "SUBJECT": "New call",
+                "START_TIME": "2023-12-31T12:00:00+00:00",
+                "END_TIME": "2023-12-31T12:30:00+00:00",
                 "COMPLETED": "N",
                 "RESPONSIBLE_ID": 1,
-                "PRIORITY": 2,
-                "DESCRIPTION": "Discuss proposal details",
+                "PRIORITY": 3,
+                "DESCRIPTION": "Important call",
                 "DESCRIPTION_TYPE": 3,
                 "DIRECTION": 2,
+                "FILES": [
+                    {"fileData": ["example.jpg", "base64_encoded_content_here"]},
+                ],
             },
         ).response
         result = bitrix_response.result
