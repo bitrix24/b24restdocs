@@ -15,8 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The method `sign.b2e.document.send` sends a document for signing on behalf of the company.
 
-This method works only in the context of application authorization [application](../../settings/app-installation/index.md).
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -136,9 +134,16 @@ The `employeeCode` and `employeeId` fields are available only for companies link
 || **Name**
 `type` | **Description** ||
 || **fileName*** 
-[`string`](../data-types.md) | File name. Must include the `.pdf` extension ||
+[`string`](../data-types.md) | File name with an extension. The method accepts the following extensions (case-insensitive): `pdf`, `docx`, `doc`, `rtf`, `odt`, `jpg`, `jpeg`, and `png` ||
 || **fileType*** 
-[`string`](../data-types.md) | MIME type of the file. Supported `application/pdf` ||
+[`string`](../data-types.md) | MIME type of the file. Must match the extension in `fileName`:
+- `pdf` — `application/pdf`
+- `docx` — `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- `doc` — `application/msword`
+- `rtf` — `application/rtf` or `text/rtf`
+- `odt` — `application/vnd.oasis.opendocument.text`
+- `jpg`, `jpeg` — `image/jpeg`
+- `png` — `image/png` ||
 || **fileContent*** 
 [`string`](../data-types.md) | Content of the file, encoded in Base64 ||
 |#
@@ -165,6 +170,16 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
 {% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"company":{"crmId":12},"members":[{"userId":25,"role":"signer"},{"userId":42,"role":"assignee"}],"responsible":{"userId":7},"companyProviderUid":"d4f6b8a1-4c6d-4d8c-9c7c-2d1b1f6d0f2b","files":[{"fileName":"contract.pdf","fileType":"application/pdf","fileContent":"JVBERi0xLjQKJ..."}],"regionDocumentType":"12.999","externalSettings":{"externalId":"EXT-123","externalDateCreate":"2025-02-18T09:19:34+01:00"},"message":"Please sign the document"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sign.b2e.document.send
+    ```
 
 - cURL (OAuth)
 
@@ -690,7 +705,6 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
 || `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have permission to create documents in e-Signature for HR. Also occurs if HCM Link data is passed but the `humanresources.hcmlink` scope is not connected ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
 || `400` | `BAD_REQUEST` | [fields] Empty request fields. | `fields` object not provided ||
 || `400` | `BAD_REQUEST` | [companyProviderUid] field is required | `companyProviderUid` not provided, including when `fields` is empty ||
 || `400` | `BAD_REQUEST` | The responsible field is required | `responsible` not provided ||
@@ -704,10 +718,11 @@ HTTP Status: **400**
 || `400` | `BAD_REQUEST` | Could not find user for specified employee | User not found for employee ||
 || `400` | `BAD_REQUEST` | At least one file is required to sign the document | `files` array not provided ||
 || `400` | `BAD_REQUEST` | Signing multiple files is currently not supported | More than one file provided in `files` ||
-|| `400` | `BAD_REQUEST` | The specified file type is not supported | `fileType` other than `application/pdf` specified ||
+|| `400` | `BAD_REQUEST` | The specified file type is not supported | Unsupported `fileType` specified ||
 || `400` | `BAD_REQUEST` | Invalid file name | Invalid file name ||
 || `400` | `BAD_REQUEST` | Invalid file name. File extension is not specified | File extension not specified ||
 || `400` | `BAD_REQUEST` | The specified file extension is not supported | File extension not supported ||
+|| `400` | `BAD_REQUEST` | The specified file type does not match the file extension | `fileType` does not match the extension in `fileName`. For example, `contract.docx` is passed with the MIME type `application/pdf` ||
 || `400` | `BAD_REQUEST` | Region document type is required. Use value '12.999' as a default value | `regionDocumentType` not provided when codes list is available ||
 || `400` | `BAD_REQUEST` | Region document type is not valid. Use value '12.999' as a default value | Unsupported `regionDocumentType` provided ||
 || `400` | `BAD_REQUEST` | Signing provider is not available | Provider not available for the company ||

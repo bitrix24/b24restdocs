@@ -1,4 +1,4 @@
-# Set the "read" flag for messages im.dialog.read
+# Mark Messages as Read im.dialog.read
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `im.dialog.read` sets the "read" flag for dialog messages up to and including the specified message.
+The method `im.dialog.read` marks chat messages as read up to and including the specified one. The method marks messages as read only for the user on whose behalf it is called.
 
 ## Method Parameters
 
@@ -23,15 +23,15 @@ The method `im.dialog.read` sets the "read" flag for dialog messages up to and i
 || **Name**
 `type` | **Description** ||
 || **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — identifier of the personal chat user
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `sgXXX` — group or project chat, where `XXX` is the group identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
 
-The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
 || **MESSAGE_ID**
-[`integer`](../../data-types.md) | Identifier of the last read message. If not provided, the method sets the read flag for all unread messages ||
+[`integer`](../../data-types.md) | Identifier of the last message to mark as read. If you omit it, the method marks all unread messages as read ||
 |#
 
 ## Code Examples
@@ -72,14 +72,14 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ImDialogReadResult = {
-      dialogId: string,
+      dialogId: string | number,
       chatId: number,
       lastId: number,
       counter: number,
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<ImDialogReadResult>({
+      const response = await $b24.actions.v2.call.make<ImDialogReadResult | false>({
         method: 'im.dialog.read',
         params: {
           DIALOG_ID: 'chat1489',
@@ -93,7 +93,11 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result.dialogId, result.chatId, result.lastId, result.counter)
+        if (result === false) {
+          console.info('Messages are not marked as read')
+        } else {
+          console.info(result.dialogId, result.chatId, result.lastId, result.counter)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -128,6 +132,10 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
           }
 
           const result = response.getData().result
+          if (result === false) {
+            console.info('Messages are not marked as read')
+            return
+          }
           console.info(result.dialogId, result.chatId, result.lastId, result.counter)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -234,8 +242,14 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
     	return fmt.Errorf("im.dialog.read: %w", err)
     }
 
+    // If marking the messages fails, result is false
+    if string(res.Result) == "false" {
+    	fmt.Println("Messages are not marked as read")
+    	return nil
+    }
+
     var item struct {
-    	DialogID string `json:"dialogId"`
+    	DialogID any    `json:"dialogId"`
     	ChatID   b24.ID `json:"chatId"`
     	LastID   b24.ID `json:"lastId"`
     	Counter  int    `json:"counter"`
@@ -273,15 +287,34 @@ HTTP Status: **200**
 }
 ```
 
+If the current user is not a chat member or the messages could not be marked, the method returns HTTP status **200** and `false`:
+
+```json
+{
+    "result": false,
+    "time": {
+        "start": 1772624912,
+        "finish": 1772624912.615753,
+        "duration": 0.6157529354095459,
+        "processing": 0,
+        "date_start": "2026-03-04T14:48:32+01:00",
+        "date_finish": "2026-03-04T14:48:32+01:00",
+        "operating_reset_at": 1772625512,
+        "operating": 0
+    }
+}
+```
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result).
+[`object`](../../data-types.md)
+[`boolean`](../../data-types.md) | Root element of the response [(detailed description)](#result).
 
-Returns `false` if the user does not have access to the chat ||
+Equals `false` if the current user is not a chat member or the messages could not be marked ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -292,13 +325,14 @@ Returns `false` if the user does not have access to the chat ||
 || **Name**
 `type` | **Description** ||
 || **dialogId**
-[`string`](../../data-types.md) | Identifier of the dialog ||
+[`string`](../../data-types.md)
+[`integer`](../../data-types.md) | Chat identifier in the `DIALOG_ID` format. For a personal dialog, it is a number, the user identifier ||
 || **chatId**
 [`integer`](../../data-types.md) | Identifier of the chat ||
 || **lastId**
 [`integer`](../../data-types.md) | Identifier of the last read message ||
 || **counter**
-[`integer`](../../data-types.md) | Number of unread messages after executing the method ||
+[`integer`](../../data-types.md) | Number of unread messages after executing the method. In a group chat, a value greater than 99 is returned as `100` ||
 |#
 
 ## Error Handling
@@ -325,6 +359,12 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
 - [{#T}](./im-dialog-messages-get.md)
 - [{#T}](./im-dialog-messages-search.md)
 - [{#T}](./im-dialog-unread.md)

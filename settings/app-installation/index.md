@@ -9,30 +9,23 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-This Page helps you choose an application installation scenario in Bitrix24 and explains the differences between installing Local applications, mass-market applications, and configuration solutions. After reading this, you will understand the installation stages, who initiates them, and which documentation section to open for your chosen solution type.
-
-This page does not cover the configuration of specific scenarios — separate articles dedicated to them are linked below.
+Installing an application in Bitrix24 depends on the solution type: a Local application, a mass-market application, or a configuration solution. The scenario for each type is described in a separate article — the links are collected in the table below.
 
 ## How Installation Works
 
-Installing an application means registering it on a specific Bitrix24 instance, rather than uploading or downloading code. Once registered, the Bitrix24 authorization server begins issuing OAuth 2.0 tokens to the application, which it uses to operate via the Bitrix24 REST API.
+Installing an application means registering it on a specific Bitrix24 instance, rather than downloading code. Once the application is registered, the Bitrix24 authorization server begins issuing [OAuth 2.0 tokens](../oauth/index.md) to it, which the application uses to work with that Bitrix24 via the REST API.
 
-The process consists of three stages:
+Installing a Local or mass-market application consists of three stages:
 
-1. **Adding the Application** — A developer creates a Local application in the Developer resources section of their Bitrix24, whereas a mass-market application is added in the [developer console](../../market/preparing-to-publish/how-to-add-app.md) and published to the Bitrix24 Market.
-2. **Installing on Bitrix24** — The server registers the application and issues OAuth 2.0 tokens. The installation is performed by a user with administrator rights. A Local application is installed by the developer on their own Bitrix24; a mass-market application is installed by an administrator from the Bitrix24 Market or by a developer from the developer console on any Bitrix24 with administrative access.
-3. **Completing Installation** — An application without an interface is installed automatically; an application with an interface and a setup wizard completes the installation using the `installFinish` method. Details can be found in the [Completing Application Installation](./installation-finish.md) article.
+1. **Adding the Application** — A developer creates a Local application in the *Developer resources* section of their Bitrix24, whereas a mass-market application is added in the [developer console](../../market/preparing-to-publish/how-to-add-app.md) and, after testing and moderation, published to the Bitrix24 Market.
+2. **Installing on Bitrix24** — The server registers the application and issues OAuth 2.0 tokens. The installation is started by a Bitrix24 administrator or by an employee whom the administrator has allowed to install applications. A developer installs a Local application on their own Bitrix24. A mass-market application is installed by an administrator from the Bitrix24 Market or by a developer from the developer console on any Bitrix24 where the developer has administrative access.
+3. **Completing Installation** — An application with an installation wizard calls the JS SDK function [BX24.installFinish()](../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md). Bitrix24 considers all other applications installed right away. Whether an application has a wizard is defined in its settings. Details can be found in the [Completing Application Installation](./installation-finish.md) article.
 
-After installation, the application continues its lifecycle: new versions are released, and the application may be removed from Bitrix24. What happens in these cases is described in [{#T}](../app-update.md) and [{#T}](../app-uninstallation.md).
+After installation, new versions of the application are released, and the application may be removed from Bitrix24. What happens in these cases is described in [{#T}](../app-update.md) and [{#T}](../app-uninstallation.md).
 
 ## Installation Options
 
-The installation scenario depends on the solution type. There are two types of solutions:
-
-- mass-market application — operates via the Bitrix24 REST API, is published in the Bitrix24 Market, and is installed on various Bitrix24 instances.
-- configuration solution — a ready-made set of Bitrix24 configurations that operates without the Bitrix24 REST API.
-
-Bitrix24 downloads a configuration solution from the developer console and applies its settings automatically.
+The solution types and the articles about their installation are listed in the table. A configuration solution is a ready-made set of Bitrix24 configurations that operates without the REST API. Bitrix24 downloads it from the Bitrix24 Market and applies the configurations automatically.
 
 #|
 || **Solution type** | **What it is** | **Where installation is described** ||
@@ -43,10 +36,12 @@ Bitrix24 downloads a configuration solution from the developer console and appli
 || Website templates | A configuration solution with a ready-made one-page or multi-page website | [Installing website templates](./site-templates-installation.md) ||
 |#
 
-In addition to the above, [BI Builder templates](../../market/preparing-to-publish/requirements-superset.md) and other types of solutions that do not use the REST API are published as configuration solutions.
+[BI Builder templates](../../market/preparing-to-publish/requirements-superset.md) and other types of solutions that do not use the REST API are also published as configuration solutions.
+
+**How to choose between a Local and a mass-market application.** A Local application fits when only one Bitrix24 needs the integration, for example your own company's or a single client's. It is created directly in that Bitrix24, without the developer console or moderation. Choose a mass-market application when the solution needs to be installed on different Bitrix24 instances and distributed through the Bitrix24 Market. It is created in the developer console and goes through moderation before publication.
 
 {% note info "" %}
 
-If you are planning a mass-market solution, conduct your development directly in the developer console. The installation scenario for a mass-market solution may differ from a Local application, and an installation debugged on a Local application will have to be redone.
+If you are planning a mass-market application, conduct your development directly in the developer console. The installation procedure for a mass-market application may differ from that of a Local application. In that case, you will need to rework the installation procedure you debugged on the Local application.
 
 {% endnote %}

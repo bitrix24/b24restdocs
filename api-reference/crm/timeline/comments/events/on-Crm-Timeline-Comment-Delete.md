@@ -1,4 +1,4 @@
-# Event for Deleting a "Comment" Activity onCrmTimelineCommentDelete
+# Event on Deleting a Comment in the CRM Timeline onCrmTimelineCommentDelete
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmTimelineCommentDelete` event is triggered when a "Comment" type activity is deleted from the CRM timeline.
+The `onCrmTimelineCommentDelete` event is triggered when a comment is deleted from the CRM timeline.
+
+If a comment is bound to multiple CRM items, removing only one binding does not trigger this event.
 
 {% note info "" %}
 
@@ -27,9 +29,12 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmTimelineCommentDelete",
+    "event": "ONCRMTIMELINECOMMENTDELETE",
+    "event_handler_id": "185",
     "data": {
-        "ID": 999
+        "FIELDS": {
+            "ID": 999
+        }
     },
     "ts": "1466439714",
     "auth": {
@@ -55,11 +60,17 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmTimelineCommentDelete` ||
+In this case — `ONCRMTIMELINECOMMENTDELETE` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../../../data-types.md) | An object containing data for a remote comment case.
+[`object`](../../../../data-types.md) | An object containing data about the deleted comment.
 
-The structure is described [below](#data) ||
+Contains a single key `FIELDS` ||
+|| **data.FIELDS***
+[`object`](../../../../data-types.md) | An object containing the identifier of the deleted comment.
+
+The structure is described [below](#fields) ||
 || **ts***
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
@@ -68,7 +79,7 @@ The structure is described [below](#data) ||
 The structure is described [below](#auth) ||
 |#
 
-### Parameter data {#data}
+### Parameter FIELDS {#fields}
 
 #|
 || **parameter**

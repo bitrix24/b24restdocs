@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to delete an activity
+> Who can execute the method: any user with permission to delete the primary linked CRM item
 
 {% note warning "DEPRECATED" %}
 
@@ -283,7 +283,7 @@ HTTP status: **400**
 || **Status** | **Code** | **Description** | **Meaning** ||
 || `400` | Empty value | `ID is not defined or invalid.` | The activity identifier is missing or invalid ||
 || `400` | Empty value | `Activity is not found.` | The activity with the specified identifier was not found ||
-|| `400` | Empty value | `Access denied.` | The user lacks permission to delete the activity, the application activity belongs to another application, or a call deletion restriction applies ||
+|| `400` | Empty value | `Access denied.` | The user lacks permission to delete the linked CRM item, the application activity belongs to another application, or a call deletion restriction applies ||
 || `400` | Empty value | `Application context required.` | Deleting an activity from an application provider requires an application context ||
 |#
 

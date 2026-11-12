@@ -23,7 +23,7 @@ The `sign.b2e.provider.*` methods connect your own signing providers to Bitrix24
 
 The `humanresources.hcmlink.*` methods manage e-Signature integration data with HR systems through HCM Link: companies, employees, mappings, and field values.
 
-These methods can only be executed in the context of authorization of the [application](../../settings/app-installation/index.md). The methods reject calls made through a webhook with the `WRONG_AUTH_TYPE` error.
+The [sign.b2e.document.send](./sign-b2e-document-send.md), [sign.b2e.document.get](./sign-b2e-document-get.md), and [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) methods work both in an [application](../../settings/app-installation/index.md) and via an [inbound webhook](../../local-integrations/local-webhooks.md). The other methods in this section, including `humanresources.hcmlink.*`, are available only to applications: they reject calls made through a webhook with the `WRONG_AUTH_TYPE` error.
 
 ## How to Select a Method Group
 
@@ -45,7 +45,7 @@ These methods can only be executed in the context of authorization of the [appli
 
 **HCM Link.** The integration with HR systems transfers companies, employees, and field values for e-Signature documents. If a document is sent using HCM Link data, the `sign.b2e.*` methods are linked to the [humanresources.hcmlink.*](./hcm-link/index.md) methods.
 
-**Document file.** The `sign.b2e.document.send` method accepts a PDF file in the `files[].fileContent` parameter, encoded in Base64. After signing, the file can be retrieved from the user's signed document lists or from the company safe. If the document is linked to HCM Link, signed file data can be retrieved using the [sign.b2e.hcmlink.document.get](./sign-b2e-hcmlink-document-get.md) method by the signing participant identifier.
+**Document file.** The [sign.b2e.document.send](./sign-b2e-document-send.md) method accepts a Base64-encoded file in the `files[].fileContent` parameter. Supported formats are PDF, DOCX, DOC, RTF, ODT, JPG, and PNG. After signing, the file can be retrieved from the user's signed document lists or from the company safe. If the document is linked to HCM Link, signed file data can be retrieved using the [sign.b2e.hcmlink.document.get](./sign-b2e-hcmlink-document-get.md) method by the signing participant identifier.
 
 **Signing statuses.** The `OnSignB2eDocumentStatusChanged` and `OnSignB2eMemberStatusChanged` events report changes in document and participant statuses. The `OnSignHcmLinkB2eDocumentSigned` event reports that a document linked to HCM Link has been signed. Document details can be retrieved using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`.
 

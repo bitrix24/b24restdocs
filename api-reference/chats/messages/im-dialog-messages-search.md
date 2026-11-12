@@ -1,4 +1,4 @@
-# Find Message in Chat im.dialog.messages.search
+# Find Messages in Chat im.dialog.messages.search
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: chat participant
+> Who can execute the method: a chat participant or a user with access to an open chat
 
-The method `im.dialog.messages.search` performs a search for messages in the chat.
+The method `im.dialog.messages.search` searches for messages in a chat by text and date.
 
 ## Method Parameters
 
@@ -22,35 +22,38 @@ The method `im.dialog.messages.search` performs a search for messages in the cha
 #|
 || **Name**
 `type` | **Description** ||
-|| **CHAT_ID^*^**
-[`integer`](../../data-types.md) | Identifier of the chat in which the search is performed ||
+|| **CHAT_ID***
+[`integer`](../../data-types.md) | Identifier of the chat to search for messages in — a number without the `chat` prefix. You can retrieve it with the [im.chat.get](../im-chat-get.md) method ||
 || **SEARCH_MESSAGE**
-[`string`](../../data-types.md) | Search string for the message text.
+[`string`](../../data-types.md) | Text to find in messages.
 
-Search for this parameter is performed for strings longer than 2 characters ||
+The method searches for text matches only if the search string is longer than 2 characters. If you pass 1–2 characters, the method returns chat messages without filtering by text ||
 || **DATE_FROM**
 [`datetime`](../../data-types.md) | Start of the search period in ISO 8601 format (RFC3339) ||
 || **DATE_TO**
 [`datetime`](../../data-types.md) | End of the search period in ISO 8601 format (RFC3339) ||
 || **DATE**
-[`datetime`](../../data-types.md) | Search for messages on a specific date in ISO 8601 format (RFC3339).
+[`datetime`](../../data-types.md) | Date in ISO 8601 format (RFC3339) for which messages are needed.
 
 If the parameter is provided, the search is performed within 24 hours from the specified date ||
 || **ORDER**
-[`object`](../../data-types.md) | Sorting parameters.
+[`object`](../../data-types.md) | Sorting. One field is available:
+- `ID` — sort direction, values `ASC` (ascending) or `DESC` (descending). The method sorts by message creation date, then by `id`
 
-Supported field:
-- `ID` — sort by message identifier, values `ASC` or `DESC`
-
-Default: `{"ID": "DESC"}` ||
+Default — `{"ID": "DESC"}` ||
 || **LIMIT**
-[`integer`](../../data-types.md) | Number of messages returned.
+[`integer`](../../data-types.md) | How many messages to return.
 
-Default value: `50`.
-Maximum value: `200` ||
+Default — `50`. The maximum value is `200`: the method reduces a larger value to `200` and replaces `0` and negative values with `50` ||
 || **LAST_ID**
-[`integer`](../../data-types.md) | Identifier of the last message from the previous selection for pagination ||
+[`integer`](../../data-types.md) | Identifier of the last message on the previous page — the `id` field of the last element of the `messages` array. The method returns messages that follow it in the `ORDER` order.
+
+Do not pass it for the first page ||
 |#
+
+### How to Get All Search Results {#pagination}
+
+Request the first page without `LAST_ID`. For the next page, pass the `id` value of the last element of the `messages` array to `LAST_ID`: with `DESC` sorting, the method returns messages with a smaller `id`; with `ASC` sorting, it returns messages with a larger `id`. You have retrieved all results when a page contains fewer messages than the page size, which is the `LIMIT` value subject to the restrictions in the parameter table.
 
 ## Code Examples
 
@@ -92,17 +95,20 @@ Maximum value: `200` ||
     type DialogMessagesSearchResult = {
       messages: Array<{
         id: number
+        chatId: number
         chat_id: number
+        authorId: number
         author_id: number
         date: ISODate
         text: string
         isSystem: boolean
         uuid: string | null
         forward: object | null
-        params: unknown[]
+        params: Record<string, unknown> | unknown[]
         viewedByOthers: boolean
         unread: boolean
         viewed: boolean
+        block: object | null
       }>
       users: unknown[]
       files: unknown[]
@@ -327,6 +333,8 @@ HTTP status: **200**
                 "bot": false,
                 "connector": false,
                 "externalAuthId": "socservices",
+                "internalAccount": true,
+                "intranetUser": true,
                 "status": "online",
                 "idle": false,
                 "lastActivityDate": "2026-02-13T14:27:33+01:00",
@@ -348,16 +356,35 @@ HTTP status: **200**
         "additionalMessages": [],
         "copilot": null,
         "stickers": [],
-        "reactions": [],
+        "reactions": [
+            {
+                "messageId": 33653,
+                "reactionCounters": {
+                    "like": 1
+                },
+                "reactionUsers": {
+                    "like": [1]
+                },
+                "ownReactions": ["like"]
+            }
+        ],
         "tariffRestrictions": {
             "isHistoryLimitExceeded": false
         },
-        "usersShort": [],
+        "usersShort": [
+            {
+                "id": 1,
+                "name": "Alex",
+                "avatar": "https://cdn-com.bitrix24.com/path/avatar.jpg",
+                "color": "#df532d",
+                "type": "user"
+            }
+        ],
         "messages": [
             {
                 "id": 33653,
-                "chatId": 2421,
-                "chat_id": 2421,
+                "chatId": 3,
+                "chat_id": 3,
                 "authorId": 1,
                 "author_id": 1,
                 "date": "2026-02-13T14:28:00+01:00",
@@ -365,12 +392,13 @@ HTTP status: **200**
                 "isSystem": false,
                 "uuid": "18533186-232b-4423-8438-64501da182f5",
                 "forward": null,
-                "params": [],
+                "params": {
+                    "LIKE": [1]
+                },
                 "viewedByOthers": false,
                 "block": null,
                 "unread": false,
-                "viewed": true,
-                "viewedCount": 0
+                "viewed": true
             }
         ]
     },
@@ -393,34 +421,45 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **result.messages**
-[`array`](../../data-types.md) | Array of found messages [(detailed description)](#message) ||
-|| **result.users**
-[`array`](../../data-types.md) | Users associated with the found messages [(detailed description)](#user) ||
-|| **result.files**
-[`array`](../../data-types.md) | Files from the found messages ||
-|| **result.additionalMessages**
-[`array`](../../data-types.md) | Additional messages related to the found ones, such as forwarded or quoted [(detailed description)](#message) ||
-|| **result.copilot**
-[`object`](../../data-types.md) | BitrixGPT data, if present in the response. Can be `null` ||
-|| **result.stickers**
-[`array`](../../data-types.md) | Stickers associated with the found messages ||
-|| **result.reactions**
-[`array`](../../data-types.md) | Reactions to the found messages [(detailed description)](#reactions) ||
-|| **result.tariffRestrictions**
-[`object`](../../data-types.md) | Information about tariff restrictions on history.
-
-Contains the flag `isHistoryLimitExceeded` — an indication of exceeding the message history limit by the plan ||
-|| **result.usersShort**
-[`array`](../../data-types.md) | Brief information about users who reacted.
-
-Used as a supplementary reference to `result.reactions.reactionUsers`, contains `id`, `name`, `avatar` ||
+[`object`](../../data-types.md) | Found messages and related data [(detailed description)](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Message {#message}
+#### Result Object {#result-object}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **messages**
+[`array`](../../data-types.md) | Array of found messages [(detailed description)](#message) ||
+|| **users**
+[`array`](../../data-types.md) | Users associated with the found messages [(detailed description)](#user) ||
+|| **files**
+[`array`](../../data-types.md) | Files from the found messages. The element structure is the same as the [file object](./im-dialog-messages-get.md#file) in the response of the [im.dialog.messages.get](./im-dialog-messages-get.md) method. If there are no files, an empty array is returned ||
+|| **additionalMessages**
+[`array`](../../data-types.md) | Additional messages related to the found ones, such as forwarded or quoted [(detailed description)](#message) ||
+|| **copilot**
+[`object`](../../data-types.md) | BitrixGPT data. Can be `null` ||
+|| **stickers**
+[`array`](../../data-types.md) | Stickers associated with the found messages. If there are no stickers, an empty array is returned ||
+|| **reactions**
+[`array`](../../data-types.md) | Reactions to the found messages [(detailed description)](#reactions) ||
+|| **tariffRestrictions**
+[`object`](../../data-types.md) | History restrictions of the plan.
+
+The `isHistoryLimitExceeded` flag is `true` if the plan's history restriction removed some messages from the selection ||
+|| **usersShort**
+[`array`](../../data-types.md) | Users who reacted: `id`, `name`, `avatar`, `color` — the avatar color, `type` — the user type.
+
+Use this data to show names and avatars for the identifiers from `result.reactions[].reactionUsers` ||
+|| **commentInfo**
+[`array`](../../data-types.md) | Data about comments on the found messages. Populated for channel messages ||
+|#
+
+If nothing is found, all arrays of the `result` object are empty.
+
+#### Message Object {#message}
 
 #|
 || **Name**
@@ -430,11 +469,11 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 || **chatId**
 [`integer`](../../data-types.md) | Identifier of the chat ||
 || **chat_id**
-[`integer`](../../data-types.md) | Identifier of the chat. A duplicate of the `chatId` field in the old spelling ||
+[`integer`](../../data-types.md) | Identifier of the chat. The same as `chatId`, using the legacy field name ||
 || **authorId**
 [`integer`](../../data-types.md) | Identifier of the message author ||
 || **author_id**
-[`integer`](../../data-types.md) | Identifier of the message author. A duplicate of the `authorId` field in the old spelling ||
+[`integer`](../../data-types.md) | Identifier of the message author. The same as `authorId`, using the legacy field name ||
 || **date**
 [`datetime`](../../data-types.md) | Date and time of message creation ||
 || **text**
@@ -444,22 +483,20 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 || **uuid**
 [`string`](../../data-types.md) | External UUID of the message. Can be `null` ||
 || **forward**
-[`object`](../../data-types.md) | Information about forwarding. Can be `null` ||
+[`object`](../../data-types.md) | Information about forwarding. `null` if the message is not forwarded ||
 || **params**
-[`array`](../../data-types.md) | Message parameters ||
+[`object`](../../data-types.md) | Message parameters. If there are no parameters, an empty array `[]` is returned ||
 || **viewedByOthers**
 [`boolean`](../../data-types.md) | Indicator that the message has been viewed by other participants ||
 || **unread**
 [`boolean`](../../data-types.md) | Indicator of an unread message for the current user ||
 || **viewed**
 [`boolean`](../../data-types.md) | Indicator that the message has been viewed by the current user ||
-|| **viewedCount**
-[`integer`](../../data-types.md) | Number of participants who have viewed the message ||
 || **block**
-[`object`](../../data-types.md) | Service data of the message block. Can be `null` ||
+[`object`](../../data-types.md) | Content blocks of the message. `null` if there are no blocks ||
 |#
 
-#### User {#user}
+#### User Object {#user}
 
 #|
 || **Name**
@@ -488,6 +525,10 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 [`string`](../../data-types.md) | Birthday ||
 || **extranet**
 [`boolean`](../../data-types.md) | Indicator of an extranet user ||
+|| **intranetUser**
+[`boolean`](../../data-types.md) | `true` if the user is an employee: they belong to a company department and their account is not external ||
+|| **internalAccount**
+[`boolean`](../../data-types.md) | `true` if the account is not external, for example, if it does not belong to an Open Channel client ||
 || **network**
 [`boolean`](../../data-types.md) | Indicator of a Bitrix24 Network user ||
 || **bot**
@@ -499,21 +540,21 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 || **status**
 [`string`](../../data-types.md) | User status ||
 || **idle**
-[`boolean`](../../data-types.md) | Indicator of inactivity ||
+[`datetime`](../../data-types.md) | Date in ISO 8601 format if the user is idle, otherwise `false` ||
 || **lastActivityDate**
-[`datetime`](../../data-types.md) | Date and time of last activity ||
+[`datetime`](../../data-types.md) | Date and time of last activity or `false` ||
 || **mobileLastDate**
 [`datetime`](../../data-types.md) | Last activity in the mobile app. Can be `false` ||
 || **desktopLastDate**
 [`datetime`](../../data-types.md) | Last activity in the desktop app. Can be `false` ||
 || **absent**
-[`boolean`](../../data-types.md) | Indicator of absence ||
+[`datetime`](../../data-types.md) | Date in ISO 8601 format if the user is absent, otherwise `false` ||
 || **departments**
 [`array`](../../data-types.md) | Array of department identifiers ||
 || **phones**
-[`object`](../../data-types.md) | User's phones ||
+[`object`](../../data-types.md) | User's phones or `false` if no phones are specified ||
 || **botData**
-[`object`](../../data-types.md) | Additional bot data. For a regular user `null` ||
+[`object`](../../data-types.md) | Bot data. For a regular user — `null` ||
 || **type**
 [`string`](../../data-types.md) | User type ||
 || **website**
@@ -522,7 +563,7 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 [`string`](../../data-types.md) | User's e-mail ||
 |#
 
-#### Reactions {#reactions}
+#### Reactions Object {#reactions}
 
 #|
 || **Name**
@@ -530,11 +571,11 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 || **messageId**
 [`integer`](../../data-types.md) | Identifier of the message ||
 || **reactionCounters**
-[`object`](../../data-types.md) | Count of reactions by each type ||
+[`object`](../../data-types.md) | Number of reactions by type: the key is the reaction code, for example, `like`, and the value is the number of reactions ||
 || **reactionUsers**
-[`object`](../../data-types.md) | Users by types of reactions ||
+[`object`](../../data-types.md) | Who reacted: the key is the reaction code, and the value is an array of user identifiers. If there are more than five reactions of one type, the list may be incomplete. Names and avatars of these users are in `usersShort` ||
 || **ownReactions**
-[`array`](../../data-types.md) | Reactions of the current user ||
+[`array`](../../data-types.md) | Codes of reactions set by the current user, for example, `["like"]` ||
 |#
 
 ## Error Handling
@@ -553,19 +594,24 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | CHAT_ID can't be empty | Required parameter `CHAT_ID` is not provided ||
-|| `ACCESS_ERROR` | You do not have access to this chat | No access to the specified chat ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHAT_ID_EMPTY` | ``CHAT_ID can`t be empty`` | The `CHAT_ID` parameter is not passed or its value is not a number ||
+|| `400` | `500` | `Incorrect date/time: <value>` | The `DATE_FROM`, `DATE_TO`, or `DATE` value is not recognized as a date ||
+|| `400` | `ERROR_ARGUMENT` | Invalid order "UP" | The direction passed in `ORDER` is neither `ASC` nor `DESC`. The error text contains the passed value ||
+|| `403` | `ACCESS_ERROR` | You do not have access to this chat | No access to the specified chat ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
 - [{#T}](./im-dialog-messages-get.md)
 - [{#T}](./im-dialog-read.md)
 - [{#T}](./im-dialog-unread.md)
 - [{#T}](./im-dialog-writing.md)
-- [{#T}](./im-message-add.md)
-- [{#T}](./im-message-update.md)
-- [{#T}](./im-message-delete.md)

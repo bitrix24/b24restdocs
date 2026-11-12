@@ -1,4 +1,4 @@
-# Create an Object Based on the Message im.message.share
+# Create a Chat, Task, Post, or Event from a Message im.message.share
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: chat participant
 
-The method `im.message.share` creates an object based on a message.
+The method `im.message.share` creates a chat, a task, a feed post, or a calendar event from a message. For example, you can turn a colleague's request in a chat into a task right away.
 
 ## Method Parameters
 
@@ -25,15 +25,15 @@ The method `im.message.share` creates an object based on a message.
 || **MESSAGE_ID***
 [`integer`](../../data-types.md) | Identifier of the message.
 
-The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
+The identifier is returned by the methods [im.message.add](./im-message-add.md) and [im.dialog.messages.get](./im-dialog-messages-get.md) ||
 || **DIALOG_ID***
-[`string`](../../data-types.md) | Identifier of the chat in the format:
+[`string`](../../data-types.md) | Identifier of the dialog in the format:
 
-- `chatXXX` — chat
-- `sgXXX` — group or project chat
-- `XXX` — identifier of the user in a personal chat 
+- `chatXXX` — group chat, where `XXX` is the chat identifier
+- `sgXXX` — group or project chat, where `XXX` is the group identifier
+- `XXX` — personal dialog, where `XXX` is the user identifier
 
-The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+The [im.chat.get](../im-chat-get.md) method returns the chat identifier. The [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods return the user identifier ||
 || **TYPE***
 [`string`](../../data-types.md) | Type of the object being created.
 
@@ -41,7 +41,9 @@ Allowed values:
 - `CHAT` — chat
 - `TASK` — task
 - `POST` — post in the feed
-- `CALEND` — calendar event ||
+- `CALEND` — calendar event
+
+If you pass another value or omit the parameter, the method returns `true` but creates nothing ||
 |#
 
 ## Code Examples
@@ -96,7 +98,7 @@ Allowed values:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Object created:', result)
+        console.info('Request completed:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -132,7 +134,7 @@ Allowed values:
           }
 
           const result = response.getData().result
-          console.info('Object created:', result)
+          console.info('Request completed:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -284,7 +286,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the object was created ||
+[`boolean`](../../data-types.md) | `true` — the request is processed. The method returns `true` even when no object is created because of an invalid `TYPE`.
+
+The method does not return the identifier of the created object. You can locate the object using the system message that appears in the chat after the call. This message is returned by the [im.dialog.messages.get](./im-dialog-messages-get.md) method. For a task, a post, and an event, the message text contains a link to the object; for a new chat, the identifier is passed in the `params.CHAT_ID` field ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -305,11 +309,11 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or incorrect ||
-|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | `DIALOG_ID` is missing or incorrect ||
-|| `ACCESS_ERROR` | You do not have access to the specified dialog | No access to the dialog ||
-|| `PARAMS_ERROR` | Incorrect params | Incorrect request parameters ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MESSAGE_ID_ERROR` | Message ID can't be empty | The `MESSAGE_ID` parameter is missing or passed in an invalid format ||
+|| `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The `DIALOG_ID` parameter is missing or passed in an invalid format ||
+|| `400` | `PARAMS_ERROR` | Incorrect params | The object is not created: the message is not found, the user has no permission to post in the group feed, the user is an external (extranet) user, or the creation failed ||
+|| `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | The chat is not found or the current user has no access to it ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -317,5 +321,12 @@ HTTP Status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
 - [{#T}](./im-message-command.md)
 - [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

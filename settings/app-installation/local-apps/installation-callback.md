@@ -9,107 +9,117 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-When none of the **Menu item text** fields of a local application are filled in, it does not have a base interface in the left menu. Such an application can still register widgets in various integration points, but a menu item will not be automatically added to the left menu.
+The installation callback is a way to receive authorization tokens on your server. Right after a local application is installed, Bitrix24 sends an [ONAPPINSTALL](../../../api-reference/common/events/on-app-install.md) event in a POST request to the address from the *Initial installation path* field. The OAuth 2.0 authorization data, including `access_token` and `refresh_token`, arrives in the `auth` object.
 
-This is a useful scenario for applications that do not require a separate user interface or settings, and where all business logic is implemented, for example, as automatic event handlers.
+## When to Use
 
-Despite the lack of a user interface, such applications need to retrieve authorization tokens. For this, a callback handler is required, the path to which must be specified in the **Initial installation path** field. The **Application completes the installation itself** option must be disabled — it is disabled by default. If you enable it, Bitrix24 does not send the installation data to the handler and waits for an `installFinish` call on the [installation wizard](./installation-master.md) page.
+This option suits applications that do not need initial configuration: for example, when all the logic runs in event handlers. If you do not need an interface, leave the *Menu item text* fields empty — the application will not appear in the left menu but will be able to register widgets in integration points.
 
-Immediately after adding a local application, Bitrix24 will automatically call this URL and send a POST request with OAuth 2.0 authorization data, including `access_token` and `refresh_token`.
+Leave the *Application completes the installation itself* option disabled, as it is by default. If you enable it, Bitrix24 does not send the data to the handler and waits for a [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) call on the [installation wizard](./installation-master.md) page.
 
-The application must retain these tokens on its side. `access_token` is valid for a limited time, so permanent access to the REST API is provided not by a perpetual token, but by a retained `refresh_token`.
+## How to Configure the Installation
 
-## Example of retrieving and retaining tokens
+The handler from the example checks the token from the installation request and stores the authorization data in a file. For the handler to receive the request:
 
-The callback handler must accept the installation POST request and retain the `auth` object. For the further operation of the application, it is important `refresh_token`: the application can use it to retrieve a new token pair without user involvement.
+1. Create a local application: fill in the *Your handler path* field and select the access permissions. Leave the *Initial installation path* field empty for now. After you save the form, the application's `client_id` appears in it
+2. Specify the `client_id` in the handler code and place the handler on your server accessible over HTTPS. The example below requires PHP 7.4 or later with the cURL extension and a `/var/app-data` directory that PHP can write to
+3. Enter the handler address in the *Initial installation path* field and save the form
+4. Click *Reinstall* in the form — only an administrator can do this. Bitrix24 sends the installation request to the handler
 
-```php
-<?php
-const AUTH_FILE = __DIR__ . '/auth.json';
+## Handler Example
 
-function saveAuth(array $auth): void
-{
-    file_put_contents(AUTH_FILE, json_encode($auth, JSON_UNESCAPED_SLASHES));
-}
-
-if (isset($_POST['auth']) && is_array($_POST['auth']))
-{
-    saveAuth($_POST['auth']);
-
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 'success']);
-    exit();
-}
-
-http_response_code(400);
-echo 'Auth data is required';
-```
-
-The retained `refresh_token` must be used for [automatic OAuth 2.0 token renewal](../../oauth/auto-renewal.md). During each renewal, Bitrix24 returns a new pair of `access_token` and `refresh_token`, which must be overwritten on the application side.
-
-In the example, tokens are written to the `auth.json` file. In a production application, retain tokens in a data store that is inaccessible from the browser.
-
-## Obtaining the first token pair via full OAuth
-
-If the application did not retain `refresh_token` during installation or if you need to re-obtain the first token pair, use the [full OAuth 2.0 authorization protocol](../../oauth/index.md). This scenario does not replace the installation callback, but rather helps re-run the application's primary authorization.
-
-Take `client_id` and `client_secret` from the local application form. The redirect URI that Bitrix24 uses to return the user after authorization is taken from the application settings.
-
-Form an authorization link and open it in a browser as the user who is granting the application access to Bitrix24.
+A request fragment, values shortened:
 
 ```php
-<?php
-const CLIENT_ID = 'local.000000000000000000000000';
-
-$domain = 'example.bitrix24.com';
-
-$authorizeUrl = 'https://' . $domain . '/oauth/authorize/?' . http_build_query([
-    'client_id' => CLIENT_ID,
-]);
-
-header('Location: ' . $authorizeUrl);
-exit();
+$_POST = [
+  'event' => 'ONAPPINSTALL',
+  'auth' => [
+    'access_token' => '***',
+    'refresh_token' => '***',
+    'expires_in' => 3600,
+    'client_endpoint' => 'https://example.bitrix24.com/rest/',
+    'member_id' => '***',
+    'application_token' => '***'
+  ]
+];
 ```
 
-After authorization, Bitrix24 will redirect the user to `redirect_uri` and pass the `code` parameter. This is not a REST API token, but a one-time authorization code. The lifetime of `code` is 30 seconds, so it must be exchanged for tokens immediately.
+The handler is available at a public address, so anyone can send a request to it. Before storing the tokens, check them with the [app.info](../../../api-reference/common/system/app-info.md) method.
+
+A local application works in one Bitrix24, and its address is known in advance. The `client_endpoint` address in the request is set by the sender, so call the method with the received `access_token` at the address of your own Bitrix24. If the token was issued to your application, the `CODE` field in the response matches the application's `client_id`. A response fragment:
+
+```json
+{
+  "result": {
+    "ID": 1,
+    "CODE": "local.000000000000000000000000",
+    "STATUS": "L",
+    "INSTALLED": true
+  }
+}
+```
 
 ```php
 <?php
 const CLIENT_ID = 'local.000000000000000000000000';
-const CLIENT_SECRET = 'client_secret';
-const AUTH_FILE = __DIR__ . '/auth.json';
+// REST API address of your Bitrix24
+const PORTAL_ENDPOINT = 'https://example.bitrix24.com/rest/';
+// store the tokens outside the public website directory
+const AUTH_FILE = '/var/app-data/auth.json';
 
-if (!isset($_GET['code']))
+$auth = $_POST['auth'] ?? [];
+
+$ch = curl_init(PORTAL_ENDPOINT . 'app.info');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['auth' => $auth['access_token'] ?? '']));
+$response = curl_exec($ch);
+if ($response === false)
 {
-    http_response_code(400);
-    echo 'Authorization code is required';
+    error_log('app.info: ' . curl_error($ch));
+}
+curl_close($ch);
+
+$result = json_decode((string)$response, true);
+if (isset($result['error']))
+{
+    error_log('app.info: ' . $result['error']); // do not write tokens to the log
+}
+
+$required = ['access_token', 'refresh_token', 'member_id', 'application_token'];
+$isComplete = count(array_filter($required, fn($key) => !empty($auth[$key]))) === count($required);
+
+if (($_POST['event'] ?? '') !== 'ONAPPINSTALL' || !$isComplete || ($result['result']['CODE'] ?? '') !== CLIENT_ID)
+{
+    http_response_code(403);
     exit();
 }
 
-$query = http_build_query([
-    'grant_type' => 'authorization_code',
-    'client_id' => CLIENT_ID,
-    'client_secret' => CLIENT_SECRET,
-    'code' => $_GET['code'],
-]);
-
-$response = file_get_contents('https://oauth.bitrix.info/oauth/token/?' . $query);
-$auth = json_decode($response, true);
-
-if (!is_array($auth) || isset($auth['error']))
+if (file_put_contents(AUTH_FILE, json_encode($auth, JSON_UNESCAPED_SLASHES)) === false)
 {
-    http_response_code(400);
-    echo $response;
+    http_response_code(500);
     exit();
 }
-
-file_put_contents(AUTH_FILE, json_encode($auth, JSON_UNESCAPED_SLASHES));
-
-echo 'Authorization tokens saved';
 ```
 
-This scenario does not create a permanent `access_token`. The application receives the first pair of tokens and saves them `refresh_token` and uses them to extend access. If `refresh_token` is not updated, it will expire.
+After reinstalling, check that the `/var/app-data/auth.json` file has appeared and contains `access_token`, `refresh_token`, `member_id`, and `application_token`. If the file is missing, look at the handler response and the PHP error log:
 
-In the case of an installation callback handler, the application **must not** call the JS method [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md), as is required for local applications using an [installation wizard](./installation-master.md).
+- the log contains `app.info:` and a cURL error message — the application server could not reach Bitrix24. Check the address in `PORTAL_ENDPOINT` and the server's access to it, then click *Reinstall*
+- the log contains `app.info:` and an error code — the method returned an error. For example, `invalid_token` means that Bitrix24 did not accept the token, and `expired_token` means that the token has expired. Other codes are described in the article [{#T}](../../../error-codes.md). If the request was genuine, click *Reinstall*
+- a `403` response with no log entry — the request was not an `ONAPPINSTALL` event, `auth` lacks fields, `app.info` returned a non-JSON response, or `CODE` did not match `CLIENT_ID`. If the request was genuine, check the `client_id` in the handler code and the address in `PORTAL_ENDPOINT`, then click *Reinstall*
+- a `500` response — PHP could not write the file. Check the directory permissions, then click *Reinstall*
 
-Even if an attempt is made to do so, the method will not work. `BX24.installFinish()` only works within the application interface frames in a browser, whereas the application callback handler is called from the Bitrix24 server side. The browser is not involved in this process.
+Store `application_token` and `member_id` together with the tokens. Other application handlers use them to verify incoming events; for details, see the article [{#T}](../../../api-reference/events/safe-event-handlers.md).
+
+With the retained `refresh_token`, the application extends access without user involvement. Each renewal returns a new token pair — store it in place of the previous one. The renewal procedure is described in the article [{#T}](../../oauth/auto-renewal.md).
+
+## If the Tokens Were Not Stored
+
+If the application did not store `refresh_token` during installation, retrieve the first token pair via the [full OAuth 2.0 authorization protocol](../../oauth/index.md). Take `client_id` and `client_secret` from the application form. After authorization, Bitrix24 returns the user to the address from the *Your handler path* field. The OAuth response does not contain `application_token`: if it was stored during installation, do not overwrite it. If it was not stored, click *Reinstall* in the application form — the handler receives it again.
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./installation-master.md)
+- [{#T}](../../oauth/auto-renewal.md)
+- [{#T}](../../../api-reference/events/safe-event-handlers.md)

@@ -1,4 +1,4 @@
-# Event for Creating a New Deal Type "Comment" onCrmTimelineCommentAdd
+# Event on Creating a Comment in the CRM Timeline onCrmTimelineCommentAdd
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmTimelineCommentAdd` event is triggered when a "Comment" type activity is added to the CRM timeline.
+The `onCrmTimelineCommentAdd` event is triggered when a comment is created in the CRM timeline.
 
 {% note info "" %}
 
@@ -27,9 +27,12 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmTimelineCommentAdd",
+    "event": "ONCRMTIMELINECOMMENTADD",
+    "event_handler_id": "185",
     "data": {
-        "ID": 999
+        "FIELDS": {
+            "ID": 999
+        }
     },
     "ts": "1466439714",
     "auth": {
@@ -55,11 +58,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmTimelineCommentAdd` ||
+In this case — `ONCRMTIMELINECOMMENTADD` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../../../data-types.md) | An object containing the data of the added comment case.
+[`object`](../../../../data-types.md) | An object with data about the created comment. Contains a single key `FIELDS` ||
+|| **data.FIELDS***
+[`object`](../../../../data-types.md) | An object containing the identifier of the created comment.
 
-The structure is described [below](#data) ||
+The structure is described [below](#fields) ||
 || **ts***
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
@@ -68,14 +75,16 @@ The structure is described [below](#data) ||
 The structure is described [below](#auth) ||
 |#
 
-### Parameter data {#data}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../../data-types.md) | Identifier of the added comment ||
+[`integer`](../../../../data-types.md) | Identifier of the created comment ||
 |#
+
+To retrieve the comment data, pass `data.FIELDS.ID` in the `id` parameter of the [crm.timeline.comment.get](../crm-timeline-comment-get.md) method.
 
 ### Parameter auth {#auth}
 

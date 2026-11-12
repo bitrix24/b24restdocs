@@ -31,7 +31,9 @@ The method updates the block if it already exists with the same code for the cur
 || **manifest**
 [`object`](../../data-types.md) | Block manifest.
 
-See the structure of the manifest in the method [landing.block.getManifestFile](../block/methods/landing-block-get-manifest-file.md) and in the section [Manifest File](../block/manifest.md) ||
+See the structure of the manifest in the method [landing.block.getManifestFile](../block/methods/landing-block-get-manifest-file.md) and in the section [Manifest File](../block/manifest.md).
+
+The method silently removes the `callbacks` and `assets.class` keys from the manifest: they are not stored, and no error is returned. The method does not accept the `widget` and `widgetvue` subtypes in `block.subtype` and returns the `UNSUPPORTED_BLOCK_SUBTYPE` error ||
 |#
 
 ### Type fields {#fields}
@@ -453,7 +455,7 @@ HTTP Status: **400**
 || `CONTENT_IS_BAD` | Unsafe block content | The `fields.CONTENT` field did not pass the sanitize check ||
 || `PRESET_CONTENT_IS_BAD` | Unsafe preset content | Unsafe content in `manifest.cards[*].presets[*]` ||
 || `UNSUPPORTED_BLOCK_TYPE` | Unsupported block type | The method code checks the restriction on `MAINPAGE` in `manifest.block.type` ||
-|| `UNSUPPORTED_BLOCK_SUBTYPE` | Unsupported block subtype | `widget` was passed in `manifest.block.subtype` ||
+|| `UNSUPPORTED_BLOCK_SUBTYPE` | Unsupported block subtype | `widget` or `widgetvue` was passed in `manifest.block.subtype` ||
 || `insufficient_scope` | Insufficient scope for the token | The token does not contain the `landing` scope ||
 || `SYSTEM_ERROR` | Internal error | Execution error on the server side ||
 |#

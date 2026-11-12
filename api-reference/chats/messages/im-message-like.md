@@ -1,4 +1,4 @@
-# Change Status to "Like" im.message.like
+# Set or Remove "Like" im.message.like
 
 {% note tip "" %}
 
@@ -25,16 +25,16 @@ The method `im.message.like` sets or removes the "Like" mark for a message.
 || **MESSAGE_ID***
 [`integer`](../../data-types.md) | Identifier of the message.
 
-The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
+The identifier is returned by the methods [im.message.add](./im-message-add.md) and [im.dialog.messages.get](./im-dialog-messages-get.md) ||
 || **ACTION**
-[`string`](../../data-types.md) | Action for reacting to the message.
+[`string`](../../data-types.md) | What to do with the "Like" mark.
 
 Allowed values:
-- `auto` — automatically toggle the current status: if there is no "Like" reaction, it will be set; if there is a reaction, it will be removed
+- `auto` — toggle: set the mark if there is none, or remove it if there is one
 - `plus` — set "Like"
 - `minus` — remove "Like"
-  
-Default is `auto`  ||
+
+Default is `auto`. The value is case-insensitive. The method treats an unknown value as `auto` ||
 |#
 
 ## Code Examples
@@ -291,9 +291,12 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or invalid ||
-|| `WITHOUT_CHANGES` | Action completed without changes | The reaction state was already the same ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MESSAGE_ID_ERROR` | Message ID can't be empty | The `MESSAGE_ID` parameter is missing or its value is not greater than `0` ||
+|| `400` | `WITHOUT_CHANGES` | Action completed without changes | The mark did not change. Reasons:
+- the message is not found
+- the current user is not a chat member
+- the mark is already in the requested state, for example, on a repeated call with `plus` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -303,3 +306,10 @@ HTTP Status: **400**
 - [{#T}](./im-message-add.md)
 - [{#T}](./im-message-update.md)
 - [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-share.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

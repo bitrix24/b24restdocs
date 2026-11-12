@@ -447,7 +447,9 @@ HTTP Status: **200**
 
 The value is used as the HTML attribute `id` for the external wrapper of the block and in links to the block within the page ||
 || **php**
-[`boolean`](../../../data-types.md) | Indicator that there is PHP code in the original content of the block ||
+[`boolean`](../../../data-types.md) | Indicator that there is PHP code in the original content of the block.
+
+Bitrix24 does not execute this code: the editor shows a warning in place of the block, and the published page does not display the block ||
 || **designed**
 [`boolean`](../../../data-types.md) | Indicator that the block has been modified in the designer ||
 || **repoId**

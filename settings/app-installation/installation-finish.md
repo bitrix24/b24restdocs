@@ -9,156 +9,84 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The main distinction in installing applications in Bitrix24 is the presence or absence of a user interface (UI). This determines whether user confirmation is needed for the installation.
+How the installation completes depends on whether the application has an installation wizard. Without a wizard, Bitrix24 considers the application installed right away. With a wizard, the application completes the installation itself with the `installFinish` function once the user finishes the setup. The application is installed by a Bitrix24 administrator or by an employee whom the administrator has allowed to install applications.
 
-## Application without Interface
+## Installation Without a Wizard
 
-An application without an interface operates in the background and does not require user actions.
+Bitrix24 installs the application itself and considers it installed right away. This is how both an application without an interface and an application with its own page that needs no initial setup are installed. There is no wizard if:
 
-- For local applications, leave the "Menu item text" fields empty and do not enable the "Application completes the installation itself" option. The option is disabled by default.
+- for a local application, the *Application completes the installation itself* option is disabled, which is the default
+- for a mass-market application, the *Application installer URL* field is empty or the *Add your page and item to the main menu* option is disabled
 
-   ![Local application settings without an interface](./_images/install-finish.png "Local application settings without an interface")
+If an installation handler address is specified, Bitrix24 sends an [ONAPPINSTALL](../../api-reference/common/events/on-app-install.md) event to it in a POST request, with OAuth 2.0 authorization data in the `auth` object. For a local application, the address is set in the *Initial installation path* field; for a mass-market application, in the *Installation event handler URL* field.
 
-- For mass-market applications, disable the "Add custom page and menu item. Menu item title has to be specified in the application description!" option.
+![Initial installation path](./_images/install-finish-3.png "Initial installation path")
 
-   ![Add your page and item to the main menu](./_images/install-finish-2.png "Add your page and item to the main menu")
+![Installation event handler URL](./_images/install-finish-4.png "Installation event handler URL")
 
-**How it works.** The application installation is processed automatically. A POST request with OAuth 2.0 authorization data: `access_token` and `refresh_token` will be sent to the application URL.
+The handler checks that the request came from Bitrix24 and stores the tokens. How to do this is described in the articles about the installation callback of a [local](./local-apps/installation-callback.md) and a [mass-market](./mass-market-apps/installation-callback.md) application.
 
-- For local applications — to the URL from the "Initial installation path  " field.
+## Installation with a Wizard
 
-   ![Initial installation path](./_images/install-finish-3.png "Initial installation path")
+An installation wizard is an application page where the administrator configures the application before it starts working. The wizard opens if:
 
-- For mass-market applications — to the "Installation event handler URL."
+- for a local application, the *Initial installation path* field is filled in and the *Application completes the installation itself* option is enabled
 
-   ![Installation event handler URL](./_images/install-finish-4.png "Installation event handler URL")
+   ![Local application settings with an installation wizard](./_images/install-finish-7.png "Local application settings with an installation wizard")
 
-**Developer's role.** Process the incoming callback: verify the data, save the tokens, and prepare the application for operation. The application is immediately considered installed in Bitrix24.
-
-## Application with Interface
-
-The operation of an application with an interface depends on the actions performed by the user.
-
-- For local applications, fill in "Menu item text" and enable the "Application completes the installation itself" option. Without this option, Bitrix24 considers the application installed right away and does not open the setup page.
-
-   ![Local application settings with an interface](./_images/install-finish-7.png "Local application settings with an interface")
-
-- For mass-market applications, enable the "Add custom page and menu item. Menu item title has to be specified in the application description!" option.
-
-   ![Add your page and item to the main menu](./_images/install-finish-5.png "Add your page and item to the main menu")
-
-**How the installation works.** Upon first opening, the administrator will see the application setup page.
-
-- For local applications — the page from the "Initial installation path" field.
-
-   ![Initial installation path](./_images/install-finish-9.png "Initial installation path")
-
-- For mass-market applications — the "Application installer URL".
+- for a mass-market application, the *Add your page and item to the main menu* option is enabled and the *Application installer URL* field is filled in
 
    ![Application installer URL](./_images/install-finish-6.png "Application installer URL")
 
-At this stage, the application is considered not installed. Automatic installation is not possible, as user actions are required in the setup wizard for the application to function.
+Until the wizard page calls `installFinish`, Bitrix24 considers the application not installed and blocks it. A widget is an application interface inside Bitrix24, for example, a tab in the deal card.
 
-**How to complete the installation.** After the user has completed the setup, use the `installFinish` method to finalize the installation. The method is called only from the frontend, from the application setup page.
+- widgets do not appear in the interface, even if [placement.bind](../../api-reference/widgets/placement-bind.md) completed successfully
+- events are not sent to the handler, even after a successful [event.bind](../../api-reference/events/event-bind.md)
+- the administrator and employees allowed to install applications see the wizard page, and everyone else sees the message *"The application has not yet been completely installed. Please contact your Bitrix24 administrator to complete the installation"*
 
-## What Doesn't Work Until Installation is Complete
+You can check whether the installation is complete with the [app.info](../../api-reference/common/system/app-info.md) method: the `INSTALLED` field in the response is `true` or `false`. The method requires only the basic scope, and any user can call it.
 
-Until the application sends a signal indicating the completion of installation via `installFinish`, the application will be considered not configured. Functionality will be blocked.
+## How to Call installFinish
 
-- Widgets will not appear in the interface, even if [placement.bind](../../api-reference/widgets/placement-bind.md) was successful.
+Call `installFinish` on the wizard page once, after the application has completed the setup: registered widgets, subscribed to events, and stored the configuration. The function works only in the application frame in a browser. After the call, Bitrix24 reloads the application page, so code after `installFinish` may not run.
 
-- Events will not be sent to the handler, even after a successful [event.bind](../../api-reference/events/event-bind.md).
+In the examples, the application registers a tab in the deal card and subscribes to the deal creation event, then completes the installation. The application needs the `placement` and `crm` scopes. Replace the `https://example.com/...` addresses with the addresses of your handlers.
 
-- The application interface will not load:
-    - regular users will see the message *“The application is not fully installed yet. Please contact your Bitrix24 administrator to complete the installation.”*
-    - the administrator will see the page from the "Initial installation path" field for local applications or the "Application installer URL" for mass-market applications.
-
-## How to Check Installation Status
-
-Use the [app.info](../../api-reference/common/system/app-info.md) method to check the installation of the application.
+If the installation was interrupted, check which widgets and handlers are already registered with the [placement.get](../../api-reference/widgets/placement-get.md) and [event.get](../../api-reference/events/event-get.md) methods before trying again.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    try {
-        const response = await $b24.callMethod('app.info', {});
-        console.log(response.getData().result.INSTALLED); // true or false
-    } catch(error) {
-        console.error(error);
-    }
-    ```
-
-- BX24.js
+    [installFinish()](https://bitrix-tools.github.io/b24jssdk/docs/working-with-the-rest-api/frame/#installfinish)
 
     ```javascript
-    BX24.callMethod(
-        "app.info",
-        {},
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.log(result.data().INSTALLED); // true or false
-        }
-    );
-    ```
-
-{% endlist %}
-
-If the response is:
-
-- `"INSTALLED": false` — installation is not complete. Call `installFinish`.
-
-- `"INSTALLED": true` — installation was successful.
-
-## How and When to Call installFinish
-
-Call the method on the application setup page:
-
-- for local applications in the file from the "Initial installation path" field,
-
-- for mass-market applications — the "Installation application URL."
-
-Call the method after you have completed the necessary settings: registered widgets, subscribed to events, saved the configuration.
-
-{% list tabs %}
-
-- JS
-
-    [installFinish()](https://bitrix24.github.io/b24jssdk/docs/working-with-the-rest-api/frame/#installfinish)
-
-    ```html
-        <script setup lang="ts">
-    import { onMounted } from 'vue'
     import { initializeB24Frame } from '@bitrix24/b24jssdk'
 
     const $b24 = await initializeB24Frame();
 
-    onMounted(async () => {
-        try {
-            // 1. Register the widget
-            await $b24.callMethod('placement.bind', {
-                PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
-                HANDLER: 'https://example.com/deal-tab',
-                TITLE: 'Application Data'
-            });
-
-            // 2. Subscribe to the event
-            await $b24.callMethod('event.bind', {
-                event: 'ONCRMDEALADD',
-                handler: 'https://example.com/event-handler'
-            });
-
-            // 3. Complete the installation
-            await $b24.installFinish();
-
-        } catch (error) {
-            console.error('Installation error:', error);
+    const placement = await $b24.actions.v2.call.make({
+        method: 'placement.bind',
+        params: {
+            PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
+            HANDLER: 'https://example.com/deal-tab',
+            TITLE: 'Application Data'
         }
     });
-    </script>
+
+    const event = await $b24.actions.v2.call.make({
+        method: 'event.bind',
+        params: {
+            event: 'ONCRMDEALADD',
+            handler: 'https://example.com/event-handler'
+        }
+    });
+
+    if (placement.isSuccess && event.isSuccess) {
+        await $b24.installFinish();
+    } else {
+        console.error([...placement.getErrorMessages(), ...event.getErrorMessages()]);
+    }
     ```
 
 - BX24.js
@@ -166,47 +94,35 @@ Call the method after you have completed the necessary settings: registered widg
     [BX24.installFinish()](../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md)
 
     ```javascript
-        BX24.init(function() {
-        // 1. Register the widget in the deal card
-        BX24.callMethod('placement.bind', {
-            PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
-            HANDLER: 'https://example.com/deal-tab',
-            TITLE: 'Application Data'
-        });
+    BX24.init(function() {
+        BX24.callBatch({
+            placement: ['placement.bind', {
+                PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
+                HANDLER: 'https://example.com/deal-tab',
+                TITLE: 'Application Data'
+            }],
+            event: ['event.bind', {
+                event: 'ONCRMDEALADD',
+                handler: 'https://example.com/event-handler'
+            }]
+        }, function(result) {
+            if (result.placement.error() || result.event.error()) {
+                console.error(result.placement.error(), result.event.error());
+                return;
+            }
 
-        // 2. Subscribe to the deal creation event
-        BX24.callMethod('event.bind', {
-            event: 'ONCRMDEALADD',
-            handler: 'https://example.com/event-handler'
+            BX24.installFinish();
         });
-
-        // 3. Complete the installation
-        BX24.installFinish();
     });
     ```
 
 {% endlist %}
 
-## Checklist for Verifying Application Installation
+After installation, open the application as an employee without administrator rights: the interface should load, and the widgets should appear in the deal card.
 
-1. Application type and necessity of calling `installFinish`.
+## Continue Learning
 
-   - Without an interface, only API — calling `installFinish` is not required. Installation completes automatically.
-
-   - With an interface and setup wizard — calling `installFinish` is mandatory.
-
-2. Verification of calling `installFinish`.
-
-   - The method is called after successfully executing other methods in the installation file.
-
-   - The method is called only once.
-
-3. Verification of functionality after installation.
-
-   - Installation status `INSTALLED: true`.
-
-   - Widgets are displayed in the interface and load the handler interfaces.
-
-   - Events are received by the handler.
-
-   - The application interface opens for employees without administrator rights.
+- [{#T}](./index.md)
+- [{#T}](./local-apps/installation-master.md)
+- [{#T}](./mass-market-apps/installation-master.md)
+- [{#T}](../../api-reference/common/system/app-info.md)
