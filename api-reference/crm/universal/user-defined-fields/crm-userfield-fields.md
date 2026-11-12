@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.fields` returns a description of the characteristics of custom fields.
+The method `crm.userfield.fields` returns a description of the characteristics of a CRM custom field: the value type of each characteristic and flags that show whether it is set on creation and whether it can be changed later.
+
+Use this description to build `fields` for the `crm.*.userfield.add` and `crm.*.userfield.update` methods, for example [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md). Which method creates a field of the required type is described in [How to Choose a Section](./index.md#how-to-choose).
 
 ## Method Parameters
 
@@ -326,52 +328,73 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result object {#result}
+#### The result Object {#result}
+
+A key of the `result` object is the code of a custom field characteristic, and the value is the characteristic description [(detailed description)](#descriptor). The table shows the value type that the characteristic accepts in `crm.*.userfield.*`.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier ||
+[`integer`](../../../data-types.md) | Field identifier. Read-only ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Custom field object ||
+[`string`](../../../data-types.md) | Code of the CRM object to which the field is linked, for example `CRM_DEAL`. The `crm.*.userfield.add` method fills in the code based on the object in the method name, so you do not need to pass it ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Field code ||
+[`string`](../../../data-types.md) | Field code in the `UF_CRM_*` format. Required on creation. The code is converted to uppercase, and the missing `UF_CRM_` prefix is added: `PRIORITY` becomes `UF_CRM_PRIORITY`. The code cannot be changed ||
 || **USER_TYPE_ID**
-[`string`](../../../data-types.md) | Custom field data type ||
+[`string`](../../../data-types.md) | Field data type from the [crm.userfield.types](./crm-userfield-types.md) response. Set on creation and cannot be changed ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External ID (XML ID) ||
+[`string`](../../../data-types.md) | External identifier ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting order ||
 || **MULTIPLE**
-[`char`](../../../data-types.md) | Multiple indicator ||
+[`char`](../../../data-types.md) | Multiple field flag: `Y` or `N`, `N` by default. Set on creation and not changed by `update` ||
 || **MANDATORY**
-[`char`](../../../data-types.md) | Mandatory indicator ||
+[`char`](../../../data-types.md) | Required field flag: `Y` or `N` ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Display in list filter indicator ||
+[`char`](../../../data-types.md) | Display in list filter flag. Pass `Y` or `N` when writing. In the `crm.*.userfield.get` and `crm.*.userfield.list` response, `E` (mask search) is returned instead of `Y`. For fields of the `employee` type, `I` (exact match) is returned ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Display in list indicator ||
+[`char`](../../../data-types.md) | Display in list flag: `Y` or `N` ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Allow user editing indicator ||
+[`char`](../../../data-types.md) | Whether the user is allowed to edit the value: `Y` or `N` ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Field values are searchable indicator ||
+[`char`](../../../data-types.md) | Whether field values are included in search: `Y` or `N` ||
 || **EDIT_FORM_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in edit form ||
+[`string`](../../../data-types.md) or [`lang_map`](../../data-types.md#data-types) | Label in the edit form. A string or an object with labels by language ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Header in list ||
+[`string`](../../../data-types.md) or [`lang_map`](../../data-types.md#data-types) | Column header in the list ||
 || **LIST_FILTER_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Filter label in list ||
+[`string`](../../../data-types.md) or [`lang_map`](../../data-types.md#data-types) | Field label in the list filter ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Error message ||
+[`string`](../../../data-types.md) or [`lang_map`](../../data-types.md#data-types) | Error message ||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Help ||
+[`string`](../../../data-types.md) or [`lang_map`](../../data-types.md#data-types) | Hint text ||
 || **LIST**
-[`uf_enum_element`](./crm-userfield-enumeration-fields.md) | List elements for `enumeration` type field ||
+[`uf_enum_element[]`](../../../data-types.md#uf_enum_element) | List elements for an `enumeration` type field. The description of element fields is returned by the [crm.userfield.enumeration.fields](./crm-userfield-enumeration-fields.md) method ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings depending on field type ||
+[`object`](../../../data-types.md) | Settings that depend on the field type. The set for each type is returned by the [crm.userfield.settings.fields](./crm-userfield-settings-fields.md) method ||
+|#
+
+#### Characteristic Description {#descriptor}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Value type: `int`, `string`, `char`, `object`, or `uf_enum_element` ||
+|| **title**
+[`string`](../../../data-types.md) | Characteristic name in the Bitrix24 interface language ||
+|| **isReadOnly**
+[`boolean`](../../../data-types.md) | The value is set by the system and cannot be passed. Only `ID` has this key ||
+|| **isImmutable**
+[`boolean`](../../../data-types.md) | The value is set when the field is created and is not changed by `update`. `ENTITY_ID`, `FIELD_NAME`, and `USER_TYPE_ID` have this key ||
+|| **isMultiple**
+[`boolean`](../../../data-types.md) | The value is passed as an array. Only `LIST` has this key ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own: it does not check CRM permissions and takes no parameters.
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
@@ -380,5 +403,7 @@ HTTP status: **200**
 ## Continue Learning
 
 - [{#T}](./crm-userfield-types.md)
-- [{#T}](./crm-userfield-enumeration-fields.md)
 - [{#T}](./crm-userfield-settings-fields.md)
+- [{#T}](./crm-userfield-enumeration-fields.md)
+- [{#T}](../../deals/user-defined-fields/crm-deal-userfield-add.md)
+- [{#T}](./index.md)

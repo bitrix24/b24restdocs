@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.settings.fields` returns the field settings description for the specified custom field type.
+The method `crm.userfield.settings.fields` returns the settings description for the specified custom field type.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 || **Name**
 `type` | **Description** ||
 || **type***
-[`string`](../../../data-types.md) | The type of the custom field. A value from the list returned by the method [crm.userfield.types](./crm-userfield-types.md) ||
+[`string`](../../../data-types.md) | Code of the custom field type from the response of the [crm.userfield.types](./crm-userfield-types.md) method, for example `string` or `enumeration`. The value is case-sensitive: for `String`, the method returns an empty array.
+
+Settings by type [(detailed description)](#settings) ||
 |#
 
 ## Code Examples
@@ -136,7 +138,7 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 
     try:
         bitrix_response = client.crm.userfield.settings.fields(
-            type="string",
+            type="double",
         ).response
         result = bitrix_response.result
         print(result)
@@ -222,11 +224,16 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
     	return fmt.Errorf("crm.userfield.settings.fields: %w", err)
     }
 
+    // For types without settings, such as date, result is an empty array []
+    if b24.IsEmpty(res.Result) {
+    	fmt.Println("the type has no settings")
+    	return nil
+    }
     keys, ok := b24.Keys(res.Result)
     if !ok {
     	return fmt.Errorf("expected an object in the response")
     }
-    fmt.Println("fields in response:", len(keys))
+    fmt.Println("settings in response:", len(keys))
     ```
 
 {% endlist %}
@@ -266,9 +273,40 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response containing field settings. The final list of fields depends on the type of the requested field ||
+[`object`](../../../data-types.md) | Description of the settings for the `type` type: the key is the setting code, and the value is the setting description [(detailed description)](#descriptor).
+
+If the type has no settings that the method describes, or the type is unknown, an empty array `[]` is returned [(detailed description)](#settings) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Settings by Field Type {#settings}
+
+The set of `result` keys depends on the field type. The keys are passed in `SETTINGS` when creating or updating a field, for example in [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md). The REST 3.0 method [crm.&lt;type&gt;.field.custom.add](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md) accepts the same settings in camelCase, for example `iblockId` instead of `IBLOCK_ID`. It does not create fields of the `enumeration` and `file` types or of application types.
+
+#|
+|| **Field type** | **result keys** ||
+|| `string` | `DEFAULT_VALUE` (`string`) — default value, `ROWS` (`int`) — number of rows in the input box ||
+|| `integer` | `DEFAULT_VALUE` (`int`) — default value ||
+|| `double` | `DEFAULT_VALUE` (`double`) — default value, `PRECISION` (`int`) — precision ||
+|| `boolean` | `DEFAULT_VALUE` (`int`) — default value, `DISPLAY` (`string`) — appearance ||
+|| `datetime` | `DEFAULT_VALUE` (`datetime`) — default value ||
+|| `enumeration` | `DISPLAY` (`string`) — appearance, `LIST_HEIGHT` (`int`) — list height. List elements are described by the [crm.userfield.enumeration.fields](./crm-userfield-enumeration-fields.md) method ||
+|| `iblock_section`, `iblock_element` | `DEFAULT_VALUE` (`int`) — default value, `IBLOCK_ID` (`int`) — information block ID, `IBLOCK_TYPE_ID` (`string`) — information block type ID, `DISPLAY` (`string`) — appearance, `LIST_HEIGHT` (`int`) — list height, `ACTIVE_FILTER` (`char`) — show active elements only ||
+|| `crm_status` | `ENTITY_TYPE` (`string`) — the CRM directory to which the field is bound ||
+|| `crm` | `LEAD`, `CONTACT`, `COMPANY`, `DEAL` (`char`) — the CRM objects to which the value can be bound ||
+|| `date`, `money`, `url`, `address`, `file`, `employee`, application types | Empty array `[]` ||
+|#
+
+#### Setting Description {#descriptor}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Setting value type: `string`, `int`, `double`, `datetime`, or `char` ||
+|| **title**
+[`string`](../../../data-types.md) | Setting name in the Bitrix24 interface language ||
 |#
 
 ## Error Handling
@@ -298,3 +336,6 @@ HTTP Status: **400**
 - [{#T}](./crm-userfield-types.md)
 - [{#T}](./crm-userfield-fields.md)
 - [{#T}](./crm-userfield-enumeration-fields.md)
+- [{#T}](../../deals/user-defined-fields/crm-deal-userfield-add.md)
+- [{#T}](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md)
+- [{#T}](./index.md)

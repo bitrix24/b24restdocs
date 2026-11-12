@@ -5,11 +5,11 @@ items:
     href: index.md  
   - name: Custom Field Types in CRM  
     href: userfield-type.md  
-  - name: Get Description for Custom Fields  
-    href: crm-userfield-fields.md  
   - name: Get List of Custom Field Types  
     href: crm-userfield-types.md  
-  - name: Get Description of Fields for List  
-    href: crm-userfield-enumeration-fields.md  
+  - name: Get Description for Custom Fields  
+    href: crm-userfield-fields.md  
   - name: Get Description of Settings Fields  
     href: crm-userfield-settings-fields.md  
+  - name: Get Description of Fields for List  
+    href: crm-userfield-enumeration-fields.md  
