@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves the fields of a "Comment" type deal.
+The `crm.timeline.comment.fields` method returns the description of timeline comment fields.
+
+## Method Parameters
 
 No parameters.
 
@@ -231,7 +233,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Date added"
+            "title": "Created on"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -240,7 +242,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "ID of the element the comment is attached to"
+            "title": "Comment is linked to entity ID"
         },
         "ENTITY_TYPE": {
             "type": "string",
@@ -249,7 +251,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Type of the element the comment is attached to"
+            "title": "Comment is linked to entity type"
         },
         "AUTHOR_ID": {
             "type": "integer",
@@ -258,7 +260,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Author"
+            "title": "Created by"
         },
         "COMMENT": {
             "type": "string",
@@ -283,8 +285,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -296,14 +298,37 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing all [comment fields](#fields) ||
+[`object`](../../../data-types.md) | An object whose keys are the names of the [comment fields](#fields) and whose values are [objects describing these fields](#field-description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### Field Description Object {#field-description}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Field value type ||
+|| **isRequired**
+[`boolean`](../../../data-types.md) | Indicates whether the field is required in the metadata ||
+|| **isReadOnly**
+[`boolean`](../../../data-types.md) | Indicates whether the field is read-only in the metadata ||
+|| **isImmutable**
+[`boolean`](../../../data-types.md) | Indicates whether the field cannot be changed after creation, in the metadata ||
+|| **isMultiple**
+[`boolean`](../../../data-types.md) | Indicates whether the field can contain multiple values ||
+|| **isDynamic**
+[`boolean`](../../../data-types.md) | Indicates a dynamic field. Returns `false` for all comment fields ||
+|| **title**
+[`string`](../../../data-types.md) | Field name ||
+|#
+
+The metadata does not replace the requirements of the [crm.timeline.comment.add](./crm-timeline-comment-add.md) and [crm.timeline.comment.update](./crm-timeline-comment-update.md) methods. For example, `isRequired` is `false` for `COMMENT`, but both methods require a non-empty comment text. `isReadOnly` is `false` for `AUTHOR_ID`, but on creation the current user becomes the author, and the passed `AUTHOR_ID` value is not used.
 
 #### List of Fields {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+The types and flags below refer to the comment fields. The metadata structure of each field is described in the [field description object](#field-description).
 
 #|
 || **Name**
@@ -317,7 +342,7 @@ HTTP status: **200**
 || **ENTITY_TYPE**
 [`string`](../../../data-types.md) | Type of the entity to which the comment is linked. Immutable.
 
-Values:
+For example:
 
 - `lead` — lead
 - `deal` — deal
@@ -335,23 +360,7 @@ Values:
 
 ## Error Handling
 
-HTTP status: **400**
-
-```json
-{
-    "error": 0,
-    "error_description": "error"
-}
-```
-
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | error | Other errors (e.g., fatal errors) ||
-|#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

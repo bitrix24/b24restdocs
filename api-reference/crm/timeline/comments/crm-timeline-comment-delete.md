@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the comment author or an administrator of the corresponding CRM object type, taking the pipeline into account. In both cases, permission to edit the CRM item is required
 
-Deletes a deal of the "Comment" type.
+The `crm.timeline.comment.delete` method deletes a comment from the timeline of a CRM item. If the comment is bound to multiple items, the method removes only the binding to the specified item.
 
 ## Method Parameters
 
@@ -23,16 +23,18 @@ Deletes a deal of the "Comment" type.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the comment (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **ownerTypeId**
-[`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
+[`integer`](../../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal). Passed together with `ownerId` ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM object to which the comment is linked (e.g., `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM object to which the comment is linked (e.g., `1`). Passed together with `ownerTypeId`. A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
 
 {% note warning %}
 
-When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multiple entities, the comment will be deleted from the entity whose identifiers were provided. You can get a list of all bindings for the comment using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method.
+If at least one of the `ownerTypeId` and `ownerId` parameters is not passed, the method uses the comment's only binding. If there are several bindings, both parameters must be passed; otherwise, the method returns `MULTIPLE_BINDINGS`.
+
+When only a binding is removed, the [`onCrmTimelineCommentDelete`](./events/on-Crm-Timeline-Comment-Delete.md) event is not triggered. It is triggered when the comment is deleted completely.
 
 {% endnote %}
 
@@ -256,8 +258,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -271,7 +273,7 @@ HTTP status: **200**
 || **result**
 `null` | The operation always returns `null` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -281,7 +283,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Item was not found."
 }
 ```
 
@@ -290,18 +292,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| `MULTIPLE_BINDINGS` | Element has bindings to multiple entities ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
-|| `100` | Required fields are not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user has no permission to edit the CRM item or is neither the comment author nor an administrator of the corresponding CRM object type, taking the pipeline into account ||
+|| `400` | `NOT_FOUND` | Item was not found | The comment was not found, has no bindings, or the specified binding to the CRM item does not exist ||
+|| `400` | `MULTIPLE_BINDINGS` | Entity has multiple bindings | The comment is bound to multiple CRM items, and `ownerTypeId` or `ownerId` is not passed ||
+|| `400` | `OWNER_NOT_FOUND` | Owner was not found | `ownerId` is less than or equal to zero, or `ownerTypeId` does not match a defined CRM object type ||
+|| `400` | `100` | Could not find value for parameter {id} | The required `id` parameter is not passed ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-timeline-comment-add.md)
 - [{#T}](./crm-timeline-comment-update.md)
 - [{#T}](./crm-timeline-comment-get.md)
