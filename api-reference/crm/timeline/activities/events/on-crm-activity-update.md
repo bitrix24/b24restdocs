@@ -1,4 +1,4 @@
-# Event onCrmActivityUpdate
+# Event When Updating an Activity onCrmActivityUpdate
 
 {% note tip "" %}
 
@@ -27,7 +27,8 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmActivityUpdate",
+    "event": "ONCRMACTIVITYUPDATE",
+    "event_handler_id": "185",
     "data": {
         "FIELDS": {
             "ID": "999"
@@ -55,13 +56,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmActivityUpdate` ||
+In this case — `ONCRMACTIVITYUPDATE` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../../../data-types.md) | An object containing information about the updated activity.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about the fields of the modified case.
+[`object`](../../../../data-types.md) | An object with the ID of the updated activity.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -78,7 +81,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the updated case ||
+[`integer`](../../../../data-types.md) | Identifier of the updated activity ||
 |#
 
 ### Parameter auth {#auth}
@@ -89,5 +92,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-activity-add.md)
 - [{#T}](./on-crm-activity-delete.md)

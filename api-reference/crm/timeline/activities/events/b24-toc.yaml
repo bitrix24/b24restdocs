@@ -3,7 +3,7 @@ href: index.md
 items:
   - name: Overview of Events
     href: index.md
-  - name: When Creating a New Activity
+  - name: When Creating an Activity
     href: on-crm-activity-add.md
   - name: When Updating an Activity
     href: on-crm-activity-update.md

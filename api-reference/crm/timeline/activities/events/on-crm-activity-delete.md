@@ -1,4 +1,4 @@
-# Event onCrmActivityDelete
+# Event When Deleting an Activity onCrmActivityDelete
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmActivityDelete` event is triggered when a deal is deleted in the CRM timeline.
+The `onCrmActivityDelete` event is triggered when an activity is deleted in the CRM timeline.
 
 {% note info "" %}
 
@@ -27,7 +27,8 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmActivityDelete",
+    "event": "ONCRMACTIVITYDELETE",
+    "event_handler_id": "185",
     "data": {
         "FIELDS": {
             "ID": "999"
@@ -55,13 +56,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmActivityDelete` ||
+In this case — `ONCRMACTIVITYDELETE` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | An object containing information about the deleted deal.
+[`object`](../../../../data-types.md) | An object containing information about the deleted activity.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about remote case fields.
+[`object`](../../../../data-types.md) | An object with the ID of the deleted activity.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -78,7 +81,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Remote case identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the deleted activity ||
 |#
 
 ### Parameter auth {#auth}
@@ -89,5 +92,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-activity-add.md)
 - [{#T}](./on-crm-activity-update.md)

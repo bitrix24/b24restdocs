@@ -1,4 +1,4 @@
-# Event for Creating a New Deal onCrmActivityAdd
+# Event When Creating an Activity onCrmActivityAdd
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmActivityAdd` event is triggered when a new deal is added to the CRM timeline.
+The `onCrmActivityAdd` event is triggered when an activity is created in the CRM timeline.
 
 {% note info "" %}
 
@@ -27,7 +27,8 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmActivityAdd",
+    "event": "ONCRMACTIVITYADD",
+    "event_handler_id": "185",
     "data": {
         "FIELDS": {
             "ID": "999"
@@ -55,13 +56,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmActivityAdd` ||
+In this case — `ONCRMACTIVITYADD` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | An object containing information about the created deal.
+[`object`](../../../../data-types.md) | An object containing information about the created activity.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing information about the fields of the created case.
+[`object`](../../../../data-types.md) | An object with the ID of the created activity.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -78,7 +81,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the added case ||
+[`integer`](../../../../data-types.md) | Identifier of the created activity ||
 |#
 
 ### Parameter auth {#auth}
@@ -89,5 +92,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-activity-update.md)
 - [{#T}](./on-crm-activity-delete.md)

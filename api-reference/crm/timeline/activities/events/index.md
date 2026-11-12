@@ -24,9 +24,11 @@ You can subscribe to activity events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
 
+Events are not sent to the application until its installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
 ## What the Handler Receives
 
-Activity events pass only the identifier of the activity in the `data.FIELDS.ID` field. To retrieve the remaining data, call the [crm.activity.get](../activity-base/crm-activity-get.md) method.
+Activity events pass only the identifier of the activity in the `data.FIELDS.ID` field. To retrieve the remaining data, call the [crm.activity.get](../activity-base/crm-activity-get.md) method, or [crm.activity.configurable.get](../configurable/crm-activity-configurable-get.md) for a configurable activity. After an activity is deleted, these methods no longer return its data.
 
 The events are triggered for activities of all kinds: system, universal, configurable, and activities of custom types.
 
