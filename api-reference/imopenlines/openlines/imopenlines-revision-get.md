@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imopenlines.revision.get` retrieves information about the API revisions of Open Channels.
+The method `imopenlines.revision.get` returns the Open Channels API revision numbers for REST, web, and mobile clients.
 
 ## Method Parameters
 
@@ -254,7 +254,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **rest**
-[`integer`](../../data-types.md) | API revision for REST clients ||
+[`integer`](../../data-types.md) | API revision for REST clients. Use this value to check whether an integration is compatible with the Open Channels module version, for example in the on-premise version of Bitrix24 ||
 || **web**
 [`integer`](../../data-types.md) | API revision for web and desktop clients ||
 || **mobile**
@@ -270,3 +270,4 @@ HTTP Status: **200**
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../chats/im-revision-get.md)

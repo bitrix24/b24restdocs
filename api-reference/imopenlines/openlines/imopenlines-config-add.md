@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to edit open channels
 
 The method `imopenlines.config.add` adds a new open channel.
 
@@ -36,7 +36,9 @@ To allow users to write to the open channel, set the connector settings using th
 || **ACTIVE**
 [`char`](../../data-types.md) | Channel activity. Possible values:
 - `Y` — channel is active
-- `N` — channel is inactive ||
+- `N` — channel is inactive
+
+Default is `Y` ||
   || **QUEUE**
   [`array`](../../data-types.md) | Queue of operators. An array of objects with fields `ENTITY_TYPE` and `ENTITY_ID`.
 
@@ -57,16 +59,19 @@ Example:
     }
 ]
 ```
-||
+
+If a department is passed, its employees are added to the queue. If the parameter is not passed, the queue remains empty ||
 || **QUEUE_TYPE**
 [`string`](../../data-types.md) | Request distribution mode. Possible values:
 - `evenly` — distribute requests evenly among operators
 - `strictly` — direct requests strictly in queue order
-- `all` — direct requests to all operators in the queue ||
+- `all` — direct requests to all operators in the queue
+
+Default is `all`. The method replaces a value not in the list with `all`. If the Bitrix24 plan does not allow the `all` mode, the channel gets `evenly` ||
   || **QUEUE_TIME**
-  [`integer`](../../data-types.md) | Time in seconds before the request is passed to the next operator ||
+  [`integer`](../../data-types.md) | Time in seconds before the request is passed to the next operator. Default is `60` ||
   || **NO_ANSWER_TIME**
-  [`integer`](../../data-types.md) | Time in seconds before the no-answer scenario is triggered ||
+  [`integer`](../../data-types.md) | Time in seconds before the no-answer scenario is triggered. Default is `60` ||
   || **WELCOME_MESSAGE**
   [`char`](../../data-types.md) | Send a welcome message. Possible values:
 - `Y` — yes
@@ -76,11 +81,15 @@ Example:
   || **WORKTIME_ENABLE**
   [`char`](../../data-types.md) | Consider the channel's working hours. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default is `N`. If the Bitrix24 plan does not allow configuring working hours, the method saves `N` ||
   || **WORKTIME_FROM**
-  [`string`](../../data-types.md) | Start of working hours in `HH:MM` format ||
+  [`string`](../../data-types.md) | Start of working hours: hours and minutes separated by a dot, for example `9` or `9.30`. The method replaces a value greater than `23.30` with `23.30`.
+
+Pass it together with `WORKTIME_TO`. If either value is in a different format, for example `09:00`, the method saves the time from `9` to `18.30` ||
   || **WORKTIME_TO**
-  [`string`](../../data-types.md) | End of working hours in `HH:MM` format ||
+  [`string`](../../data-types.md) | End of working hours in the same format, for example `18` or `18.30`. If the value is not greater than `WORKTIME_FROM`, the method moves the end to one hour after the start ||
   || **WORKTIME_TIMEZONE**
   [`string`](../../data-types.md) | Time zone, for example `Europe/Berlin` ||
   || **CRM**
@@ -88,19 +97,26 @@ Example:
 - `Y` — yes
 - `N` — no ||
   || **CRM_CREATE**
-  [`string`](../../data-types.md) | What to create in CRM for a new client ||
+  [`string`](../../data-types.md) | What to create in CRM for a new client. Possible values:
+- `lead` — a lead
+- `deal` — a deal
+- `none` — nothing
+
+Default is `lead`. The method replaces a value not in the list with `lead` ||
   || **VOTE_MESSAGE**
   [`char`](../../data-types.md) | Request service quality rating. Possible values:
 - `Y` — yes
 - `N` — no ||
   || **LANGUAGE_ID**
-  [`string`](../../data-types.md) | Language of the channel, for example `de` ||
+  [`string`](../../data-types.md) | Language of the channel, for example `de`. The method saves the first two characters ||
   || **CRM_CREATE_SECOND**
-  [`string`](../../data-types.md) | Additional mode for creating a CRM object ||
+  [`string`](../../data-types.md) | Identifier of the pipeline in which the deal is created if `CRM_CREATE` = `deal`. You can retrieve pipeline identifiers using the [crm.category.list](../../crm/universal/category/crm-category-list.md) method with `entityTypeId` = `2`. If not passed, the deal is created in the general pipeline ||
   || **CRM_CREATE_THIRD**
-  [`char`](../../data-types.md) | Create a third CRM object. Possible values:
-- `Y` — yes
-- `N` — no ||
+  [`char`](../../data-types.md) | Rule for deals if `CRM_CREATE` = `deal`. Possible values:
+- `Y` — the default rule
+- `N` — create a new deal for each request
+
+Default is `Y` ||
   || **CRM_CHAT_TRACKER**
   [`char`](../../data-types.md) | Enable chat tracker for CRM. Possible values:
 - `Y` — yes
@@ -114,22 +130,28 @@ Example:
 - `Y` — yes
 - `N` — no ||
   || **CRM_SOURCE**
-  [`string`](../../data-types.md) | Source for the created CRM object ||
+  [`string`](../../data-types.md) | Source for the created CRM object. Possible values:
+- `create` — create a separate source for the channel for each communication channel
+- the `STATUS_ID` of a source from the CRM directory. You can retrieve the list of sources using the [crm.status.list](../../crm/status/crm-status-list.md) method with the filter `ENTITY_ID` = `SOURCE`
+
+Default is `create`. If there is no source with the passed identifier, the channel works as with `create` ||
   || **MAX_CHAT**
-  [`integer`](../../data-types.md) | Maximum number of simultaneous dialogues for the operator ||
+  [`integer`](../../data-types.md) | Maximum number of simultaneous dialogues for the operator. `0` means no limit. Default is `0` ||
   || **TYPE_MAX_CHAT**
   [`string`](../../data-types.md) | Type of `MAX_CHAT` restriction. Possible values:
 - `answered` — consider only dialogues where the operator has already responded
 - `answered_new` — consider dialogues with a response and new dialogues
-- `closed` — consider closed dialogues ||
+- `closed` — consider closed dialogues
+
+Default is `answered`. The method replaces a value not in the list with `answered_new` ||
   || **CATEGORY_ENABLE**
   [`char`](../../data-types.md) | Enable categories. Possible values:
 - `Y` — yes
 - `N` — no ||
   || **CATEGORY_ID**
-  [`integer`](../../data-types.md) | Identifier of the category ||
+  [`integer`](../../data-types.md) | Identifier of the category. The method saves the value only if `CATEGORY_ENABLE` = `Y` ||
   || **SESSION_PRIORITY**
-  [`integer`](../../data-types.md) | Session priority in the queue ||
+  [`integer`](../../data-types.md) | Session priority in the queue, from `0` to `86400`. Default is `0` ||
   || **WELCOME_BOT_ENABLE**
   [`char`](../../data-types.md) | Enable welcome chatbot. Possible values:
 - `Y` — yes
@@ -139,9 +161,9 @@ Example:
 - `first` — connect the bot only at the beginning of the dialogue
 - `always` — connect the bot in every dialogue ||
   || **WELCOME_BOT_ID**
-  [`integer`](../../data-types.md) | Identifier of the chatbot ||
+  [`integer`](../../data-types.md) | Identifier of the chatbot. The method saves the value only if `WELCOME_BOT_ENABLE` = `Y` ||
   || **WELCOME_BOT_TIME**
-  [`integer`](../../data-types.md) | After how many seconds to transfer the dialogue from the bot to the queue ||
+  [`integer`](../../data-types.md) | After how many seconds to transfer the dialogue from the bot to the queue. Default is `600` ||
   || **WELCOME_BOT_LEFT**
   [`string`](../../data-types.md) | When to disconnect the bot. Possible values:
 - `queue` — disconnect the bot when transferring to the operators' queue
@@ -154,6 +176,8 @@ Example:
   [`char`](../../data-types.md) | Show typing indicator. Possible values:
 - `Y` — yes
 - `N` — no ||
+  || **SHOW_NOTIFICATION_REDIRECT**
+  [`char`](../../data-types.md) | Show a notification in the dialog when a request passes to an operator who has started their working day. Possible values: `Y` or `N`. By default, the value is not set and the notification is not shown ||
   || **SEND_WELCOME_EACH_SESSION**
   [`char`](../../data-types.md) | Send a greeting in each session. Possible values:
 - `Y` — yes
@@ -179,7 +203,7 @@ Example:
   || **NO_ANSWER_TEXT**
   [`string`](../../data-types.md) | Text for the no-answer scenario ||
   || **WORKTIME_DAYOFF**
-  [`array`](../../data-types.md) | Days off. Possible values of elements:
+  [`array`](../../data-types.md) | Days off. The method skips values not in the list. Possible values of elements:
 - `MO` — Monday
 - `TU` — Tuesday
 - `WE` — Wednesday
@@ -188,7 +212,7 @@ Example:
 - `SA` — Saturday
 - `SU` — Sunday ||
   || **WORKTIME_HOLIDAYS**
-  [`string`](../../data-types.md) | Holidays in string format, listed as `DD.MM,DD.MM` ||
+  [`string`](../../data-types.md) \| [`array`](../../data-types.md) | Holidays in the `D.MM` format: a comma-separated string, for example `1.01,7.01`, or an array of strings. If the format is invalid, the method saves an empty list ||
   || **WORKTIME_DAYOFF_RULE**
   [`string`](../../data-types.md) | Scenario during non-working hours. Possible values:
 - `none` — do not execute the scenario
@@ -202,7 +226,9 @@ Example:
   || **CLOSE_RULE**
   [`string`](../../data-types.md) | Scenario upon closure. Possible values:
 - `none` — do not execute the scenario
-- `text` — send a text message ||
+- `text` — send a text message
+
+Default is `text` ||
   || **CLOSE_FORM_ID**
   [`integer`](../../data-types.md) | Identifier of the CRM form upon closure ||
   || **CLOSE_BOT_ID**
@@ -210,7 +236,7 @@ Example:
   || **CLOSE_TEXT**
   [`string`](../../data-types.md) | Text message upon closure ||
   || **VOTE_TIME_LIMIT**
-  [`integer`](../../data-types.md) | Time limit for voting ||
+  [`integer`](../../data-types.md) | Time limit for voting. `0` means no limit ||
   || **VOTE_CLOSING_DELAY**
   [`char`](../../data-types.md) | Close the session immediately after rating. Possible values:
 - `Y` — yes
@@ -220,11 +246,11 @@ Example:
 - `Y` — yes
 - `N` — no ||
   || **VOTE_MESSAGE_1_TEXT**
-  [`string`](../../data-types.md) | Text for rating request in the widget ||
+  [`string`](../../data-types.md) | Text for rating request in the widget, up to 100 characters ||
   || **VOTE_MESSAGE_1_LIKE**
-  [`string`](../../data-types.md) | Text after positive rating in the widget ||
+  [`string`](../../data-types.md) | Text after positive rating in the widget, up to 100 characters ||
   || **VOTE_MESSAGE_1_DISLIKE**
-  [`string`](../../data-types.md) | Text after negative rating in the widget ||
+  [`string`](../../data-types.md) | Text after negative rating in the widget, up to 100 characters ||
   || **VOTE_MESSAGE_2_TEXT**
   [`string`](../../data-types.md) | Text for rating request in external channels ||
   || **VOTE_MESSAGE_2_LIKE**
@@ -236,9 +262,9 @@ Example:
 - `none` — do not execute the scenario
 - `text` — send a text message ||
   || **FULL_CLOSE_TIME**
-  [`integer`](../../data-types.md) | Time for full closure after manual closure ||
+  [`integer`](../../data-types.md) | Time in minutes before the dialogue is fully closed after manual closure. Default is `10` ||
   || **AUTO_CLOSE_TIME**
-  [`integer`](../../data-types.md) | Time until auto-closure ||
+  [`integer`](../../data-types.md) | Time in seconds before the dialogue is auto-closed. Default is `14400` ||
   || **AUTO_CLOSE_FORM_ID**
   [`integer`](../../data-types.md) | Identifier of the CRM form for auto-closure ||
   || **AUTO_CLOSE_BOT_ID**
@@ -246,11 +272,13 @@ Example:
   || **AUTO_CLOSE_TEXT**
   [`string`](../../data-types.md) | Text upon auto-closure ||
   || **AUTO_EXPIRE_TIME**
-  [`integer`](../../data-types.md) | Lifetime of automatically closed session ||
+  [`integer`](../../data-types.md) | Lifetime of an automatically closed session in seconds. Default is `86400` ||
   || **TEMPORARY**
   [`char`](../../data-types.md) | Create a temporary channel. Possible values:
-- `Y` — create a temporary channel
-- `N` — create a permanent channel ||
+- `Y` — create a temporary channel. Bitrix24 deletes it after 8 hours
+- `N` — create a permanent channel
+
+Default is `N` ||
   || **QUICK_ANSWERS_IBLOCK_ID**
   [`integer`](../../data-types.md) | Identifier of the quick answers info block ||
   || **KPI_FIRST_ANSWER_TIME**
@@ -287,6 +315,14 @@ Example:
   [`char`](../../data-types.md) | Show the form with a delay. Possible values:
 - `Y` — yes
 - `N` — no ||
+  || **AGREEMENT_MESSAGE**
+  [`char`](../../data-types.md) | Show a warning about personal data collection. Possible values:
+- `Y` — yes
+- `N` — no
+
+Default is `N`. If you pass `Y`, specify the agreement in `AGREEMENT_ID`, otherwise the method returns `false` ||
+  || **AGREEMENT_ID**
+  [`integer`](../../data-types.md) | Identifier of the personal data processing agreement ||
   || **CONFIRM_CLOSE**
   [`char`](../../data-types.md) | Request confirmation for closure. Possible values:
 - `Y` — yes
@@ -333,13 +369,13 @@ Example:
           "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
           "CRM": "Y",
           "CRM_CREATE": "deal",
-          "CRM_SOURCE": "openline_web",
+          "CRM_SOURCE": "create",
           "CRM_FORWARD": "Y",
           "MAX_CHAT": 4,
           "TYPE_MAX_CHAT": "answered_new",
           "WORKTIME_ENABLE": "Y",
-          "WORKTIME_FROM": "09:00",
-          "WORKTIME_TO": "21:00",
+          "WORKTIME_FROM": "9",
+          "WORKTIME_TO": "21",
           "WORKTIME_TIMEZONE": "Europe/Berlin",
           "WORKTIME_DAYOFF": [
             "SA",
@@ -382,13 +418,13 @@ Example:
           "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
           "CRM": "Y",
           "CRM_CREATE": "deal",
-          "CRM_SOURCE": "openline_web",
+          "CRM_SOURCE": "create",
           "CRM_FORWARD": "Y",
           "MAX_CHAT": 4,
           "TYPE_MAX_CHAT": "answered_new",
           "WORKTIME_ENABLE": "Y",
-          "WORKTIME_FROM": "09:00",
-          "WORKTIME_TO": "21:00",
+          "WORKTIME_FROM": "9",
+          "WORKTIME_TO": "21",
           "WORKTIME_TIMEZONE": "Europe/Berlin",
           "WORKTIME_DAYOFF": [
             "SA",
@@ -417,7 +453,7 @@ Example:
         method: 'imopenlines.config.add',
         params: {
           PARAMS: {
-            LINE_NAME: 'Online store support line',
+            LINE_NAME: 'Online Store Support Line',
             QUEUE: [
               { ENTITY_TYPE: 'user', ENTITY_ID: '1' },
               { ENTITY_TYPE: 'user', ENTITY_ID: '15' },
@@ -430,17 +466,17 @@ Example:
             WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
             CRM: 'Y',
             CRM_CREATE: 'deal',
-            CRM_SOURCE: 'openline_web',
+            CRM_SOURCE: 'create',
             CRM_FORWARD: 'Y',
             MAX_CHAT: 4,
             TYPE_MAX_CHAT: 'answered_new',
             WORKTIME_ENABLE: 'Y',
-            WORKTIME_FROM: '09:00',
-            WORKTIME_TO: '21:00',
+            WORKTIME_FROM: '9',
+            WORKTIME_TO: '21',
             WORKTIME_TIMEZONE: 'Europe/Berlin',
             WORKTIME_DAYOFF: ['SA', 'SU'],
             WORKTIME_DAYOFF_RULE: 'text',
-            WORKTIME_DAYOFF_TEXT: 'The line is currently unavailable. Write to us and we will respond during business hours',
+            WORKTIME_DAYOFF_TEXT: 'The line is currently closed. Please write, and we will respond during working hours',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -474,7 +510,7 @@ Example:
             method: 'imopenlines.config.add',
             params: {
               PARAMS: {
-                LINE_NAME: 'Online store support line',
+                LINE_NAME: 'Online Store Support Line',
                 QUEUE: [
                   { ENTITY_TYPE: 'user', ENTITY_ID: '1' },
                   { ENTITY_TYPE: 'user', ENTITY_ID: '15' },
@@ -487,17 +523,17 @@ Example:
                 WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
                 CRM: 'Y',
                 CRM_CREATE: 'deal',
-                CRM_SOURCE: 'openline_web',
+                CRM_SOURCE: 'create',
                 CRM_FORWARD: 'Y',
                 MAX_CHAT: 4,
                 TYPE_MAX_CHAT: 'answered_new',
                 WORKTIME_ENABLE: 'Y',
-                WORKTIME_FROM: '09:00',
-                WORKTIME_TO: '21:00',
+                WORKTIME_FROM: '9',
+                WORKTIME_TO: '21',
                 WORKTIME_TIMEZONE: 'Europe/Berlin',
                 WORKTIME_DAYOFF: ['SA', 'SU'],
                 WORKTIME_DAYOFF_RULE: 'text',
-                WORKTIME_DAYOFF_TEXT: 'The line is currently unavailable. Write to us and we will respond during business hours',
+                WORKTIME_DAYOFF_TEXT: 'The line is currently closed. Please write, and we will respond during working hours',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -529,7 +565,7 @@ Example:
     try:
         bitrix_response = client.imopenlines.config.add(
             params={
-                "LINE_NAME": "Online store support line",
+                "LINE_NAME": "Online Store Support Line",
                 "QUEUE": [
                     {
                         "ENTITY_TYPE": "user",
@@ -551,20 +587,20 @@ Example:
                 "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
                 "CRM": "Y",
                 "CRM_CREATE": "deal",
-                "CRM_SOURCE": "openline_web",
+                "CRM_SOURCE": "create",
                 "CRM_FORWARD": "Y",
                 "MAX_CHAT": 4,
                 "TYPE_MAX_CHAT": "answered_new",
                 "WORKTIME_ENABLE": "Y",
-                "WORKTIME_FROM": "09:00",
-                "WORKTIME_TO": "21:00",
+                "WORKTIME_FROM": "9",
+                "WORKTIME_TO": "21",
                 "WORKTIME_TIMEZONE": "Europe/Berlin",
                 "WORKTIME_DAYOFF": [
                     "SA",
                     "SU",
                 ],
                 "WORKTIME_DAYOFF_RULE": "text",
-                "WORKTIME_DAYOFF_TEXT": "The line is currently unavailable. Write to us and we will respond during business hours",
+                "WORKTIME_DAYOFF_TEXT": "The line is currently closed. Please write, and we will respond during working hours",
             },
         ).response
         result = bitrix_response.result
@@ -614,13 +650,13 @@ Example:
                         'WELCOME_MESSAGE_TEXT' => 'Hello! We will respond within a couple of minutes',
                         'CRM' => 'Y',
                         'CRM_CREATE' => 'deal',
-                        'CRM_SOURCE' => 'openline_web',
+                        'CRM_SOURCE' => 'create',
                         'CRM_FORWARD' => 'Y',
                         'MAX_CHAT' => 4,
                         'TYPE_MAX_CHAT' => 'answered_new',
                         'WORKTIME_ENABLE' => 'Y',
-                        'WORKTIME_FROM' => '09:00',
-                        'WORKTIME_TO' => '21:00',
+                        'WORKTIME_FROM' => '9',
+                        'WORKTIME_TO' => '21',
                         'WORKTIME_TIMEZONE' => 'Europe/Berlin',
                         'WORKTIME_DAYOFF' => ['SA', 'SU'],
                         'WORKTIME_DAYOFF_RULE' => 'text',
@@ -668,13 +704,13 @@ Example:
                 WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
                 CRM: 'Y',
                 CRM_CREATE: 'deal',
-                CRM_SOURCE: 'openline_web',
+                CRM_SOURCE: 'create',
                 CRM_FORWARD: 'Y',
                 MAX_CHAT: 4,
                 TYPE_MAX_CHAT: 'answered_new',
                 WORKTIME_ENABLE: 'Y',
-                WORKTIME_FROM: '09:00',
-                WORKTIME_TO: '21:00',
+                WORKTIME_FROM: '9',
+                WORKTIME_TO: '21',
                 WORKTIME_TIMEZONE: 'Europe/Berlin',
                 WORKTIME_DAYOFF: ['SA', 'SU'],
                 WORKTIME_DAYOFF_RULE: 'text',
@@ -726,13 +762,13 @@ Example:
                 'WELCOME_MESSAGE_TEXT' => 'Hello! We will respond within a couple of minutes',
                 'CRM' => 'Y',
                 'CRM_CREATE' => 'deal',
-                'CRM_SOURCE' => 'openline_web',
+                'CRM_SOURCE' => 'create',
                 'CRM_FORWARD' => 'Y',
                 'MAX_CHAT' => 4,
                 'TYPE_MAX_CHAT' => 'answered_new',
                 'WORKTIME_ENABLE' => 'Y',
-                'WORKTIME_FROM' => '09:00',
-                'WORKTIME_TO' => '21:00',
+                'WORKTIME_FROM' => '9',
+                'WORKTIME_TO' => '21',
                 'WORKTIME_TIMEZONE' => 'Europe/Berlin',
                 'WORKTIME_DAYOFF' => ['SA', 'SU'],
                 'WORKTIME_DAYOFF_RULE' => 'text',
@@ -772,13 +808,13 @@ Example:
     		"WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
     		"CRM":                  "Y",
     		"CRM_CREATE":           "deal",
-    		"CRM_SOURCE":           "openline_web",
+    		"CRM_SOURCE":           "create",
     		"CRM_FORWARD":          "Y",
     		"MAX_CHAT":             4,
     		"TYPE_MAX_CHAT":        "answered_new",
     		"WORKTIME_ENABLE":      "Y",
-    		"WORKTIME_FROM":        "09:00",
-    		"WORKTIME_TO":          "21:00",
+    		"WORKTIME_FROM":        "9",
+    		"WORKTIME_TO":          "21",
     		"WORKTIME_TIMEZONE":    "Europe/Berlin",
     		"WORKTIME_DAYOFF":      []string{"SA", "SU"},
     		"WORKTIME_DAYOFF_RULE": "text",
@@ -824,16 +860,32 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md), [`boolean`](../../data-types.md) | Identifier of the created open channel, or `false` if the channel could not be created ||
+[`integer`](../../data-types.md) \| [`boolean`](../../data-types.md) | Identifier of the created open channel.
+
+The method returns `false` if the channel could not be saved, for example, with `AGREEMENT_MESSAGE` = `Y` without an available agreement in `AGREEMENT_ID` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-The method defines no error codes of its own. If the open channel could not be saved, the method returns `false` in `result`.
+HTTP Status: **403**
+
+```json
+{
+    "error": "CONFIG_WRONG_USER_PERMISSION",
+    "error_description": "Permission denied"
+}
+```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `CONFIG_WRONG_USER_PERMISSION` | Permission denied | Insufficient permissions to create an open channel ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

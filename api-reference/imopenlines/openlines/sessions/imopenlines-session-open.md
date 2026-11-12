@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the dialogue
+> Who can execute the method: the chat author, a user with the "Join conversation" permission for the open line, or a user with access to the CRM object linked to the chat. An extranet user cannot call the method
 
-The method `imopenlines.session.open` returns the chat ID of the open line based on the user code `USER_CODE`.
+The method `imopenlines.session.open` returns the ID of an existing open line chat based on the user code `USER_CODE`. The method does not create a chat or start a dialogue.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `imopenlines.session.open` returns the chat ID of the open line based
 || **Name**
 `type` | **Description** ||
 || **USER_CODE***
-[`string`](../../../data-types.md) | String code of the user for the external system channel. 
+[`string`](../../../data-types.md) | String code of the user for the external system channel.
 
 Code format: ```<connector>|<LINE_ID>|<CONNECTOR_CHAT_ID>|<CONNECTOR_USER_ID>```, where:
 - `<connector>` — connector identifier: `livechat`, `telegram`, and others
@@ -72,7 +72,7 @@ The value can be obtained using the method [imopenlines.dialog.get](./imopenline
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type SessionOpenResult = {
-      chatId: number
+      chatId: string
     }
 
     try {
@@ -279,7 +279,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **chatId**
-[`integer`](../../../data-types.md) | Identifier of the open line chat ||
+[`string`](../../../data-types.md) | Identifier of the open line chat. The method returns the number as a string, for example `"5255"` ||
 |#
 
 ## Error Handling
@@ -289,7 +289,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "You cannot open this conversation because you do not have sufficient permissions"
+    "error_description": "You do not have permission to access this chat."
 }
 ```
 
@@ -299,7 +299,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation because you do not have sufficient permissions | No access to the chat with the specified `USER_CODE` ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | `USER_CODE` is not passed, a chat with this `USER_CODE` is not found, or the current user does not have access to the chat ||
+|| `400` | Empty value | Empty value | The method was called by an extranet user ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

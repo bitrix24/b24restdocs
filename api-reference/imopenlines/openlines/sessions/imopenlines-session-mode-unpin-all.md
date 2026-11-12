@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user. The method processes only dialogs in which the current user is assigned as the operator
 
-The method `imopenlines.session.mode.unpinAll` unpins all available pinned dialogs from the current operator.
+The method `imopenlines.session.mode.unpinAll` unpins all of the current operator's pinned dialogs in progress from the operator.
 
 ## Method Parameters
 
@@ -229,7 +229,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer[]`](../../../data-types.md) | An array of session IDs that were successfully unpinned ||
+[`integer[]`](../../../data-types.md) | An array of IDs of the dialogs that were successfully unpinned. If there are no matching dialogs, the method returns an empty array `[]`.
+
+The method takes pinned dialogs in which the current user is assigned as the operator. Dialogs that are waiting for a client response or are closed are not unpinned ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

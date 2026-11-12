@@ -1,4 +1,4 @@
-# Add User to Existing Chat imopenlines.crm.chat.user.add
+# Add a User to a CRM Object Chat imopenlines.crm.chat.user.add
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the CRM object
+> Who can execute the method: a user with read permission for the CRM object
 
 The method `imopenlines.crm.chat.user.add` adds a user to a chat associated with a CRM object.
 
@@ -27,22 +27,36 @@ The method `imopenlines.crm.chat.user.add` adds a user to a chat associated with
 - `lead` — lead
 - `deal` — deal
 - `company` — company
-- `contact` — contact ||
+- `contact` — contact
+
+The value is case-insensitive ||
 || **CRM_ENTITY***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 You can obtain the identifier using the universal method [get CRM item list](../../../crm/universal/crm-item-list.md) ||
 || **USER_ID***
-[`integer`](../../../data-types.md) | Identifier of the user or bot to be added to the chat.
+[`integer`](../../../data-types.md) | Identifier of the user or bot to be added to the chat. The user must be active and have read permission for the CRM object and the "Communication history" permission for the line the chat belongs to.
 
 You can obtain the user identifier using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods ||
 || **CHAT_ID**
 [`integer`](../../../data-types.md) | Identifier of the chat.
 
-By default, the last chat associated with the CRM object is used.
+If the parameter is not provided, the method uses the last chat of the CRM object — the same one returned by [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md).
 
-You can obtain the identifiers of chats associated with the CRM object using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
+You can obtain the identifiers of active chats of the CRM object using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
 |#
+
+{% note warning "" %}
+
+The method works only with an active chat — a chat whose dialog an operator has taken and which has not yet moved to the closing state. If the dialog in the chat is waiting in the queue or is closed, the method returns the `CHAT_NOT_IN_CRM` error. The [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method returns the list of active chats of the CRM object
+
+{% endnote %}
+
+{% note info "" %}
+
+Pass parameter names in uppercase: `CRM_ENTITY_TYPE`, not `crm_entity_type`. The method does not recognize lowercase names and returns a missing parameter error
+
+{% endnote %}
 
 ## Code Examples
 
@@ -284,7 +298,7 @@ HTTP Status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -292,7 +306,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the chat to which the user has been added.
 
-If `CHAT_ID` is not provided and no chat is found for the CRM object, the method will return `"result":0` ||
+If `CHAT_ID` is not provided and the CRM object has no chats, the method returns `"result":0` and adds no one. The `USER_ID` parameter is not checked in this case ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -314,16 +328,22 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | The user executing the method does not have permission to add users to the CRM object chat ||
+|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | Possible reasons:
+- the user executing the method does not have read permission for the CRM object
+- an unknown object type is passed in `CRM_ENTITY_TYPE`, for example `abc`
+||
 || `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this CRM object | The user `USER_ID` does not have access to the CRM object ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY_TYPE' is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY' is null or empty | Required parameter `CRM_ENTITY` is not provided ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
-|| `400` | `ERROR_ARGUMENT` | Argument 'Empty USER_ID' is null or empty | Required parameter `USER_ID` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is not a number or is less than 1 ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'Empty USER_ID' is null or empty | The required parameter `USER_ID` is not provided or the value is less than 1 ||
 || `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
-|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM object being checked | The chat `CHAT_ID` is not associated with the CRM object ||
+|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | Possible reasons:
+- the chat is not linked to the CRM object or does not exist
+- the dialog in the chat is not active: it is waiting in the queue or is closed
+||
 || `400` | `CRM_CHAT_USER_NOT_ACTIVE` | User not active | User `USER_ID` is inactive or does not exist ||
-|| `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this view chat history | User `USER_ID` does not have access to the chat history ||
+|| `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this view chat history | User `USER_ID` does not have the "Communication history" permission for the line ||
 || `400` | `WRONG_REQUEST` | You don't have access or user already member in chat | The user is already in the chat or is unavailable for adding ||
 |#
 

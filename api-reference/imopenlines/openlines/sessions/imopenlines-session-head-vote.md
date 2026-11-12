@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a manager with evaluation rights in the line settings
+> Who can execute the method: a user with the "Conversation rating" permission for the open line of the dialog
 
-The method `imopenlines.session.head.vote` saves the manager's rating and comment for a completed dialog.
+The method `imopenlines.session.head.vote` saves the manager's rating and comment on the operator's work in a dialog.
+
+{% note info "" %}
+
+In cloud Bitrix24, the manager rating is not available on all plans. If the plan does not allow it, the method returns the `ACCESS_DENIED` error. In the on-premise version, the plan restriction does not apply.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,20 +29,25 @@ The method `imopenlines.session.head.vote` saves the manager's rating and commen
 || **Name**
 `type` | **Description** ||
 || **SESSION_ID***
-[`integer`](../../../data-types.md) | Session identifier. 
+[`integer`](../../../data-types.md) | Identifier of the dialog session.
 
-The identifier can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method in the `sessionId` field ||
+The identifier can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method in the `sessionId` field or using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method from the sixth element of the `entity_data_1` string ||
 || **RATING**
-[`integer`](../../../data-types.md) | Manager's rating. Pass a value from `1` to `5` ||
+[`integer`](../../../data-types.md) | Manager's rating from `1` to `5`.
+
+The method saves a value greater than `5` as `0`, which resets the rating. The method treats the value `0` without `COMMENT` as empty and returns the `EMPTY_VOTE_PARAMS` error ||
 || **COMMENT**
-[`string`](../../../data-types.md) | Manager's comment on the rating ||
+[`string`](../../../data-types.md) | Manager's comment on the rating.
+
+The maximum length is 10,000 characters. The method truncates longer text and appends `...` at the end ||
 |#
 
-{% note info "" %}
+Pass at least one of the `RATING` or `COMMENT` parameters:
 
-At least one of the parameters must be provided: `RATING` or `COMMENT`.
+- if only `RATING` is passed, the method saves the rating and clears the previously saved manager comment
+- if only `COMMENT` is passed, the method saves the comment, and the rating does not change
 
-{% endnote %} 
+After saving, the dialog operator receives a notification with the rating or comment.
 
 ## Code Examples
 
@@ -51,7 +62,7 @@ At least one of the parameters must be provided: `RATING` or `COMMENT`.
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"SESSION_ID":1743,"RATING":5,"COMMENT":"Excellent handling"}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.head.vote.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.session.head.vote
     ```
 
 - cURL (OAuth)
@@ -60,8 +71,8 @@ At least one of the parameters must be provided: `RATING` or `COMMENT`.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"SESSION_ID":1743,"RATING":5,"COMMENT":"Excellent handling","auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.session.head.vote.json
+      -d '{"SESSION_ID":1743,"RATING":5,"COMMENT":"Excellent handling","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.session.head.vote
     ```
 
 - JS (TS)
@@ -277,7 +288,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the rating is saved ||
+[`boolean`](../../../data-types.md) | Returns `true` if the rating or comment is saved ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -299,9 +310,9 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `EMPTY_SESSION_ID` | Session ID can't be empty | `SESSION_ID` not provided or value `<= 0` ||
-|| `400` | `EMPTY_VOTE_PARAMS` | At least one of the parameters RATING or COMMENT must be specified | Both `RATING` and `COMMENT` not provided ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | The current user cannot rate the specified session ||
+|| `400` | `EMPTY_SESSION_ID` | Session ID can't be empty | `SESSION_ID` is not passed, or `0` is passed ||
+|| `400` | `EMPTY_VOTE_PARAMS` | At least one of the parameters RATING or COMMENT must be specified | Neither `RATING` nor `COMMENT` is passed, or both are empty ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The session is not found, the user does not have permission to rate dialogs of this channel, or in cloud Bitrix24 the manager rating is not available on the plan ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

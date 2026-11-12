@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the CRM object
+> Who can execute the method: a user with read permission for the CRM object
 
 The method `imopenlines.crm.chat.get` retrieves a list of chats associated with a CRM object.
 
@@ -28,7 +28,8 @@ The method `imopenlines.crm.chat.get` retrieves a list of chats associated with 
 - `deal` — deal
 - `company` — company
 - `contact` — contact
-||
+
+The value is case-insensitive. For other CRM object types, the method returns an empty array ||
 || **CRM_ENTITY***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
@@ -38,9 +39,16 @@ You can obtain the identifier using the universal method [to get a list of CRM e
 - `Y` — return only active chats
 - `N` — return all chats
 
-Default is `Y`
-||
+Default is `Y`. The method treats any value other than `N` as `Y`.
+
+An active chat is a chat whose dialog an operator has taken and which has not yet moved to the closing state. Dialogs in the queue and closed dialogs are not considered active ||
 |#
+
+{% note info "" %}
+
+Pass parameter names in uppercase: `CRM_ENTITY_TYPE`, not `crm_entity_type`. The method does not recognize lowercase names and returns a missing parameter error
+
+{% endnote %}
 
 ## Code Examples
 
@@ -294,20 +302,20 @@ HTTP Status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | List of chat objects [(detailed description)](#result-item).
+[`array`](../../../data-types.md) | List of chats [(detailed description)](#result-item). Chats are sorted by the date the dialog was last modified, newest first. Chats from disconnected communication channels are not included.
 
-Returns an empty array `"result":[]` if no object with the specified `CRM_ENTITY` exists ||
+The method returns an empty array `"result":[]` if no object with the specified `CRM_ENTITY` exists, the object has no matching chats, or the object type is not in the `CRM_ENTITY_TYPE` list ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Result Object {#result-item}
+#### Result Object {#result-item}
 
 #|
 || **Name**
@@ -315,7 +323,7 @@ Returns an empty array `"result":[]` if no object with the specified `CRM_ENTITY
 || **CHAT_ID**
 [`string`](../../../data-types.md) | Identifier of the chat ||
 || **CONNECTOR_ID**
-[`string`](../../../data-types.md) | Identifier of the connector ||
+[`string`](../../../data-types.md) | Identifier of the connector — the communication channel through which the client writes to the open line, for example `livechat` or `telegrambot` ||
 || **CONNECTOR_TITLE**
 [`string`](../../../data-types.md) | Title of the connector ||
 |#
@@ -337,10 +345,13 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to this action | User does not have access to the CRM object ||
+|| `403` | `ACCESS_DENIED` | Access denied! You dont have access to this action | Possible reasons:
+- the user does not have read permission for the CRM object
+- an unknown object type is passed in `CRM_ENTITY_TYPE`, for example `abc`
+||
 || `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY_TYPE' is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided or is empty ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY' is null or empty | Required parameter `CRM_ENTITY` is not provided or is empty ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | Parameter `CRM_ENTITY` is provided in an incorrect format ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is not a number or is less than 1 ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

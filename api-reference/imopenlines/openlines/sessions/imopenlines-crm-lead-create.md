@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the dialogue
+> Who can execute the method: the operator handling the dialogue
 
-The method `imopenlines.crm.lead.create` creates a CRM lead based on the current chat in the Open Channels.
+The method `imopenlines.crm.lead.create` creates a CRM lead from the client data in an Open Channels dialogue.
+
+If the `CRM_CREATE` parameter in the channel settings is `deal`, the method creates a deal with the client's contact in the pipeline from `CRM_CREATE_SECOND` instead of a lead. You can retrieve the channel settings using the [imopenlines.config.get](../imopenlines-config-get.md) method.
 
 ## Method Parameters
 
@@ -23,10 +25,14 @@ The method `imopenlines.crm.lead.create` creates a CRM lead based on the current
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the Open Channels chat. 
+[`integer`](../../../data-types.md) | Numeric identifier of the Open Channels chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 |#
+
+If the dialogue is already linked to CRM, the method does not create a new object and returns `true`. The CRM link is shown by the first element of the `entity_data_1` string in the response of the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method: the value `Y` means the link exists.
+
+After a lead or deal is created, a system message with a link to the created object is posted to the dialogue chat.
 
 ## Code Examples
 
@@ -41,7 +47,7 @@ The identifier can be obtained using the [imopenlines.session.open](./imopenline
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.crm.lead.create.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.crm.lead.create
     ```
 
 - cURL (OAuth)
@@ -50,8 +56,8 @@ The identifier can be obtained using the [imopenlines.session.open](./imopenline
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.crm.lead.create.json
+      -d '{"CHAT_ID":2043,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.crm.lead.create
     ```
 
 - JS (TS)
@@ -253,7 +259,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the lead was successfully created ||
+[`boolean`](../../../data-types.md) | Returns `true` if a lead or deal is created or the dialogue is already linked to CRM ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -275,11 +281,13 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The specified chat identifier is incorrect | Empty or invalid `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an Open Channel | The specified chat does not belong to Open Channels ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | The current user does not have access to the dialogue ||
-|| `400` | `USER_ID` | The specified user identifier is incorrect | User not defined for whom the method is executed ||
-|| `400` | `ERROR_USER_NOT_OPERATOR` | Attempt to save a CRM object by a user who is not an operator | The method was called by a user who is not the current operator of the Open Channel session ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not passed, is less than `1`, or the chat is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The chat does not belong to an Open Channel ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The user is not a member of the chat and does not have the "Join conversation" permission for the channel ||
+|| `400` | `USER_ID` | User ID is invalid. | User not defined for whom the method is executed ||
+|| `400` | `ERROR_USER_NOT_OPERATOR` | Attempt to save a CRM entity by a user who is not an operator | The method was called by a user who is not handling this dialogue ||
+|| `400` | `IMOL_CHAT_ERROR_ANSWER_NOT_LOAD_SESSION` | Cannot load session | The chat has no Open Channels session ||
+|| `400` | `IMOL_CHAT_ERROR_NOT_LOAD_CRM` | Failed to load CRM | The CRM module is unavailable ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

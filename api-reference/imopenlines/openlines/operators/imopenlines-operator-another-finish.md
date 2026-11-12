@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialog permissions
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this line
 
-The method `imopenlines.operator.another.finish` ends a dialog in an open line, even if the dialog is assigned to another operator.
+The method `imopenlines.operator.another.finish` ends a dialog in an open line, even if another operator is handling the dialog.
 
 ## Method Parameters
 
@@ -23,10 +23,14 @@ The method `imopenlines.operator.another.finish` ends a dialog in an open line, 
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat.
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
+
+Pass the parameter name in uppercase: the method does not recognize `chat_id`.
 
 The identifier can be obtained using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) methods ||
 |#
+
+If another operator is handling the dialog, a system message stating that the user closed the dialog appears in the chat. If the dialog has no responsible person, the method first assigns the user calling the method as the responsible person and then finishes the dialog.
 
 ## Code Examples
 
@@ -41,7 +45,7 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.operator.another.finish.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.operator.another.finish
     ```
 
 - cURL (OAuth)
@@ -50,8 +54,8 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.operator.another.finish.json
+      -d '{"CHAT_ID":2043,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.operator.another.finish
     ```
 
 - JS (TS)
@@ -275,10 +279,12 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The provided chat identifier is invalid | Empty or incorrect `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have permissions for the dialog ||
-|| `400` | `USER_ID` | The provided user identifier is invalid | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not provided, the value is less than `1`, or the chat is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The specified chat does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The user is not a member of the chat and does not have the "Join conversation" permission for this line ||
+|| `400` | `USER_ID` | User ID is invalid. | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `NOT_LOAD_SESSION_OR_CHAT` | Session or chat failed to load | The chat has no active dialog ||
+|| `400` | `IMOL_CHAT_ERROR_NOT_LOAD_DATA` | Unable to load chat data | The active dialog belongs to another chat ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

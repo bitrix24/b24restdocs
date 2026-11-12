@@ -1,4 +1,4 @@
-# Get Information About the Operator's Dialog imopenlines.dialog.get
+# Get Information About the Dialog imopenlines.dialog.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the dialog
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this channel
 
-The method `imopenlines.dialog.get` returns data from the open line chat. You only need to provide one of the parameters.
+The method `imopenlines.dialog.get` returns data from the open line chat.
 
 ## Method Parameters
 
@@ -23,26 +23,32 @@ The method `imopenlines.dialog.get` returns data from the open line chat. You on
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID**
-[`integer`](../../../data-types.md) | Identifier of the open line chat.
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.session.history.get](./imopenlines-session-history-get.md) methods. ||
 || **DIALOG_ID**
-[`string`](../../../data-types.md) | Identifier of the dialog in the format `chat<ID>`, where `<ID>` is the identifier of the open line chat. ||
+[`string`](../../../data-types.md) | Identifier of the dialog in the format `chat<ID>`, where `<ID>` is the identifier of the open line chat. For example, `chat1777`.
+
+The method does not accept a value in any other format and returns the `ACCESS_ERROR` error ||
 || **SESSION_ID**
-[`integer`](../../../data-types.md) | Identifier of the session. 
+[`integer`](../../../data-types.md) | Identifier of the dialog session.
 
 The identifier can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method in the `sessionId` field. ||
 || **USER_CODE**
-[`string`](../../../data-types.md) | String code of the user for the external system channel. 
+[`string`](../../../data-types.md) | Code of the open line user in the external system channel.
 
 Code format: ```<connector>|<LINE_ID>|<CONNECTOR_CHAT_ID>|<CONNECTOR_USER_ID>```, where:
-- `<connector>` — identifier of the connector: `livechat`, `telegram`, and others
+- `<connector>` — identifier of the connector, for example `livechat` or `telegrambot`
 - `<LINE_ID>` — identifier of the open line
 - `<CONNECTOR_CHAT_ID>` — identifier of the chat in the channel
 - `<CONNECTOR_USER_ID>` — identifier of the user in the channel
 
+The code can be passed with the ```imol|``` prefix; the method discards it.
+
 The value can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method from `result.chat.<chatId>.entityId`. ||
 |#
+
+Pass one of the parameters. If several are passed, the method uses the first one in this order: `CHAT_ID`, `DIALOG_ID`, `SESSION_ID`, `USER_CODE`.
 
 ## Code Examples
 
@@ -57,7 +63,7 @@ The value can be obtained using the [imopenlines.session.history.get](./imopenli
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"USER_CODE":"livechat|1|1373|211"}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.dialog.get.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.dialog.get
     ```
 
 - cURL (OAuth)
@@ -66,8 +72,8 @@ The value can be obtained using the [imopenlines.session.history.get](./imopenli
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"USER_CODE":"livechat|1|1373|211","auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.dialog.get.json
+      -d '{"USER_CODE":"livechat|1|1373|211","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.dialog.get
     ```
 
 - JS (TS)
@@ -420,7 +426,7 @@ HTTP Status: **200**
 || **description**
 [`string`](../../../data-types.md) | Description of the chat or `null` ||
 || **owner**
-[`integer`](../../../data-types.md) | Identifier of the chat owner ||
+[`integer`](../../../data-types.md) | Identifier of the operator handling the dialog. The value is `0` if there is no responsible person ||
 || **extranet**
 [`boolean`](../../../data-types.md) | Indicator of an extranet chat ||
 || **avatar**
@@ -453,16 +459,26 @@ HTTP Status: **200**
 [`string`](../../../data-types.md) | Type of the chat channel, for open lines the value is `LINES` ||
 || **entity_id**
 [`string`](../../../data-types.md) | User code of the open line in the format ```<connector>|<LINE_ID>|<CONNECTOR_CHAT_ID>|<CONNECTOR_USER_ID>```, where:
-- `<connector>` — identifier of the connector: `livechat`, `telegram`, and others
+- `<connector>` — identifier of the connector, for example `livechat` or `telegrambot`
 - `<LINE_ID>` — identifier of the open line
 - `<CONNECTOR_CHAT_ID>` — identifier of the chat in the channel
 - `<CONNECTOR_USER_ID>` — identifier of the user in the channel ||
 || **entity_data_1**
-[`string`](../../../data-types.md) | String with session data of the open line ||
+[`string`](../../../data-types.md) | Current session data separated by a vertical bar. Elements in order:
+1. `Y` if the dialog is linked to CRM
+2. CRM object type, for example `LEAD` or `DEAL`
+3. CRM object ID
+4. `Y` if the dialog is pinned to the operator
+5. `Y` if the dialog is waiting for an action
+6. Session ID
+7. Session creation date as a Unix timestamp
+8. Open line ID
+9. Date when sending messages was blocked, as a Unix timestamp
+10. Block reason ||
 || **entity_data_2**
-[`string`](../../../data-types.md) | String with CRM bindings ||
+[`string`](../../../data-types.md) | Links of the dialog to CRM objects in the format ```LEAD|<ID>|COMPANY|<ID>|CONTACT|<ID>|DEAL|<ID>```. The value `0` means there is no link ||
 || **entity_data_3**
-[`string`](../../../data-types.md) | Additional service flag ||
+[`string`](../../../data-types.md) | Silent mode flag of the dialog: `Y` or `N` ||
 || **mute_list**
 [`array`](../../../data-types.md) | List of user IDs with notifications turned off ||
 || **date_create**
@@ -606,8 +622,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
-|| `400` | `ACCESS_ERROR` | You do not have access to the specified dialog | Dialog not found or no access to it ||
+|| `400` | `ACCESS_ERROR` | You do not have access to the specified dialog | None of the parameters is passed, `DIALOG_ID` is not in the `chat<ID>` format, or the chat is not found, does not belong to an open line, or the user does not have access to it ||
+|| `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The Instant Messenger module is not installed ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

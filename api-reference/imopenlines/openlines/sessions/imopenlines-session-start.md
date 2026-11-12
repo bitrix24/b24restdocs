@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialogue permissions
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this channel
 
-The method `imopenlines.session.start` initiates a new session in the current open line chat.
+The method `imopenlines.session.start` starts a new dialogue in an open line chat on behalf of the current user.
 
 ## Method Parameters
 
@@ -253,7 +253,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the new session has been successfully started ||
+[`boolean`](../../../data-types.md) | Returns `true` if the access check passes.
+
+If the chat has no active dialogue, the method creates a new dialogue, assigns the current user as the operator, and moves the automatic closing date one month ahead. If a dialogue is already in progress, the method does not create a new one and adds the current user to the chat ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -275,10 +277,10 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The specified chat identifier is invalid | Empty or invalid `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not passed, `CHAT_ID` is invalid, or a chat with this ID is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The specified chat does not belong to open lines ||
 || `400` | `ACCESS_DENIED` | You cannot open this conversation because you do not have sufficient permissions | The current user does not have access to the dialogue ||
-|| `400` | `USER_ID` | The specified user identifier is invalid | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `USER_ID` | User ID is invalid. | The user on behalf of whom the method is executed is not defined ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialogue permissions
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this channel
 
-The method `imopenlines.message.session.start` initiates a new session and transfers the specified message into it.
+The method `imopenlines.message.session.start` closes the current dialogue session and starts a new one from the specified client message.
 
 ## Method Parameters
 
@@ -23,14 +23,22 @@ The method `imopenlines.message.session.start` initiates a new session and trans
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat. 
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 || **MESSAGE_ID***
-[`integer`](../../../data-types.md) | Identifier of the message within the chat. 
+[`integer`](../../../data-types.md) | Identifier of the client message from which the new session starts.
 
 The identifier can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method in the keys of the `message` object. ||
 |#
+
+The `MESSAGE_ID` message must meet the following conditions:
+
+- it is in the `CHAT_ID` chat
+- it was sent by the client, not by an operator or the system
+- it was sent in the current session, not in one of the previous ones
+
+The current dialogue session must be open. If a condition is not met, the method returns the `START_SESSION_FAIL` error.
 
 ## Code Examples
 
@@ -45,7 +53,7 @@ The identifier can be obtained using the [imopenlines.session.history.get](./imo
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043,"MESSAGE_ID":18971}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.message.session.start.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.message.session.start
     ```
 
 - cURL (OAuth)
@@ -54,8 +62,8 @@ The identifier can be obtained using the [imopenlines.session.history.get](./imo
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"MESSAGE_ID":18971,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.message.session.start.json
+      -d '{"CHAT_ID":2043,"MESSAGE_ID":18971,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.message.session.start
     ```
 
 - JS (TS)
@@ -83,7 +91,7 @@ The identifier can be obtained using the [imopenlines.session.history.get](./imo
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Session started:', result)
+        console.info('New session started:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -118,7 +126,7 @@ The identifier can be obtained using the [imopenlines.session.history.get](./imo
           }
 
           const result = response.getData().result
-          console.info('Session started:', result)
+          console.info('New session started:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -264,7 +272,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if a new session has been started based on the message. ||
+[`boolean`](../../../data-types.md) | Returns `true` if a new session is started ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -275,8 +283,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "CHAT_ID",
-    "error_description": "The provided chat identifier is invalid."
+    "error": "ACCESS_DENIED",
+    "error_description": "You do not have permission to access this chat."
 }
 ```
 
@@ -286,10 +294,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The provided chat identifier is invalid. | Empty or incorrect `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line. | The specified chat does not belong to open lines. ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions. | The current user does not have access to the dialogue. ||
-|| `400` | `USER_ID` | The provided user identifier is invalid. | The user on behalf of whom the method is executed is not defined. ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | `CHAT_ID` is not passed or the chat is not found, the chat does not belong to an open line, or the user does not have access to the dialogue ||
+|| `400` | `START_SESSION_FAIL` | Could not start a new conversation. | The current session is closed, or the `MESSAGE_ID` message does not qualify: it is not found, is in another chat, was not sent by the client, or was sent before the current session started ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

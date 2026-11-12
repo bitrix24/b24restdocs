@@ -29,9 +29,11 @@ In a request, the CRM object, the chat, and the participant are specified as fol
 || `USER_ID` | Participant ID — an employee or a chatbot. You can find an employee using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods | `15` ||
 |#
 
-By default, the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method returns only chats in which an operator has accepted the dialog and has not finished it yet. To retrieve all chats linked to the object, pass `ACTIVE_ONLY` with the value `N`. The [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) method returns the last chat of the object, even if its dialog is finished.
+Pass parameter names in uppercase: the methods do not recognize them in lowercase.
 
-Participants can be changed only in the chats that [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) returns by default. For a finished chat, the [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) and [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) methods return the `CHAT_NOT_IN_CRM` error.
+By default, the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method returns only active chats: an operator has taken the dialog and the dialog has not yet moved to the closing state. Dialogs in the queue and closed dialogs are not included in this list. To retrieve all chats linked to the object, pass `ACTIVE_ONLY` with the value `N`. The [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) method returns the last chat of the object, even if its dialog is finished.
+
+Participants can be changed only in the chats that [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) returns by default. For a chat whose dialog is waiting in the queue or is closed, the [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) and [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) methods return the `CHAT_NOT_IN_CRM` error.
 
 ## Linking Chats with Other Objects
 
@@ -51,7 +53,7 @@ Besides CRM, chats are linked to chatbots, conversation history, open channels, 
 2. Add an employee or a chatbot to the chat using the [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) method: pass the same `CRM_ENTITY_TYPE` and `CRM_ENTITY`, the participant ID in `USER_ID`, and the chat ID in `CHAT_ID`. To remove a participant, use the [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) method with the same parameters
 3. Write to the customer on behalf of an employee or a bot using the [imopenlines.crm.message.add](../messages/imopenlines-crm-message-add.md) method
 
-If the dialog is not linked to CRM yet, create a lead from it using the [imopenlines.crm.lead.create](../sessions/imopenlines-crm-lead-create.md) method — it also needs `CHAT_ID`. If the dialog is already linked, the method creates nothing but returns `true`.
+If the dialog is not linked to CRM yet, create a lead from it using the [imopenlines.crm.lead.create](../sessions/imopenlines-crm-lead-create.md) method — it also needs `CHAT_ID`. If the channel is configured to create deals, the method creates a deal with a contact. If the dialog is already linked, the method creates nothing but returns `true`.
 
 {% note tip "User Documentation" %}
 
@@ -65,12 +67,12 @@ If the dialog is not linked to CRM yet, create a lead from it using the [imopenl
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: depends on the method — [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md), [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md), and [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) require read access to the CRM object
+> Who can execute the methods: depends on the method. The [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md), [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md), and [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) methods require read access to the CRM object
 
 #|
 || **Method** | **Description** ||
 || [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) | Retrieves chats for the CRM object ||
 || [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) | Retrieves the ID of the last chat for the CRM object ||
-|| [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) | Adds a user to an existing chat of the CRM object ||
+|| [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) | Adds a user to a chat of the CRM object ||
 || [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) | Removes a user from the chat of the CRM object ||
 |#

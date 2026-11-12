@@ -1,4 +1,4 @@
-# On Session Close for Open Channel OnSessionFinish
+# When Closing an Open Channel Session OnSessionFinish
 
 {% note tip "" %}
 
@@ -13,9 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnSessionFinish` event is triggered when an Open Channel session is closed.
+The `OnSessionFinish` event is triggered when an Open Channel session is closed, for example, when an operator finishes the dialog or the session closes automatically. If the session waits for the customer's reply after the dialog is finished, the event arrives when the session closes completely.
 
-[Subscribing](../../../events/event-bind.md) to the event can only be done through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
+[Subscribing](../../../events/event-bind.md) to the event can only be done through the application. The event arrives for all open channel communication channels, not only for the application connector. To handle only your own sessions, check the connector code in `connector.connector_id`.
 
 {% note info "" %}
 
@@ -30,30 +30,23 @@ Data is transmitted as a POST request {.b24-info}
 ```json
 {
     "event": "ONSESSIONFINISH",
-    "eventId": 1,
+    "event_handler_id": 145,
     "data": {
-        "DATA": [
-            {
-                "connector": {
-                    "connector_id": "livechat",
-                    "line_id": 128,
-                    "chat_id": 10585,
-                    "user_id": 1984
-                },
-                "session": {
-                    "id": 42,
-                    "closed": "Y",
-                    "parent_id": 0,
-                    "close_term": 60
-                },
-                "chat": {
-                    "id": 10585
-                },
-                "user": {
-                    "id": 1984
-                }
+        "DATA": {
+            "connector": {
+                "connector_id": "my_connector",
+                "line_id": 1,
+                "chat_id": 17,
+                "user_id": 10
+            },
+            "chat": {
+                "chat_id": 17
+            },
+            "line": {
+                "id": 1,
+                "name": "Open channel"
             }
-        ]
+        }
     },
     "ts": 1714649632,
     "auth": {
@@ -80,102 +73,76 @@ Data is transmitted as a POST request {.b24-info}
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONSESSIONFINISH` ||
-|| **eventId***
-[`integer`](../../../data-types.md) | Event identifier ||
+|| **event_handler_id***
+[`integer`](../../../data-types.md) | Event handler ID ||
 || **data***
-[`object`](../../../data-types.md) | An object containing event data.
+[`object`](../../../data-types.md) | An object with data of the closed session.
+
+Contains a single key, `DATA` ||
+|| **data.DATA***
+[`object`](../../../data-types.md) | An object with information about the connector, chat, and open channel.
 
 The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Parameter data {#data}
-
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **DATA***
-[`array`](../../../data-types.md) | An array of objects with session data.
-
-The object structure is described [below](#chat-params) ||
-|#
-
-#### Array Element DATA {#chat-params}
-
-Each array element `DATA` is an object with the following structure:
+### Parameter DATA {#data}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **connector***
-[`object`](../../../data-types.md) | An object with connector information.
+[`object`](../../../data-types.md) | An object with information about the communication channel of the session.
 
 The structure is described [below](#connector) ||
-|| **session***
-[`object`](../../../data-types.md) | An object with session information.
-
-The structure is described [below](#session) ||
 || **chat***
-[`object`](../../../data-types.md) | An object with chat information.
+[`object`](../../../data-types.md) | An object with information about the session chat.
 
 The structure is described [below](#chat) ||
-|| **user***
-[`object`](../../../data-types.md) | An object with user information.
+|| **line***
+[`object`](../../../data-types.md) | An object with information about the open channel.
 
-The structure is described [below](#user) ||
+The structure is described [below](#line) ||
 |#
 
-##### Parameter connector {#connector}
+#### Parameter connector {#connector}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **connector_id***
-[`string`](../../../data-types.md) | Connector identifier ||
+[`string`](../../../data-types.md) | Code of the connector through which the customer writes to the channel. For example, `livechat` for the live chat or the code of the application connector ||
 || **line_id***
 [`integer`](../../../data-types.md) | Identifier of the open line ||
 || **chat_id***
-[`integer`](../../../data-types.md) | Identifier of the chat ||
+[`integer`](../../../data-types.md) | Open channel chat ID in Bitrix24 ||
 || **user_id***
-[`integer`](../../../data-types.md) | User ID in the external system ||
+[`integer`](../../../data-types.md) | Customer ID in Bitrix24 ||
 |#
 
-##### Parameter session {#session}
+#### Parameter chat {#chat}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **chat_id***
+[`integer`](../../../data-types.md) | Open channel chat ID in Bitrix24. Matches `connector.chat_id` ||
+|#
+
+#### Parameter line {#line}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the session ||
-|| **closed***
-[`string`](../../../data-types.md) | Whether the session is closed: `Y` — yes, `N` — no ||
-|| **parent_id***
-[`integer`](../../../data-types.md) | Previous session identifier ||
-|| **close_term***
-[`integer`](../../../data-types.md) | Time until automatic session closure, in minutes ||
-|#
-
-##### Parameter chat {#chat}
-
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **id***
-[`integer`](../../../data-types.md) | Identifier of the chat ||
-|#
-
-##### Parameter user {#user}
-
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **id***
-[`integer`](../../../data-types.md) | User ID in the external system ||
+[`integer`](../../../data-types.md) | Open channel ID. Matches `connector.line_id` ||
+|| **name***
+[`string`](../../../data-types.md) | Open channel name ||
 |#
 
 ### Parameter auth {#auth}

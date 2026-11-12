@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the operator who handled the session, a user with the "Communication history" permission for this operator's sessions, or a user with access to the CRM object linked to the session
 
-The method `imopenlines.session.history.get` returns the message history of an open line session.
+The method `imopenlines.session.history.get` returns the messages of a single open line dialog session page by page, from newest to oldest.
 
 ## Method Parameters
 
@@ -25,19 +25,33 @@ The method `imopenlines.session.history.get` returns the message history of an o
 || **SESSION_ID**
 [`integer`](../../../data-types.md) | Identifier of the open line session.
 
-The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method from the `entity_data_1` field. The `SESSION_ID` identifier is located in the sixth parameter of the `entity_data_1` string. For example, for ```"entity_data_1":"Y|LEAD|1205|N|N|321|1773223732|0|0|0"```, the session identifier is `321` ||
+The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method from the `entity_data_1` field. The `SESSION_ID` identifier is located in the sixth element of the `entity_data_1` string. For example, for ```"entity_data_1":"Y|LEAD|1205|N|N|321|1773223732|0|0|0"```, the session identifier is `321` ||
 || **CHAT_ID**
 [`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix. For example, `1763`, not `chat1763`.
 
 The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) or [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) methods ||
+|| **LIMIT**
+[`integer`](../../../data-types.md) | Number of messages per page. Defaults to `50`, maximum `200`.
+
+The method replaces a value greater than `200` with `200`, and a value of `0` or less with `50` ||
+|| **LAST_ID**
+[`integer`](../../../data-types.md) | Identifier of the message after which the next page starts. Pass the `nextId` value from the response to the previous request.
+
+Omit the parameter to retrieve the first page with the newest messages ||
+|| **LAST_DATE**
+[`integer`](../../../data-types.md) | Date of the `LAST_ID` message as a Unix timestamp. Pass the `nextDate` value from the response to the previous request together with `LAST_ID`.
+
+The parameter ensures that pages load correctly even if the `LAST_ID` message was deleted between requests ||
 |#
 
-The method accepts one of the parameters: `SESSION_ID` or `CHAT_ID`.
+Pass one of the `SESSION_ID` or `CHAT_ID` parameters:
 
-- If `SESSION_ID` is provided, the method operates based on it.
-- If `SESSION_ID` is not provided, the method attempts to determine the last session by `CHAT_ID` with sorting `ID DESC`.
+- if `SESSION_ID` is passed, the method returns the messages of this session
+- if only `CHAT_ID` is passed, the method returns the messages of the last session of the chat
 
-In practice, for stable results, it is recommended to provide `SESSION_ID`.
+To retrieve the messages of a specific session, pass `SESSION_ID`.
+
+To retrieve the entire session history, repeat the request while `hasNextPage` in the response is `true`. In each subsequent request, pass `LAST_ID` and `LAST_DATE` from the `nextId` and `nextDate` fields of the previous response.
 
 ## Code Examples
 
@@ -51,7 +65,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"SESSION_ID":321}' \
+      -d '{"SESSION_ID":321,"LIMIT":50}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.session.history.get
     ```
 
@@ -61,7 +75,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"SESSION_ID":321,"auth":"**put_access_token_here**"}' \
+      -d '{"SESSION_ID":321,"LIMIT":50,"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/imopenlines.session.history.get
     ```
 
@@ -156,6 +170,9 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
         urlshow: string
         urldownload: string
       }>
+      nextId: number | null
+      nextDate: number | null
+      hasNextPage: boolean
     }
 
     try {
@@ -163,6 +180,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
         method: 'imopenlines.session.history.get',
         params: {
           SESSION_ID: 321,
+          LIMIT: 50,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -172,7 +190,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result.sessionId, result.chatId, Object.keys(result.message).length)
+        console.info(result.sessionId, result.usersMessage[result.userId], result.hasNextPage)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -195,6 +213,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
             method: 'imopenlines.session.history.get',
             params: {
               SESSION_ID: 321,
+              LIMIT: 50,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -206,7 +225,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
           }
 
           const result = response.getData().result
-          console.info(result.sessionId, result.chatId, Object.keys(result.message).length)
+          console.info(result.sessionId, result.usersMessage[result.userId], result.hasNextPage)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -251,6 +270,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
                 'imopenlines.session.history.get',
                 [
                     'SESSION_ID' => 321,
+                    'LIMIT' => 50,
                 ]
             );
 
@@ -271,6 +291,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
         'imopenlines.session.history.get',
         {
             SESSION_ID: 321,
+            LIMIT: 50,
         },
         function(result) {
             if (result.error()) {
@@ -291,6 +312,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
         'imopenlines.session.history.get',
         [
             'SESSION_ID' => 321,
+            'LIMIT' => 50,
         ]
     );
 
@@ -307,6 +329,7 @@ In practice, for stable results, it is recommended to provide `SESSION_ID`.
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "imopenlines.session.history.get", b24.Params{
     	"SESSION_ID": 321,
+    	"LIMIT":      50,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("imopenlines.session.history.get: %w", err)
@@ -397,7 +420,7 @@ HTTP Status: **200**
         "usersMessage": {
             "chat1763": [
                 "85851",
-                "85833",
+                "85833"
             ]
         },
         "users": {
@@ -541,7 +564,10 @@ HTTP Status: **200**
                 "isvideonote": false,
                 "isvoicenote": false
             }
-        }
+        },
+        "nextId": null,
+        "nextDate": null,
+        "hasNextPage": false
     },
     "time": {
         "start": 1773224138,
@@ -577,23 +603,23 @@ The structure of the object is described in detail [below](#result) ||
 || **chatId**
 [`integer`](../../../data-types.md) | Identifier of the chat ||
 || **canJoin**
-[`string`](../../../data-types.md) | Flag indicating the ability to join the dialogue: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether the user can join the dialogue: `Y` or `N` ||
 || **canVoteHead**
-[`string`](../../../data-types.md) | Flag indicating the ability to evaluate operators by the supervisor: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether the user can rate the operator's work as a supervisor: `Y` or `N` ||
 || **sessionId**
 [`integer`](../../../data-types.md) | Identifier of the session ||
 || **sessionVoteHead**
-[`integer`](../../../data-types.md) | Rating given by the supervisor ||
+[`integer`](../../../data-types.md) | Supervisor rating from `1` to `5`, or `0` if there is no rating ||
 || **sessionCommentHead**
 [`string`](../../../data-types.md) | Supervisor's comment on the rating or `null` ||
 || **userId**
 [`string`](../../../data-types.md) | Identifier of the chat in the format `chat<ID>` ||
 || **message**
-[`object`](../../../data-types.md) | Chat messages indexed by message identifier.
+[`object`](../../../data-types.md) | Messages of the page, where the key is the message identifier.
 
 The structure of the object is described in detail [below](#message) ||
 || **usersMessage**
-[`object`](../../../data-types.md) | Relationship between the chat and the list of message identifiers.
+[`object`](../../../data-types.md) | Message identifiers of the page in order, from newest to oldest. Use this list to display messages in the correct order: in JavaScript, the keys of the `message` object are iterated in ascending order.
 
 The structure of the object is described in detail [below](#users-message) ||
 || **users**
@@ -605,7 +631,7 @@ The structure of the object is described in detail [below](#users) ||
 
 The structure of the object is described in detail [below](#openlines) ||
 || **userInGroup**
-[`object`](../../../data-types.md) | Users grouped by departments, or an empty array 
+[`object`](../../../data-types.md) | Users grouped by departments, or an empty array.
 
 The structure of the object is described in detail [below](#user-in-group) ||
 || **woUserInGroup**
@@ -619,13 +645,19 @@ The structure of the object is described in detail [below](#chat) ||
 
 The structure of the object is described in detail [below](#user-block-chat) ||
 || **userInChat**
-[`object`](../../../data-types.md) | Composition of chat participants or an empty array. 
+[`object`](../../../data-types.md) | Composition of chat participants or an empty array.
 
 The structure of the chat participants is described in detail [below](#user-in-chat) ||
 || **files**
 [`object`](../../../data-types.md) | Files associated with messages, or an empty array.
 
 The structure of the files object is described in detail [below](#files) ||
+|| **nextId**
+[`integer`](../../../data-types.md) | Identifier of the oldest message on the page. Pass it in `LAST_ID` to retrieve the next page. The value is `null` if there are no more pages ||
+|| **nextDate**
+[`integer`](../../../data-types.md) | Date of the `nextId` message as a Unix timestamp. Pass it in `LAST_DATE`. The value is `null` if there are no more pages ||
+|| **hasNextPage**
+[`boolean`](../../../data-types.md) | `true` if there are older messages and the next page needs to be requested ||
 |#
 
 ### Message Object {#message}
@@ -760,7 +792,7 @@ The structure of the department object is described in detail [below](#group-ite
 || **\<chatId\>**
 [`object`](../../../data-types.md) | Chat data.
 
-The structure of the department object is described in detail [below](#chat-item) ||
+The structure of the chat object is described in detail [below](#chat-item) ||
 |#
 
 ### Chat Item Object {#chat-item}
@@ -816,7 +848,7 @@ The structure of the department object is described in detail [below](#chat-item
 || **Name**
 `type` | **Description** ||
 || **\<chatId\>**
-[`object`](../../../data-types.md) | Object with flags for blocking users in the chat: key — user identifier, value — `true` or `false` || ||
+[`object`](../../../data-types.md) | Object with flags for blocking users in the chat: key — user identifier, value — `true` or `false` ||
 |#
 
 ### User In Chat Object {#user-in-chat}
@@ -834,7 +866,7 @@ The structure of the department object is described in detail [below](#chat-item
 || **Name**
 `type` | **Description** ||
 || **\<fileId\>**
-[`object`](../../../data-types.md) | File data. 
+[`object`](../../../data-types.md) | File data.
 
 The structure of the object is described in detail [below](#file-item) ||
 |#
@@ -877,13 +909,13 @@ The structure of the object is described in detail [below](#file-item) ||
 || **viewerattrs**
 [`object`](../../../data-types.md) | Viewing parameters of the file in the interface ||
 || **mediaurl**
-[`string`](../../../data-types.md) | URL of the media file ||
+[`object`](../../../data-types.md) | Links to image previews of different sizes ||
 || **istranscribable**
 [`boolean`](../../../data-types.md) | Flag indicating the availability of file transcription ||
 || **isvideonote**
-[`boolean`](../../../data-types.md) | Flag indicating a video note ||
+[`boolean`](../../../data-types.md) | Flag indicating a video message ||
 || **isvoicenote**
-[`boolean`](../../../data-types.md) | Flag indicating a voice note ||
+[`boolean`](../../../data-types.md) | Flag indicating a voice message ||
 |#
 
 ## Error Handling
@@ -902,10 +934,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MISSING_REQUIRED_PARAM` | Session ID or Chat ID must be provided | `SESSION_ID` and `CHAT_ID` are not provided ||
-|| `INVALID_SESSION_ID` | Unable to determine session ID from provided parameters | Unable to determine session from the provided parameters ||
-|| `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | Insufficient rights to view history, session not found or unavailable ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MISSING_REQUIRED_PARAM` | Session ID or Chat ID must be provided | `SESSION_ID` and `CHAT_ID` are not provided ||
+|| `400` | `INVALID_SESSION_ID` | Unable to determine session ID from provided parameters | `SESSION_ID` is not a number, or the `CHAT_ID` chat has no sessions ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The session is not found, or the user does not have permission to view its history ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

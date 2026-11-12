@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user. The method processes only dialogs in which the current user is assigned as the operator
 
-The method `imopenlines.session.mode.pinAll` pins all available active dialogs to the current operator.
+The method `imopenlines.session.mode.pinAll` pins all of the current operator's unpinned dialogs in progress to the operator.
 
 ## Method Parameters
 
@@ -229,7 +229,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer[]`](../../../data-types.md) | Array of session IDs that were successfully pinned ||
+[`integer[]`](../../../data-types.md) | Array of IDs of the dialogs that were successfully pinned. If there are no matching dialogs, the method returns an empty array `[]`.
+
+The method takes dialogs in which the current user is assigned as the operator and which the user has already taken into work. Dialogs that are waiting for a client response or are closed are not pinned ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

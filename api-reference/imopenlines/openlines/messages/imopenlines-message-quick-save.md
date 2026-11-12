@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator or open line operator
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this line. The user also needs access to the line's quick answers list
 
-The method `imopenlines.message.quick.save` saves a message from the open line chat to the list of quick answers.
+The method `imopenlines.message.quick.save` saves a message from the open line chat to the quick answers list of this line.
+
+If the message is already saved to quick answers, the method updates the answer text. If the list already contains an answer with the same text, the method does not create a duplicate.
 
 ## Method Parameters
 
@@ -21,13 +23,13 @@ The method `imopenlines.message.quick.save` saves a message from the open line c
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat from which the message needs to be saved.
+[`integer`](../../../data-types.md) | Identifier of the open line chat from which the message needs to be saved. The method saves the answer to the quick answers list of this chat's line.
 
 The chat identifier can be obtained using the [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) or [imopenlines.session.open](../sessions/imopenlines-session-open.md) methods. ||
 || **MESSAGE_ID***
-[`integer`](../../../data-types.md) | Identifier of the message to be added to quick answers.
+[`integer`](../../../data-types.md) | Identifier of the message to be added to quick answers. The user must have access to the chat that contains the message.
 
 The message identifier can be obtained using the [imopenlines.session.history.get](../sessions/imopenlines-session-history-get.md) method. ||
 |#
@@ -42,20 +44,20 @@ The message identifier can be obtained using the [imopenlines.session.history.ge
 
     ```bash
     curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CHAT_ID":1331,"MESSAGE_ID":83507}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.message.quick.save
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":1331,"MESSAGE_ID":83507}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.message.quick.save
     ```
 
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CHAT_ID":1331,"MESSAGE_ID":83507,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/imopenlines.message.quick.save
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":1331,"MESSAGE_ID":83507,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.message.quick.save
     ```
 
 - JS (TS)
@@ -257,13 +259,13 @@ HTTP status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Contains `true` when successfully saved to quick answers. ||
+[`boolean`](../../../data-types.md) | Contains `true` if the message is saved to quick answers ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -275,20 +277,22 @@ HTTP status: **400**
 ```json
 {
     "error": "CANT_SAVE_QUICK_ANSWER",
-    "error_description": "Error saving quick answer"
+    "error_description": "Error saving canned response"
 }
 ```
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
+The `error_description` text is returned in the language of the Bitrix24 account.
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `CHAT_ID` | Invalid chat identifier provided ||
-|| `CHAT_TYPE` | The specified chat is not an open line ||
-|| `CANT_SAVE_QUICK_ANSWER` | Error saving quick answer ||
-|| `ACCESS_DENIED` | Insufficient rights to open the specified chat ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CANT_SAVE_QUICK_ANSWER` | Error saving canned response | `MESSAGE_ID` is not provided, the message is not found, the user does not have access to the quick answers list, or the answer could not be saved ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not provided, is not a number, or the chat is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The `CHAT_ID` chat or the chat of the `MESSAGE_ID` message does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The user does not have access to the open line chat ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

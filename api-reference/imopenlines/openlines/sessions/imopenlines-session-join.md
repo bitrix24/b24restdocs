@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialogue permissions
+> Who can execute the method: a member of the Open Channels chat or a user with the "Join conversation" permission for this channel
 
-The method `imopenlines.session.join` adds the current operator to an active dialogue in the Open Channels.
+The method `imopenlines.session.join` adds the current user to an Open Channels chat. A system message about the user joining appears in the chat.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `imopenlines.session.join` adds the current operator to an active dia
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the Open Channels chat. 
+[`integer`](../../../data-types.md) | Identifier of the Open Channels chat.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 |#
@@ -253,7 +253,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the operator successfully joined the dialogue ||
+[`boolean`](../../../data-types.md) | Returns `true` if the access check passes. The method also returns `true` if the user is already a member of the chat ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -275,10 +275,10 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The specified chat identifier is incorrect | Empty or invalid `CHAT_ID` ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not passed, `CHAT_ID` is invalid, or a chat with this ID is not found ||
 || `400` | `CHAT_TYPE` | The specified chat is not an Open Channel | The specified chat does not belong to Open Channels ||
 || `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have access to the dialogue ||
-|| `400` | `USER_ID` | The specified user identifier is incorrect | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `USER_ID` | User ID is invalid. | The user on behalf of whom the method is executed is not defined ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
