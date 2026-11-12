@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `profile` method retrieves basic information about the current user. Unlike [user.current](../../user/user-current.md), it does not require a separate scope.
+The `profile` method retrieves basic information about the current user. For a webhook call, this is the user who created the webhook. With an OAuth token, this is the user for whom the token was issued. When called from an application frame, this is the user who opened the application. Unlike [user.current](../../user/user-current.md), `profile` does not require a separate scope.
+
+When an application is opened, Bitrix24 passes `AUTH_ID` and `DOMAIN` to it in a POST request. To call the method directly, pass `AUTH_ID` in the `auth` parameter. When using BX24.js or B24Frame, the token is supplied automatically.
+
+Select the method based on your task:
+
+- the current user's extended profile — [user.current](../../user/user-current.md)
+- another user's profile by ID — [user.get](../../user/user-get.md)
+- search for other users by profile fields — [user.search](../../user/user-search.md)
+
+For the `user.*` methods, the fields returned and available for filtering depend on the [user scope version](../../user/user-scope.md). E-mail and personal and work phone numbers are returned only with the `user_basic` or `user` scope. With `user_brief`, these fields are omitted, and filtering by e-mail is ignored.
 
 ## Method Parameters
 
@@ -117,6 +127,12 @@ No parameters.
           }
 
           const result = response.getData().result
+          // An inactive user gets an empty array instead of an object
+          if (Array.isArray(result)) {
+            console.info('User is inactive')
+            return
+          }
+
           console.info(result.ID, result.NAME, result.LAST_NAME, result.ADMIN)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -241,7 +257,7 @@ HTTP Status: **200**
 
 The structure is described [below](#profile).
 
-If the user is inactive, an empty array `[]` is returned instead of an object ||
+If the user is inactive, an empty array `[]` is returned instead of an object. Check the type of `result` before accessing its fields to avoid treating the array as an object ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -295,3 +311,5 @@ HTTP Status: **403**
 - [{#T}](./user-admin.md)
 - [{#T}](./user-access.md)
 - [{#T}](../../user/user-current.md)
+- [{#T}](../../user/user-get.md)
+- [{#T}](../../user/user-search.md)
