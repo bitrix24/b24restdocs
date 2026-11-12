@@ -15,8 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The method `sign.b2e.company.provider.list` returns a list of signature providers for the selected company.
 
-The method works only in the context of application authorization [application](../../settings/app-installation/index.md).
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -57,6 +55,16 @@ You must provide either the `companyUuid` or `companyCrmId` parameter.
 {% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"companyCrmId":12,"limit":2,"offset":0}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sign.b2e.company.provider.list
+    ```
 
 - cURL (OAuth)
 
@@ -373,7 +381,6 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
 || `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have permission to create documents in e-Signature for HR. Also occurs if `companyUuid` is passed but the `humanresources.hcmlink` scope is not connected ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
 || `400` | Empty value | Parameter 'companyUuid' or 'companyCrmId' is required | Neither `companyUuid` nor `companyCrmId` was passed ||
 || `400` | `510` | Company was not found. | The company was not found by `companyUuid` or `companyCrmId`. The method also returns this error if a non-identifier value, such as an array, is passed in `companyCrmId` ||
 || `400` | `0` | Error while autoregistering providers | Failed to register the company's providers in the signing service. Check the company details in CRM: the company must have a tax ID ||

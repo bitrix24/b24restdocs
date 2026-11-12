@@ -403,7 +403,9 @@ The following is an excerpt from the response. The remaining fields of the `resu
 || **anchor**
 [`string`](../../../data-types.md) | Local anchor of the block. By default, the new block receives an anchor in the form `b<ID>`, for example `b28597` ||
 || **php**
-[`boolean`](../../../data-types.md) | Indicator that there is PHP code in the block's content ||
+[`boolean`](../../../data-types.md) | Indicator that there is PHP code in the block's content.
+
+Bitrix24 does not execute this code: the editor shows a warning in place of the block, and the published page does not display the block ||
 || **designed**
 [`boolean`](../../../data-types.md) | Indicator of a designed block ||
 || **repoId**

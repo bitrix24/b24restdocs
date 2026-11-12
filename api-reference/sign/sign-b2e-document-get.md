@@ -15,8 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The method `sign.b2e.document.get` returns information about the document and signing participants.
 
-The method works only in the context of application authorization [application](../../settings/app-installation/index.md).
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -39,6 +37,16 @@ If the language is not supported, names are returned in English. Defaults to `en
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"uid":"b6f5f1f1-9d20-4b6b-ae0f-2f0a8a0c2b3c"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sign.b2e.document.get
+    ```
 
 - cURL (OAuth)
 
@@ -399,7 +407,6 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
 || `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have the required permission in e-Signature for HR ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
 || `400` | `INTERNAL_ERROR` | Internal error | Error generating the response ||
 || `400` | Empty value | Document UID is required. | The `uid` parameter was not passed or is an empty string ||
 || `500` | `INTERNAL_SERVER_ERROR` | Internal server error | An array or object was passed in `uid`. Pass `uid` as a string ||
