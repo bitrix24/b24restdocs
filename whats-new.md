@@ -2,6 +2,10 @@
 
 ## 2026
 
+### November 12, 2026
+
+- Added the method [voximplant.user.deactivatePhone](./api-reference/telephony/voximplant/users/voximplant-user-deactivate-phone.md): clears the employee's SIP device indicator
+
 ### November 5, 2026
 
 - Added CRM methods in REST 3.0: items, fields, pipelines and stages, product items, requisites, addresses, activities, card views, and directories. The equivalents of the old methods are collected on the [Migrating to the New CRM Methods](./api-reference/crm/migration.md) page, and all groups are listed in the [CRM overview](./api-reference/crm/index.md)

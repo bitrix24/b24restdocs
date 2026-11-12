@@ -12,13 +12,13 @@ Choose a tool for developing with an AI agent:
 Users' SIP settings define the parameters for connecting an employee to a SIP phone or softphone. The `voximplant.user.*` methods allow you to:
 
 - view an employee's current configuration
-- enable the SIP device indicator
+- enable or disable the SIP device indicator
 
 The [voximplant.user.get](./voximplant-user-get.md) method returns the main parameters for connections and calls: the default line, device status, server, credentials, and internal number.
 
 ## Access Permissions {#permissions}
 
-Both methods check the `User Settings — Modify` permission. Although [voximplant.user.get](./voximplant-user-get.md) only reads settings, this permission is also required to call it.
+All methods check the `User Settings — Modify` permission. Although [voximplant.user.get](./voximplant-user-get.md) only reads settings, this permission is also required to call it.
 
 The permission level determines which users can be managed:
 
@@ -26,7 +26,7 @@ The permission level determines which users can be managed:
 - `Personal and department` — the current user and employees in their department
 - `Any` — all users
 
-[voximplant.user.get](./voximplant-user-get.md) returns the settings of accessible users. When called from an application, the method also requires confirmation from a Bitrix24 administrator. [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) activates a SIP device only for a user who is available under the configured permission level.
+[voximplant.user.get](./voximplant-user-get.md) returns the settings of accessible users. When called from an application, the method also requires confirmation from a Bitrix24 administrator. [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) and [voximplant.user.deactivatePhone](./voximplant-user-deactivate-phone.md) enable and disable a SIP device only for a user who is available under the configured permission level.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -46,7 +46,7 @@ The permission level determines which users can be managed:
 
 1. Obtain the `USER_ID` of the employee via [user.get](../../../user/user-get.md)
 2. Check the current SIP settings using the [voximplant.user.get](./voximplant-user-get.md) method
-3. Enable the SIP device using the [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) method
+3. Enable the SIP device using the [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) method or disable it using the [voximplant.user.deactivatePhone](./voximplant-user-deactivate-phone.md) method
 
 ## Overview of Methods {#all-methods}
 
@@ -58,4 +58,5 @@ The permission level determines which users can be managed:
 || **Method** | **Description** ||
 || [voximplant.user.get](./voximplant-user-get.md) | Returns user settings ||
 || [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) | Sets the SIP device indicator for the employee ||
+|| [voximplant.user.deactivatePhone](./voximplant-user-deactivate-phone.md) | Clears the SIP device indicator for the employee ||
 |#

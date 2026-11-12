@@ -25,7 +25,7 @@ Built-in telephony and the SIP connector allow you to initiate calls, receive ca
 || React to the start and end of calls | [Events](./events/index.md) ||
 || Manage SIP connections for the application | [Managing SIP Connections](./sip/index.md) ||
 || Manage default outgoing lines | [Managing Lines](./lines/index.md) ||
-|| Retrieve user SIP settings and enable SIP devices | [Managing Users](./users/index.md) ||
+|| Retrieve user SIP settings, enable and disable SIP devices | [Managing Users](./users/index.md) ||
 |#
 
 ## Interaction with Other Objects
@@ -63,7 +63,7 @@ Calling [voximplant.user.get](./users/voximplant-user-get.md) from an applicatio
 2. For an outgoing call, use [voximplant.callback.start](./voximplant-callback-start.md), [voximplant.infocall.startwithsound](./voximplant-infocall-start-with-sound.md), or [voximplant.infocall.startwithtext](./voximplant-infocall-start-with-text.md).
 3. For a SIP scenario, create a connection using [voximplant.sip.add](./sip/voximplant-sip-add.md), then check it using [voximplant.sip.get](./sip/voximplant-sip-get.md) and [voximplant.sip.status](./sip/voximplant-sip-status.md).
 4. Assign an outgoing line using [voximplant.line.outgoing.set](./lines/voximplant-line-outgoing-set.md) or [voximplant.line.outgoing.sip.set](./lines/voximplant-line-outgoing-sip-set.md). After [voximplant.line.outgoing.set](./lines/voximplant-line-outgoing-set.md), verify the actual line using the [voximplant.line.outgoing.get](./lines/voximplant-line-outgoing-get.md) method.
-5. To work with employees' SIP settings, use [voximplant.user.get](./users/voximplant-user-get.md) and [voximplant.user.activatePhone](./users/voximplant-user-activate-phone.md).
+5. To work with employees' SIP settings, use [voximplant.user.get](./users/voximplant-user-get.md), [voximplant.user.activatePhone](./users/voximplant-user-activate-phone.md), and [voximplant.user.deactivatePhone](./users/voximplant-user-deactivate-phone.md).
 6. Subscribe to events in the [Events](./events/index.md) section if you need to handle the call lifecycle.
 
 ## Overview of Methods and Events {#all-methods}
@@ -127,4 +127,5 @@ Calling [voximplant.user.get](./users/voximplant-user-get.md) from an applicatio
 || **Method** | **Description** ||
 || [voximplant.user.get](./users/voximplant-user-get.md) | Returns user settings ||
 || [voximplant.user.activatePhone](./users/voximplant-user-activate-phone.md) | Sets the employee's SIP device presence flag ||
+|| [voximplant.user.deactivatePhone](./users/voximplant-user-deactivate-phone.md) | Clears the employee's SIP device presence flag ||
 |#

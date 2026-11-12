@@ -350,4 +350,5 @@ HTTP Status: **400**, **401**, **403**
 
 - [{#T}](./index.md)
 - [{#T}](./voximplant-user-activate-phone.md)
+- [{#T}](./voximplant-user-deactivate-phone.md)
 - [{#T}](../../../scopes/confirmation.md)

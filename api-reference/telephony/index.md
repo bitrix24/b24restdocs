@@ -57,7 +57,7 @@ The REST API supports three telephony scenarios:
 2. Check the connection using the [voximplant.sip.get](./voximplant/sip/voximplant-sip-get.md) and [voximplant.sip.status](./voximplant/sip/voximplant-sip-status.md) methods.
 3. Obtain a list of available lines using the [voximplant.line.get](./voximplant/lines/voximplant-line-get.md) method.
 4. Set the default outgoing line using [voximplant.line.outgoing.set](./voximplant/lines/voximplant-line-outgoing-set.md) or [voximplant.line.outgoing.sip.set](./voximplant/lines/voximplant-line-outgoing-sip-set.md).
-5. For employees, obtain SIP settings using the [voximplant.user.get](./voximplant/users/voximplant-user-get.md) method and, if necessary, activate the SIP device using [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md).
+5. For employees, obtain SIP settings using the [voximplant.user.get](./voximplant/users/voximplant-user-get.md) method and, if necessary, activate the SIP device using [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md) or deactivate it using [voximplant.user.deactivatePhone](./voximplant/users/voximplant-user-deactivate-phone.md).
 6. Subscribe to events [OnVoximplantCallInit](./voximplant/events/on-voximplant-call-init.md), [OnVoximplantCallStart](./voximplant/events/on-voximplant-call-start.md), [OnVoximplantCallEnd](./voximplant/events/on-voximplant-call-end.md) if you need to handle the call lifecycle.
 
 ## Widgets
@@ -168,6 +168,7 @@ You can embed an application into the call record and display the operator inter
 || **Method** | **Description** ||
 || [voximplant.user.get](./voximplant/users/voximplant-user-get.md) | Returns user settings ||
 || [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md) | Sets the employee's SIP device presence flag ||
+|| [voximplant.user.deactivatePhone](./voximplant/users/voximplant-user-deactivate-phone.md) | Clears the employee's SIP device presence flag ||
 |#
 
 ### Call Follow-ups in REST 3.0
