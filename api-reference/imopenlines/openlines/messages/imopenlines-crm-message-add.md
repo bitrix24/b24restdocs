@@ -1,4 +1,4 @@
-# Send a Message to Open Channel imopenlines.crm.message.add
+# Send a Message to a CRM Item Chat imopenlines.crm.message.add
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access to the CRM item linked to the chat
 
-The method `imopenlines.crm.message.add` sends a message on behalf of an employee or bot in a chat linked to a CRM entity.
+The method `imopenlines.crm.message.add` sends a message on behalf of an employee or bot to an open channel chat linked to a CRM item. The message is marked "Auto generated message".
 
 ## Method Parameters
 
@@ -24,11 +24,12 @@ The method `imopenlines.crm.message.add` sends a message on behalf of an employe
 `type` | **Description** ||
 || **CRM_ENTITY_TYPE***
 [`string`](../../../data-types.md) | Type of the CRM entity:
-- lead — lead
-- deal — deal
-- company — company
-- contact — contact
- ||
+- `lead` — lead
+- `deal` — deal
+- `company` — company
+- `contact` — contact
+
+The value is case-insensitive ||
 || **CRM_ENTITY***
 [`integer`](../../../data-types.md) | Identifier of the CRM entity linked to the chat.
 
@@ -40,7 +41,7 @@ The user identifier can be obtained using the [user.get](../../../user/user-get.
 
 The list of chatbots can be obtained using the [imbot.bot.list](../../../chat-bots/outdated/bots/imbot-bot-list.md) method ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open channel chat linked to the CRM entity.
+[`integer`](../../../data-types.md) | Identifier of the open channel chat linked to the CRM entity. The chat must have an ongoing dialog: an operator has taken it, and the dialog is neither closed nor waiting for the client's reply.
 
 You can obtain the chat ID using the method [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) ||
 || **MESSAGE***
@@ -286,15 +287,15 @@ HTTP status: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+03:00",
-        "date_finish": "2024-10-11T10:00:00+03:00",
+        "date_start": "2024-10-11T10:00:00+01:00",
+        "date_finish": "2024-10-11T10:00:00+01:00",
         "operating_reset_at":1762349466,
         "operating": 0
     }
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -302,7 +303,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created message in the chat ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time  ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -321,15 +322,19 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | Chat is not linked to the CRM ||
-|| `CANCELED` | You cannot send messages to the specified chat | The user does not have access to the chat ||
-|| `ACCESS_DENIED` | Access denied! User don't have access to this entity | User does not have access to the CRM object ||
-|| `ERROR_ARGUMENT` | Argument `CRM_ENTITY_TYPE` is null or empty | Invalid required parameter `CRM_ENTITY_TYPE` ||
-|| `ERROR_ARGUMENT` | Argument `CRM_ENTITY` is null or empty | Invalid required parameter `CRM_ENTITY` ||
-|| `ERROR_ARGUMENT` | Argument `USER_ID` is null or empty | Invalid required parameter `USER_ID` ||
-|| `ERROR_ARGUMENT` | Argument `CHAT_ID` is null or empty | Invalid required parameter `CHAT_ID` ||
-|| `ERROR_ARGUMENT` | Argument `MESSAGE` is null or empty | Invalid required parameter `MESSAGE` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | The chat is not linked to the CRM object or has no active dialog ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY_TYPE' is null or empty | The required parameter `CRM_ENTITY_TYPE` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY' is null or empty | The required parameter `CRM_ENTITY` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is provided in an invalid format ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'USER_ID' is null or empty | The required parameter `USER_ID` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'USER_ID' has an invalid type | The `USER_ID` parameter is provided in an invalid format ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CHAT_ID' is null or empty | The required parameter `CHAT_ID` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CHAT_ID' has an invalid type | The `CHAT_ID` parameter is provided in an invalid format ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'MESSAGE' is null or empty | The required parameter `MESSAGE` is not provided ||
+|| `400` | `MESSAGE_ADD_ERROR` | Message isn't added | The message was not sent, for example, the author `USER_ID` cannot write to this chat ||
+|| `403` | `ACCESS_DENIED` | Access denied! You dont have access to this action | The current user does not have read permission for the CRM object, or an unknown type is passed in `CRM_ENTITY_TYPE` ||
+|| `403` | `ACCESS_DENIED` | Access denied! User dont have access to this entity | The user `USER_ID` does not have read permission for the CRM object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

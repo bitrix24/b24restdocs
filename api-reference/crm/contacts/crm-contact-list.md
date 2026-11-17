@@ -19,7 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.contact.list` returns a list of contacts based on a filter. It is an implementation of the list method for contacts.
+The method `crm.contact.list` returns a list of contacts based on a filter.
+
+The method selects only contacts from the general category. A filter by `CATEGORY_ID` does not change this behavior. Retrieve contacts from other categories, such as "Vendor Contacts", using [crm.item.list](../universal/crm-item-list.md) with `entityTypeId=3` and `categoryId`.
 
 To retrieve a list of companies associated with a contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
@@ -29,22 +31,22 @@ To retrieve a list of companies associated with a contact, use the method [`crm.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that should be populated for the contacts in the selection.
+[`string[]`](../../data-types.md) | A list of contact fields to return in the response. The `ID` field is returned even if it is not included in the list.
 
-You can use masks in the selection:
-- `'*'` — to select all fields (excluding custom and multiple fields)
-- `'UF_*'` — to select all custom fields (excluding multiple fields)
+Masks:
+- `'*'` — all fields except custom and multiple fields
+- `'UF_*'` — all custom fields, including multiple fields
 
-There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list (`PHONE`, `EMAIL`, etc.).
+To select multiple contact details, specify the required fields in the selection list (`PHONE`, `EMAIL`, etc.).
 
 You can find the list of available fields for selection using the method [`crm.contact.fields`](crm-contact-fields.md).
 
-By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
+By default, standard fields are returned. To retrieve custom fields, specify them or the `UF_*` mask
 ||
 || **filter**
 [`object`](../../data-types.md) | An object in the format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -54,7 +56,7 @@ By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ```
 
 where:
-- `field_n` — the name of the field by which the selection of elements will be filtered
+- `field_n` — the name of the field by which contacts are filtered
 - `value_n` — the filter value
 
 You can add a prefix to the keys `field_n` to specify the filter operation.
@@ -71,11 +73,15 @@ Possible prefix values:
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
+- `*` — word search. The value is split into words, and each word must occur in the field as a substring, in any order. For non-string fields, it works as `=`
+- `*=` — same as `*`
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The fields Phone (`PHONE`), Email (`EMAIL`), Website (`WEB`), Messengers (`IM`), Links (`LINK`) are multiple. Filters for these fields only work on exact matches.
+In the filter, the `LAST_COMMUNICATION_TIME` field accepts a date in ISO 8601 format, for example, `2026-01-01T00:00:00+01:00`.
+
+A filter by the multiple fields `PHONE`, `EMAIL`, `WEB`, and `IM` without a prefix searches for values that start with the provided string. A filter by `LINK` is ignored.
 
 Additionally, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Salutation (`HONORIFIC`), etc.
 
@@ -86,7 +92,7 @@ The `logic` key in the filter is not supported. To use complex logic in the filt
 || **order**
 [`object`](../../data-types.md) | An object in the format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -95,10 +101,12 @@ The `logic` key in the filter is not supported. To use complex logic in the filt
 }
 ```
 where:
-- `field_n` — the name of the field by which the selection of contacts will be sorted
+- `field_n` — the name of the field by which contacts are sorted
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending order
     - `DESC` — descending order
+
+Multiple contact details, such as `EMAIL` and `PHONE`, are not supported for sorting.
 
 You can find the list of available fields for sorting using the method [`crm.contact.fields`](crm-contact-fields.md)
 ||
@@ -122,24 +130,24 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
 {% include [Examples Note](../../../_includes/examples.md) %}
 
 Get a list of contacts where:
-1. the source is CRM Form
+1. the source is a CRM form
 2. first name and last name are not empty
-3. first name or last name starts with "I"
-4. they participate in export
-5. e-mail equals 'special-for@example.com'
-6. the responsible ID is either 1 or 6
-7. created less than 6 months ago
+3. first name and last name start with "K"
+4. the export flag is `Y`
+5. e-mail starts with `special-for@example.com`
+6. the responsible user is user 1 or 6
+7. the creation date is no earlier than six months ago
 
-Set the order of the selection: first name and last name in ascending order.
+Sort by last name and first name in ascending order.
 
 For clarity, select only the necessary fields:
-- Contact ID
-- First Name
-- Last Name
-- E-mail
-- Participation in export
-- Responsible
-- Creation Date
+- contact ID
+- first name
+- last name
+- e-mail
+- whether the contact participates in export
+- responsible user
+- creation date
 
 {% list tabs %}
 
@@ -149,7 +157,7 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FILTER":{"SOURCE_ID":"CRM_FORM","!=NAME":"","!=LAST_NAME":"","=%NAME":"I%","=%LAST_NAME":"I%","EMAIL":"special-for@example.com","@ASSIGNED_BY_ID":[1,6],"IMPORT":"Y",">=DATE_CREATE":"**put_six_month_ago_date_here**"},"ORDER":{"LAST_NAME":"ASC","NAME":"ASC"},"SELECT":["ID","NAME","LAST_NAME","EMAIL","EXPORT","ASSIGNED_BY_ID","DATE_CREATE"]}' \
+    -d '{"FILTER":{"SOURCE_ID":"WEBFORM","!=NAME":"","!=LAST_NAME":"","=%NAME":"K%","=%LAST_NAME":"K%","EMAIL":"special-for@example.com","@ASSIGNED_BY_ID":[1,6],"EXPORT":"Y",">=DATE_CREATE":"**put_six_month_ago_date_here**"},"ORDER":{"LAST_NAME":"ASC","NAME":"ASC"},"SELECT":["ID","NAME","LAST_NAME","EMAIL","EXPORT","ASSIGNED_BY_ID","DATE_CREATE"]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.list
     ```
 
@@ -159,7 +167,7 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FILTER":{"SOURCE_ID":"CRM_FORM","!=NAME":"","!=LAST_NAME":"","=%NAME":"I%","=%LAST_NAME":"I%","EMAIL":"special-for@example.com","@ASSIGNED_BY_ID":[1,6],"IMPORT":"Y",">=DATE_CREATE":"**put_six_month_ago_date_here**"},"ORDER":{"LAST_NAME":"ASC","NAME":"ASC"},"SELECT":["ID","NAME","LAST_NAME","EMAIL","EXPORT","ASSIGNED_BY_ID","DATE_CREATE"],"auth":"**put_access_token_here**"}' \
+    -d '{"FILTER":{"SOURCE_ID":"WEBFORM","!=NAME":"","!=LAST_NAME":"","=%NAME":"K%","=%LAST_NAME":"K%","EMAIL":"special-for@example.com","@ASSIGNED_BY_ID":[1,6],"EXPORT":"Y",">=DATE_CREATE":"**put_six_month_ago_date_here**"},"ORDER":{"LAST_NAME":"ASC","NAME":"ASC"},"SELECT":["ID","NAME","LAST_NAME","EMAIL","EXPORT","ASSIGNED_BY_ID","DATE_CREATE"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.list
     ```
 
@@ -204,14 +212,14 @@ For clarity, select only the necessary fields:
         method: 'crm.contact.list',
         params: {
           filter: {
-            SOURCE_ID: 'CRM_FORM',
+            SOURCE_ID: 'WEBFORM',
             '!=NAME': '',
             '!=LAST_NAME': '',
-            '=%NAME': 'J%',
-            '=%LAST_NAME': 'J%',
+            '=%NAME': 'K%',
+            '=%LAST_NAME': 'K%',
             EMAIL: 'special-for@example.com',
             '@ASSIGNED_BY_ID': [1, 6],
-            IMPORT: 'Y',
+            EXPORT: 'Y',
             '>=DATE_CREATE': sixMonthAgo.toISOString(),
           },
           order: {
@@ -268,14 +276,14 @@ For clarity, select only the necessary fields:
             method: 'crm.contact.list',
             params: {
               filter: {
-                SOURCE_ID: 'CRM_FORM',
+                SOURCE_ID: 'WEBFORM',
                 '!=NAME': '',
                 '!=LAST_NAME': '',
-                '=%NAME': 'J%',
-                '=%LAST_NAME': 'J%',
+                '=%NAME': 'K%',
+                '=%LAST_NAME': 'K%',
                 EMAIL: 'special-for@example.com',
                 '@ASSIGNED_BY_ID': [1, 6],
-                IMPORT: 'Y',
+                EXPORT: 'Y',
                 '>=DATE_CREATE': sixMonthAgo.toISOString(),
               },
               order: {
@@ -319,7 +327,7 @@ For clarity, select only the necessary fields:
     ```php
     try {
         $sixMonthAgo = new DateTime();
-        $sixMonthAgo->setDate((new DateTime())->getMonth() - 6);
+        $sixMonthAgo->modify('-6 months');
     
         $response = $b24Service
             ->core
@@ -327,14 +335,14 @@ For clarity, select only the necessary fields:
                 'crm.contact.list',
                 [
                     'filter' => [
-                        'SOURCE_ID'      => 'CRM_FORM',
+                        'SOURCE_ID'      => 'WEBFORM',
                         '!=NAME'         => '',
                         '!=LAST_NAME'    => '',
-                        '=%NAME'         => 'I%',
-                        '=%LAST_NAME'    => 'I%',
+                        '=%NAME'         => 'K%',
+                        '=%LAST_NAME'    => 'K%',
                         'EMAIL'          => 'special-for@example.com',
                         '@ASSIGNED_BY_ID' => [1, 6],
-                        'IMPORT'         => 'Y',
+                        'EXPORT'         => 'Y',
                         '>=DATE_CREATE'  => $sixMonthAgo->format('Y-m-d\TH:i:s'),
                     ],
                     'order'  => [
@@ -379,14 +387,14 @@ For clarity, select only the necessary fields:
         'crm.contact.list',
         {
             filter: {
-                "SOURCE_ID": "CRM_FORM",
+                "SOURCE_ID": "WEBFORM",
                 "!=NAME": "",
                 "!=LAST_NAME": "",
-                "=%NAME": "I%",
-                "=%LAST_NAME": "I%",
+                "=%NAME": "K%",
+                "=%LAST_NAME": "K%",
                 "EMAIL": "special-for@example.com",
                 "@ASSIGNED_BY_ID": [1, 6],
-                "IMPORT": "Y",
+                "EXPORT": "Y",
                 ">=DATE_CREATE": sixMonthAgo.toISOString(),
             },
             order: {
@@ -424,14 +432,14 @@ For clarity, select only the necessary fields:
         'crm.contact.list',
         [
             'FILTER' => [
-                'SOURCE_ID' => 'CRM_FORM',
+                'SOURCE_ID' => 'WEBFORM',
                 '!=NAME' => '',
                 '!=LAST_NAME' => '',
-                '=%NAME' => 'I%',
-                '=%LAST_NAME' => 'I%',
+                '=%NAME' => 'K%',
+                '=%LAST_NAME' => 'K%',
                 'EMAIL' => 'special-for@example.com',
                 '@ASSIGNED_BY_ID' => [1, 6],
-                'IMPORT' => 'Y',
+                'EXPORT' => 'Y',
                 '>=DATE_CREATE' => $sixMonthAgo->format(DateTime::ATOM),
             ],
             'ORDER' => [
@@ -461,14 +469,14 @@ For clarity, select only the necessary fields:
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.contact.list", b24.Params{
     	"filter": b24.Params{
-    		"SOURCE_ID":       "CRM_FORM",
-    		"!=NAME":          "",
-    		"!=LAST_NAME":     "",
-    		"=%NAME":          "K%",
-    		"=%LAST_NAME":     "W%",
-    		"EMAIL":           "special-for@example.com",
-    		"@ASSIGNED_BY_ID": []int{1, 6},
-    		"IMPORT":          "Y",
+		"SOURCE_ID":       "WEBFORM",
+		"!=NAME":          "",
+		"!=LAST_NAME":     "",
+		"=%NAME":          "K%",
+		"=%LAST_NAME":     "K%",
+		"EMAIL":           "special-for@example.com",
+		"@ASSIGNED_BY_ID": []int{1, 6},
+		"EXPORT":          "Y",
     		">=DATE_CREATE":   "**put_six_month_ago_date_here**",
     	},
     	"order": b24.Params{
@@ -507,93 +515,31 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
+Example response to a request made on August 16, 2024: the lower bound of `DATE_CREATE` is February 16, 2024.
+
 HTTP Status: **200**
 
 ```json
 {
-	"result": [
-		{
-			"ID": "75",
-			"NAME": "Anastasia",
-			"LAST_NAME": "Ilyina",
-			"EXPORT": "Y",
-			"ASSIGNED_BY_ID": "6",
-			"DATE_CREATE": "2024-02-26T00:00:00+02:00",
-			"EMAIL": [
-				{
-					"ID": "215",
-					"VALUE_TYPE": "WORK",
-					"VALUE": "special-for@example.com",
-					"TYPE_ID": "EMAIL"
-				}
-			]
-		},
-		{
-			"ID": "74",
-			"NAME": "Artem",
-			"LAST_NAME": "Isaev",
-			"EXPORT": "Y",
-			"ASSIGNED_BY_ID": "1",
-			"DATE_CREATE": "2024-08-15T00:00:00+02:00",
-			"EMAIL": [
-				{
-					"ID": "214",
-					"VALUE_TYPE": "WORK",
-					"VALUE": "special-for@example.com",
-					"TYPE_ID": "EMAIL"
-				}
-			]
-		},
-		{
-			"ID": "78",
-			"NAME": "Artem",
-			"LAST_NAME": "Isaev",
-			"EXPORT": "Y",
-			"ASSIGNED_BY_ID": "1",
-			"DATE_CREATE": "2024-08-15T00:00:00+02:00",
-			"EMAIL": [
-				{
-					"ID": "218",
-					"VALUE_TYPE": "WORK",
-					"VALUE": "special-for@example.com",
-					"TYPE_ID": "EMAIL"
-				}
-			]
-		},
-		{
-			"ID": "77",
-			"NAME": "Inna",
-			"LAST_NAME": "Kuznetsova",
-			"EXPORT": "Y",
-			"ASSIGNED_BY_ID": "6",
-			"DATE_CREATE": "2024-07-01T00:00:00+02:00",
-			"EMAIL": [
-				{
-					"ID": "217",
-					"VALUE_TYPE": "WORK",
-					"VALUE": "special-for@example.com",
-					"TYPE_ID": "EMAIL"
-				}
-			]
-		},
-		{
-			"ID": "73",
-			"NAME": "Ivan",
-			"LAST_NAME": "Petrov",
-			"EXPORT": "Y",
-			"ASSIGNED_BY_ID": "1",
-			"DATE_CREATE": "2024-02-20T00:00:00+02:00",
-			"EMAIL": [
-				{
-					"ID": "213",
-					"VALUE_TYPE": "WORK",
-					"VALUE": "special-for@example.com",
-					"TYPE_ID": "EMAIL"
-				}
-			]
-		}
-	],
-	"total": 5,
+    "result": [
+        {
+            "ID": "78",
+            "NAME": "Klaus",
+            "LAST_NAME": "Keller",
+            "EXPORT": "Y",
+            "ASSIGNED_BY_ID": "1",
+            "DATE_CREATE": "2024-08-15T00:00:00+02:00",
+            "EMAIL": [
+                {
+                    "ID": "218",
+                    "VALUE_TYPE": "WORK",
+                    "VALUE": "special-for@example.com",
+                    "TYPE_ID": "EMAIL"
+                }
+            ]
+        }
+    ],
+    "total": 1,
 	"time": {
 		"start": 1723807142.916445,
 		"finish": 1723807143.44846,
@@ -613,13 +559,11 @@ HTTP Status: **200**
 || **result**
 [`contact[]`](./crm-contact-get.md#contact) | The root element of the response. An array containing information about the found contacts.
 
-The fields of an individual contact are configured by the `select` parameter ||
+The `select` parameter defines the contact fields ||
 || **total**
 [`integer`](../../data-types.md) | The total number of contacts found based on the specified conditions ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
-
-The `next` parameter appears in the response if the number of elements matching your request exceeds `50` ||
+[`integer`](../../data-types.md) | Value for `start` in the next request to retrieve the next page. The `next` field is returned if there are more records after the current page ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -640,11 +584,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | The user does not have permission for "Read" contacts ||
-|| Empty value | `Parameter 'order' must be array` | A non-array value was passed to the `order` parameter ||
-|| Empty value | `Parameter 'filter' must be array` | A non-array value was passed to the `filter` parameter ||
-|| Empty value | `Failed to get list. General error` | An unknown error occurred ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission for "Read" contacts ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | A non-array value was passed to the `order` parameter ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | A non-array value was passed to the `filter` parameter ||
+|| `400` | Empty value | `Failed to get list. General error.` | An unknown error occurred ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

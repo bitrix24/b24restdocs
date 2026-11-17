@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to Scrum
+> Who can execute the method: a user with permission to view the task
 
 The `tasks.api.scrum.task.get` method retrieves the Scrum task field values by its identifier `id`.
 
@@ -327,8 +327,8 @@ HTTP Status: **200**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Task id not found | The task identifier is `0` ||
-|| `0` | Task not found | The task was not found among Scrum tasks ||
-|| `0` | Access denied | The user does not have access to the task or Scrum ||
+|| `0` | Task not found | The task was not found among Scrum tasks. Only a user with permission to view tasks receives this error ||
+|| `0` | Access denied | The user does not have permission to view the task. The error is also returned for a nonexistent task if the user does not have this permission ||
 || `100` | Could not find value for parameter {id} | The parameter name is incorrect or the parameter is missing ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#

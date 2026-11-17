@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imopenlines.config.path.get` retrieves the link to the public page of open channels on the account.
+The method `imopenlines.config.path.get` returns the Bitrix24 address and the path to the public page of open channels.
 
 ## Method Parameters
 
@@ -236,7 +236,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with the portal address and public path [(detailed description)](#result) ||
+[`object`](../../data-types.md) | Object with the Bitrix24 address and the path to the public page [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -247,9 +247,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **SERVER_ADDRESS**
-[`string`](../../data-types.md) | Base address of the portal ||
+[`string`](../../data-types.md) | Bitrix24 address with the protocol, for example `https://example.bitrix24.com` ||
 || **PUBLIC_PATH**
-[`string`](../../data-types.md) | Relative path to the public page of open channels ||
+[`string`](../../data-types.md) | Path to the public page of open channels relative to the Bitrix24 address, for example `/contact_center/` ||
 |#
 
 ## Error Handling

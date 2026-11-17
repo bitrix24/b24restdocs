@@ -13,7 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imopenlines.bot.session.operator` switches the dialog from the chatbot to a free operator in the open line.
+The method `imopenlines.bot.session.operator` switches the dialog from the chatbot to a free operator in the open line. The method works only if the dialog is currently handled by the chatbot.
+
+After the call:
+- the dialog is passed to the next operator in the line queue
+- a system message about the transfer to an operator is added to the chat
+- the chatbot leaves the chat. If the [WELCOME_BOT_LEFT](../imopenlines-config-add.md#params) parameter in the line settings is `close`, the bot stays in the chat until the dialog is closed
 
 ## Method Parameters
 
@@ -276,8 +281,8 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value `<= 0` ||
-|| `400` | `WRONG_CHAT` | Operator is not a bot | The specified dialog is already being handled by an operator, not a chatbot ||
-|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | The method was called with session authorization for which it is prohibited ||
+|| `400` | `WRONG_CHAT` | Operator is not a bot | The dialog is handled by an operator rather than a chatbot, the chat has no active dialog, or the chat with the specified `CHAT_ID` is not found ||
+|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with user session authorization. Call the method via a webhook or with the application's OAuth token ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

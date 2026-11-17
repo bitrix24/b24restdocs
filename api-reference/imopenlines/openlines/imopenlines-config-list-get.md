@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to view open channels
 
-The method `imopenlines.config.list.get` retrieves a list of open channels.
+The method `imopenlines.config.list.get` retrieves a list of open channels that the user can view.
 
 ## Method Parameters
 
@@ -37,14 +37,16 @@ The method `imopenlines.config.list.get` retrieves a list of open channels.
 || **select**
 [`array`](../../data-types.md) | An array containing the [list of fields](#result) to be selected.
 
-You can specify fields from the [Result Array Element](#result) table. The fields `QUEUE`, `QUEUE_USERS_FIELDS`, `CONFIG_QUEUE` are returned only through `OPTIONS` ||
+You can specify fields from the [Result Array Element](#result) table. To return a field under a different name, pass an object in the format `{"alias": "field"}`, for example `{"NAME": "LINE_NAME"}`. The alias must not match the name of an existing field.
+
+The fields `QUEUE`, `QUEUE_USERS_FIELDS`, `CONFIG_QUEUE` are returned only through `OPTIONS` ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the list of open channels in the format `{"field_1": "value_1", ... "field_N": "value_N"}`
 
 The sorting direction can take the following values:
 
-- `asc` — ascending
-- `desc` — descending
+- `ASC` — ascending
+- `DESC` — descending
 
 For `field_N`, use fields from the [Result Array Element](#result) table. The fields `QUEUE`, `QUEUE_USERS_FIELDS`, `CONFIG_QUEUE` are not supported in `order` ||
 
@@ -53,9 +55,9 @@ For `field_N`, use fields from the [Result Array Element](#result) table. The fi
 
 For `field_N`, use fields from the [Result Array Element](#result) table. The fields `QUEUE`, `QUEUE_USERS_FIELDS`, `CONFIG_QUEUE` are not supported in `filter` ||
 || **limit**
-[`integer`](../../data-types.md) | The number of items per page. Default: `50`. Maximum value: `200` ||
+[`integer`](../../data-types.md) | The number of channels in the response. A non-negative integer. If the parameter is not passed, the method returns all channels ||
 || **offset**
-[`integer`](../../data-types.md) | Offset for pagination. Default: `0` ||
+[`integer`](../../data-types.md) | The number of channels to skip from the beginning of the selection. A non-negative integer ||
 |#
 
 ### OPTIONS Parameter {#options}
@@ -66,13 +68,19 @@ For `field_N`, use fields from the [Result Array Element](#result) table. The fi
 || **QUEUE**
 [`char`](../../data-types.md) | Return the operator queue. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default is `N` ||
 || **CONFIG_QUEUE**
 [`char`](../../data-types.md) | Return the line queue. Each queue element contains `ENTITY_TYPE` and `ENTITY_ID`. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default is `N` ||
 || **CHECK_PERMISSION**
-[`string`](../../data-types.md) | Check access to lines by the specified action from the open channels permission map ||
+[`string`](../../data-types.md) | Action for the permission check. Possible values: `VIEW`, `PERFORM`, `MODIFY`.
+
+The parameter does not affect the result: the method always returns the channels the user can view ||
 |#
 
 ## Code Examples
@@ -426,19 +434,19 @@ HTTP Status: **200**
             "ID": "15",
             "LINE_NAME": "VIP Support Line",
             "ACTIVE": "Y",
-            "QUEUE": [101, 205],
+            "QUEUE": ["101", "205"],
             "QUEUE_USERS_FIELDS": {
                 "101": {
                     "USER_NAME": "John Smith",
                     "USER_WORK_POSITION": "Operator",
                     "USER_AVATAR": "https://example.bitrix24.com/upload/main/a1b/avatar.jpg",
-                    "USER_AVATAR_ID": 312
+                    "USER_AVATAR_ID": "312"
                 },
                 "205": {
                     "USER_NAME": "Anna Johnson",
                     "USER_WORK_POSITION": null,
                     "USER_AVATAR": "",
-                    "USER_AVATAR_ID": null
+                    "USER_AVATAR_ID": "0"
                 }
             },
             "CONFIG_QUEUE": [
@@ -452,13 +460,13 @@ HTTP Status: **200**
             "ID": "16",
             "LINE_NAME": "Sales Line",
             "ACTIVE": "Y",
-            "QUEUE": [101],
+            "QUEUE": ["101"],
             "QUEUE_USERS_FIELDS": {
                 "101": {
                     "USER_NAME": "John Smith",
                     "USER_WORK_POSITION": "Operator",
                     "USER_AVATAR": "https://example.bitrix24.com/upload/main/a1b/avatar.jpg",
-                    "USER_AVATAR_ID": 312
+                    "USER_AVATAR_ID": "312"
                 }
             },
             "CONFIG_QUEUE": []
@@ -537,6 +545,8 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Check the availability of operators. Possible values:
 - `Y` — yes
 - `N` — no ||
+|| **SHOW_NOTIFICATION_REDIRECT**
+[`string`](../../data-types.md) | Show a notification in the dialog when a request passes to an operator who has started their working day. Possible values: `Y`, `N`, or `null` if the value is not set. With `null`, the notification is not shown ||
 || **WATCH_TYPING**
 [`string`](../../data-types.md) | Show text being typed by the operator. Possible values:
 - `Y` — yes
@@ -650,9 +660,9 @@ HTTP Status: **200**
 || **AUTO_EXPIRE_TIME**
 [`string`](../../data-types.md) | Time until activity expiration ||
 || **DATE_CREATE**
-[`object`](../../data-types.md) | Date of setting creation in serialized form ||
+[`object`](../../data-types.md) | Channel creation date. Currently, the method returns an empty object `{}` ||
 || **DATE_MODIFY**
-[`object`](../../data-types.md) | Date of setting modification in serialized form ||
+[`object`](../../data-types.md) | Channel modification date. Currently, the method returns an empty object `{}` ||
 || **MODIFY_USER_ID**
 [`string`](../../data-types.md) | Identifier of the user who modified the settings ||
 || **TEMPORARY**
@@ -676,17 +686,17 @@ HTTP Status: **200**
 || **OPERATOR_DATA**
 [`string`](../../data-types.md) | Mode of displaying operator data ||
 || **QUEUE**
-[`array`](../../data-types.md) | Identifiers of operators in the queue. 
+[`array`](../../data-types.md) | Identifiers of operators in the queue.
 
 Field is returned when `OPTIONS.QUEUE = "Y"` ||
 || **QUEUE_USERS_FIELDS**
-[`object`](../../data-types.md) | Additional fields of queue users. Key — user identifier, value — description of queue fields [(detailed description)](#queue-users-fields-item). 
+[`object`](../../data-types.md) | Additional fields of queue users. Key — user identifier, value — description of queue fields [(detailed description)](#queue-users-fields-item).
 
-Field is returned when `OPTIONS.QUEUE = "Y"`  ||
+Field is returned when `OPTIONS.QUEUE = "Y"` ||
 || **CONFIG_QUEUE**
 [`array`](../../data-types.md) | Ordered list of line queue objects [(detailed description)](#config-queue-item-fields).
 
-Field is returned when `OPTIONS.CONFIG_QUEUE = "Y"`  ||
+Field is returned when `OPTIONS.CONFIG_QUEUE = "Y"` ||
 || **DEFAULT_OPERATOR_DATA**
 [`array`](../../data-types.md) | Set of default operator display fields ||
 || **KPI_FIRST_ANSWER_TIME**
@@ -794,7 +804,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `INVALID_FORMAT` | Unsupported PARAMS fields are passed: ... | `PARAMS` contains fields that are not in the `select`, `filter`, `order`, `limit`, `offset` list ||
+|| `400` | `INVALID_FORMAT` | Unsupported PARAMS fields are passed: foo | `PARAMS` contains fields that are not in the `select`, `filter`, `order`, `limit`, `offset` list ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'select' is passed | The `PARAMS.select` field is not passed as an array ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'order' is passed | The `PARAMS.order` field is passed in an incorrect format ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'filter' is passed | The `PARAMS.filter` field is passed in an incorrect format ||
@@ -803,16 +813,17 @@ HTTP Status: **400**
 || `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'select' | `PARAMS.select` contains an empty or invalid field name ||
 || `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'order' | `PARAMS.order` contains an empty or invalid field name ||
 || `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'filter' | `PARAMS.filter` contains an empty or invalid field name ||
-|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'select' | `PARAMS.select` contains an unknown field ||
-|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'order' | `PARAMS.order` contains an unknown field ||
-|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'filter' | `PARAMS.filter` contains an unknown field ||
-|| `400` | `INVALID_FORMAT` | A wrong field alias is passed in the PARAMS field 'select' | `PARAMS.select` contains an invalid field alias ||
-|| `400` | `INVALID_FORMAT` | The alias '...' matches an existing field in the PARAMS field 'select' | The alias in `PARAMS.select` conflicts with an existing field ||
+|| `400` | `INVALID_FORMAT` | An unknown field 'FOO' is passed in the PARAMS field 'select' | `PARAMS.select` contains a field that the open channel does not have. The fields `QUEUE`, `QUEUE_USERS_FIELDS`, `CONFIG_QUEUE` are not passed in `select` ||
+|| `400` | `INVALID_FORMAT` | An unknown field 'FOO' is passed in the PARAMS field 'order' | `PARAMS.order` contains an unknown field ||
+|| `400` | `INVALID_FORMAT` | An unknown field 'FOO' is passed in the PARAMS field 'filter' | `PARAMS.filter` contains an unknown field ||
+|| `400` | `INVALID_FORMAT` | A wrong field alias is passed in the PARAMS field 'select' | The alias in `PARAMS.select` is empty or contains a dot, quotes, or control characters ||
+|| `400` | `INVALID_FORMAT` | The alias 'LINE_NAME' matches an existing field in the PARAMS field 'select' | The alias in `PARAMS.select` conflicts with an existing field ||
 || `400` | `INVALID_FORMAT` | A wrong sorting direction is passed in the PARAMS field 'order' | `PARAMS.order` contains a sorting direction other than `ASC` or `DESC` ||
-|| `400` | `INVALID_FORMAT` | Unsupported OPTIONS fields are passed: ... | `OPTIONS` contains fields that are not in the `QUEUE`, `CONFIG_QUEUE`, `CHECK_PERMISSION` list ||
+|| `400` | `INVALID_FORMAT` | Unsupported OPTIONS fields are passed: X | `OPTIONS` contains fields that are not in the `QUEUE`, `CONFIG_QUEUE`, `CHECK_PERMISSION` list ||
 || `400` | `INVALID_FORMAT` | A wrong format for the OPTIONS field 'QUEUE' is passed | The `OPTIONS.QUEUE` field is not passed as a scalar value ||
 || `400` | `INVALID_FORMAT` | A wrong format for the OPTIONS field 'CONFIG_QUEUE' is passed | The `OPTIONS.CONFIG_QUEUE` field is not passed as a scalar value ||
-|| `400` | `INVALID_FORMAT` | An unknown value for the OPTIONS field 'CHECK_PERMISSION' is passed | `OPTIONS.CHECK_PERMISSION` contains an unknown action ||
+|| `400` | `INVALID_FORMAT` | An unknown value for the OPTIONS field 'CHECK_PERMISSION' is passed | `OPTIONS.CHECK_PERMISSION` contains a value other than `VIEW`, `PERFORM`, `MODIFY` ||
+|| `403` | `CONFIG_WRONG_USER_PERMISSION` | Permission denied | The user does not have permission to view open channels ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -35,19 +35,21 @@ The `FILES` field is processed by the methods [crm.timeline.comment.add](./crm-t
 ## How to Work with Comments
 
 1. Identify the CRM object to which the comment pertains.
-2. Check the access permissions for the CRM object; otherwise, the methods may return an `Access denied` error. Access depends on the current user's rights to the specific entity.
-3. Retrieve the list of available fields using the method [crm.timeline.comment.fields](./crm-timeline-comment-fields.md).
-4. Add a comment using the method [crm.timeline.comment.add](./crm-timeline-comment-add.md).
-5. Retrieve the list of comments using the method [crm.timeline.comment.list](./crm-timeline-comment-list.md) or the data for a specific comment using the method [crm.timeline.comment.get](./crm-timeline-comment-get.md).
-6. Modify the comment using the method [crm.timeline.comment.update](./crm-timeline-comment-update.md).
-7. Delete any unnecessary comments using the method [crm.timeline.comment.delete](./crm-timeline-comment-delete.md).
-8. To track changes, subscribe to events in the [Comment Events](./events/index.md) section.
+2. Check the access permissions for the CRM object. Reading comments requires read permission for the object, and adding them requires permission to edit it. Only the comment author with permission to edit the CRM object can update a comment. A comment can be deleted, with the same permission, by its author or by an administrator of the corresponding CRM object type, taking the pipeline into account.
+3. Retrieve the field descriptions using the method [crm.timeline.comment.fields](./crm-timeline-comment-fields.md).
+4. To track changes, subscribe to the [comment events](./events/index.md).
+5. Add a comment using the method [crm.timeline.comment.add](./crm-timeline-comment-add.md).
+6. Retrieve the list of comments using the method [crm.timeline.comment.list](./crm-timeline-comment-list.md) or the data for a specific comment using the method [crm.timeline.comment.get](./crm-timeline-comment-get.md).
+7. If needed, update the comment using the method [crm.timeline.comment.update](./crm-timeline-comment-update.md).
+8. If needed, delete the comment using the method [crm.timeline.comment.delete](./crm-timeline-comment-delete.md).
+
+If a comment is bound to multiple CRM objects, updating and deleting work with one selected binding: pass `ownerTypeId` and `ownerId` of the required object. Without them, the delete method returns the `MULTIPLE_BINDINGS` error. The specifics are described on the pages of the [crm.timeline.comment.update](./crm-timeline-comment-update.md) and [crm.timeline.comment.delete](./crm-timeline-comment-delete.md) methods, along with errors and access conditions.
 
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: `any user`
+> Who can execute the methods: depends on the method and the user's permissions for the CRM object
 
 {% list tabs %}
 

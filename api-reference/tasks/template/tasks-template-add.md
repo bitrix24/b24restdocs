@@ -27,8 +27,9 @@ The method `tasks.template.add` creates a new task template.
 
 Required fields for creating a template:
 - `TITLE` — title of the task template
-- `CREATED_BY` — ID of the Creator
 - `RESPONSIBLE_ID` — ID of the Participant
+
+The user who calls the method becomes the template creator. The `CREATED_BY` value in `fields` is ignored
 
 ||
 |#
@@ -50,9 +51,7 @@ Required fields for creating a template:
         "PARENT_ID": 8131,
         "TITLE": "Weekly project status preparation",
         "DESCRIPTION": "Task template for preparing and approving weekly project status with the team and manager",
-        "PRIORITY": 2,
-        "CREATED_BY": 101,
-        "RESPONSIBLE_ID": 102,
+        "PRIORITY": 2,        "RESPONSIBLE_ID": 102,
         "REPLICATE": "Y",
         "START_DATE_PLAN_AFTER": "32400",
         "END_DATE_PLAN_AFTER": "97200",
@@ -81,9 +80,7 @@ Required fields for creating a template:
         "PARENT_ID": 8131,
         "TITLE": "Weekly project status preparation",
         "DESCRIPTION": "Task template for preparing and approving weekly project status with the team and manager",
-        "PRIORITY": 2,
-        "CREATED_BY": 101,
-        "RESPONSIBLE_ID": 102,
+        "PRIORITY": 2,        "RESPONSIBLE_ID": 102,
         "REPLICATE": "Y",
         "START_DATE_PLAN_AFTER": "32400",
         "END_DATE_PLAN_AFTER": "97200",
@@ -124,9 +121,7 @@ Required fields for creating a template:
             PARENT_ID: 8131,
             TITLE: 'Weekly project status preparation',
             DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
-            PRIORITY: 2,
-            CREATED_BY: 101,
-            RESPONSIBLE_ID: 102,
+            PRIORITY: 2,            RESPONSIBLE_ID: 102,
             REPLICATE: 'Y',
             START_DATE_PLAN_AFTER: '32400',
             END_DATE_PLAN_AFTER: '97200',
@@ -175,9 +170,7 @@ Required fields for creating a template:
                 PARENT_ID: 8131,
                 TITLE: 'Weekly project status preparation',
                 DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
-                PRIORITY: 2,
-                CREATED_BY: 101,
-                RESPONSIBLE_ID: 102,
+                PRIORITY: 2,                RESPONSIBLE_ID: 102,
                 REPLICATE: 'Y',
                 START_DATE_PLAN_AFTER: '32400',
                 END_DATE_PLAN_AFTER: '97200',
@@ -222,9 +215,7 @@ Required fields for creating a template:
         "PARENT_ID": 8131,
         "TITLE": "Preparing the weekly project status",
         "DESCRIPTION": "A task template for preparing and approving the weekly project status with the team and the manager",
-        "PRIORITY": 2,
-        "CREATED_BY": 101,
-        "RESPONSIBLE_ID": 102,
+        "PRIORITY": 2,        "RESPONSIBLE_ID": 102,
         "REPLICATE": "Y",
         "START_DATE_PLAN_AFTER": "32400",
         "END_DATE_PLAN_AFTER": "97200",
@@ -274,9 +265,7 @@ Required fields for creating a template:
                         'PARENT_ID' => 8131,
                         'TITLE' => 'Weekly project status preparation',
                         'DESCRIPTION' => 'Task template for preparing and approving weekly project status with the team and manager',
-                        'PRIORITY' => 2,
-                        'CREATED_BY' => 101,
-                        'RESPONSIBLE_ID' => 102,
+                        'PRIORITY' => 2,                        'RESPONSIBLE_ID' => 102,
                         'REPLICATE' => 'Y',
                         'START_DATE_PLAN_AFTER' => '32400',
                         'END_DATE_PLAN_AFTER' => '97200',
@@ -314,9 +303,7 @@ Required fields for creating a template:
                 PARENT_ID: 8131,
                 TITLE: 'Weekly project status preparation',
                 DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
-                PRIORITY: 2,
-                CREATED_BY: 101,
-                RESPONSIBLE_ID: 102,
+                PRIORITY: 2,                RESPONSIBLE_ID: 102,
                 REPLICATE: 'Y',
                 START_DATE_PLAN_AFTER: '32400',
                 END_DATE_PLAN_AFTER: '97200',
@@ -357,9 +344,7 @@ Required fields for creating a template:
                 'PARENT_ID' => 8131,
                 'TITLE' => 'Weekly project status preparation',
                 'DESCRIPTION' => 'Task template for preparing and approving weekly project status with the team and manager',
-                'PRIORITY' => 2,
-                'CREATED_BY' => 101,
-                'RESPONSIBLE_ID' => 102,
+                'PRIORITY' => 2,                'RESPONSIBLE_ID' => 102,
                 'REPLICATE' => 'Y',
                 'START_DATE_PLAN_AFTER' => '32400',
                 'END_DATE_PLAN_AFTER' => '97200',
@@ -388,9 +373,7 @@ Required fields for creating a template:
     		"PARENT_ID":             8131,
     		"TITLE":                 "Weekly project status preparation",
     		"DESCRIPTION":           "Task template for preparing and approving weekly project status with the team and manager",
-    		"PRIORITY":              2,
-    		"CREATED_BY":            101,
-    		"RESPONSIBLE_ID":        102,
+    		"PRIORITY":              2,    		"RESPONSIBLE_ID":        102,
     		"REPLICATE":             "Y",
     		"START_DATE_PLAN_AFTER": "32400",
     		"END_DATE_PLAN_AFTER":   "97200",
@@ -446,7 +429,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../data-types.md) | Identifier of the created task template.
 
-The method will not create a template and will return `"result": 0` if not all required fields are specified in `fields`: `TITLE`, `CREATED_BY`, `RESPONSIBLE_ID`  ||
+The method will not create a template and will return `"result": 0` if not all required fields are specified in `fields`: `TITLE`, `RESPONSIBLE_ID` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

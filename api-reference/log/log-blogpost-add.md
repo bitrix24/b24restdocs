@@ -459,6 +459,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_ADD_ERROR` | `Blog post hasn't been added` | General error saving the message, for example, when `POST_MESSAGE` is empty ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_ADD_ERROR` | `No destination specified` | Failed to determine the message recipients ||
+|| — | `Access to one or more message recipients was denied` | `DEST` contains an external user who is not accessible to the current user. The error can occur if the `extranet` module is installed. Portal administrators and department employees are always valid recipients ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_MODULE_BLOG_NOT_INSTALLED` | `Blog module is not installed` | The `blog` module is not installed ||
 || `SONET_CONTROLLER_LIVEFEED_BLOG_NOT_FOUND` | `Blog not found` | Failed to retrieve the blog to which the message belongs ||
 || — | `Cannot add blog post` | Internal error when creating the message ||

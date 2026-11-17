@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialog permissions
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this line
 
-The method `imopenlines.operator.skip` transfers the current dialog to the next operator in the queue.
+The method `imopenlines.operator.skip` declines the dialog on behalf of the user calling the method and passes it to the next operator in the line queue.
 
 ## Method Parameters
 
@@ -23,10 +23,12 @@ The method `imopenlines.operator.skip` transfers the current dialog to the next 
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat.
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) methods ||
 |#
+
+A system message stating that the user skipped the dialog appears in the chat. If the chat has no active dialog, the method removes the user from the chat and returns an error.
 
 ## Code Examples
 
@@ -41,7 +43,7 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.operator.skip.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.operator.skip
     ```
 
 - cURL (OAuth)
@@ -50,8 +52,8 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.operator.skip.json
+      -d '{"CHAT_ID":2043,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.operator.skip
     ```
 
 - JS (TS)
@@ -275,11 +277,11 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The provided chat identifier is incorrect | Empty or invalid `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have permissions for the dialog ||
-|| `400` | `ACCESS_DENIED_KICK` | Insufficient permissions to remove participants from the chat | The specified chat cannot be transferred to another operator, for example, because the dialog is closed ||
-|| `400` | `USER_ID` | The provided user identifier is incorrect | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not provided, the value is less than `1`, or the chat is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The specified chat does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The user is not a member of the chat and does not have the "Join conversation" permission for this line ||
+|| `400` | `ACCESS_DENIED_KICK` | Insufficient permission to kick chat members. | The chat has no active dialog, and the user could not be removed from the chat ||
+|| `400` | `USER_ID` | User ID is invalid. | The user on behalf of whom the method is executed is not defined ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

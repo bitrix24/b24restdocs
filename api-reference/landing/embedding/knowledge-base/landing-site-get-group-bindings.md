@@ -303,6 +303,8 @@ HTTP Status: **200**
 
 Only one Knowledge Base can be bound to a group, so with the `groupId` filter the list contains no more than one item. If there are no bindings, an empty array is returned.
 
+The list includes only bindings to groups the user can view. An administrator receives all bindings.
+
 The list includes only Knowledge Bases of the `GROUP` type. Bindings of Knowledge Bases in the Recycle Bin are not returned. If Knowledge Bases in groups are not available on the Bitrix24 plan, the method returns an empty array ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||

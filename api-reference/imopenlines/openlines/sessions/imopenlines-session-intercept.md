@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the dialogue
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this channel
 
-The method `imopenlines.session.intercept` transfers the current dialogue to the operator who calls the method.
+The method `imopenlines.session.intercept` takes over a dialogue from the current operator or chatbot and assigns the user who calls the method as the responsible person.
 
 ## Method Parameters
 
@@ -23,10 +23,12 @@ The method `imopenlines.session.intercept` transfers the current dialogue to the
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat. 
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 |#
+
+The method also returns `true` when the dialogue does not pass to the user: if the user is already handling this dialogue or the dialogue has no responsible person. To make sure the dialogue has passed to the user, retrieve the chat data using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method and check the `owner` field.
 
 ## Code Examples
 
@@ -41,7 +43,7 @@ The identifier can be obtained using the [imopenlines.session.open](./imopenline
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.intercept.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.session.intercept
     ```
 
 - cURL (OAuth)
@@ -50,8 +52,8 @@ The identifier can be obtained using the [imopenlines.session.open](./imopenline
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.session.intercept.json
+      -d '{"CHAT_ID":2043,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.session.intercept
     ```
 
 - JS (TS)
@@ -253,7 +255,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the dialogue was successfully transferred to the current operator. ||
+[`boolean`](../../../data-types.md) | Returns `true` if the access check passes and the takeover request is executed ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
 |#
@@ -275,8 +277,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value `<= 0` ||
-|| `400` | `OPERATOR_WRONG` | You can not redirect to this operator | Operation not available for the current user or dialogue state. ||
+|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` is not passed, or the value is less than `1` ||
+|| `400` | `OPERATOR_WRONG` | You can not redirect to this operator | The chat is not found, is not an open line chat, or the user does not have access to the dialogue ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -33,17 +33,15 @@ Additionally, the following are supported:
 - `entityTypeId` — an array of template bindings to CRM entities
 - `users` — an array of access permission codes
 
-Main fields for `select`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`
-
 See the list of template fields in the [Type template](#template) section. By default, `["*"]` is used. ||
 || **filter**
 [`object`](../../../data-types.md) | An object in the format:
 
-```
-{
+```js
+const filter = {
     field_1: value_1,
     field_2: value_2,
-    ...,
+    // ...
     field_n: value_n
 }
 ```
@@ -62,8 +60,10 @@ You can add prefixes to the keys `field_n`:
 - `=` — equal (default)
 - `!=` or `!` — not equal
 
+For `entityTypeId`, use the `entityTypeId` or `=entityTypeId` key.
+
 Features:
-- if `isDeleted` is not provided, the filter `isDeleted = "N"` is applied
+- by default, the condition `isDeleted: "N"` is added if none of the `isDeleted`, `@isDeleted`, or `!isDeleted` keys is provided
 - the `moduleId` filter is forcibly limited to the value `crm`
 - you can filter by `entityTypeId`, for example `["2","2_category_37"]`
 
@@ -71,11 +71,11 @@ Main fields for `filter`: `id`, `name`, `region`, `code`, `active`, `moduleId`, 
 || **order**
 [`object`](../../../data-types.md) | An object in the format:
 
-```
-{
+```js
+const order = {
     field_1: value_1,
     field_2: value_2,
-    ...,
+    // ...
     field_n: value_n
 }
 ```
@@ -152,7 +152,7 @@ Example of retrieving a list of templates where:
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type TemplatesResult = {
-      templates: Record<string, Template>
+      templates: Record<string, Template> | []
     }
 
     try {
@@ -303,7 +303,6 @@ Example of retrieving a list of templates where:
     try:
         bitrix_response = client.crm.documentgenerator.template.list(
             select=["id", "name", "region", "entityTypeId", "users"],
-            order={"id": "desc"},
             filter={
                 "region": "de",
                 "active": "Y",
@@ -364,6 +363,7 @@ Example of retrieving a list of templates where:
             select: ['id', 'name', 'region', 'entityTypeId', 'users'],
             order: { id: 'desc' },
             filter: { region: 'de', active: 'Y' },
+            start: 0,
         },
         (result) => {
             if (result.error()) {
@@ -468,7 +468,7 @@ HTTP status: **200**
             }
         }
     },
-    "total": 20,
+    "total": 2,
     "time": {
         "start": 1773845479,
         "finish": 1773845479.829607,
@@ -497,7 +497,7 @@ HTTP status: **200**
 
 #### Templates Object {#templates}
 
-[`object`](../../../data-types.md), where the key is the string identifier of the template, and the value is the object [`template`](#template)
+If templates are found, `templates` is an object where the key is the string identifier of the template, and the value is the object [`template`](#template). If there are no templates, `templates` is an empty array `[]`.
 
 #### Template Type {#template}
 
@@ -525,13 +525,13 @@ HTTP status: **200**
 || **moduleId**
 [`string`](../../../data-types.md) | The identifier of the template owner module ||
 || **numeratorId**
-[`integer`](../../../data-types.md) | The identifier of the numerator ||
+[`string`](../../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
 [`char`](../../../data-types.md) | The indication of stamp usage (`Y`/`N`) ||
 || **isDeleted**
 [`char`](../../../data-types.md) | The indication of deletion (`Y`/`N`) ||
 || **sort**
-[`integer`](../../../data-types.md) | Sorting index ||
+[`string`](../../../data-types.md) | Sorting index ||
 || **createTime**
 [`datetime`](../../../data-types.md) | The creation time of the template ||
 || **updateTime**
@@ -544,8 +544,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "DOCGEN_ACCESS_ERROR",
-    "error_description": "Access denied"
+    "error": "INVALID_ARG_VALUE",
+    "error_description": "Invalid filter: field 'unknownField' is not allowed in filter"
 }
 ```
 
@@ -554,10 +554,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to templates ||
-|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field 'unknownField' is not allowed in filter | An invalid field is specified in the filter. Check the field name ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

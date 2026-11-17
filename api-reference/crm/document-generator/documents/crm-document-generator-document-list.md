@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "view" access permission for document generator documents
+> Who can execute the method: a user with permission to view document generator documents and read CRM items. Filtering by `entityTypeId` requires permission to read items of that type; without this filter, permission to read at least one CRM item type is required
 
 The method `crm.documentgenerator.document.list` returns a list of documents based on the filter.
 
@@ -29,13 +29,13 @@ You can use:
 - `'*'` — to select all standard fields of the document
 - an explicit list of fields, for example, `['id','title','number','entityId','createTime']`
 
-Refer to the [Document Type](#document) section for the list of fields.
+See the [Document Type](#document) section for the list of fields. File links and `stampsEnabled` cannot be selected explicitly. The fields `provider` and `value` can also be specified in `select`. They are returned as `entityTypeId` and `entityId`, respectively. To retrieve these fields, you can specify `entityTypeId` and `entityId` directly in `select`.
 
 By default, `['*']` is used. ||
 || **filter**
 [`object`](../../../data-types.md) | An object in the following format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -58,11 +58,13 @@ You can add prefixes to the keys `field_n`:
 - `=` — equal (default)
 - `!=` or `!` — not equal
 
-Refer to the [Document Type](#document) section for the list of available fields for filtering. ||
+The fields available for `filter` are `id`, `title`, `number`, `templateId`, `provider`, `value`, `fileId`, `imageId`, `pdfId`, `createTime`, `updateTime`, `createdBy`, `updatedBy`, `entityTypeId`, and `entityId`. The `values` field and file links cannot be used for filtering or sorting.
+
+For `entityTypeId` and `entityId`, use a key without a prefix or with the `=` prefix. Other prefixes do not apply to these two fields. The `entityTypeId` value must be numeric. ||
 || **order**
 [`object`](../../../data-types.md) | An object in the following format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -75,7 +77,7 @@ where:
 - `field_n` — the name of the sorting field
 - `value_n` — the sorting direction: `ASC` or `DESC`
 
-Refer to the [Document Type](#document) section for the list of fields for sorting.
+The same fields are available for `order` as for `filter`, except `entityTypeId` and `entityId`.
 
 Example: `{"id":"DESC","createTime":"ASC"}` ||
 || **start**
@@ -107,7 +109,7 @@ Example of retrieving a list of documents where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","title","number","entityId","createTime"],"order":{"id":"desc"},"filter":{"entityTypeId":2,"entityId":101},"start":0}' \
+    -d '{"select":["id","title","number","entityId","createTime"],"order":{"id":"DESC"},"filter":{"entityTypeId":2,"entityId":101},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.document.list
     ```
 
@@ -117,7 +119,7 @@ Example of retrieving a list of documents where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","title","number","entityId","createTime"],"order":{"id":"desc"},"filter":{"entityTypeId":2,"entityId":101},"start":0,"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","title","number","entityId","createTime"],"order":{"id":"DESC"},"filter":{"entityTypeId":2,"entityId":101},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.document.list
     ```
 
@@ -135,16 +137,8 @@ Example of retrieving a list of documents where:
       id: string
       title: string
       number: string
-      templateId: string
-      entityTypeId: string
       entityId: string
-      fileId: string
-      imageId: string
-      pdfId: string
       createTime: ISODate
-      updateTime: ISODate
-      createdBy: string | null
-      updatedBy: string | null
       values: Record<string, unknown> | null
       downloadUrl: string
       imageUrl: string
@@ -170,7 +164,7 @@ Example of retrieving a list of documents where:
         method: 'crm.documentgenerator.document.list',
         params: {
           select: ['id', 'title', 'number', 'entityId', 'createTime'],
-          order: { id: 'desc' },
+          order: { id: 'DESC' },
           filter: { entityTypeId: 2, entityId: 101 },
           start: 0,
         },
@@ -210,7 +204,7 @@ Example of retrieving a list of documents where:
             method: 'crm.documentgenerator.document.list',
             params: {
               select: ['id', 'title', 'number', 'entityId', 'createTime'],
-              order: { id: 'desc' },
+              order: { id: 'DESC' },
               filter: { entityTypeId: 2, entityId: 101 },
               start: 0,
             },
@@ -244,7 +238,9 @@ Example of retrieving a list of documents where:
     try:
         bitrix_response = client.crm.documentgenerator.document.list(
             select=["id", "title", "number", "entityId", "createTime"],
-            order={"id": "desc"},
+            order={
+                "id": "DESC",
+            },
             filter={
                 "entityTypeId": 2,
                 "entityId": 101,
@@ -275,7 +271,9 @@ Example of retrieving a list of documents where:
     try:
         bitrix_response = client.crm.documentgenerator.document.list(
             select=["id", "title", "number", "entityId", "createTime"],
-            order={"id": "desc"},
+            order={
+                "id": "DESC",
+            },
             filter={
                 "entityTypeId": 2,
                 "entityId": 101,
@@ -306,7 +304,9 @@ Example of retrieving a list of documents where:
     try:
         bitrix_response = client.crm.documentgenerator.document.list(
             select=["id", "title", "number", "entityId", "createTime"],
-            order={"id": "desc"},
+            order={
+                "id": "DESC",
+            },
             filter={
                 "entityTypeId": 2,
                 "entityId": 101,
@@ -338,7 +338,7 @@ Example of retrieving a list of documents where:
                 'crm.documentgenerator.document.list',
                 [
                     'select' => ['id', 'title', 'number', 'entityId', 'createTime'],
-                    'order' => ['id' => 'desc'],
+                    'order' => ['id' => 'DESC'],
                     'filter' => ['entityTypeId' => 2, 'entityId' => 101],
                     'start' => 0,
                 ]
@@ -365,8 +365,9 @@ Example of retrieving a list of documents where:
         'crm.documentgenerator.document.list',
         {
             select: ['id', 'title', 'number', 'entityId', 'createTime'],
-            order: { id: 'desc' },
+            order: { id: 'DESC' },
             filter: { entityTypeId: 2, entityId: 101 },
+            start: 0,
         },
         (result) => {
             if (result.error()) {
@@ -392,7 +393,7 @@ Example of retrieving a list of documents where:
         'crm.documentgenerator.document.list',
         [
             'select' => ['id', 'title', 'number', 'entityId', 'createTime'],
-            'order' => ['id' => 'desc'],
+            'order' => ['id' => 'DESC'],
             'filter' => ['entityTypeId' => 2, 'entityId' => 101],
             'start' => 0,
         ]
@@ -410,7 +411,7 @@ Example of retrieving a list of documents where:
     res, err := client.Core().Call(ctx, "crm.documentgenerator.document.list", b24.Params{
     	"select": []string{"id", "title", "number", "entityId", "createTime"},
     	"order": b24.Params{
-    		"id": "desc",
+            "id": "DESC",
     	},
     	"filter": b24.Params{
     		"entityTypeId": 2,
@@ -432,9 +433,6 @@ Example of retrieving a list of documents where:
     	ID         b24.ID `json:"id"`
     	Title      string `json:"title"`
     	Number     string `json:"number"`
-    	TemplateID b24.ID `json:"templateId"`
-    	FileID     b24.ID `json:"fileId"`
-    	ImageID    b24.ID `json:"imageId"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -458,24 +456,13 @@ HTTP status: **200**
                 "id": "61",
                 "title": "Demonstration implementation of product 2026-001",
                 "number": "2026-002",
-                "templateId": "39",
-                "fileId": "283",
-                "imageId": "285",
-                "pdfId": "287",
                 "createTime": "2026-03-20T13:51:45+03:00",
-                "updateTime": "2026-03-20T14:42:38+03:00",
-                "values": {
-                    "_creationMethod": "rest",
-                    "stampsEnabled": true
-                },
-                "createdBy": "577",
-                "updatedBy": "577",
+                "values": null,
                 "downloadUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.download&SITE_ID=s1&id=61",
                 "pdfUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.getPdf&SITE_ID=s1&id=61",
                 "imageUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.getImage&SITE_ID=s1&id=61",
-                "stampsEnabled": true,
+                "stampsEnabled": false,
                 "entityId": "101",
-                "entityTypeId": "2",
                 "downloadUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.download.json?auth=***&token=***",
                 "pdfUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.getPdf.json?auth=***&token=***",
                 "imageUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.getImage.json?auth=***&token=***"
@@ -484,31 +471,20 @@ HTTP status: **200**
                 "id": "59",
                 "title": "Demonstration implementation of product 2026-001",
                 "number": "2026-001",
-                "templateId": "39",
-                "fileId": "271",
-                "imageId": "273",
-                "pdfId": "275",
                 "createTime": "2026-03-20T13:28:26+03:00",
-                "updateTime": "2026-03-20T13:28:26+03:00",
-                "values": {
-                    "_creationMethod": "rest",
-                    "stampsEnabled": true
-                },
-                "createdBy": "577",
-                "updatedBy": null,
+                "values": null,
                 "downloadUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.download&SITE_ID=s1&id=59",
                 "pdfUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.getPdf&SITE_ID=s1&id=59",
                 "imageUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.getImage&SITE_ID=s1&id=59",
-                "stampsEnabled": true,
+                "stampsEnabled": false,
                 "entityId": "101",
-                "entityTypeId": "2",
                 "downloadUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.download.json?auth=***&token=***",
                 "pdfUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.getPdf.json?auth=***&token=***",
                 "imageUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.getImage.json?auth=***&token=***"
             }
         ]
     },
-    "total": 4,
+    "total": 2,
     "time": {
         "start": 1774009414,
         "finish": 1774009414.09833,
@@ -548,7 +524,7 @@ HTTP status: **200**
 
 #### Document Type {#document}
 
-The composition of fields depends on the `select` parameter.
+The set of fields depends on `select`. The method also generates file links, `values`, and `stampsEnabled`. If `values` is not selected, it is `null` and `stampsEnabled` is `false`.
 
 #|
 || **Name**
@@ -560,27 +536,27 @@ The composition of fields depends on the `select` parameter.
 || **number**
 [`string`](../../../data-types.md) | Document number ||
 || **templateId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the document template ||
+```integer | string``` | Identifier of the document template ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
+```integer | string``` | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
+```integer | string``` | Identifier of the CRM object ||
 || **fileId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document DOCX file identifier ||
+```integer | string``` | Document DOCX file identifier ||
 || **imageId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document image identifier ||
+```integer | string``` | Document image identifier ||
 || **pdfId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document PDF file identifier ||
+```integer | string``` | Document PDF file identifier ||
 || **createTime**
 [`datetime`](../../../data-types.md) | Date of document creation ||
 || **updateTime**
 [`datetime`](../../../data-types.md) | Document update date ||
 || **createdBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who created the document ||
+```integer | string | null``` | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
+```integer | string | null``` | Identifier of the user who updated the document ||
 || **values**
-[`object`](../../../data-types.md) \| [`null`](../../../data-types.md) | Field values of the document ||
+```object | null``` | Field values of the document ||
 || **downloadUrl**
 [`string`](../../../data-types.md) | Link to download the document ||
 || **imageUrl**
@@ -614,10 +590,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Unknown field definition ENTITY_TYPE_ID (ENTITY_TYPE_ID) for \Bitrix\DocumentGenerator\Model\Document Entity | The `select` field passed in the `entityTypeId` parameter is not a direct field of the document model. Use `select: ['*']` ||
+|| `INVALID_ARG_VALUE` | Invalid filter: field 'entityTypeId' should either be not set or have a numeric value | A non-numeric `entityTypeId` value was passed in `filter` ||
+|| `INVALID_ARG_VALUE` | Invalid filter: field '{field}' is not allowed in filter | Invalid filter field ||
+|| `INVALID_ARG_VALUE` | Invalid filter: field '{field}' has invalid value | Invalid filter field value ||
+|| `INVALID_ARG_VALUE` | Invalid order: field '{field}' is not allowed in order | Invalid sort field ||
+|| `INVALID_ARG_VALUE` | Invalid order: allowed sort directions are ASC, DESC. But got '{direction}' for field '{field}' | Invalid sort direction ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to read documents based on the selected CRM object filter ||
-|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `0` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -625,8 +605,8 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-document-generator-document-add.md)
-- [{#T}](./crm-document-generator-document-get.md)
-- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](./crm-document-generator-document-update.md)
+- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-delete.md)
+- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

@@ -1,4 +1,4 @@
-# Get Field Descriptions for Custom Field Type "Enumeration" (List) crm.userfield.enumeration.fields
+# Get Field Descriptions for Custom Field Type enumeration (List) crm.userfield.enumeration.fields
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.enumeration.fields` returns field descriptions for a custom field of type "enumeration" (list).
+The method `crm.userfield.enumeration.fields` returns descriptions of the list element fields for a custom field of the `enumeration` type.
+
+Elements in this format are passed in the `LIST` key of the `crm.*.userfield.add` and `crm.*.userfield.update` methods, for example [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md), and are returned in the `crm.*.userfield.get` and `crm.*.userfield.list` responses. The REST 3.0 method `crm.<type>.field.custom.add` does not create fields of the `enumeration` type; for them, use the deprecated `crm.*.userfield.add` methods or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md).
 
 ## Method Parameters
 
@@ -266,24 +268,43 @@ HTTP Status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result Object {#result}
+#### The result Object {#result}
+
+A key of the `result` object is a list element field, and the value is the field description [(detailed description)](#descriptor). The table shows the value type that the field accepts in `LIST`. The complete element description is the [uf_enum_element](../../../data-types.md#uf_enum_element) object.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the list value ||
+[`integer`](../../../data-types.md) | Element identifier. Set by the system: not passed when creating a field. In `update`, pass `ID` to change or delete an existing element. An element without `ID` is added to the list as a new one ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting order ||
+[`integer`](../../../data-types.md) | Sorting order. If not passed or less than 1, the element gets `500` ||
 || **VALUE**
-[`string`](../../../data-types.md) | Value of the list item ||
+[`string`](../../../data-types.md) | Element text. Elements with an empty `VALUE` are skipped when the field is created ||
 || **DEF**
-[`string`](../../../data-types.md) | Default value indicator ||
+[`char`](../../../data-types.md) | Default value flag: `Y` or `N`. If the field is not multiple, only the first element with `DEF: Y` becomes the default value ||
 || **DEL**
-[`string`](../../../data-types.md) | Element deletion flag ||
+[`char`](../../../data-types.md) | Deletion flag: `Y` together with `ID` in `update` deletes the element. Elements not passed in `update` are retained ||
+|#
+
+In addition to these fields, a list element accepts `XML_ID`, the external element identifier. The method does not describe it. In the response, the element `XML_ID` is returned by `crm.*.userfield.list` but not by `crm.*.userfield.get`.
+
+#### Field Description {#descriptor}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Value type: `int` or `string` ||
+|| **title**
+[`string`](../../../data-types.md) | Field name in the Bitrix24 interface language ||
+|| **isReadOnly**
+[`boolean`](../../../data-types.md) | The value is set by the system. Only `ID` has this key ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own: it does not check CRM permissions and takes no parameters.
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
@@ -291,6 +312,8 @@ HTTP Status: **200**
 
 ## Continue Learning
 
-- [{#T}](./crm-userfield-fields.md)
 - [{#T}](./crm-userfield-types.md)
+- [{#T}](./crm-userfield-fields.md)
 - [{#T}](./crm-userfield-settings-fields.md)
+- [{#T}](../../deals/user-defined-fields/crm-deal-userfield-add.md)
+- [{#T}](./index.md)

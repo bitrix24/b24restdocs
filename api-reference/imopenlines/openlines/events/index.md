@@ -36,15 +36,15 @@ Data arrives in the `data` field, and its content depends on the event.
         "DATA": {
             "connector": {
                 "connector_id": "my_connector",
-                "line_id": "1",
-                "chat_id": "17",
-                "user_id": "10"
+                "line_id": 1,
+                "chat_id": 17,
+                "user_id": 10
             },
             "chat": {
-                "chat_id": "17"
+                "chat_id": 17
             },
             "line": {
-                "id": "1",
+                "id": 1,
                 "name": "Open channel"
             }
         }
@@ -57,7 +57,7 @@ Data arrives in the `data` field, and its content depends on the event.
 - `connector.chat_id` and `chat.chat_id` — chat ID in Bitrix24
 - `user_id` — customer ID in Bitrix24
 
-**Customer messages.** When a customer writes, edits, or deletes a message through a connector, `data` contains only `DATA` with the `connector`, `chat`, and `message` objects. The content is the same for all three events, and `message.id` is the message ID in the external system.
+**Customer messages.** When a customer writes, edits, or deletes a message through a connector, `data` contains only `DATA` with the `connector`, `chat`, `message`, `ref`, and `extra` objects. The content is the same for all three events, and `message.id` is the message ID in the external system. For the live chat, `message.id` is the message ID in Bitrix24.
 
 **Operator and system messages.** Bitrix24 passes such messages to the connector so that it delivers them to the customer. Besides `DATA`, `data` contains `CONNECTOR` — the connector code, and `LINE` — the channel ID:
 
@@ -95,7 +95,7 @@ Events about editing and deleting an operator message arrive only if the connect
 #|
 || **Event** | **Triggered** ||
 || [OnSessionStart](./on-session-start.md) | When an Open Channel session starts, for example, because a customer writes to the channel or the [imopenlines.session.start](../sessions/imopenlines-session-start.md) method is called ||
-|| [OnOpenLineMessageAdd](./on-open-line-message-add.md) | When a new message appears in an open channel chat — from a customer, an operator, or the system, including via the [imopenlines.crm.message.add](../messages/imopenlines-crm-message-add.md) method ||
+|| [OnOpenLineMessageAdd](./on-open-line-message-add.md) | When a new message appears in an open channel chat — from a customer, an operator, or the system, including via the [imopenlines.crm.message.add](../messages/imopenlines-crm-message-add.md) method. For operator messages in the live chat, the event is not sent ||
 || [OnOpenLineMessageUpdate](./on-open-line-message-update.md) | When a message is edited: by a customer through a connector, or by an operator if the connector has confirmed delivery ||
 || [OnOpenLineMessageDelete](./on-open-line-message-delete.md) | When a message is deleted: by a customer through a connector, or by an operator if the connector has confirmed delivery ||
 || [OnSessionFinish](./on-session-finish.md) | When an Open Channel session closes. If the session waits for the customer's reply after the dialog is finished, the event arrives when the session closes completely ||

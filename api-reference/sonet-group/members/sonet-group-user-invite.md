@@ -304,6 +304,7 @@ HTTP status: **400**
 || — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
 || — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
 || — | `Socialnetwork group not found` | The group or project was not found or is not accessible to the current user. ||
+|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `USER_ID` contains a user who is not an employee. ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

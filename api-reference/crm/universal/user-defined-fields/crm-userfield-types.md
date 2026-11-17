@@ -15,23 +15,27 @@ Choose a tool for developing with an AI agent:
 
 The method `crm.userfield.types` retrieves the available types of custom fields.
 
-The types returned are:
+The standard types returned are:
 - `string` — string
 - `integer` — integer
 - `double` — number
 - `boolean` — yes/no
-- `datetime` — date and time
 - `enumeration` — list
-- `iblock_section` — binding to information block sections
-- `iblock_element` — binding to information block elements
-- `employee` — binding to an employee
-- `crm_status` — binding to the CRM directory
-- `crm` — binding to CRM entities
-- `address` — Google Maps address
+- `datetime` — date and time
+- `date` — date
 - `money` — money
 - `url` — link
+- `address` — Google Maps address
+- `file` — file
+- `employee` — binding to an employee
+- `crm_status` — binding to CRM directories
+- `iblock_section` — binding to information block sections
+- `iblock_element` — binding to information block elements
+- `crm` — binding to CRM entities
 
-The method also returns [custom types](./userfield-type.md) registered by the current application.
+When called from an application via OAuth, the method returns [custom types](./userfield-type.md) at the end of the list: the application types that the application registered with the [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) method. When called via a webhook, only the standard types are returned.
+
+The REST 3.0 method [crm.&lt;type&gt;.field.custom.add](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md) does not create fields of the `enumeration` and `file` types or of application types. For them, use [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) or `crm.*.userfield.add`, for example [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md).
 
 ## Method Parameters
 
@@ -214,7 +218,7 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "crm.userfield.types", nil)
+    res, err := client.Core().Call(ctx, "crm.userfield.types", nil, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.userfield.types: %w", err)
     }
@@ -335,12 +339,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../../data-types.md) | Code of the custom field type ||
+[`string`](../../../data-types.md) | Code of the custom field type. Pass the code of a standard type to `USER_TYPE_ID` and to the `type` parameter of the [crm.userfield.settings.fields](./crm-userfield-settings-fields.md) method unchanged. When creating a field, add the `rest_<APP_ID>_` prefix to the code of an application type, for example `rest_123_userfield1` ||
 || **title**
 [`string`](../../../data-types.md) | Name of the custom field type ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own: it does not check CRM permissions and takes no parameters.
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
@@ -348,6 +354,10 @@ HTTP status: **200**
 
 ## Continue Learning
 
+- [{#T}](./userfield-type.md)
 - [{#T}](./crm-userfield-fields.md)
 - [{#T}](./crm-userfield-settings-fields.md)
 - [{#T}](./crm-userfield-enumeration-fields.md)
+- [{#T}](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md)
+- [{#T}](../userfieldconfig/index.md)
+- [{#T}](./index.md)

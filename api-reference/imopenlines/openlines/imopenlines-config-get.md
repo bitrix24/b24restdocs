@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to view the open line
 
 The method `imopenlines.config.get` retrieves the settings of an open line by its ID.
 
@@ -29,11 +29,15 @@ You can obtain the ID of the open line when [creating an open line](./imopenline
 || **WITH_QUEUE**
 [`char`](../../data-types.md) | Return operator queue data. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no, the `QUEUE`, `QUEUE_FULL`, and `QUEUE_USERS_FIELDS` fields are returned empty
+
+Default is `Y` ||
 || **SHOW_OFFLINE**
 [`char`](../../data-types.md) | Return offline operators in the queue. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no, return only online operators
+
+Default is `Y`. Applies if `WITH_QUEUE` = `Y` ||
 |#
 
 ## Code Examples
@@ -303,6 +307,7 @@ HTTP Status: **200**
         "NO_ANSWER_TIME": "60",
         "QUEUE_TYPE": "evenly",
         "CHECK_AVAILABLE": "Y",
+        "SHOW_NOTIFICATION_REDIRECT": null,
         "WATCH_TYPING": "N",
         "WELCOME_BOT_ENABLE": "Y",
         "WELCOME_MESSAGE": "N",
@@ -443,7 +448,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The result value. Possible values:
+[`object`](../../data-types.md) \| [`boolean`](../../data-types.md) | The result value. Possible values:
 - `object` — an object with open line settings [(detailed description)](#result)
 - `false` — the line with the specified `CONFIG_ID` does not exist ||
 || **time**
@@ -451,6 +456,8 @@ HTTP Status: **200**
 |#
 
 #### Object result {#result}
+
+Possible values and units of the settings are described in the [PARAMS](./imopenlines-config-add.md#params) parameter of the `imopenlines.config.add` method.
 
 #|
 || **Name**
@@ -468,13 +475,16 @@ HTTP Status: **200**
 - `Y` — yes
 - `N` — no ||
 || **CRM_CREATE**
-[`string`](../../data-types.md) | The scenario for creating a CRM object ||
+[`string`](../../data-types.md) | What to create in CRM for a new client. Possible values:
+- `lead` — a lead
+- `deal` — a deal
+- `none` — nothing ||
 || **CRM_CREATE_SECOND**
-[`string`](../../data-types.md) | Additional mode for creating a CRM object ||
+[`string`](../../data-types.md) | Pipeline ID for a new deal. An empty string means the general pipeline ||
 || **CRM_CREATE_THIRD**
-[`string`](../../data-types.md) | Additional mode for creating a CRM object. Possible values:
-- `Y` — yes
-- `N` — no ||
+[`string`](../../data-types.md) | Rule for deals. Possible values:
+- `Y` — the default rule
+- `N` — create a new deal for each request ||
 || **CRM_FORWARD**
 [`string`](../../data-types.md) | The status of forwarding to CRM. Possible values:
 - `Y` — yes
@@ -488,17 +498,19 @@ HTTP Status: **200**
 - `Y` — yes
 - `N` — no ||
 || **CRM_SOURCE**
-[`string`](../../data-types.md) | The mode of working with the source in CRM ||
+[`string`](../../data-types.md) | Source for the CRM item being created: `create` or the `STATUS_ID` of a source from the CRM directory ||
 || **QUEUE_TYPE**
 [`string`](../../data-types.md) | The mode of distributing requests ||
 || **QUEUE_TIME**
-[`string`](../../data-types.md) | The time for a request to move to the next operator ||
+[`string`](../../data-types.md) | Time in seconds before a request moves to the next operator ||
 || **NO_ANSWER_TIME**
 [`string`](../../data-types.md) | The time until the no-answer scenario is triggered ||
 || **CHECK_AVAILABLE**
 [`string`](../../data-types.md) | Check the availability of operators. Possible values:
 - `Y` — yes
 - `N` — no ||
+|| **SHOW_NOTIFICATION_REDIRECT**
+[`string`](../../data-types.md) | Show a notification in the dialog when a request passes to an operator who has started their working day. Possible values: `Y`, `N`, or `null` if the value is not set. With `null`, the notification is not shown ||
 || **WATCH_TYPING**
 [`string`](../../data-types.md) | Show the operator's typing. Possible values:
 - `Y` — yes
@@ -572,9 +584,9 @@ HTTP Status: **200**
 - `Y` — yes
 - `N` — no ||
 || **WORKTIME_FROM**
-[`string`](../../data-types.md) | Start of working hours ||
+[`string`](../../data-types.md) | Start of working hours: hours and minutes separated by a dot, for example `9.30` ||
 || **WORKTIME_TO**
-[`string`](../../data-types.md) | End of working hours ||
+[`string`](../../data-types.md) | End of working hours in the same format, for example `18` ||
 || **WORKTIME_TIMEZONE**
 [`string`](../../data-types.md) | Time zone of working hours ||
 || **WORKTIME_HOLIDAYS**
@@ -598,7 +610,7 @@ HTTP Status: **200**
 || **CLOSE_TEXT**
 [`string`](../../data-types.md) | The text of the closing message ||
 || **FULL_CLOSE_TIME**
-[`string`](../../data-types.md) | The time for full session closure ||
+[`string`](../../data-types.md) | Time in minutes before the session is fully closed after manual closing ||
 || **AUTO_CLOSE_RULE**
 [`string`](../../data-types.md) | The scenario for auto-closing ||
 || **AUTO_CLOSE_FORM_ID**
@@ -606,15 +618,15 @@ HTTP Status: **200**
 || **AUTO_CLOSE_BOT_ID**
 [`string`](../../data-types.md) | The ID of the auto-closing bot ||
 || **AUTO_CLOSE_TIME**
-[`string`](../../data-types.md) | The time until auto-closing ||
+[`string`](../../data-types.md) | Time in seconds before auto-closing ||
 || **AUTO_CLOSE_TEXT**
 [`string`](../../data-types.md) | The text for auto-closing ||
 || **AUTO_EXPIRE_TIME**
 [`string`](../../data-types.md) | The time for activity expiration ||
 || **DATE_CREATE**
-[`object`](../../data-types.md) | The creation date of the setting in serialized form ||
+[`object`](../../data-types.md) | Line creation date. Currently, the method returns an empty object `{}` ||
 || **DATE_MODIFY**
-[`object`](../../data-types.md) | The modification date of the setting in serialized form ||
+[`object`](../../data-types.md) | Line modification date. Currently, the method returns an empty object `{}` ||
 || **MODIFY_USER_ID**
 [`string`](../../data-types.md) | The ID of the user who modified the settings ||
 || **TEMPORARY**
@@ -644,7 +656,7 @@ HTTP Status: **200**
 || **QUEUE_USERS_FIELDS**
 [`object`](../../data-types.md) | User fields in the queue. The key of the object is the user ID, the value is the user description [(detailed description)](#result-queue-users-fields-item) ||
 || **QUEUE_ONLINE**
-[`string`](../../data-types.md) | The status of checking the online status of operators. Possible values:
+[`string`](../../data-types.md) | Whether there is an online operator in the queue. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DEFAULT_OPERATOR_DATA**
@@ -773,6 +785,7 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CONFIG_ID_EMPTY` | Config ID can't be empty | The `CONFIG_ID` parameter is not provided or is incorrect ||
+|| `403` | `CONFIG_WRONG_USER_PERMISSION` | Permission denied | Insufficient permissions to view the line ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

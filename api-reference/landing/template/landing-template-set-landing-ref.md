@@ -52,7 +52,9 @@ In `data`, only the numeric part of such an identifier should be passed: `1`, `2
 
 If a key for a saved area is not provided in `data` or if a value of `0`, an empty string, `null`, or a negative number is passed for it, the binding will be removed.
 
-Ensure to provide correct identifiers for the area and page. If such an area does not exist in the template or a page with such an identifier does not exist, the method will not report an error. ||
+Ensure to provide correct identifiers for the area and page. If such an area does not exist in the template or a page with such an identifier does not exist, the method will not report an error.
+
+A page that is not yet assigned as an area can be assigned only if the user has the "change settings" permission for this page. Otherwise, the binding is not saved, and the method does not report an error ||
 |#
 
 ## Code Examples

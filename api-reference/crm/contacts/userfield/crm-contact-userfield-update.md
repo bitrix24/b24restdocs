@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use the REST 3.0 method [crm.contact.field.custom.update](../../rest-v3/fields/crm-entity-field-custom-update-rest-v3.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.field.custom.update](../../rest-v3/fields/crm-entity-field-custom-update-rest-v3.md). In REST 3.0, the [crm.contact.field.custom.enum.*](../../rest-v3/fields/crm-entity-field-custom-enum-list-rest-v3.md) methods change the values of List `enumeration` fields.
 
 {% endnote %}
 
@@ -50,7 +50,7 @@ where:
 
 The list of available fields is described [below](#parameter-fields).
 
-An incorrect field in `fields` will be ignored.
+An incorrect field in `fields` will be ignored. This method cannot change `FIELD_NAME`, `USER_TYPE_ID`, or `MULTIPLE`: provided values are not applied.
 
 Only those fields that need to be changed should be passed in `fields` ||
 |#
@@ -58,44 +58,44 @@ Only those fields that need to be changed should be passed in `fields` ||
 ### Parameter fields {#parameter-fields}
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Is the field mandatory? Possible values:
+[`char`](../../../data-types.md) | Is the field mandatory? Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **SHOW_FILTER**
-[`boolean`](../../../data-types.md) | Should the field be shown in the filter? Possible values:
+[`char`](../../../data-types.md) | Should the field be shown in the filter? Possible values:
 - `Y` — yes
 - `N` — no
+
+When `Y` is passed, `E` is stored for mask filtering. For the `employee` field type, `I` is stored for exact matching. When `N` is passed, `N` is stored
 ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings).
-
-The field only overwrites the passed values ||
+[`object`](../../../data-types.md) | Additional field parameters. The provided settings are merged with the saved settings and then normalized by the field type handler. Available settings are described [below](#settings) ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. This parameter is not used for other field types ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than zero ||
+[`integer`](../../../data-types.md) | Sort index ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Should the user field be shown in the list?
+[`char`](../../../data-types.md) | Should the user field be shown in the list?
 
-This parameter does not affect anything within `crm`.
+Affects the default set of contact list columns. The user can customize the columns.
 
 Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allow user editing? Possible values:
+[`char`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Are the field values searchable?
+[`char`](../../../data-types.md) | Are the field values searchable?
 
 This parameter does not affect anything within `crm`.
 
@@ -104,7 +104,7 @@ Possible values:
 - `N` — no
 ||
 || **LIST_FILTER_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Filter label in the list.
+```string | lang_map``` | Filter label in the list.
 
 When a string is passed, it is set for each language.
 
@@ -112,42 +112,18 @@ For languages where no value is explicitly specified, `''` will be recorded.
 
 The field completely overwrites the previous value ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Header in the list.
-
-When a string is passed, it is set for each language.
-
-For languages where no value is explicitly specified, `''` will be recorded.
-
-The field completely overwrites the previous value ||
+```string | lang_map``` | Header in the list. Strings and `lang_map` are processed in the same way as for `LIST_FILTER_LABEL` ||
 || **EDIT_FORM_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in the edit form.
-
-When a string is passed, it is set for each language.
-
-For languages where no value is explicitly specified, `''` will be recorded.
-
-The field completely overwrites the previous value ||
+```string | lang_map``` | Label in the edit form. Strings and `lang_map` are processed in the same way as for `LIST_FILTER_LABEL` ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Error message.
-
-When passing a string, it is set for each language.
-
-For languages where no value is explicitly specified, `''` will be recorded.
-
-The field completely overwrites the previous value ||
+```string | lang_map``` | Error message. Strings and `lang_map` are processed in the same way as for `LIST_FILTER_LABEL` ||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Help message.
-
-When passing a string, it is set for each language.
-
-For languages where no value is explicitly specified, `''` will be recorded.
-
-The field completely overwrites the previous value ||
+```string | lang_map``` | Help message. Strings and `lang_map` are processed in the same way as for `LIST_FILTER_LABEL` ||
 |#
 
 ### Parameter SETTINGS {#settings}
 
-Each custom field type has its own set of additional configurations. This method supports changing only those described below.
+The method changes only the settings described below. It does not change settings for `date` fields or types without a tab below and does not return an error for them.
 
 {% list tabs %}
 
@@ -159,11 +135,7 @@ Each custom field type has its own set of additional configurations. This method
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value ||
     || **ROWS**
-    [`integer`](../../../data-types.md) | Number of rows in the input field. Must be greater than 0 and less than 50.
-
-    If a value <= 0 is passed, the value `1` will be set.
-
-    If a value >= 50 is passed, the value `50` will be set
+    [`integer`](../../../data-types.md) | Number of rows in the input field. The value is limited to the range from `1` to `50`, inclusive
     ||
     |#
 
@@ -184,9 +156,7 @@ Each custom field type has its own set of additional configurations. This method
     || **DEFAULT_VALUE**
     [`double`](../../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../../data-types.md) | Number precision. Must be greater than or equal to 0.
-
-    If an invalid value is passed, the value `2` will be set ||
+    [`integer`](../../../data-types.md) | Number precision. A negative value is stored as `2`. A value greater than `12` is stored as `12` ||
     |#
 
 - boolean
@@ -197,7 +167,7 @@ Each custom field type has its own set of additional configurations. This method
     || **DEFAULT_VALUE**
     [`integer`](../../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
-    When a value is passed, the value will be set according to the rule:
+    The passed value is converted to `1` or `0`:
     - `>= 1` -> 1
     - `<= 0` -> 0
     ||
@@ -223,18 +193,14 @@ Each custom field type has its own set of additional configurations. This method
     }
     ```
 
-    where
+    where:
     - `VALUE` — default value of type `datetime`
     - `TYPE` — default value type:
         - `NONE` — do not set a default value
         - `NOW` — use current time/date
         - `FIXED` — use time/date from `VALUE`
 
-    If an invalid value is passed, the following will be set:
-    ```
-        VALUE: '',
-        TYPE: 'NONE',
-    ```
+    If `VALUE` is omitted, an empty string is used. If `TYPE` is omitted or empty, `NONE` is used
     ||
     |#
 
@@ -250,7 +216,8 @@ Each custom field type has its own set of additional configurations. This method
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
     ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0 ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | List height. Must be greater than 0 ||
     |#
 
 - iblock_section|iblock_element
@@ -258,10 +225,8 @@ Each custom field type has its own set of additional configurations. This method
     #|
     || **Name**
     `type` | **Description** ||
-    || **IBLOCK_TYPE_ID**
-    [`string`](../../../data-types.md) | Infoblock type identifier ||
     || **IBLOCK_ID**
-    [`string`](../../../data-types.md) | Infoblock identifier ||
+    [`integer`](../../../data-types.md) | Infoblock identifier. If a value less than or equal to `0` is passed, the method returns the `ERROR_CORE` error ||
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value ||
     || **DISPLAY**
@@ -275,7 +240,7 @@ Each custom field type has its own set of additional configurations. This method
     [`integer`](../../../data-types.md) | List height. Must be greater than 0
     ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
     ||
@@ -294,28 +259,28 @@ Each custom field type has its own set of additional configurations. This method
 
 - crm
 
-    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default
+    The provided settings are merged with the saved settings. If no links remain enabled after the update, `LEAD = Y` is set automatically.
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
     ||
     || **CONTACT**
-    [`boolean`](../../../data-types.md) | Whether binding to [Contacts](../index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Contacts](../index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
     ||
     || **COMPANY**
-    [`boolean`](../../../data-types.md) | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
     ||
     || **DEAL**
-    [`boolean`](../../../data-types.md) | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
     ||
@@ -329,31 +294,31 @@ Each custom field type has its own set of additional configurations. This method
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../../data-types.md) | Identifier of the list item. When passing this parameter, the corresponding list item will be changed; otherwise, a new list item will be added.
+[`string`](../../../data-types.md) | Identifier of the list item. To change an existing item, pass its `ID` and a non-empty `VALUE`. If `ID` is passed without `VALUE` or with an empty `VALUE`, the item is deleted. Without `ID`, a new item is added.
 
 The identifier can be obtained using the method [`crm.contact.userfield.get`](./crm-contact-userfield-get.md#uf_enum_element)
 ||
 || **DEL**
-[`boolean`](../../../data-types.md) | Flag necessary for deleting a list item. Makes sense only when passing `ID`. 
+[`char`](../../../data-types.md) | Flag necessary for deleting a list item. Makes sense only when passing `ID`.
 
 Possible values:
-`Y` — delete
-`N` — do not delete
+- `Y` — delete
+- `N` — do not delete
 
 Default is `N`
 ||
 || **VALUE**
 [`string`](../../../data-types.md) | Value of the list element ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0 ||
+[`integer`](../../../data-types.md) | Sort index. If omitted or less than one, a new item receives `500` ||
 || **DEF**
-[`boolean`](../../../data-types.md) | Is the list item the default value? Possible values:
+[`char`](../../../data-types.md) | Is the list item the default value? Possible values:
 - `Y` — yes
 - `N` — no
 
-For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, the first passed list item with `DEF = Y` will be considered the default value ||
+For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, the first passed list item with `DEF = Y` is the default value ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External code of the value. Must be unique within the elements of the user field list ||
+[`string`](../../../data-types.md) | External code of the value, unique within the field's list items. To retain the external code of an item being changed, pass it explicitly. Otherwise, a new code is generated for a non-empty `VALUE`. [crm.contact.userfield.list](./crm-contact-userfield-list.md) returns the current item `XML_ID`. `crm.contact.userfield.get` does not return it ||
 |#
 
 ## Code Examples
@@ -436,12 +401,9 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
 
     ```php
     try {
-        $contactUserfieldItemId = 123; // Example ID
+        $contactUserfieldItemId = 536; // Example ID
         $userfieldFieldsToUpdate = [
-            'FIELD_NAME' => 'New Field Name',
-            'USER_TYPE_ID' => 'string',
             'SORT' => '100',
-            'MULTIPLE' => 'N',
             'MANDATORY' => 'N',
             'SHOW_FILTER' => 'Y',
             'SHOW_IN_LIST' => 'Y',
@@ -452,8 +414,7 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
             'LIST_FILTER_LABEL' => 'Filter Label',
             'ERROR_MESSAGE' => 'Error Message',
             'HELP_MESSAGE' => 'Help Message',
-            'LIST' => '',
-            'SETTINGS' => '',
+            'SETTINGS' => ['DEFAULT_VALUE' => 'Hello, world!', 'ROWS' => 10],
         ];
 
         $result = $serviceBuilder
@@ -462,7 +423,7 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
             ->update($contactUserfieldItemId, $userfieldFieldsToUpdate);
 
         if ($result->isSuccess()) {
-            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+            var_export($result->getCoreResponse()->getResponseData()->getResult());
         } else {
             print("Update failed.");
         }
@@ -622,7 +583,7 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
 
 ### Example of Modifying a List Type Custom Field
 
-Current list items:
+Current list items from the `crm.contact.userfield.list` response:
 
 ```json
 [
@@ -657,7 +618,8 @@ Current list items:
 ]
 ```
 
-Modify it as follows:
+Modify the list as follows. Replace `536` with the identifier of a list-type custom field.
+
 - remove list items with `ID = 115` and `ID = 116`
 - modify the list item with `ID  = 117`:
     - `VALUE`: "List item #3" -> "List item #3 (modified)"
@@ -672,7 +634,7 @@ Modify it as follows:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"ID":115,"DEL":"Y"},{"ID":116,"DEL":"Y"},{"ID":117,"VALUE":"List item #3 (changed)","SORT":50},{"VALUE":"List item #5","XML_ID":"XML_ID_5","SORT":500}],"SETTINGS":{"DISPLAY":"DIALOG","LIST_HEIGHT":3},"SORT":1000}}' \
+    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"ID":115,"DEL":"Y"},{"ID":116,"DEL":"Y"},{"ID":117,"XML_ID":"XML_ID_3","VALUE":"List item #3 (changed)","SORT":50},{"VALUE":"List item #5","XML_ID":"XML_ID_5","SORT":500}],"SETTINGS":{"DISPLAY":"DIALOG","LIST_HEIGHT":3},"SORT":1000}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.update
     ```
 
@@ -682,7 +644,7 @@ Modify it as follows:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"ID":115,"DEL":"Y"},{"ID":116,"DEL":"Y"},{"ID":117,"VALUE":"List item #3 (changed)","SORT":50},{"VALUE":"List item #5","XML_ID":"XML_ID_5","SORT":500}],"SETTINGS":{"DISPLAY":"DIALOG","LIST_HEIGHT":3},"SORT":1000},"auth":"**put_access_token_here**"}' \
+    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"ID":115,"DEL":"Y"},{"ID":116,"DEL":"Y"},{"ID":117,"XML_ID":"XML_ID_3","VALUE":"List item #3 (changed)","SORT":50},{"VALUE":"List item #5","XML_ID":"XML_ID_5","SORT":500}],"SETTINGS":{"DISPLAY":"DIALOG","LIST_HEIGHT":3},"SORT":1000},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.update
     ```
 
@@ -692,6 +654,7 @@ Modify it as follows:
     BX24.callMethod(
         'crm.contact.userfield.update',
         {
+            id: 536,
             fields: {
                 MANDATORY: "N",
                 SHOW_FILTER: "Y",
@@ -706,6 +669,7 @@ Modify it as follows:
                     },
                     {
                         ID: 117,
+                        XML_ID: "XML_ID_3",
                         VALUE: "List item #3 (changed)",
                         SORT: 50,
                     },
@@ -739,6 +703,7 @@ Modify it as follows:
     $result = CRest::call(
         'crm.contact.userfield.update',
         [
+            'id' => 536,
             'fields' => [
                 'MANDATORY' => "N",
                 'SHOW_FILTER' => "Y",
@@ -753,6 +718,7 @@ Modify it as follows:
                     ],
                     [
                         'ID' => 117,
+                        'XML_ID' => "XML_ID_3",
                         'VALUE' => "List item #3 (changed)",
                         'SORT' => 50,
                     ],
@@ -793,27 +759,28 @@ Modify it as follows:
                     "LIST_HEIGHT": 3,
                 },
                 "SORT": 1000,
+                "LIST": [
+                    {
+                        "ID": 115,
+                        "DEL": "Y",
+                    },
+                    {
+                        "ID": 116,
+                        "DEL": "Y",
+                    },
+                    {
+                        "ID": 117,
+                        "XML_ID": "XML_ID_3",
+                        "VALUE": "List item #3 (changed)",
+                        "SORT": 50,
+                    },
+                    {
+                        "VALUE": "List item #5",
+                        "XML_ID": "XML_ID_5",
+                        "SORT": 500,
+                    },
+                ],
             },
-            list=[
-                {
-                    "ID": 115,
-                    "DEL": "Y",
-                },
-                {
-                    "ID": 116,
-                    "DEL": "Y",
-                },
-                {
-                    "ID": 117,
-                    "VALUE": "List item #3 (changed)",
-                    "SORT": 50,
-                },
-                {
-                    "VALUE": "List item #5",
-                    "XML_ID": "XML_ID_5",
-                    "SORT": 500,
-                },
-            ],
         ).response
         result = bitrix_response.result
         print(result)
@@ -835,6 +802,7 @@ Modify it as follows:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.contact.userfield.update", b24.Params{
+        "id": 536,
     	"fields": b24.Params{
     		"MANDATORY":   "N",
     		"SHOW_FILTER": "Y",
@@ -847,11 +815,12 @@ Modify it as follows:
     				"ID":  116,
     				"DEL": "Y",
     			},
-    			{
-    				"ID":    117,
-    				"VALUE": "List item #3 (changed)",
-    				"SORT":  50,
-    			},
+			{
+				"ID":    117,
+				"XML_ID": "XML_ID_3",
+				"VALUE": "List item #3 (changed)",
+				"SORT":  50,
+			},
     			{
     				"VALUE":  "List item #5",
     				"XML_ID": "XML_ID_5",
@@ -923,15 +892,16 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
+Field validation error messages end with the HTML tag `<br>`. The table omits it.
+
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Parameter 'fields' must be array` | The provided `fields` is not an object ||
-|| Empty value | `ID is not defined or invalid`     | The passed `id` is less than zero or not passed at all ||
-|| Empty value | `Access denied`                    | Occurs when:
-- the user does not have administrative rights
-- the user attempts to delete a custom field not associated with contacts ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The user field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | A list item with XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of the user field list ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The provided `fields` is not an object ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The passed `id` is less than or equal to zero or was not provided ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Edit CRM preferences" permission in CRM, or the field with the provided `id` does not belong to contacts ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The user field with the passed `id` does not exist ||
+|| `400` | `ERROR_CORE` | A list item with XML_ID=`xml_id` already exists. | The provided `XML_ID` values for list items are not unique ||
+|| `400` | `ERROR_CORE` | Select an information block to link to the field | For `iblock_section` or `iblock_element`, `SETTINGS.IBLOCK_ID` is no greater than `0` ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -13,7 +13,7 @@ A chat notification is a message containing information from the system or a use
 
 The `im.notify.*` methods are current and have no deprecated variants.
 
-{% note warning %}
+{% note warning "" %}
 
 The sending methods [im.notify](./im-notify.md), [im.notify.personal.add](./im-notify-personal-add.md), and [im.notify.system.add](./im-notify-system-add.md) cannot be called with session authorization — they return the `WRONG_AUTH_TYPE` error. Call them via a webhook or with an application token.
 

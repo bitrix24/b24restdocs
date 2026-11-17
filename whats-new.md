@@ -9,6 +9,10 @@
 - Added the [catalog.pricetype.group.list](./api-reference/catalog/price-type/price-type-group/catalog-price-type-group-list-rest-v3.md), [catalog.pricetype.lang.get](./api-reference/catalog/price-type/price-type-lang/catalog-price-type-lang-get-rest-v3.md), and [catalog.pricetype.lang.list](./api-reference/catalog/price-type/price-type-lang/catalog-price-type-lang-list-rest-v3.md) methods in REST 3.0
 - Updated [catalog.product.property.add](./api-reference/catalog/product-property/catalog-product-property-add-rest-v3.md) in REST 3.0: the method creates properties of all types, accepts flags as `true` and `false`, and returns all property fields. In [catalog.pricetype.group.add](./api-reference/catalog/price-type/price-type-group/catalog-price-type-group-add-rest-v3.md), the `access` field now accepts `true` and `false` instead of `Y` and `N`
 
+### November 12, 2026
+
+- Added the method [voximplant.user.deactivatePhone](./api-reference/telephony/voximplant/users/voximplant-user-deactivate-phone.md): clears the employee's SIP device indicator
+
 ### November 5, 2026
 
 - Added CRM methods in REST 3.0: items, fields, pipelines and stages, product items, requisites, addresses, activities, card views, and directories. The equivalents of the old methods are collected on the [Migrating to the New CRM Methods](./api-reference/crm/migration.md) page, and all groups are listed in the [CRM overview](./api-reference/crm/index.md)

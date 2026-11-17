@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: application user with a registered chat bot
 
-The method `imopenlines.bot.session.transfer` transfers a dialogue from the chat bot in an open line to a specified operator or queue.
+The method `imopenlines.bot.session.transfer` transfers a dialogue from the chat bot in an open line to a specified employee or to an open line queue.
+
+Pass parameter names in uppercase: the method does not recognize `chat_id` or `user_id`.
 
 ## Method Parameters
 
@@ -31,7 +33,7 @@ The chat identifier can be obtained using the methods [imopenlines.dialog.get](.
 
 The user identifier can be obtained using the methods [user.get](../../../user/user-get.md) or [user.search](../../../user/user-search.md) ||
 || **QUEUE_ID** 
-[`integer`](../../../data-types.md) | The identifier of the queue to which the dialogue should be transferred.
+[`integer`](../../../data-types.md) | The identifier of the open line whose queue the dialogue should be transferred to. You can specify the current line or another one.
 
 Pass the value of the `ID` field from the response of the method [imopenlines.config.list.get](../imopenlines-config-list-get.md).
 
@@ -39,17 +41,19 @@ The `QUEUE` field from the response of [imopenlines.config.list.get](../imopenli
 || **TRANSFER_ID** 
 [`string`](../../../data-types.md)\|[`integer`](../../../data-types.md) | Universal transfer destination parameter.
 
-Allowed formats: `USER_ID` of the employee or the string `queue<QUEUE_ID>`.
+Allowed formats: an employee identifier, for example `12`, or the string `queue` followed by the open line identifier, for example `queue3`.
 
 The user identifier can be obtained using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md), and the queue identifier can be obtained using the method [imopenlines.config.list.get](../imopenlines-config-list-get.md) ||
 || **LEAVE** 
-[`boolean`](../../../data-types.md) | Flag indicating the presence of the chat bot in the dialogue after the transfer.
+[`string`](../../../data-types.md) | Flag indicating the presence of the chat bot in the dialogue after the transfer to an employee.
 
 Allowed values:
 - `Y` — the bot leaves the chat immediately
 - `N` — the bot stays until the transfer is confirmed
 
-By default, `N` is used ||
+By default, `N` is used. The method treats any value other than `Y` as `N`.
+
+The parameter is ignored when transferring to a queue ||
 || **CLIENT_ID** 
 [`string`](../../../data-types.md) | This parameter is mandatory only for webhooks.
 
@@ -58,7 +62,7 @@ Pass:
 - or the value of the `botToken` parameter passed during the registration of the chat bot using the method [imbot.v2.Bot.register](../../../chat-bots/chat-bots-v2/imbot.v2/bots/bot-register.md) ||
 |#
 
-It is recommended to pass only one destination parameter: `USER_ID`, `QUEUE_ID`, or `TRANSFER_ID`. If multiple parameters are passed simultaneously, the method uses the following priority: `USER_ID` -> `QUEUE_ID` -> `TRANSFER_ID`. When passing `TRANSFER_ID`, the method converts it to `USER_ID` or `QUEUE_ID`.
+Pass one destination parameter: `USER_ID`, `QUEUE_ID`, or `TRANSFER_ID`. If you pass several, the method first parses `TRANSFER_ID`: a number replaces the `USER_ID` value, and a `queue<ID>` string replaces the `QUEUE_ID` value. The method then selects the destination: if `USER_ID` is set, the dialogue is transferred to the employee; otherwise, to the `QUEUE_ID` queue.
 
 ## Code Examples
 
@@ -300,7 +304,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../../data-types.md) | Contains `true` if the dialogue was successfully transferred ||
+[`boolean`](../../../data-types.md) | Contains `true` if the dialogue was transferred ||
 || **time** 
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -325,10 +329,11 @@ HTTP Status: **400**, **403**
 || `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value is `<= 0` ||
 || `400` | `USER_ID_EMPTY` | User ID can't be empty | `USER_ID` provided with an empty value or value `<= 0` ||
 || `400` | `QUEUE_ID_EMPTY` | QUEUE ID can't be empty | `QUEUE_ID` provided with an empty value or value `<= 0` ||
-|| `400` | `TRANSFER_ID_EMPTY` | Queue ID or User ID can't be empty | Neither `USER_ID` nor `QUEUE_ID` provided, and `TRANSFER_ID` not specified ||
-|| `400` | `BOT_ID_ERROR` | Bot not found | No registered chat bot found in the application ||
-|| `400` | `OPERATOR_WRONG` | You cannot redirect to this operator | Transfer to the specified operator or queue is not available ||
-|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization, which is prohibited for this method ||
+|| `400` | `TRANSFER_ID_EMPTY` | Queue ID or User ID can't be empty | None of the `USER_ID`, `QUEUE_ID`, and `TRANSFER_ID` parameters is provided ||
+|| `400` | `BOT_ID_ERROR` | Bot not found | No registered chat bot found in the application or for the provided `CLIENT_ID` ||
+|| `400` | `OPERATOR_WRONG` | You can not redirect to this operator | The dialogue could not be transferred: the chat is not found, the chat has no active dialogue, the employee is inactive, or the open line is not found ||
+|| `403` | `ACCESS_DENIED` | Access denied! Client ID not specified. | The method was called via a webhook without the `CLIENT_ID` parameter ||
+|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with user session authorization. Call the method via a webhook or with the application's OAuth token ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

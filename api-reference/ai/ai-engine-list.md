@@ -33,6 +33,8 @@ The method `ai.engine.list` returns a list of registered AI services.
 
 If the parameter is not passed, the method returns records without additional filtering.
 
+When called from an application, the selection is always limited to the services of that application. The `filter` conditions, including those combined with `LOGIC` set to `OR`, apply within this limit.
+
 Possible operator prefixes:
 - `>=` — greater than or equal to
 - `>` — greater than

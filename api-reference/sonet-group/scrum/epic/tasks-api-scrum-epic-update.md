@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to Scrum
+> Who can execute the method: a user with permission to edit Scrum tasks
 
 This method updates an epic in Scrum.
 
@@ -422,7 +422,7 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | Epic not found | An epic with this `id` does not exist ||
-|| `400` | `0` | Access denied | The user has no access to the tasks of the epic's group or of the group from `groupId`, or such a group does not exist ||
+|| `400` | `0` | Access denied | The user has no access to the tasks of the epic's group or of the group from `groupId`, or such a group does not exist. The error is also returned when the user can view Scrum tasks but cannot edit them ||
 || `400` | `0` | createdBy user not found | The user from `createdBy` does not exist ||
 || `400` | `0` | modifiedBy user not found | The user from `modifiedBy` does not exist ||
 || `400` | `0` | Epic not updated | Failed to save the changes, for example, the name is longer than 255 characters or the color is longer than 18 characters ||

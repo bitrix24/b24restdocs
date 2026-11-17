@@ -21,7 +21,7 @@ A widget can be registered by:
 
 - the Bitrix24 administrator — in any application
 - an employee with the *Who can create apps for everyone* permission — in a local application the employee has access to. The permission is configured as described in [How to Configure Access to Application Creation](../../local-integrations/local-apps.md#local-app-access)
-- the owner of a personal application — in their own application
+- the owner of a personal application — in their own application, if they have the *Embeddings in users' own applications* permission. By default, all users have this permission. In the on-premise version, the administrator can restrict it in the `rest` module settings
 
 An employee without administrator permissions registers a widget for all users or for themselves: any other `USER_ID` returns the `ACCESS_DENIED` error.
 

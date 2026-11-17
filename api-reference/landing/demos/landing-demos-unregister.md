@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with View access permission in the Sites section
+> Who can execute the method: user with View access permission in the Sites section. When called from an application, the method deletes only templates of this application. Without an application, the method is available to the Bitrix24 administrator or a user with Full access permission in the Sites section, and it deletes only templates registered without an application
 
 The method `landing.demos.unregister` deletes a registered template by its code.
 
@@ -295,7 +295,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `MISSING_PARAMS` | Insufficient call parameters, missing: code | Method call without `code` ||
-|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| `ACCESS_DENIED` | Insufficient permission. | User did not pass general access checks, or called the method outside an application without Full access permission in the Sites section ||
 || Empty value | Template deletion error | Failed to delete the template ||
 |#
 

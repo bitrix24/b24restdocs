@@ -7,7 +7,7 @@ items:
     href: crm-contact-add.md
   - name: Update contact
     href: crm-contact-update.md
-  - name: Get contact by Id
+  - name: Get Contact by ID
     href: crm-contact-get.md
   - name: Get list of contacts
     href: crm-contact-list.md

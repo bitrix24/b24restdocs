@@ -23,14 +23,15 @@ The field type is specified in the `fields` parameter when creating a document. 
 
 ## Getting Started
 
-1. Prepare a `.docx` template file.
+1. Prepare a `.docx` template file and encode it in Base64. The ways to pass the file are described in the article [How to Upload Files](../../files/how-to-upload-files.md).
 2. Obtain or create a numerator in the [Numerators](../numerators/index.md) section.
 3. Select a pre-defined region or create a custom one in the [Regions](../region/index.md) section.
 4. Create a template using the [documentgenerator.template.add](./document-generator-template-add.md) method.
-5. Modify the template using the [documentgenerator.template.update](./document-generator-template-update.md) method if you need to update the file or settings.
-6. Check the template data using the [documentgenerator.template.get](./document-generator-template-get.md) method or find it in the list via [documentgenerator.template.list](./document-generator-template-list.md).
-7. Retrieve the template field card using the [documentgenerator.template.getfields](./document-generator-template-get-fields.md) method.
-8. Use the template ID when [creating a new document](../document-generator-document-add.md).
+5. Check the template data using the [documentgenerator.template.get](./document-generator-template-get.md) method or find it in the list via [documentgenerator.template.list](./document-generator-template-list.md).
+6. Retrieve the template field card using the [documentgenerator.template.getfields](./document-generator-template-get-fields.md) method to find out which placeholders need to be filled in.
+7. Use the template ID when [creating a new document](../document-generator-document-add.md).
+
+To replace the file or change the settings of an existing template, use the [documentgenerator.template.update](./document-generator-template-update.md) method.
 
 ## Linking Templates with Other Objects
 
@@ -46,7 +47,7 @@ The field type is specified in the `fields` parameter when creating a document. 
 
 All templates in this section are created in the `documentgenerator` scope and pertain to the `rest` module. The `moduleId` field for them always remains `rest`, so these methods cannot be used to manage templates from other modules.
 
-Template providers are filled in automatically: the `documentgenerator.template.*` methods always assign the base provider `Bitrix\DocumentGenerator\DataProvider\Rest` to the template, even if a different class is passed in the request.
+The [documentgenerator.template.add](./document-generator-template-add.md) method assigns the `Bitrix\DocumentGenerator\DataProvider\Rest` provider to the template automatically. The [documentgenerator.template.update](./document-generator-template-update.md) method replaces the providers with the classes from the `providers` parameter, so do not pass this parameter when updating a REST template.
 
 Arrays for tables and repeating blocks are described not in the template, but in the `fields` parameter when creating a document: the list itself through `Bitrix\DocumentGenerator\DataProvider\ArrayDataProvider`, and its items through `Bitrix\DocumentGenerator\DataProvider\HashDataProvider`. Examples are provided in the section [{#T}](../examples/index.md).
 

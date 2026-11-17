@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imopenlines.bot.session.message.send` sends an automatic message from the application chatbot to the open line dialog.
+The method `imopenlines.bot.session.message.send` sends an automatic message from the application chatbot to the open line dialog. The client receives it in their communication channel, and in the chat the message is displayed as a system message.
+
+The method sends the message only if the chat has an active dialog.
 
 ## Method Parameters
 
@@ -31,7 +33,9 @@ The chat identifier can be obtained using the methods [imopenlines.dialog.get](.
 
 Allowed values:
 - `WELCOME` — sends an automatic greeting from the Open Line settings; the `MESSAGE` parameter is ignored in this mode
-- `DEFAULT` — sends the text from the `MESSAGE` parameter ||
+- `DEFAULT` — sends the text from the `MESSAGE` parameter
+
+If `NAME` is not passed or another value is passed, the method does not send the message but returns `true` ||
 || **MESSAGE**
 [`string`](../../../data-types.md) | The message text for the `NAME=DEFAULT` mode. By default, an empty string is used.
 
@@ -277,7 +281,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Flag indicating the successful call of the method. The method does not return an indication of the actual creation of the message in the chat ||
+[`boolean`](../../../data-types.md) | Contains `true` after the method runs. The method does not report whether the message was sent: `true` is returned even if the chat is not found, the chat has no active dialog, or the message is empty ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -300,7 +304,7 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value `<= 0` provided ||
-|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization for which it is prohibited ||
+|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with user session authorization. Call the method via a webhook or with the application's OAuth token ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

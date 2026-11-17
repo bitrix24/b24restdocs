@@ -122,6 +122,12 @@ If `PRODUCT_ID` is provided, the default value will be taken from the product, o
 
 Default - `0`
 ||
+|| **STORE_ID**
+[`integer`](../../data-types.md) | ID of the warehouse where the product is reserved. To retrieve the list of warehouses, use the [catalog.store.list](../../catalog/store/catalog-store-list.md) method.
+
+If there is no warehouse with this ID, the method returns an error and does not change the product rows ||
+|| **RESERVE_QUANTITY**
+[`double`](../../data-types.md) | Number of product units reserved in the `STORE_ID` warehouse ||
 |#
 
 ## Code Examples
@@ -529,6 +535,7 @@ HTTP Status: **400**
 || Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 2` was passed without `DISCOUNT_RATE` ||
 || Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were passed without `DISCOUNT_SUM` ||
 || Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 1` was passed without `DISCOUNT_SUM` ||
+|| Could not reserve Test product: the warehouse no longer exists. Select another warehouse | `STORE_ID` contains the ID of a warehouse that does not exist. The error text lists the product names. If there are several products, the text reads "Could not reserve … : the warehouse does not exist. Please select a different warehouse" ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

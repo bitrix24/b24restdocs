@@ -418,6 +418,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `block` or `picture` is missing ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` not found or unavailable. This error is also returned if the page cannot be determined by this identifier ||
+|| `ACCESS_DENIED` | The user does not have the "edit" permission for the site the block belongs to. Error text: "Access denied" ||
 || `FILE_ERROR` | Failed to upload the image. This error is returned if the file could not be downloaded from the URL, read from Base64, failed the image check, SVG is not allowed on the account, or the file could not be saved ||
 |#
 

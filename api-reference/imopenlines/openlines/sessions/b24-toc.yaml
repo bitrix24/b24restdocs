@@ -1,9 +1,9 @@
 title: Dialogs  
 href: imopenlines-session-open.md  
-items:   
+items:
   - name: Overview of Methods  
     href: index.md  
-  - name: Retrieve Chat by Symbolic Code  
+  - name: Get Chat by User Code  
     href: imopenlines-session-open.md  
   - name: Start a New Dialog  
     href: imopenlines-session-start.md  
@@ -13,13 +13,13 @@ items:
     href: imopenlines-session-history-get.md  
   - name: Take Over Dialog from Current Operator  
     href: imopenlines-session-intercept.md  
-  - name: Pin or Unpin Dialog from Operator  
+  - name: Pin or Unpin a Dialog  
     href: imopenlines-session-mode-pin.md  
   - name: Pin All Available Dialogs to Operator  
     href: imopenlines-session-mode-pin-all.md  
-  - name: Unpin All Dialogs from Operator  
+  - name: Unpin All Pinned Operator Dialogs  
     href: imopenlines-session-mode-unpin-all.md  
-  - name: Switch Dialog to "Silent" Mode  
+  - name: Switch Dialog to Silent Mode  
     href: imopenlines-session-mode-silent.md  
   - name: Rate Employee's Performance in Dialog  
     href: imopenlines-session-head-vote.md  

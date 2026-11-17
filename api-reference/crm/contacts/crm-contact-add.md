@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "add|import" access permission for contacts
+> Who can execute the method: a user with permission to add contacts. In import mode, a user with permission to import contacts
 
 {% note warning "DEPRECATED" %}
 
@@ -29,7 +29,7 @@ The method `crm.contact.add` creates a new contact.
 || **fields**
 [`object`](../../data-types.md) | An object in the following format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -53,6 +53,8 @@ The structure and possible values are described [below](#parameter-params) ||
 
 ### Parameter fields {#parameter-fields}
 
+If `NAME` and `LAST_NAME` are empty, the contact is created with the last name `Contact #N`, where `N` is the identifier of the new contact.
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -61,7 +63,7 @@ The structure and possible values are described [below](#parameter-params) ||
 
 The list of available salutation types can be obtained using the method [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONORIFIC" }`.
 
-Default — the first available salutation type ||
+By default, no salutation is set ||
 || **NAME**
 [`string`](../../data-types.md) | First name ||
 || **SECOND_NAME**
@@ -71,7 +73,7 @@ Default — the first available salutation type ||
 || **PHOTO**
 [`file`](../../data-types.md) | Photograph ||
 || **BIRTHDATE**
-[`date`](../../data-types.md) | Date of birth ||
+[`date`](../../data-types.md) | Date of birth. Accepts the `YYYY-MM-DD` format and the Bitrix24 date format, for example `11.11.2001`. An invalid date is not saved, and no error is returned ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Contact type.
 
@@ -103,7 +105,7 @@ Default is `Y`. The default value can be changed in the CRM settings ||
 
 Default is `Y` ||
 || **ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Identifier of the user responsible for the item.
+[`user`](../../data-types.md) | Identifier of the user responsible for the contact.
 
 Default — the identifier of the user calling the method ||
 || **COMPANY_ID**
@@ -117,9 +119,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
-- `CPC` — ads
-- `CPM` — banners ||
+[`string`](../../data-types.md) | Traffic type. For example, `CPC` — ads, `CPM` — banners ||
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
@@ -129,33 +129,30 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **TRACE**
 [`string`](../../data-types.md) | Information for [Sales Intelligence](../../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md) ||
 || **PHONE**
-[`crm_multifield[]`](../data-types.md) | Phone ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Phone. An array of objects with the `VALUE` and `VALUE_TYPE` keys, for example `[{"VALUE": "+493001234567", "VALUE_TYPE": "WORK"}]` ||
 || **EMAIL**
-[`crm_multifield[]`](../data-types.md) | E-mail ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | E-mail ||
 || **WEB**
-[`crm_multifield[]`](../data-types.md) | Website ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Website ||
 || **IM**
-[`crm_multifield[]`](../data-types.md) | Messenger ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Messenger ||
 || **LINK**
-[`crm_multifield[]`](../data-types.md) | Links. Service field ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Links. Service field ||
+||**UF_...**
+[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the portal settings, contacts may have a set of custom fields of defined types. 
+Depending on the Bitrix24 settings, contacts may have a set of custom fields of defined types.
 
 A custom field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
-||**PARENT_ID_...** | Relationship fields. 
+||**PARENT_ID_...**
+[`crm_entity`](../data-types.md) | Relationship fields.
 
-If there are smart processes associated with contacts on the portal, there is a field for each such smart process that stores the relationship between that smart process and the contact. The field itself stores the identifier of the element of that smart process. 
-
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of that smart process associated with the current contact ||
+If an SPA is linked to contacts as a parent, the `PARENT_ID_...` field stores the identifier of its item. For example, `PARENT_ID_153` is the identifier of the parent SPA item with `entityTypeId=153` ||
 |#
 
 **Fields for connections with external data sources**
 
-If the contact is created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+These fields are populated if the contact was created by an external system.
 
 #|
 || **Name**
@@ -163,16 +160,14 @@ If the contact is created by an external system, then:
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
-
-If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+[`string`](../../data-types.md) | Identifier of the contact in the external system ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Original version ||
+[`string`](../../data-types.md) | Version of the contact data in the external system ||
 |#
 
 **Import**
 
-The fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
+These fields can be populated only if `IMPORT = 'Y'` is passed in `params` and the user has administrator permissions for contacts.
 
 #|
 || **Name**
@@ -180,26 +175,21 @@ The fields are available for filling when the parameter `IMPORT = 'Y'` is passed
 || **DATE_CREATE**
 [`datetime`](../../data-types.md) | Creation date.
 
-Available when `IMPORT = Y` is passed in `params`.
-
-Cannot be earlier than the creation date of the last created contact
+Cannot be earlier than the creation date of the last contact or later than the current time
 ||
 || **DATE_MODIFY**
 [`datetime`](../../data-types.md) | Modification date.
 
-Available when `IMPORT = Y` is passed in `params` ||
+Cannot be earlier than `DATE_CREATE` or later than the current time ||
 || **CREATED_BY_ID**
-[`user`](../../data-types.md) | Created by.
-
-Available when `IMPORT = Y` is passed in `params` ||
+[`user`](../../data-types.md) | Created by ||
 || **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Modified by.
-Available when `IMPORT = Y` is passed in `params` ||
+[`user`](../../data-types.md) | Modified by ||
 |#
 
 **Deprecated fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and work only in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -230,18 +220,14 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Should the event of adding a contact be registered in the live feed? Possible values:
-- `Y` — yes
-- `N` — no
-
-Default is `N` ||
+[`boolean`](../../data-types.md) | This parameter is accepted for compatibility and does not affect contact creation. The method ignores it ||
 || **IMPORT**
-[`boolean`](../../data-types.md) | Is import mode enabled? Possible values:
+[`boolean`](../../data-types.md) | Whether import mode is enabled. Possible values:
 - `Y` — yes
 
-To pass the value `No`, you must either not pass the parameter at all or pass the value `0`, `''`
+To disable import, omit the parameter or pass `0` or an empty string. Do not pass `N`: the string `N` enables import mode.
 
-Default is `No` ||
+Import mode is disabled by default ||
 |#
 
 ## Code Examples
@@ -485,9 +471,6 @@ Default is `No` ||
                         'NAME' => 'John',
                         'SECOND_NAME' => 'Doe',
                         'LAST_NAME' => 'Smith',
-                        'PHOTO' => [
-                            'fileData' => document.getElementById('photo'),
-                        ],
                         'BIRTHDATE' => '11.11.2001',
                         'TYPE_ID' => 'PARTNER',
                         'SOURCE_ID' => 'WEB',
@@ -659,9 +642,6 @@ Default is `No` ||
                 'NAME' => 'John',
                 'SECOND_NAME' => 'Doe',
                 'LAST_NAME' => 'Smith',
-                'PHOTO' => [
-                    'fileData' => document.getElementById('photo'),
-                ],
                 'BIRTHDATE' => '11.11.2001',
                 'TYPE_ID' => 'PARTNER',
                 'SOURCE_ID' => 'WEB',
@@ -840,12 +820,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| Empty value | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| Empty value | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
-|| Empty value | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The parameter `fields` is not an object ||
+|| `400` | Empty value | `Parameter 'params' must be array.` | The parameter `params` is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to add contacts or, in import mode, to import contacts ||
+|| `400` | Empty value | Disk resource exhausted | There is not enough Drive space to save the file ||
+|| `400` | Empty value | Only the administrator can change the value of "Created on" | In import mode, `DATE_CREATE`, `DATE_MODIFY`, `CREATED_BY_ID`, or `MODIFY_BY_ID` is passed, but the user does not have administrator permissions for contacts. The field name in the message changes ||
+|| `400` | Empty value | The value of "Created on" cannot be less than that of any other items | In import mode, `DATE_CREATE` is earlier than the creation date of the last contact ||
+|| `400` | Empty value | The value of "Created on" cannot be in the future | In import mode, `DATE_CREATE` or `DATE_MODIFY` is later than the current time. The field name in the message changes ||
+|| `400` | `ERROR_CORE` | The field "Work e-mail" contains an incorrect address.<br> | An invalid address was passed in `EMAIL`. The field name in the message depends on `VALUE_TYPE` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

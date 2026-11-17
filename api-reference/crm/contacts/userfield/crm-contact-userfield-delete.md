@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.contact.userfield.delete` removes a custom contact field.
+The `crm.contact.userfield.delete` method deletes a custom contact field together with its values in all contacts. This action cannot be undone.
 
 ## Method Parameters
 
@@ -29,7 +29,7 @@ The method `crm.contact.userfield.delete` removes a custom contact field.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the contact.
+[`integer`](../../../data-types.md) | Identifier of the custom contact field.
 
 The identifier can be obtained using the methods [`crm.contact.userfield.add`](./crm-contact-userfield-add.md) or [`crm.contact.userfield.list`](./crm-contact-userfield-list.md) ||
 |#
@@ -158,7 +158,7 @@ Delete the custom field with `id = 432`
 
     ```php       
     try {
-        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $userfieldId = 432; // Replace with the actual userfield ID you want to delete
         $result = $serviceBuilder
             ->getCRMScope()
             ->contactUserfield()
@@ -273,13 +273,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
-|| Empty value | `Access denied` | Occurs when:
-- the user does not have administrative rights
-- the user attempts to delete a custom field not associated with contacts ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` does not exist ||
-|| Empty value | Error deleting `FIELD_NAME` for object `ENTITY_ID` | Unknown error during deletion ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The provided `id` is less than or equal to zero or is not provided ||
+|| `400` | Empty value | `Access denied.` | Occurs when:
+- the user does not have the "Edit CRM preferences" permission in CRM
+- the field with the provided `id` belongs to another object, such as leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The custom field with the provided `id` does not exist ||
+|| `400` | `ERROR_CORE` | `Error deleting UF_CRM_CODE for object CRM_CONTACT.` | An event handler canceled the field deletion ||
+|| `500` | `INTERNAL_SERVER_ERROR` | The text depends on the cause | Field deletion exceeded `max_execution_time`. See [Errors When Working with Custom Fields](./index.md#errors) for details ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -13,21 +13,27 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access to CRM entities
 
-The method `crm.timeline.comment.list` retrieves a list of all comments associated with a specified CRM object.
+The method `crm.timeline.comment.list` retrieves a list of comments in the timeline of a specified CRM item.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields to be selected. Pass the fields of the [result](./crm-timeline-comment-fields.md#fields) object. If not provided or an empty array is passed, all fields will be returned. ||
+[`array`](../../../data-types.md) | An array of fields to select: `ID`, `ENTITY_ID`, `ENTITY_TYPE`, `CREATED`, `COMMENT`, `AUTHOR_ID`. The fields are described in the [List of Fields](./crm-timeline-comment-fields.md#fields) section. If the parameter is not passed or an empty array is passed, all the listed fields are returned. The `FILES` field cannot be selected via `select`: it is returned regardless of `select` if the comment has files and the Drive module is available. Specify at least one of the listed fields in `select` — with `select` containing only `FILES`, the `result` array may be empty or incomplete even though `total` is greater than zero ||
 || **filter***
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-The filter works on two mandatory fields:
+The method takes only two fields into account. Pass both to specify the CRM item:
 - `ENTITY_ID` — ID of the CRM object to which the comment is attached
 - `ENTITY_TYPE` — [type of CRM object](../../data-types.md#object_type), for example: `deal`, `lead`, `contact`, `company`
+
+The method ignores other fields, including `CREATED`: comments cannot be filtered by them. If the CRM item cannot be determined or the user has no access to it, the method may return the `Access denied.` error
+
+To retrieve comments for a period, select all comments of the item, for example using the `select` and `start` parameters, and filter them by the `CREATED` field on the application side
 ||
 || **order**
 [`object`](../../../data-types.md) | An object for sorting the selected comments in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -46,7 +52,7 @@ The page size for results is always static: 50 records.
 
 If the parameter is not provided, the default value `0` (first page) is used.
 
-To select the second page of results, you need to pass the value `50`. To select the third page, the value should be `100`, and so on.
+To select the second page of results, pass the value `50`. For the third page, pass `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -66,7 +72,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"],"start":50}' \
+    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT"],"start":50}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.comment.list
     ```
 
@@ -76,7 +82,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"],"start":50,"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT"],"start":50,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.comment.list
     ```
 
@@ -96,10 +102,10 @@ The formula for calculating the `start` parameter value:
       type: string
       name: string
       size: number
-      image?: { width: number; height: number }
+      image: { width: number; height: number } | false
       authorId: number
       authorName: string
-      urlPreview: string
+      urlPreview: string | null
       urlShow: string
       urlDownload: string
     }
@@ -107,12 +113,12 @@ The formula for calculating the `start` parameter value:
     // Shape of each CommentItem returned in result[]
     type CommentItem = {
       ID: string
-      ENTITY_ID: string
+      ENTITY_ID: number
       ENTITY_TYPE: string
       CREATED: ISODate | null
       COMMENT: string
       AUTHOR_ID: string
-      FILES: Record<string, CommentFile>
+      FILES?: Record<string, CommentFile>
     }
 
     try {
@@ -135,7 +141,6 @@ The formula for calculating the `start` parameter value:
             'ENTITY_TYPE',
             'AUTHOR_ID',
             'COMMENT',
-            'FILES',
           ],
           start: 50,
         },
@@ -185,7 +190,6 @@ The formula for calculating the `start` parameter value:
                 'ENTITY_TYPE',
                 'AUTHOR_ID',
                 'COMMENT',
-                'FILES',
               ],
               start: 50,
             },
@@ -231,7 +235,6 @@ The formula for calculating the `start` parameter value:
                 "ENTITY_TYPE",
                 "AUTHOR_ID",
                 "COMMENT",
-                "FILES",
             ],
         ).response
         result = bitrix_response.result
@@ -268,7 +271,6 @@ The formula for calculating the `start` parameter value:
                 "ENTITY_TYPE",
                 "AUTHOR_ID",
                 "COMMENT",
-                "FILES",
             ],
         ).as_list().response
         result = bitrix_response.result
@@ -306,7 +308,6 @@ The formula for calculating the `start` parameter value:
                 "ENTITY_TYPE",
                 "AUTHOR_ID",
                 "COMMENT",
-                "FILES",
             ],
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
@@ -345,7 +346,6 @@ The formula for calculating the `start` parameter value:
                         'ENTITY_TYPE',
                         'AUTHOR_ID',
                         'COMMENT',
-                        'FILES',
                     ],
                     'start' => 50,
                 ]
@@ -378,7 +378,6 @@ The formula for calculating the `start` parameter value:
                 "ENTITY_TYPE",
                 "AUTHOR_ID",
                 "COMMENT", 
-                "FILES",
             ],
             start: 50,
         },
@@ -410,7 +409,6 @@ The formula for calculating the `start` parameter value:
                 'ENTITY_TYPE',
                 'AUTHOR_ID',
                 'COMMENT',
-                'FILES',
             ],
             'start' => 50,
         ]
@@ -430,7 +428,7 @@ The formula for calculating the `start` parameter value:
     		"ENTITY_ID":   10,
     		"ENTITY_TYPE": "deal",
     	},
-    	"select": []string{"ID", "CREATED", "ENTITY_ID", "ENTITY_TYPE", "AUTHOR_ID", "COMMENT", "FILES"},
+    	"select": []string{"ID", "CREATED", "ENTITY_ID", "ENTITY_TYPE", "AUTHOR_ID", "COMMENT"},
 	"start": 50,
     }, b24.WithIdempotent())
     if err != nil {
@@ -470,14 +468,14 @@ HTTP status: **200**
     "result": [
         {
             "ID": "999",
-            "ENTITY_ID": "2",
+            "ENTITY_ID": 2,
             "ENTITY_TYPE": "deal",
             "CREATED": "2020-03-02T12:00:00+03:00",
             "COMMENT": "New comment was added",
             "AUTHOR_ID": "1",
             "FILES": {
-                "1": {
-                    "id": 1,
+                "930": {
+                    "id": 930,
                     "date": "2020-03-02T12:00:00+03:00",
                     "type": "image",
                     "name": "1.gif",
@@ -492,8 +490,8 @@ HTTP status: **200**
                     "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
                 },
-                "2": {
-                    "id": 2,
+                "931": {
+                    "id": 931,
                     "date": "2020-03-02T12:00:00+03:00",
                     "type": "image",
                     "name": "2.gif",
@@ -512,12 +510,11 @@ HTTP status: **200**
         },
         {
             "ID": "1000",
-            "ENTITY_ID": "2",
+            "ENTITY_ID": 2,
             "ENTITY_TYPE": "deal",
             "CREATED": "2020-03-02T12:00:00+03:00",
             "COMMENT": "Test comment",
-            "AUTHOR_ID": "1",
-            "FILES": {}
+            "AUTHOR_ID": "1"
         }
     ],
     "total": 2,
@@ -525,8 +522,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -538,11 +535,63 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | The root element of the response containing an array of objects with information about the selected comments ||
+[`array`](../../../data-types.md) | An array of [comment objects](#result) ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Comment Object {#result}
+
+An element of the `result` array contains the fields selected via `select` and may contain `FILES`. The full description of the comment fields is in the [List of Fields](./crm-timeline-comment-fields.md#fields) section.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Comment identifier. Returned as a string in the response ||
+|| **ENTITY_ID**
+[`integer`](../../../data-types.md) | CRM item identifier. Returned as a number in the response ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | CRM item type ||
+|| **CREATED**
+[`datetime`](../../../data-types.md) | Comment creation date ||
+|| **COMMENT**
+[`string`](../../../data-types.md) | Comment text ||
+|| **AUTHOR_ID**
+[`integer`](../../../data-types.md) | Identifier of the comment author. Returned as a string in the response ||
+|| **FILES**
+[`object`](../../../data-types.md) | An object of files keyed by file identifiers on Drive. The values are [file objects](#comment-file). May be returned regardless of `select` if the comment has files and the Drive module is available. If there are no files or their data could not be retrieved, the field is absent ||
+|#
+
+#### File Object in FILES {#comment-file}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | File identifier on Drive ||
+|| **date**
+[`datetime`](../../../data-types.md) | File creation date ||
+|| **type**
+[`string`](../../../data-types.md) | Content type: `image`, `video`, or `file` ||
+|| **name**
+[`string`](../../../data-types.md) | File name ||
+|| **size**
+[`integer`](../../../data-types.md) | File size in bytes ||
+|| **image**
+[`object`](../../../data-types.md) or `false` | Dimensions of the image or video preview: `width` is the width in pixels, `height` is the height in pixels. Both values are integers. For other files — `false` ||
+|| **authorId**
+[`integer`](../../../data-types.md) | Identifier of the user who created the file ||
+|| **authorName**
+[`string`](../../../data-types.md) | Name of the user who created the file ||
+|| **urlPreview**
+[`string`](../../../data-types.md) or `null` | File preview URL. If no preview is available — `null` ||
+|| **urlShow**
+[`string`](../../../data-types.md) | URL to view an image or download a file of another type ||
+|| **urlDownload**
+[`string`](../../../data-types.md) | File download URL ||
 |#
 
 ## Error Handling
@@ -561,8 +610,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| Empty string | Access denied | No permissions for the specified CRM object ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | No access to the specified CRM item. The error is also possible if the item cannot be determined because the `ENTITY_ID` and `ENTITY_TYPE` filter fields are missing or invalid ||
+|| `400` | Empty value | Parameter 'filter' must be array. | The `filter` parameter is passed a value that is neither an array nor an object ||
+|| `400` | Empty value | Parameter 'order' must be array. | The `order` parameter is passed a value that is neither an array nor an object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

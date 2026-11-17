@@ -52,6 +52,8 @@ If an empty string is passed and the `FOLDER` field is not specified, the method
 || **SITE_ID**
 [`integer`](../../../data-types.md) | The identifier of the site to which the page should be linked. If the parameter is not passed, the current site of the page is used.
 
+To move the page to another site, the "delete" permission on the current site of the page and the "edit" permission on the new site are required.
+
 If both a new site and a folder are specified, the folder will be checked not in the new site but in the current site of the page. For such a scenario, it is better to use [landing.landing.move](./landing-landing-move.md). ||
 || **SITEMAP**
 [`string`](../../../data-types.md) | A flag to include the page in the sitemap. Supported values are `Y` and `N`. Any other value will be saved as `N`. ||
@@ -398,7 +400,9 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | The required parameter `lid` or `fields` is missing. ||
-|| `ACCESS_DENIED` | Insufficient permissions to modify the page or a specific field. For example, for `fields.DELETED`, the "delete" permission on the site is required, and for `fields.DATE_PUBLIC`, the "publication" permission on the site is required. ||
+|| `ACCESS_DENIED` | Insufficient permissions to modify the page or a specific field. For example, for `fields.DELETED`, the "delete" permission on the site is required, and for `fields.DATE_PUBLIC`, the "publication" permission on the site is required.
+
+If another site is passed in `fields.SITE_ID` and the user does not have the "delete" permission on the current site or the "edit" permission on the new one, the error text is "You don't have permission to move this page to another site." ||
 || `SITE_NOT_FOUND` | An identifier of a non-existent site is passed in `fields.SITE_ID`. ||
 || `FOLDER_NOT_FOUND` | A folder that does not belong to the current site of the page or does not exist is passed in `fields.FOLDER_ID`. ||
 || `SLASH_IS_NOT_ALLOWED` | The character `/` is passed in `fields.CODE`. ||

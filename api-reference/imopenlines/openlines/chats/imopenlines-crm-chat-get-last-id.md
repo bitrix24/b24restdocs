@@ -1,4 +1,4 @@
-# Get the Identifier of the Last Chat imopenlines.crm.chat.getLastId
+# Get the Identifier of the Last CRM Object Chat imopenlines.crm.chat.getLastId
 
 {% note tip "" %}
 
@@ -27,12 +27,20 @@ The method `imopenlines.crm.chat.getLastId` retrieves the identifier of the last
 - `lead` — lead
 - `deal` — deal
 - `company` — company
-- `contact` — contact ||
+- `contact` — contact
+
+The value is case-insensitive ||
 || **CRM_ENTITY***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 You can obtain the identifier using the universal method [getting a list of CRM entities](../../../crm/universal/crm-item-list.md) ||
 |#
+
+{% note info "" %}
+
+Pass parameter names in uppercase: `CRM_ENTITY_TYPE`, not `crm_entity_type`. The method does not recognize lowercase names and returns a missing parameter error
+
+{% endnote %}
 
 ## Code Examples
 
@@ -266,7 +274,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Identifier of the last chat ||
+[`integer`](../../../data-types.md) | Identifier of the chat in which the open line activity of the CRM object was modified most recently.
+
+The method returns the chat even if its dialog is closed. To retrieve only active chats, use the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -288,13 +298,13 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | Required parameters `CRM_ENTITY_TYPE` and `CRM_ENTITY` are not provided ||
-|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Could not find CRM object | Possible reasons:
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | The required parameter `CRM_ENTITY_TYPE` or `CRM_ENTITY` is not provided ||
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Could not find CRM entity | Possible reasons:
 - No chat found for the specified CRM object
-- Invalid `CRM_ENTITY_TYPE` specified
+- A type not in the list is passed in `CRM_ENTITY_TYPE`, for example `quote` or `abc`
 - Non-existent `CRM_ENTITY` specified
 - User does not have access to the CRM object ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument CRM_ENTITY has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is not a number or is less than 1 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

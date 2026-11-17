@@ -1,4 +1,4 @@
-# Connect an External Open Channel to the Account imopenlines.network.join
+# Connect an External Open Channel to Bitrix24 imopenlines.network.join
 
 {% note tip "" %}
 
@@ -14,6 +14,8 @@ Choose a tool for developing with an AI agent:
 > Who can execute the method: any user
 
 The method `imopenlines.network.join` connects an external open channel from another Bitrix24 to the current Bitrix24.
+
+When the channel is connected, Bitrix24 creates a network bot for it. After that, you can send messages on behalf of the channel using the [imopenlines.network.message.add](./imopenlines-network-message-add.md) method.
 
 ## Method Parameters
 
@@ -266,7 +268,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | The identifier of the network bot for the connected external open channel. 
+[`integer`](../../data-types.md) | The identifier of the network bot for the connected external open channel.
 
 If the channel was previously connected, the method returns the existing identifier ||
 || **time**
@@ -279,7 +281,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
+    "error": "LINE_NOT_FOUND",
     "error_description": "Line not found"
 }
 ```
@@ -292,7 +294,8 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CODE` | You entered an invalid code | Invalid code in parameter `CODE`, expected a string of 32 characters ||
 || `400` | `IMBOT_ERROR` | Module IMBOT is not installed | The imbot module is not installed ||
-|| `400` | `NOT_FOUND` | Line not found | Open channel not found ||
+|| `400` | `NOT_FOUND` | Line not found | The code belongs to a service channel that cannot be connected with this method ||
+|| `400` | `LINE_NOT_FOUND` | Line not found | No open channel with the specified code was found in Bitrix24 Network ||
 || `400` | `INACTIVE` | Openline is inactive | The open channel is currently unavailable ||
 |#
 

@@ -390,6 +390,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 || `id` | Access denied | No access to the task or the task does not exist ||
 |#
 
+#### Stage Errors
+
+#|
+|| **Code** | **Error Description** | **How to Fix** ||
+|| `TASKS_STAGE_NOT_FOUND` | Stage was not found | The stage from `stageId` does not exist. Specify the ID of an existing stage ||
+|| `TASKS_STAGE_DIFFERENT_STAGES` | Stage and task belong to different groups | The stage from `stageId` belongs to the Kanban board of another group. Specify a stage of the task's group ||
+|#
+
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning

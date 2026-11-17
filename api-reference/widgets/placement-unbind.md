@@ -19,7 +19,7 @@ A handler can be removed by the same users who can register it with the method [
 
 - the Bitrix24 administrator — in any application
 - an employee with the *Who can create apps for everyone* permission — in a local application the employee has access to
-- the owner of a personal application — in their own application
+- the owner of a personal application — in their own application, if they have the *Embeddings in users' own applications* permission. By default, all users have this permission. In the on-premise version, the administrator can restrict it in the `rest` module settings
 
 {% note info "" %}
 

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTDELETE` will be triggered upon the deletion of a document.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTDELETE` will be triggered when an attempt is made to delete a document linked to a CRM object. The event is generated before deletion is complete.
 
 {% note info "" %}
 
@@ -40,7 +40,7 @@ Data is transmitted as a POST request {.b24-info}
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
-        "scope": "crm, documentgenerator",
+        "scope": "crm",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "L",
@@ -62,17 +62,17 @@ In this case — `ONCRMDOCUMENTGENERATORDOCUMENTDELETE` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the deleted document.
+[`object`](../../../../data-types.md) | Object containing information about the document.
 
 Contains the key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the deleted document.
+[`object`](../../../../data-types.md) | Object containing information about the fields of the document.
 
 The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -83,11 +83,11 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the deleted document ||
+[`integer`](../../../../data-types.md) | Identifier of the document ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belonged, for example `1` — lead ||
+[`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
 || **ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the element to which the document was attached ||
+[`integer`](../../../../data-types.md) | Identifier of the element to which the document is attached ||
 |#
 
 ### Parameter auth {#auth}

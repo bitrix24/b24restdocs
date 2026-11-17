@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with permissions to modify the structure
 
-The `department.update` method updates a department in the company structure. Fields that are not passed remain unchanged.
+The `department.update` method updates a department in the company structure. Fields that are not passed remain unchanged. The department keeps its activity status on update: an inactive department stays inactive.
 
 The method belongs to the previous API version. In REST 3.0, the name is changed by [humanresources.node.edit](./node/humanresources-node-edit.md), the department is moved by [humanresources.node.move](./node/humanresources-node-move.md), and the head is assigned by [participant methods](./node-member/index.md). Method correspondence is described in the [section overview](./index.md#v2-v3).
 

@@ -128,15 +128,15 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdBy: number
         modifiedBy: number
         currency: string
-        status: string
+        status: boolean
         dateStatus: ISODate
         dateDocument: ISODate | null
-        statusBy: number
-        total: number
-        commentary: string
+        statusBy: number | null
+        total: number | null
+        commentary: string | null
         title: string
-        docNumber: string
-        contractorId: number
+        docNumber: string | null
+        contractorId: number | null
       }
     }
 
@@ -338,7 +338,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	ID       int     `json:"id"`
     	DocType  string  `json:"docType"`
     	Title    string  `json:"title"`
-    	Status   string  `json:"status"`
+    	Status   bool    `json:"status"`
     	Total    float64 `json:"total"`
     	Currency string  `json:"currency"`
     }
@@ -367,15 +367,15 @@ HTTP status: **200**
             "createdBy": 1,
             "modifiedBy": 1,
             "currency": "EUR",
-            "status": "",
+            "status": false,
             "dateStatus": "2026-10-22T13:34:07+02:00",
             "dateDocument": "2026-10-22T10:00:00+02:00",
-            "statusBy": 0,
+            "statusBy": null,
             "total": 15000,
             "commentary": "Delivery under invoice 15",
             "title": "Receipt from vendor Alpha GmbH",
             "docNumber": "IN-0015",
-            "contractorId": 0
+            "contractorId": null
         }
     },
     "time": {
@@ -428,23 +428,23 @@ HTTP status: **200**
 || **currency**
 [`string`](../../data-types.md) | Document currency code, for example `EUR` ||
 || **status**
-[`string`](../../data-types.md) | Processing status: `"1"` — the document is processed, an empty string — not processed ||
+[`boolean`](../../data-types.md) | Processing status: `true` — the document is processed, `false` — not processed ||
 || **dateStatus**
 [`datetime`](../../data-types.md) | Date and time of the last status change ||
 || **dateDocument**
 [`datetime`](../../data-types.md) or `null` | Document date. `null` if the date is not set ||
 || **statusBy**
-[`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
+[`integer`](../../data-types.md) or `null` | Identifier of the user who last changed the status. `null` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
+[`double`](../../data-types.md) or `null` | Document total. `null` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
+[`string`](../../data-types.md) or `null` | Comment. `null` if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
+[`string`](../../data-types.md) or `null` | Incoming document number. `null` if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
+[`integer`](../../data-types.md) or `null` | Vendor ID from the catalog directory. `null` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -522,7 +522,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied | Check that the user has the "Create and edit" permission for the document type and one of the permissions: "View and select warehouses" or "View product catalog" ||
+|| `-` | Access denied | Check that the user has the "Create and edit" permission for the document type and one of the permissions: "View and select warehouses" or "View product catalog". The error is also returned for a document with a warehouse the user has no access to. In this case, the document is not changed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

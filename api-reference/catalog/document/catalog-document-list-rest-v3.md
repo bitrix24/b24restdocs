@@ -58,13 +58,13 @@ Default: all fields ||
 || **filter**
 [`array`](../../data-types.md) | A list filter in REST 3.0 format: an array of conditions like `["field", "operator", "value"]`, for example `[["docType", "=", "A"]]`. The filter syntax is described in the [REST 3.0 overview](../../rest-v3.md#filter).
 
-You can filter by the fields `id`, `docType`, `siteId`, `responsibleId`, `dateModify`, `dateCreate`, `createdBy`, `modifiedBy`, `currency`, `status`, `dateStatus`, `dateDocument`, `statusBy`, `total`, `title`, `docNumber`, `contractorId`.
+You can filter by any field listed in the `select` parameter description.
 
-Supported operators: `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, `between`. The `like` operator is not supported. Filtering by the `commentary` field is not allowed.
+Supported operators: `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, `between`. The `like` operator is not supported.
 
-Pass the processing status `status` in the filter as a string: `Y` — processed, `N` — not processed. The values `true` and `false` cause an error.
+Pass the processing status `status` in the filter as a boolean: `true` — processed, `false` — not processed. The strings `Y` and `N` cause an error.
 
-The condition `["total", "=", 0]` does not find documents without a total, although their `total` in the response is `0`. The same applies to `contractorId`. If vendors are managed in CRM, the filter by `contractorId` always returns an empty list — use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method.
+If vendors are managed in CRM, the filter by `contractorId` causes an error — use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method.
 
 The method returns only documents of the types for which the user has the "View" permission ||
 || **order**
@@ -75,7 +75,7 @@ Possible direction values:
 - `asc` — ascending
 - `desc` — descending
 
-You can sort by the fields `id`, `docType`, `responsibleId`, `dateModify`, `dateCreate`, `createdBy`, `modifiedBy`, `status`, `dateStatus`, `dateDocument`, `total`, `title`, `docNumber`, `contractorId` ||
+You can sort by any field listed in the `select` parameter description ||
 || **pagination**
 [`object`](../../data-types.md) | Pagination. [Parameter description](#pagination) ||
 |#
@@ -115,7 +115,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","docType","title","status","total"],"filter":[["docType","=","A"],["status","=","N"]],"order":{"id":"desc"},"pagination":{"limit":2}}' \
+    -d '{"select":["id","docType","title","status","total"],"filter":[["docType","=","A"],["status","=",false]],"order":{"id":"desc"},"pagination":{"limit":2}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.list
     ```
 
@@ -125,7 +125,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","docType","title","status","total"],"filter":[["docType","=","A"],["status","=","N"]],"order":{"id":"desc"},"pagination":{"limit":2},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","docType","title","status","total"],"filter":[["docType","=","A"],["status","=",false]],"order":{"id":"desc"},"pagination":{"limit":2},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.document.list
     ```
 
@@ -141,7 +141,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
       items: Array<{
         id: number
         docType: string
-        status: string
+        status: boolean
         total: number
         title: string
       }>
@@ -154,7 +154,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           select: ['id', 'docType', 'title', 'status', 'total'],
           filter: [
             ['docType', '=', 'A'],
-            ['status', '=', 'N'],
+            ['status', '=', false],
           ],
           order: {
             id: 'desc',
@@ -193,7 +193,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
               select: ['id', 'docType', 'title', 'status', 'total'],
               filter: [
                 ['docType', '=', 'A'],
-                ['status', '=', 'N'],
+                ['status', '=', false],
               ],
               order: {
                 id: 'desc',
@@ -232,7 +232,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             select=["id", "docType", "title", "status", "total"],
             filter=[
                 ["docType", "=", "A"],
-                ["status", "=", "N"],
+                ["status", "=", False],
             ],
             order={
                 "id": "desc",
@@ -270,7 +270,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                     'select' => ['id', 'docType', 'title', 'status', 'total'],
                     'filter' => [
                         ['docType', '=', 'A'],
-                        ['status', '=', 'N'],
+                        ['status', '=', false],
                     ],
                     'order' => [
                         'id' => 'desc',
@@ -302,7 +302,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             select: ['id', 'docType', 'title', 'status', 'total'],
             filter: [
                 ['docType', '=', 'A'],
-                ['status', '=', 'N'],
+                ['status', '=', false],
             ],
             order: {
                 id: 'desc',
@@ -333,7 +333,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             'select' => ['id', 'docType', 'title', 'status', 'total'],
             'filter' => [
                 ['docType', '=', 'A'],
-                ['status', '=', 'N'],
+                ['status', '=', false],
             ],
             'order' => [
                 'id' => 'desc',
@@ -357,7 +357,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	"select":     []string{"id", "docType", "title", "status", "total"},
     	"filter":     []any{
     		[]string{"docType", "=", "A"},
-    		[]string{"status", "=", "N"},
+    		[]any{"status", "=", false},
     	},
     	"order":      b24.Params{
     		"id": "desc",
@@ -375,7 +375,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     		ID      int     `json:"id"`
     		DocType string  `json:"docType"`
     		Title   string  `json:"title"`
-    		Status  string  `json:"status"`
+    		Status  bool    `json:"status"`
     		Total   float64 `json:"total"`
     	} `json:"items"`
     }
@@ -400,14 +400,14 @@ HTTP status: **200**
             {
                 "id": 343,
                 "docType": "A",
-                "status": "",
+                "status": false,
                 "total": 15000,
                 "title": "Receipt from vendor Alpha GmbH"
             },
             {
                 "id": 319,
                 "docType": "A",
-                "status": "",
+                "status": false,
                 "total": 8200,
                 "title": "Receipt from vendor Beta GmbH"
             }
@@ -463,23 +463,23 @@ HTTP status: **200**
 || **currency**
 [`string`](../../data-types.md) | Document currency code, for example `EUR` ||
 || **status**
-[`string`](../../data-types.md) | Processing status: `"1"` — the document is processed, an empty string — not processed ||
+[`boolean`](../../data-types.md) | Processing status: `true` — the document is processed, `false` — not processed ||
 || **dateStatus**
 [`datetime`](../../data-types.md) | Date and time of the last status change ||
 || **dateDocument**
 [`datetime`](../../data-types.md) or `null` | Document date. `null` if the date is not set ||
 || **statusBy**
-[`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
+[`integer`](../../data-types.md) or `null` | Identifier of the user who last changed the status. `null` if the status has not changed ||
 || **total**
 [`double`](../../data-types.md) | Document total. `0` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
+[`string`](../../data-types.md) or `null` | Comment. `null` if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
+[`string`](../../data-types.md) or `null` | Incoming document number. `null` or an empty string if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
+[`integer`](../../data-types.md) or `null` | Vendor ID from the catalog directory. `null` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -493,8 +493,8 @@ HTTP status: **400**
         "message": "Error validating request object.",
         "validation": [
             {
-                "message": "DTO \"DocumentDto\" in field \"commentary\" requires attribute \"Filterable\" to perform this request.",
-                "field": "commentary"
+                "message": "This request requires data type \"bool\" in field \"status\".",
+                "field": "status"
             }
         ]
     }
@@ -511,9 +511,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `commentary` | DTO `DocumentDto` in field `commentary` requires attribute `Filterable` to perform this request | Filtering by the `commentary` field is not allowed. Remove it from `filter` ||
-|| `siteId` | DTO `DocumentDto` in field `siteId` requires attribute `Sortable` to perform this request | Remove the field that cannot be used for sorting from `order`. Sorting by `siteId`, `currency`, `statusBy`, `commentary` is not allowed ||
-|| `status` | This request requires data type `string` in field `status` | Pass the status as the string `Y` or `N`. The same error with a different type is returned if the condition value does not fit the field, for example, the string `"abc"` for `id` ||
+|| `status` | This request requires data type `bool` in field `status` | Pass the status as `true` or `false`. The same error with a different type is returned if the condition value does not fit the field, for example, the string `"abc"` for `id` ||
+|| — | Field contractorId is unavailable while a contractor provider is active; use catalog.document.contractor.list | Vendors are managed in CRM, so the filter by `contractorId` is unavailable. Use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method ||
 |#
 
 #### Filter Format Error

@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The method `documentgenerator.template.list` returns a list of templates based on the filter.
 
+{% note info "" %}
+
+The method returns only templates of the `rest` module, that is, templates created with [documentgenerator.template.add](./document-generator-template-add.md). Templates of other modules, such as CRM, are not included in the list
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -23,24 +29,25 @@ The method `documentgenerator.template.list` returns a list of templates based o
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to return. Default is `["*"]`.
+[`array`](../../data-types.md) | An array of fields to return. Use fields from the [fields table](#list-fields).
 
-For `field_N`, use fields from the [fields table](#list-fields).
+Default is `["*"]`: all template fields are returned except `users` and `providers`. To retrieve access codes and providers, add the `users` and `providers` fields to `select`, for example `["*", "users", "providers"]`.
 
-To retrieve access codes and providers, add the `users` and `providers` fields to `select` ||
+The `id`, `download`, and `downloadMachine` fields are always returned, even if they are not listed in `select` ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting templates in the format `{"field_1":"value_1", ... "field_N":"value_N"}`.
+[`object`](../../data-types.md) | An object for sorting templates in the format `{"field_1":"value_1", ... "field_N":"value_N"}`. You can pass several fields; sorting is applied in the order they are listed.
+
+For `field_N`, use fields from the [fields table](#list-fields), except `users` and `providers`.
 
 The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
 
-For `field_N`, use fields from the [fields table](#list-fields).
-||
+No sorting is applied by default ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering templates in the format `{"field_1":"value_1", ... "field_N":"value_N"}`.
 
-For `field_N`, use fields from the [fields table](#list-fields).
+For `field_N`, use fields from the [fields table](#list-fields), except `users` and `providers`. Pass the values of the `createTime` and `updateTime` fields in the [`datetime`](../../data-types.md) format, for example `2026-03-18T00:00:00+01:00`.
 
 You can add a prefix to the `field_n` keys to specify the filter operation. Possible prefix values:
 - `>=` — greater than or equal to
@@ -59,7 +66,9 @@ You can add a prefix to the `field_n` keys to specify the filter operation. Poss
 - `!=` — not equal
 - `!` — not equal
 
-By default, the filter `isDeleted = "N"` is applied ||
+By default, the method returns only templates that are not marked as deleted: the filter `isDeleted = "N"` is applied. To retrieve templates marked as deleted, pass `"isDeleted": "Y"`; to retrieve all templates, pass `"@isDeleted": ["Y", "N"]`.
+
+A filter by `moduleId` is ignored: the method always selects templates of the `rest` module ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
@@ -69,8 +78,18 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N — 1) * 50`, where `N` is the desired page number ||
+`start = (N — 1) * 50`, where `N` is the desired page number.
+
+A value that is not a multiple of 50 is rounded down to the nearest multiple of 50: for example, `start` = `30` returns the first page.
+
+Default is `0` ||
 |#
+
+{% note warning "" %}
+
+If you pass a field in `select`, `order`, or `filter` that is not in the [fields table](#list-fields), the method returns error `100` with the text `Internal server error.`
+
+{% endnote %}
 
 ### Fields for select, order, filter {#list-fields}
 
@@ -89,7 +108,7 @@ The formula for calculating the `start` parameter value:
 || **code**
 [`string`](../../data-types.md) | Template symbolic code ||
 || **region**
-[`string`](../../data-types.md) | Template region ||
+[`string`](../../data-types.md) | Template region, for example `de`. You can retrieve the list of regions with the [documentgenerator.region.list](../region/document-generator-region-list.md) method ||
 || **timezone**
 [`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin` ||
 || **sort**
@@ -98,15 +117,52 @@ The formula for calculating the `start` parameter value:
 [`datetime`](../../data-types.md) | Creation date and time ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Update date and time ||
+|| **createdBy**
+[`user`](../../data-types.md#standart-objects) | Identifier of the user who created the template ||
+|| **updatedBy**
+[`user`](../../data-types.md#standart-objects) | Identifier of the user who updated the template ||
+|| **moduleId**
+[`string`](../../data-types.md) | Template module identifier. Always `rest` for templates created via the REST API ||
+|| **fileId**
+[`integer`](../../data-types.md) | Template file identifier ||
+|| **bodyType**
+[`string`](../../data-types.md) | Class of the template body type, for example `Bitrix\DocumentGenerator\Body\Docx` ||
 || **numeratorId**
-[`integer`](../../data-types.md) | Identifier of the numerator ||
+[`integer`](../../data-types.md) | Identifier of the numerator. You can retrieve the list of numerators with the [documentgenerator.numerator.list](../numerators/document-generator-numerator-list.md) method ||
 || **withStamps**
 [`char`](../../data-types.md) | Use of stamps and signatures. Possible values:
 - `Y` — yes
 - `N` — no
 ||
+|| **productsTableVariant**
+[`string`](../../data-types.md) | Variant of the products table. Possible values:
+- empty string — products and services
+- `goods` — products only
+- `service` — services only
+||
+|| **isDeleted**
+[`char`](../../data-types.md) | Deletion flag of the template. Possible values:
+- `Y` — the template is marked as deleted
+- `N` — the template is not deleted
+||
+|| **isDefault**
+[`char`](../../data-types.md) | Default template flag. Possible values:
+- `Y` — yes
+- `N` — no
+||
 || **users**
-[`array`](../../data-types.md) | Access codes for the template. Only for `select` ||
+[`array`](../../data-types.md) | Access codes for the template. Only for `select`. Possible values:
+- `U{id}` — user
+- `G{id}` — user group
+- `AU` — all authorized users
+- `UA` — all users
+- `D{id}` — department
+- `DR{id}` — department with subdepartments
+- `SG{id}` — workgroup or project
+- `SG{id}_A` — owner of the workgroup or project
+- `SG{id}_E` — moderators of the workgroup or project
+- `SG{id}_K` — all members of the workgroup or project
+||
 || **providers**
 [`array`](../../data-types.md) | Data providers for the template. Only for `select` ||
 |#
@@ -189,7 +245,7 @@ The formula for calculating the `start` parameter value:
       createTime: ISODate | null
       updateTime: ISODate | null
       createdBy: string
-      updatedBy: string
+      updatedBy: string | null
       moduleId: string
       fileId: string
       bodyType: string
@@ -205,8 +261,9 @@ The formula for calculating the `start` parameter value:
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
+    // When nothing matches the filter, templates is an empty array []
     type TemplateListResult = {
-      templates: Record<string, TemplateItem>
+      templates: Record<string, TemplateItem> | []
     }
 
     try {
@@ -223,9 +280,9 @@ The formula for calculating the `start` parameter value:
             id: 'desc',
           },
           filter: {
-            region: 'ru',
+            region: 'de',
             active: 'Y',
-            '>=createTime': '2026-03-18T00:00:00+03:00',
+            '>=createTime': '2026-03-18T00:00:00+01:00',
           },
           start: 0,
         },
@@ -269,9 +326,9 @@ The formula for calculating the `start` parameter value:
                 id: 'desc',
               },
               filter: {
-                region: 'ru',
+                region: 'de',
                 active: 'Y',
-                '>=createTime': '2026-03-18T00:00:00+03:00',
+                '>=createTime': '2026-03-18T00:00:00+01:00',
               },
               start: 0,
             },
@@ -312,9 +369,9 @@ The formula for calculating the `start` parameter value:
               "id": "desc",
           },
           filter={
-              "region": "ru",
+              "region": "de",
               "active": "Y",
-              ">=createTime": "2026-03-18T00:00:00+03:00",
+              ">=createTime": "2026-03-18T00:00:00+01:00",
           },
           start=0,
       ).response
@@ -429,9 +486,9 @@ The formula for calculating the `start` parameter value:
     		"id": "desc",
     	},
     	"filter": b24.Params{
-    		"region":       "ru",
+    		"region":       "de",
     		"active":       "Y",
-    		">=createTime": "2026-03-18T00:00:00+03:00",
+    		">=createTime": "2026-03-18T00:00:00+01:00",
     	},
     	"start": 0,
     }, b24.WithIdempotent())
@@ -454,46 +511,46 @@ HTTP Status: **200**
 {
     "result": {
         "templates": {
-            "57": {
-                "id": "57",
+            "387": {
+                "id": "387",
                 "active": "Y",
-                "name": "SUPPLY_CONTRACT_NEW Template",
-                "code": "REST_TEMPLATE",
+                "name": "Supply contract",
+                "code": "SUPPLY_CONTRACT",
                 "region": "de",
-                "timezone": null,
+                "timezone": "Europe/Berlin",
                 "sort": "700",
-                "createTime": "2026-03-23T16:51:25+01:00",
-                "updateTime": "2026-03-23T17:26:39+01:00",
-                "createdBy": "503",
-                "updatedBy": "503",
+                "createTime": "2026-11-11T13:42:08+01:00",
+                "updateTime": "2026-11-11T13:42:08+01:00",
+                "createdBy": "1269",
+                "updatedBy": null,
                 "moduleId": "rest",
-                "fileId": "5641",
+                "fileId": "6629",
                 "bodyType": "Bitrix\\DocumentGenerator\\Body\\Docx",
                 "numeratorId": "3",
                 "withStamps": "N",
                 "productsTableVariant": "",
                 "isDeleted": "N",
                 "isDefault": "N",
-                "download": "/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=57",
+                "download": "/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=387",
                 "providers": [
                     "bitrix\\documentgenerator\\dataprovider\\rest"
                 ],
                 "users": [
-                    "U503"
+                    "U1269"
                 ],
-                "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=3f5cc2690000071b00000844000001f7f0f107506cefda4aa5b9d0dc80371e7f0f7e26&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3Jl89RFB3MHZYN1A3RXdiMm5EenY2VFYyc1Vkb0hPejA3SlM%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKbDg5UkZCM01IWllOMUEzUlhkaU1tNUVlblkyVkZZeWMxVmtiMGhQZWpBM1NsTT18M2Y1Y2MyNjkwMDAwMDcxYjAwMDAwODQ0MDAwMDAxZjdmMGYxMDc1MDZjZWZkYTRhYTViOWQwZGM4MDM3MWU3ZjBmN2UyNiI%3D.XuC83kQJE21vRoqv1%2FgdT8OiYq4JdpiSLxumy%2F1UcB0%3D"
+                "downloadMachine": "https://mysite.bitrix24.com/rest/1269/webhook_code/documentgenerator.api.template.download/?token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM4NyZfPXYyRWc2U0cyYXBrVHZTZXloazNMSnB2VVd4UEZpdnlJ%7C..."
             }
         }
     },
     "total": 1,
     "time": {
-        "start": 1774341679,
-        "finish": 1774341679.641056,
-        "duration": 0.6410560607910156,
+        "start": 1794393731,
+        "finish": 1794393731.550351,
+        "duration": 0.5503509044647217,
         "processing": 0,
-        "date_start": "2026-03-24T11:41:19+01:00",
-        "date_finish": "2026-03-24T11:41:19+01:00",
-        "operating_reset_at": 1774342279,
+        "date_start": "2026-11-11T13:42:11+01:00",
+        "date_finish": "2026-11-11T13:42:11+01:00",
+        "operating_reset_at": 1794394320,
         "operating": 0
     }
 }
@@ -506,8 +563,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for retrieving the next page. Returned if there are more templates after the current page ||
 || **total**
-[`integer`](../../data-types.md) | Total number of templates in the list ||
+[`integer`](../../data-types.md) | Total number of templates that match the filter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -518,7 +577,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **templates**
-[`object`](../../data-types.md) | Object of templates, where the key is `id`, and the value is the template data [(detailed description)](#template) ||
+[`object`](../../data-types.md) | Object of templates, where the key is `id`, and the value is the template data [(detailed description)](#template).
+
+If nothing matches the filter, an empty array `[]` is returned ||
 |#
 
 #### Template Object Element {#template}
@@ -552,13 +613,13 @@ HTTP Status: **200**
 || **createdBy**
 [`string`](../../data-types.md) | Identifier of the user who created the template ||
 || **updatedBy**
-[`string`](../../data-types.md) | Identifier of the user who updated the template ||
+[`string`](../../data-types.md) | Identifier of the user who updated the template. `null` means the template has not been updated since it was created ||
 || **moduleId**
-[`string`](../../data-types.md) | Module identifier ||
+[`string`](../../data-types.md) | Module identifier, always `rest` ||
 || **fileId**
-[`string`](../../data-types.md) | Template file identifier ||
+[`string`](../../data-types.md) | Template file identifier. For a template marked as deleted, the value is `0` ||
 || **bodyType**
-[`string`](../../data-types.md) | Class of the template body type ||
+[`string`](../../data-types.md) | Class of the template body type, for example `Bitrix\DocumentGenerator\Body\Docx` ||
 || **numeratorId**
 [`string`](../../data-types.md) | Identifier of the numerator ||
 || **withStamps**
@@ -567,11 +628,15 @@ HTTP Status: **200**
 - `N` — no
 ||
 || **productsTableVariant**
-[`string`](../../data-types.md) | Variant of the products table ||
+[`string`](../../data-types.md) | Variant of the products table. Possible values:
+- empty string — products and services
+- `goods` — products only
+- `service` — services only
+||
 || **isDeleted**
 [`char`](../../data-types.md) | Deletion flag of the template. Possible values:
-- `Y` — deleted
-- `N` — not deleted
+- `Y` — the template is marked as deleted because documents have been created from it
+- `N` — the template is not deleted
 ||
 || **isDefault**
 [`char`](../../data-types.md) | Default template flag. Possible values:
@@ -579,13 +644,13 @@ HTTP Status: **200**
 - `N` — no
 ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template ||
+[`string`](../../data-types.md) | Relative link for downloading the template file in a browser. Always returned ||
 || **downloadMachine**
-[`string`](../../data-types.md) | Link to download the template for machine processing ||
+[`string`](../../data-types.md) | Absolute link for downloading the template file via the REST API with an access token. Always returned ||
 || **users**
-[`array`](../../data-types.md) | Array of access codes if the field is selected in `select` ||
+[`array`](../../data-types.md) | Array of access codes, for example `["U1269"]`. Returned if the field is selected in `select` ||
 || **providers**
-[`array`](../../data-types.md) | Array of providers if the field is selected in `select` ||
+[`array`](../../data-types.md) | Array of data providers in lowercase, for example `["bitrix\\documentgenerator\\dataprovider\\rest"]`. Returned if the field is selected in `select` ||
 |#
 
 ## Error Handling
@@ -594,8 +659,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
-    "error_description": "You do not have permissions to modify templates"
+    "error": "100",
+    "error_description": "Internal server error."
 }
 ```
 
@@ -605,7 +670,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient rights to retrieve the list of templates ||
+|| `400` | `100` | Internal server error. | A field that is not in the [fields table](#list-fields) was passed in `select`, `order`, or `filter` ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to work with document generator templates ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

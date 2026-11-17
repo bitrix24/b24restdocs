@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to edit Scrum tasks
 
 The method `tasks.api.scrum.backlog.update` updates the backlog.
 
@@ -359,7 +359,7 @@ HTTP status: **400**
 || `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `0` | Backlog id not found | The backlog identifier `id` was not provided ||
 || `0` | Backlog not found | Invalid backlog identifier provided ||
-|| `0` | Access denied | Insufficient access permissions ||
+|| `0` | Access denied | The user does not have permission to edit tasks of the Scrum the backlog belongs to, or of the Scrum from `fields.groupId`. Permission to view tasks is not enough ||
 || `0` | It is forbidden move a backlog with items | The backlog cannot be moved to another group if it contains tasks ||
 || `0` | The target group already has a backlog | The target group already has a backlog ||
 || `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||

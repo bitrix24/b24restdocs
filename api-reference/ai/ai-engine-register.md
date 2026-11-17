@@ -229,6 +229,8 @@ After processing, send the result to `callbackUrl` in a POST request:
 }
 ```
 
+The `result` value can be a string or a JSON object. An object is accepted as the model response in full. If you pass an array, the first element is used as the response for the `text` and `audio` categories.
+
 If processing fails, send the error to `errorCallbackUrl`:
 
 ```json

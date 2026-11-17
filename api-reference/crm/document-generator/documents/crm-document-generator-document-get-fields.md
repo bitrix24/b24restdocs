@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents
+> Who can execute the method: a user with permission to view and modify document generator documents and access to the specified document
 
 The method `crm.documentgenerator.document.getfields` returns a detail form of the fields of an already created document: which fields are available, their current values, default values, and service indicators.
 
@@ -25,9 +25,9 @@ The method `crm.documentgenerator.document.getfields` returns a detail form of t
 || **id**^*^
 [`integer`](../../../data-types.md) | Document identifier ||
 || **values**
-[`object`](../../../data-types.md) | Object format:
+[`object`](../../../data-types.md) | Object in the following format [(Detailed Description)](#parameter-values-fields):
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -42,7 +42,7 @@ where:
 
 `values` are temporary substitutions over the current document values. The method takes the document data, applies `values`, and recalculates the fields.
 
-This allows checking the result without changing the document itself. For example, if you pass `values.DocumentNumber = "2026-001"`, the response will return the `DocumentNumber` field with the value `2026-001`. If `values` are not passed, the current value of the document will be returned for the same field, for instance, `1`.
+This allows you to check the result without modifying the document itself.
 
 If `values` are not provided, the method will return the detail form of the fields based on the current document data and template logic ||
 |#
@@ -65,9 +65,9 @@ The composition of the keys in `values` depends on the template used to create t
 || **ClientEmail**
 [`string`](../../../data-types.md) | Client email ||
 || **ProductsProductName**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Product name ||
+```array | string``` | Product name ||
 || **ProductsProductQuantity**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Quantity ||
+```array | string``` | Quantity ||
 || **TotalSum**
 [`string`](../../../data-types.md) | Total amount ||
 |#
@@ -119,7 +119,7 @@ Example of retrieving document fields, where:
       required?: string
       type?: string
       group?: string[]
-      chain?: string | string[]
+      chain?: string | unknown[]
       format?: Record<string, unknown>
       options?: Record<string, unknown>
       hideRow?: string
@@ -409,9 +409,9 @@ HTTP status: **200**
 || **title**
 [`string`](../../../data-types.md) | Field name ||
 || **value**
-[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`null`](../../../data-types.md) | Current field value ||
+```string | array | null``` | Field value with the substitutions passed in `values` applied. For a list field, an array of [`listItem`](#listitem) items ||
 || **default**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Default field value ||
+```string | null``` | Default field value ||
 || **required**
 [`char`](../../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
 || **type**
@@ -419,13 +419,26 @@ HTTP status: **200**
 || **group**
 [`array`](../../../data-types.md) | Groups to which the field belongs ||
 || **chain**
-[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
+```string | array``` | Internal representation of the field value source: a string or an array. The array contents depend on the value source ||
 || **format**
 [`object`](../../../data-types.md) | Field formatting parameters, e.g., `{"currencyId":"USD","withZeros":true}` ||
 || **options**
 [`object`](../../../data-types.md) | Additional field parameters, e.g., `{"isArray":true}` ||
 || **hideRow**
 [`char`](../../../data-types.md) | Service indicator for hiding the row: `Y` or `N` ||
+|#
+
+#### listItem Type {#listitem}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **value**
+[`string`](../../../data-types.md) | Item value ||
+|| **title**
+[`string`](../../../data-types.md) | Item name ||
+|| **selected**
+[`boolean`](../../../data-types.md) | Whether the item is selected ||
 |#
 
 ## Error Handling
@@ -444,12 +457,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document or insufficient rights to work with document generator documents ||
-|| `0` | Document not found | Document with the specified `id` not found or unavailable ||
-|| Empty value | You do not have permissions to modify documents | Insufficient rights to modify document generator documents ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| `400` | `0` | You do not have permissions to modify this document | Insufficient rights to modify document generator documents ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

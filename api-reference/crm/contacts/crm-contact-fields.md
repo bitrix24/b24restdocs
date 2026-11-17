@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read permission for at least one CRM object type or SPA in a digital workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method returns the description of contact fields, including custom fields.
+The `crm.contact.fields` method returns the description of contact fields, including custom fields.
+
+## Method Parameters
 
 No parameters are required.
 
@@ -205,6 +207,8 @@ No parameters are required.
 {% endlist %}
 
 ## Response Handling
+
+The example is shortened. The set of fields and their properties depend on the Bitrix24 settings.
 
 HTTP Status: **200**
 
@@ -599,7 +603,7 @@ HTTP Status: **200**
         "LAST_ACTIVITY_TIME": {
             "type": "datetime",
             "isRequired": false,
-            "isReadOnly": true,
+            "isReadOnly": false,
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
@@ -608,7 +612,7 @@ HTTP Status: **200**
         "LAST_ACTIVITY_BY": {
             "type": "user",
             "isRequired": false,
-            "isReadOnly": true,
+            "isReadOnly": false,
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
@@ -658,6 +662,62 @@ HTTP Status: **200**
             "isMultiple": true,
             "isDynamic": false,
             "title": "LINK"
+        },
+        "UF_CRM_64A29A1CC5CCF": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": true,
+            "title": "UF_CRM_64A29A1CC5CCF",
+            "listLabel": "New field",
+            "formLabel": "New field",
+            "filterLabel": "New field",
+            "settings": {
+                "SIZE": 20,
+                "ROWS": 1,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            }
+        },
+        "UF_CRM_1689930044129": {
+            "type": "enumeration",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": true,
+            "items": [
+                {
+                    "ID": "3211",
+                    "VALUE": "Africa"
+                },
+                {
+                    "ID": "3213",
+                    "VALUE": "Europe"
+                },
+                {
+                    "ID": "3215",
+                    "VALUE": "South"
+                },
+                {
+                    "ID": "3217",
+                    "VALUE": "East"
+                }
+            ],
+            "title": "UF_CRM_1689930044129",
+            "listLabel": "List",
+            "formLabel": "List",
+            "filterLabel": "List",
+            "settings": {
+                "DISPLAY": "UI",
+                "LIST_HEIGHT": 1,
+                "CAPTION_NO_VALUE": "",
+                "SHOW_NO_VALUE": "Y"
+            }
         }
     },
     "time": {
@@ -673,6 +733,52 @@ HTTP Status: **200**
 ```
 
 ### Returned Data
+
+The `result` object contains contact field codes as keys and field descriptions as values.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Contact field descriptions ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Field Description
+
+For the `is...` flags, `false` means the flag is disabled.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../data-types.md) | Field type. See the [general types](../../data-types.md) and [CRM types](../data-types.md) reference guides ||
+|| **isRequired**
+[`boolean`](../../data-types.md) | `true` — the field is required ||
+|| **isReadOnly**
+[`boolean`](../../data-types.md) | `true` — the field is read-only ||
+|| **isImmutable**
+[`boolean`](../../data-types.md) | `true` — the value can be set only when creating the contact ||
+|| **isMultiple**
+[`boolean`](../../data-types.md) | `true` — the field is multiple ||
+|| **isDynamic**
+[`boolean`](../../data-types.md) | `true` — the field is a custom field ||
+|| **title**
+[`string`](../../data-types.md) | Field name ||
+|| **statusType**
+[`string`](../../data-types.md) | Directory identifier for the `crm_status` type ||
+|| **items**
+[`object[]`](../../data-types.md) | List options for the `enumeration` type: `ID` is the identifier and `VALUE` is the name ||
+|| **settings**
+[`object`](../../data-types.md) | Field settings, if defined. The structure depends on the field and its type ||
+|| **listLabel**, **formLabel**, **filterLabel**
+[`string`](../../data-types.md) | Custom field labels for the list, form, and filter, if defined ||
+|| **isDeprecated**
+[`boolean`](../../data-types.md) | `true` — the field is deprecated. Returned only for deprecated fields ||
+|#
+
+#### Contact Fields
 
 #|
 || **Name**
@@ -746,21 +852,19 @@ Read-only ||
 ||**DATE_MODIFY**
 [`datetime`](../../data-types.md) | Modification Date. Read-only ||
 ||**COMPANY_ID**
-[`crm_company`](../data-types.md) | Main company of the contact ||
+[`crm_company`](../data-types.md) | Main company of the contact. Deprecated field. Its description includes `isDeprecated: true`. Use `COMPANY_IDS` to link the contact to multiple companies ||
 ||**COMPANY_IDS**
-[`crm_company`](../data-types.md) | Contact's association with companies. Multiple. 
+[`crm_company`](../data-types.md) | Contact's association with companies. Multiple.
 
-In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md) it is used to submit an array of companies. 
+In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md), it accepts an array of company identifiers.
 
-In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get`](./crm-contact-get.md) this field is not present and you need to use [`crm.contact.company.items.get`](./company/crm-contact-company-items-get.md) to get the list of companies  ||
+In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get`](./crm-contact-get.md), this field is absent: use [`crm.contact.company.items.get`](./company/crm-contact-company-items-get.md) to get the list of companies  ||
 ||**LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead associated with the contact. Read-only ||
 ||**UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 ||**UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
-- `CPC` — ads 
-- `CPM` — banners  ||
+[`string`](../../data-types.md) | Traffic type. For example, `CPC` — ads, `CPM` — banners  ||
 ||**UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Campaign identifier ||
 ||**UTM_CONTENT**
@@ -768,9 +872,11 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**UTM_TERM**
 [`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
 ||**LAST_ACTIVITY_TIME**
-[`datetime`](../../data-types.md) | Date of last activity in the timeline. Read-only ||
+[`datetime`](../../data-types.md) | Date of last activity in the timeline ||
 ||**LAST_ACTIVITY_BY**
-[`user`](../../data-types.md) | Author of the last activity in the timeline. Read-only ||
+[`user`](../../data-types.md) | Author of the last activity in the timeline ||
+||**LAST_COMMUNICATION_TIME**
+[`string`](../../data-types.md) | Date and time of the last communication with the contact. Returned as a string in the Bitrix24 date format rather than ISO 8601, for example `09/23/2026 06:27:48 pm`. Read-only ||
 ||**PHONE**
 [`crm_multifield`](../data-types.md) | Phones. Multiple ||
 ||**EMAIL**
@@ -780,25 +886,22 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**IM**
 [`crm_multifield`](../data-types.md) | Messengers. Multiple ||
 ||**LINK**
-[`crm_multifield`](../data-types.md) | Links. Multiple. Service field. ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
+[`crm_multifield`](../data-types.md) | Links. Multiple. Service field ||
+||**UF_...**
+[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the portal settings, contacts may have a set of custom fields of specific types. 
+Depending on the Bitrix24 settings, contacts may have a set of custom fields of specific types.
 
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md)  ||
-||**PARENT_ID_...** | Relationship fields. 
+||**PARENT_ID_...**
+[`crm_entity`](../data-types.md) | Relationship fields.
 
-If there are smart processes associated with contacts on the portal, there is a field for each such smart process that stores the relationship between that smart process and the contact. The field itself stores the identifier of the element of that smart process. 
-
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of that smart process associated with the current contact ||
+If an SPA is linked to contacts as a parent, the `PARENT_ID_...` field stores its item identifier. For example, `PARENT_ID_153` is the identifier of an item of the parent SPA with `entityTypeId=153` ||
 |#
 
 **Fields for External Data Sources**
 
-If the contact was created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+These fields are populated if the contact was created by an external system.
 
 #|
 || **Name**
@@ -808,11 +911,9 @@ If the contact was created by an external system, then:
 ||**ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the contact in the external system ||
 ||**ORIGIN_VERSION**
-[`string`](../../data-types.md) | Version of the contact data in the external system. 
+[`string`](../../data-types.md) | Version of the contact data in the external system.
 
-Used to protect data from accidental overwriting by the external system. 
-
-If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will lead to data overwriting ||
+Prevents accidental overwriting: if the contact was imported and has not changed in the external system, it can be edited in CRM without the next export overwriting those changes ||
 |#
 
 **Deprecated Fields**
@@ -839,10 +940,30 @@ Address fields in the contact are deprecated and are only used for compatibility
 ||**ADDRESS_COUNTRY_CODE**
 [`string`](../../data-types.md) | Country Code ||
 ||**ADDRESS_LOC_ADDR_ID**
-[`location`](../data-types.md) | Location Address ID ||
+[`integer`](../../data-types.md) | Location Address ID ||
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+Example error when the user does not have read permission for any CRM object type or SPA in a digital workplace:
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have read permission for any CRM object type or SPA in a digital workplace ||
+|#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 

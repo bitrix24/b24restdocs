@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialog permissions
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this line
 
 The method `imopenlines.operator.transfer` transfers a dialog to another operator or to the queue of another open line.
 
@@ -23,15 +23,15 @@ The method `imopenlines.operator.transfer` transfers a dialog to another operato
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat.
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) methods. ||
 || **TRANSFER_ID**
 [`string`](../../../data-types.md)\|[`integer`](../../../data-types.md) | Universal parameter for transferring the dialog.
 
-Allowed formats: `USER_ID` of the employee or the string `queue<QUEUE_ID>`.
+Allowed formats: an employee identifier, for example `15`, or the string `queue<line ID>`, for example `queue3`.
 
-The user identifier can be obtained using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods, and the queue identifier can be obtained using the [imopenlines.config.list.get](../imopenlines-config-list-get.md) method. ||
+The user identifier can be obtained using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods, and the line identifier can be obtained using the [imopenlines.config.list.get](../imopenlines-config-list-get.md) method. ||
 || **USER_ID**
 [`integer`](../../../data-types.md) | Identifier of the operator to whom the dialog should be transferred.
 
@@ -42,7 +42,9 @@ The user identifier can be obtained using the [user.get](../../../user/user-get.
 `QUEUE_ID` can be obtained using the [imopenlines.config.list.get](../imopenlines-config-list-get.md) method from the `ID` field. ||
 |#
 
-It is recommended to pass only one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`.
+Pass one of the parameters: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`. If you pass several, the method does not select the recipient by their order in the request: for example, with both `USER_ID` and `QUEUE_ID`, the dialog goes to the employee.
+
+The employee receiving the dialog must be active. You cannot transfer the dialog to yourself: to take the dialog, use the [imopenlines.operator.answer](./imopenlines-operator-answer.md) method. After the transfer, the user who called the method leaves the chat.
 
 ## Code Examples
 
@@ -57,7 +59,7 @@ It is recommended to pass only one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEU
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043,"USER_ID":15}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.operator.transfer.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.operator.transfer
     ```
 
 - cURL (OAuth)
@@ -66,8 +68,8 @@ It is recommended to pass only one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEU
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"USER_ID":15,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.operator.transfer.json
+      -d '{"CHAT_ID":2043,"USER_ID":15,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.operator.transfer
     ```
 
 - JS (TS)
@@ -298,11 +300,12 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value is `<= 0` ||
-|| `400` | `USER_ID_EMPTY` | User ID can't be empty | Empty or invalid `USER_ID` provided ||
-|| `400` | `QUEUE_ID_EMPTY` | QUEUE ID can't be empty | Empty or invalid `QUEUE_ID` provided ||
+|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` is not provided or the value is less than `1` ||
+|| `400` | `USER_ID_EMPTY` | User ID can't be empty | `USER_ID` or a numeric `TRANSFER_ID` is not a number or is less than `1` ||
+|| `400` | `QUEUE_ID_EMPTY` | QUEUE ID can't be empty | `QUEUE_ID` or the line number in a `TRANSFER_ID` of the form `queue<line ID>` is not a number or is less than `1` ||
 || `400` | `TRANSFER_ID_EMPTY` | Queue ID or User ID can't be empty | `TRANSFER_ID`, `USER_ID`, and `QUEUE_ID` not provided ||
-|| `400` | `OPERATOR_WRONG` | You cannot redirect to this operator | The target operator or line is unavailable for transferring the current dialog. ||
+|| `400` | `OPERATOR_WRONG` | You can not redirect to this operator | The chat is not found or is not an open line chat, the user does not have access to the dialog, the chat has no active dialog, the employee is inactive, or the line is not found ||
+|| `400` | `SELF_TRANSFER_FAIL` | You can not redirect the dialog to yourself, use imopenlines.operator.answer to take it | `USER_ID` or `TRANSFER_ID` contains the identifier of the user calling the method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

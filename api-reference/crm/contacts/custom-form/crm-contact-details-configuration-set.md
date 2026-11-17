@@ -1,4 +1,4 @@
-# Set Parameters for the Individual Card crm.contact.details.configuration.set
+# Set Contact Card Parameters crm.contact.details.configuration.set
 
 {% note tip "" %}
 
@@ -13,7 +13,8 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method:
 >  - any user can set their own personal settings
->  - a user with the "Allow to change settings" access permission in CRM can set the shared settings and another user's personal settings
+>  - a user with the "Manage CRM item form layout" or "Edit CRM preferences" access permission in CRM can set the shared settings
+>  - a user with the "Edit CRM preferences" access permission in CRM can set another user's personal settings
 
 {% note warning "DEPRECATED" %}
 
@@ -21,7 +22,13 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method sets the contact card settings: it writes personal settings for the specified user or shared settings for all users.
+The `crm.contact.details.configuration.set` method sets the contact card settings: it writes personal settings for the specified user or shared settings for all users.
+
+{% note warning "" %}
+
+The provided configuration completely replaces the settings of the selected card view. Sections and fields that are not included in `data` are removed from this configuration. Before making changes, retrieve the current configuration using [crm.contact.details.configuration.get](./crm-contact-details-configuration-get.md).
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -37,17 +44,15 @@ Possible values:
 - **P** — personal settings
 - **C** — shared settings
 
-Default — `P`
+Default — `P`. Any value other than `C` selects the personal settings `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when setting personal settings.
 
-If not specified, the `id` of the current user is used
+If the parameter is not specified or its value is less than or equal to zero after conversion to an integer, the current user's identifier is used
 ||
 || **data***
-[`section[]`](#section) | The list of `section` describes the configuration of field sections in the item card.
-
-The structure is described [below](#section) ||
+[`section[]`](#section) | The list of `section` describes the configuration of field sections in the contact card ||
 |#
 
 ### section
@@ -64,15 +69,11 @@ Describes an individual section with fields within the contact card.
 || **title***
 [`string`](../../../data-types.md) | Title of the section.
 
-Displayed in the item card ||
-|| **type***
-[`string`](../../../data-types.md) | Type of the section.
-
-Currently, only the value `'section'` is available ||
+Displayed in the contact card ||
+|| **type**
+[`string`](../../../data-types.md) | Type of the section. The allowed value is `section`. If the parameter is omitted or an empty string is passed, including a string containing only spaces, `section` is used ||
 || **elements**
-[`section_element[]`](#section_element) | The array `section_element` describes the configuration of fields in the section.
-
-The structure is described [below](#section_element) ||
+[`section_element[]`](#section_element) | The array `section_element` describes the configuration of fields in the section ||
 |#
 
 #### section_element
@@ -106,31 +107,11 @@ Default — `0` ||
 || **defaultAddressType**
 [`integer`](../../../data-types.md) | `ADDRESS` | Identifier for the default address type. To find possible address types, use [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md) ||
 || **defaultCountry**
-[`string`](../../../data-types.md) | 
+[`string`](../../../data-types.md) |
 `PHONE`
-`CLIENT`
-`COMPANY`
-`CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
+`COMPANY` | Country code for the default phone number format — a string of two Latin letters.
 
 For example, `"DE"` ||
-|| **isPayButtonVisible**
-[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is displayed.
-
-Possible values:
-- `'true'` — displayed
-- `'false'` — hidden
-
-Default — `true` ||
-|| **isPaymentDocumentsVisible**
-[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is displayed.
-
-Possible values:
-- `'true'` — displayed
-- `'false'` — hidden
-
-Default — `true`
-||
 |#
 
 
@@ -138,21 +119,15 @@ Default — `true`
 
 {% include [Note on Examples](../../../../_includes/examples.md) %}
 
-For the user with `id = 1`, set the following configuration for the contact item card:
+The example sets a personal contact card configuration for the user with `id = 1`:
 
 - Section 1 — **Personal Data**
-    - **First Name**
-        - Always show
-    - **Last Name**
-        - Always show
+    - **First Name** — always show
+    - **Last Name** — always show
     - **Middle Name**
     - **Date of Birth**
-    - **Phone**
-        - Always show
-        - Default country: **United Kingdom (+44)**
-    - **Address**
-        - Always show
-        - Default address type: **Registration Address** (see [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md))
+    - **Phone** — always show, default country: **United Kingdom (+44)**
+    - **Address** — always show, default address type: **Registration Address** (the [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md) method returns the address types)
 - Section 2 — **Main Information**
     - **Contact Type**
     - **Source**
@@ -160,7 +135,7 @@ For the user with `id = 1`, set the following configuration for the contact item
 - Section 3 — **Additional Information**
     - **Photo**
     - **Comment**
-    - **Custom Field #1**
+    - **Custom Field #1** — in the example, `UF_CRM_1720697698689`. Replace it with the code of a custom contact field in your Bitrix24
 
 
 {% list tabs %}
@@ -203,7 +178,7 @@ For the user with `id = 1`, set the following configuration for the contact item
           data: [
             {
               name: 'section_1',
-              title: 'Personal data',
+              title: 'Personal Data',
               type: 'section',
               elements: [
                 {
@@ -238,7 +213,7 @@ For the user with `id = 1`, set the following configuration for the contact item
             },
             {
               name: 'section_2',
-              title: 'Main information',
+              title: 'Main Information',
               type: 'section',
               elements: [
                 { name: 'TYPE_ID' },
@@ -248,7 +223,7 @@ For the user with `id = 1`, set the following configuration for the contact item
             },
             {
               name: 'section_3',
-              title: 'Additional information',
+              title: 'Additional Information',
               type: 'section',
               elements: [
                 { name: 'PHOTO' },
@@ -292,7 +267,7 @@ For the user with `id = 1`, set the following configuration for the contact item
               data: [
                 {
                   name: 'section_1',
-                  title: 'Personal data',
+                  title: 'Personal Data',
                   type: 'section',
                   elements: [
                     {
@@ -327,7 +302,7 @@ For the user with `id = 1`, set the following configuration for the contact item
                 },
                 {
                   name: 'section_2',
-                  title: 'Main information',
+                  title: 'Main Information',
                   type: 'section',
                   elements: [
                     { name: 'TYPE_ID' },
@@ -337,7 +312,7 @@ For the user with `id = 1`, set the following configuration for the contact item
                 },
                 {
                   name: 'section_3',
-                  title: 'Additional information',
+                  title: 'Additional Information',
                   type: 'section',
                   elements: [
                     { name: 'PHOTO' },
@@ -714,7 +689,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Values
+### Returned Data
 
 #|
 || **Name**
@@ -743,15 +718,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty Value | Access denied. | The user does not have administrative rights ||
-|| Empty Value | Parameter 'data' must be array. | A non-array was passed in `data` ||
-|| Empty Value | The data must be indexed array. | A non-indexed array was passed in `data` ||
-|| Empty Value | There are no data to write. | An empty array was passed in `data` ||
-|| Empty Value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | A value other than `'section'` is found in `data[i].type` ||
-|| Empty Value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
-|| Empty Value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
-|| Empty Value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have permission to set the selected card settings ||
+|| `400` | Empty value | Parameter 'data' must be array. | The `data` parameter was not provided or is not an array ||
+|| `400` | Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
+|| `400` | Empty value | There are no data to write. | An empty array was passed in `data` ||
+|| `400` | Empty value | Section at index `i` have type '`data[i].type`'. The expected type is 'section'. | A value other than `'section'` is found in `data[i].type` ||
+|| `400` | Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
+|| `400` | Empty value | Section at index `i` does not have title. | A non-string value was passed in `data[i].title` ||
+|| `400` | Empty value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
 {% include [System Errors](./../../../../_includes/system-errors.md) %}
@@ -760,5 +735,5 @@ HTTP Status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-contact-details-configuration-get.md)
-- [{#T}](./crm-contact-details-configuration-force-common-scope-for-all.md)
 - [{#T}](./crm-contact-details-configuration-reset.md)
+- [{#T}](./crm-contact-details-configuration-force-common-scope-for-all.md)

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "delete" access permission for contacts
+> Who can execute the method: a user with permission to delete contacts
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,11 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.contact.delete` removes a contact and all associated objects.
+The method `crm.contact.delete` deletes a contact.
+
+Associated deals, leads, companies, and estimates are not deleted. Their links to the contact are removed.
+
+If the recycle bin is enabled for contacts in the CRM settings, the contact is moved to the recycle bin and can be restored. The recycle bin is enabled by default. If it is disabled, the contact is permanently deleted together with its files.
 
 ## Method Parameters
 
@@ -29,7 +33,7 @@ The method `crm.contact.delete` removes a contact and all associated objects.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the contact.
+[`integer`](../../data-types.md) | The identifier of the contact to delete.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 |#
@@ -48,7 +52,7 @@ Delete contact with `id = 50`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":50}' \
+    -d '{"id":50}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.delete
     ```
 
@@ -58,7 +62,7 @@ Delete contact with `id = 50`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":50,"auth":"**put_access_token_here**"}' \
+    -d '{"id":50,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.delete
     ```
 
@@ -185,7 +189,7 @@ Delete contact with `id = 50`
     $result = CRest::call(
         'crm.contact.delete',
         [
-            'ID' => 50
+            'id' => 50
         ]
     );
 
@@ -261,10 +265,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
-|| Empty value | `Access denied` | The user does not have permission to "Delete" the contact ||
-|| `ERROR_CORE` | Element not found | The contact with the provided `id` was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is not provided, or its value is not greater than 0 after conversion to an integer ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to delete the contact ||
+|| `400` | `ERROR_CORE` | Element not found | The contact with the provided `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

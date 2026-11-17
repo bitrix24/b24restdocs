@@ -1,4 +1,4 @@
-# Event on Deal Update of Type "Comment" onCrmTimelineCommentUpdate
+# Event on Updating a Comment in the CRM Timeline onCrmTimelineCommentUpdate
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmTimelineCommentUpdate` event is triggered when a "Comment" type activity is updated in the CRM timeline.
+The `onCrmTimelineCommentUpdate` event is triggered when a comment is updated in the CRM timeline.
+
+When a comment with multiple bindings is updated, the event contains the identifier of the new comment. For details, see the [crm.timeline.comment.update](../crm-timeline-comment-update.md) method description.
 
 {% note info "" %}
 
@@ -27,9 +29,12 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "onCrmTimelineCommentUpdate",
+    "event": "ONCRMTIMELINECOMMENTUPDATE",
+    "event_handler_id": "185",
     "data": {
-        "ID": 999
+        "FIELDS": {
+            "ID": 999
+        }
     },
     "ts": "1466439714",
     "auth": {
@@ -55,11 +60,17 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `onCrmTimelineCommentUpdate` ||
+In this case — `ONCRMTIMELINECOMMENTUPDATE` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../../../data-types.md) | An object containing the data of the comment case being updated.
+[`object`](../../../../data-types.md) | An object containing data about the updated comment.
 
-The structure is described [below](#data) ||
+Contains a single key `FIELDS` ||
+|| **data.FIELDS***
+[`object`](../../../../data-types.md) | An object containing the identifier of the updated comment.
+
+The structure is described [below](#fields) ||
 || **ts***
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
@@ -68,7 +79,7 @@ The structure is described [below](#data) ||
 The structure is described [below](#auth) ||
 |#
 
-### Parameter data {#data}
+### Parameter FIELDS {#fields}
 
 #|
 || **parameter**
@@ -76,6 +87,8 @@ The structure is described [below](#auth) ||
 || **ID***
 [`integer`](../../../../data-types.md) | Identifier of the updated comment ||
 |#
+
+To retrieve the comment data, pass `data.FIELDS.ID` in the `id` parameter of the [crm.timeline.comment.get](../crm-timeline-comment-get.md) method.
 
 ### Parameter auth {#auth}
 

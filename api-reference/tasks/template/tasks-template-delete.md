@@ -240,7 +240,7 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": false,
+    "result": true,
     "time": {
         "start": 1773321767,
         "finish": 1773321767.317624,
@@ -260,10 +260,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Always returns `false`, except for parameter transmission errors. In this case, the system deletes the template.
+[`boolean`](../../data-types.md) | `true` if the template is deleted.
 
-If the template is not deleted, check the user's access permissions.
-||
+`false` if the template is not deleted: the user does not have permission to delete the template, or a template with this ID does not exist ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

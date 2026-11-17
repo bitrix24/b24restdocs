@@ -1,4 +1,4 @@
-# Remove User from Chat imopenlines.crm.chat.user.delete
+# Remove a User from a CRM Object Chat imopenlines.crm.chat.user.delete
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the CRM object
+> Who can execute the method: a user with read permission for the CRM object
 
 The method `imopenlines.crm.chat.user.delete` removes a user from the chat associated with the CRM object.
 
@@ -27,22 +27,36 @@ The method `imopenlines.crm.chat.user.delete` removes a user from the chat assoc
 - `lead` — lead
 - `deal` — deal
 - `company` — company
-- `contact` — contact ||
+- `contact` — contact
+
+The value is case-insensitive ||
 || **CRM_ENTITY***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 You can obtain the identifier using the universal method [getting a list of CRM entities](../../../crm/universal/crm-item-list.md) ||
 || **USER_ID***
-[`integer`](../../../data-types.md) | Identifier of the user or bot to be removed from the chat.
+[`integer`](../../../data-types.md) | Identifier of the user or bot to be removed from the chat. The user must be active.
 
 You can obtain the user identifier using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods ||
 || **CHAT_ID**
-[`integer`](../../../data-types.md) | Identifier of the chat. 
+[`integer`](../../../data-types.md) | Identifier of the chat.
 
-By default, the last chat associated with the CRM object is used.
+If the parameter is not provided, the method uses the last chat of the CRM object — the same one returned by [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md).
 
-You can obtain the identifiers of chats associated with the CRM object using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
+You can obtain the identifiers of active chats of the CRM object using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
 |#
+
+{% note warning "" %}
+
+The method works only with an active chat — a chat whose dialog an operator has taken and which has not yet moved to the closing state. If the dialog in the chat is waiting in the queue or is closed, the method returns the `CHAT_NOT_IN_CRM` error. The [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method returns the list of active chats of the CRM object
+
+{% endnote %}
+
+{% note info "" %}
+
+Pass parameter names in uppercase: `CRM_ENTITY_TYPE`, not `crm_entity_type`. The method does not recognize lowercase names and returns a missing parameter error
+
+{% endnote %}
 
 ## Code Examples
 
@@ -284,7 +298,7 @@ HTTP Status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -292,7 +306,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the chat from which the user was removed.
 
-If `CHAT_ID` is not provided and the chat for the CRM object is not found or does not exist, the method will return `"result":0` ||
+If `CHAT_ID` is not provided and the CRM object has no chats, the method returns `"result":0` and removes no one ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -315,16 +329,17 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | Possible reasons:
-- invalid or non-existent `CRM_ENTITY_TYPE` specified
-- the user executing the method does not have access to the CRM object
+- the user executing the method does not have read permission for the CRM object
+- an unknown object type is passed in `CRM_ENTITY_TYPE`, for example `abc`
 ||
-|| `400` | `CRM_CHAT_EMPTY_USER` | Empty User ID | Required parameter `USER_ID` is not specified ||
-|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | Required parameters `CRM_ENTITY_TYPE` and `CRM_ENTITY` are not provided ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The parameter `CRM_ENTITY` is passed in an incorrect format ||
+|| `400` | `CRM_CHAT_EMPTY_USER` | Empty User ID | The required parameter `USER_ID` is not provided or the value is less than 1 ||
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | The required parameter `CRM_ENTITY_TYPE` or `CRM_ENTITY` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is not a number or is less than 1 ||
 || `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
-|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM object being checked | Possible reasons:
-- the chat is not linked to the CRM object
-- the chat with the specified `CHAT_ID` does not exist ||
+|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | Possible reasons:
+- the chat is not linked to the CRM object or does not exist
+- the dialog in the chat is not active: it is waiting in the queue or is closed
+||
 || `403` | `CHAT_DELETE_USER_PERMISSION_DENIED` | You don't have access to delete a user from this chat | The user does not have permission to remove a participant from the chat ||
 || `400` | `CRM_CHAT_USER_NOT_ACTIVE` | User not active | The user being removed with `USER_ID` is not active or does not exist ||
 || `400` | `WRONG_REQUEST` | You don't have access or user already not in chat | The user has already been removed from the chat or is unavailable for removal ||

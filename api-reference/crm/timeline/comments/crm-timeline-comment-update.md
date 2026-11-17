@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the comment author with permission to edit the linked CRM item
 
-This method adds a "Comment" type activity to the timeline.
+The `crm.timeline.comment.update` method updates a comment in the timeline.
 
 ## Method Parameters
 
@@ -23,30 +23,28 @@ This method adds a "Comment" type activity to the timeline.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the comment (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the "Comment" type deal in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the comment. Request body example:
 
-```js
-fields:
+```json
 {
-    "COMMENT": "value",
-    "FILES": [
-        [
-            "file name", 
-            "file"
-        ],
-        [
-            "file name",
-            "file"
-        ],
-    ]
+    "id": 999,
+    "fields": {
+        "COMMENT": "Updated comment",
+        "FILES": [
+            [
+                "1.gif",
+                "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+            ]
+        ]
+    }
 }
 ```
 
 {% note warning %}
 
-Starting from version crm 23.100.0, only parameters with the key `fields` in lowercase are accepted. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from CRM version 23.100.0, the method accepts the `fields` parameter only with its name in lowercase. Other undocumented variants (`Fields`, `FIELDS`, `arFields`) are not accepted.
 
 {% endnote %}
 
@@ -58,15 +56,27 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 |#
 
 
-### Parameter fields
+Pass `ownerTypeId` and `ownerId` together. If at least one of the parameters is not passed, the method determines both from the comment bindings and selects the first binding for which the user has permission to edit the CRM item. If there is no such binding, the method returns the `ACCESS_DENIED` error.
+
+{% note warning %}
+
+If a comment is bound to multiple CRM items, the method does not change the original comment. It creates a new comment with the same author and creation date, binds it only to the selected item, and removes the binding to this item from the original comment. The other items keep the original text. The method returns the identifier of the new comment, and handlers receive the [onCrmTimelineCommentAdd](./events/on-Crm-Timeline-Comment-Add.md) and [onCrmTimelineCommentUpdate](./events/on-Crm-Timeline-Comment-Update.md) events with this identifier.
+
+{% endnote %}
+
+### Parameter fields {#parametr-fields}
+
+The full field reference is available in the [`crm.timeline.comment.fields`](./crm-timeline-comment-fields.md) method description. Consider the following requirements when updating.
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **COMMENT**
-[`string`](../../../data-types.md) | The text of the comment ||
+|| **COMMENT***
+[`string`](../../../data-types.md) | The text of the comment. Must not be empty after leading and trailing spaces, tabs, and line breaks are removed. Pass it on every update, including when changing files ||
 || **FILES**
-[`attached_diskfile`](../../data-types.md#attached_diskfile) | List of files. An array of values described according to the [rules](../../../files/how-to-update-files.md) ||
+[`attached_diskfile`](../../data-types.md#attached_diskfile) | List of files. An array of values described according to the [rules](../../../files/how-to-update-files.md). When only `COMMENT` is updated, the current files are retained ||
 |#
 
 ## Code Examples
@@ -337,8 +347,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -350,7 +360,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Returns the integer identifier of the updated comment ||
+[`integer`](../../../data-types.md) | Identifier of the updated comment. If the comment was bound to multiple CRM items, the identifier of the new comment is returned ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -362,7 +372,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Item was not found."
 }
 ```
 
@@ -371,12 +381,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| `INVALID_ARG_VALUE` | Empty comment ||
-|| `100` | Required fields are not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `OWNER_NOT_FOUND` | Owner was not found | `ownerId` is less than or equal to zero, or an unknown `ownerTypeId` is passed ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user is not the comment author or has no permission to edit the linked CRM item ||
+|| `400` | `NOT_FOUND` | Item was not found | The comment was not found, has no bindings, or the specified CRM item is not linked to the comment ||
+|| `400` | `ADDING_DISABLED` | Could not create comment | The comment is bound to multiple CRM items, and a new comment for the selected item could not be created ||
+|| `400` | `INVALID_ARG_VALUE` | Empty comment message | The comment text is not passed or is empty after leading and trailing spaces, tabs, and line breaks are removed ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required `fields` parameter is not passed ||
+|| `400` | `100` | Could not find value for parameter {id} | The required `id` parameter is not passed ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

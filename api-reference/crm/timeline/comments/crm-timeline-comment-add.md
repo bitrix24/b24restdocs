@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with permission to edit the CRM item the comment is added to
 
-Adds a new activity of type "Comment" to the timeline.
+The `crm.timeline.comment.add` method adds a comment to the timeline of a CRM item.
 
 ## Method Parameters
 
@@ -23,33 +23,29 @@ Adds a new activity of type "Comment" to the timeline.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new activity of type "Comment" in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a comment. Request body example:
 
 ```json
-
-fields:
 {
-    "ENTITY_ID": 'value',
-    "ENTITY_TYPE": 'value',
-    "COMMENT": 'value',
-    "FILES": [
-        [
-            "file name", 
-            "file content"
-        ],
-        [
-            "file name",
-            "file content"
-        ],
-    ]
+    "fields": {
+        "ENTITY_ID": 10,
+        "ENTITY_TYPE": "deal",
+        "COMMENT": "New comment",
+        "FILES": [
+            [
+                "1.gif",
+                "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+            ]
+        ]
+    }
 }
 ```
 
-The file content is transmitted as a [base64 string](../../../files/how-to-upload-files.md)
+`FILES` takes an array of files. Each file is an array of the file name and the content as a [base64 string](../../../files/how-to-upload-files.md). If no files are passed, the comment is created without them
 
 {% note warning %}
 
-Starting from crm version 23.100.0, the method only accepts parameters with the key `fields` in lowercase. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from CRM version 23.100.0, the method accepts the `fields` parameter only with its name in lowercase. Other undocumented variants (`Fields`, `FIELDS`, `arFields`) are not accepted.
 
 {% endnote %}
 
@@ -58,21 +54,27 @@ Starting from crm version 23.100.0, the method only accepts parameters with the 
 
 ### Parameter fields {#parametr-fields}
 
+The full field description is in the [`crm.timeline.comment.fields`](./crm-timeline-comment-fields.md#fields) method. Use the following fields to add a comment.
+
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | `ID` of the element to which the comment is attached.
+[`integer`](../../../data-types.md) | Positive identifier of the CRM item the comment is added to.
 
 The value can be obtained using the method [`crm.item.list`](../../universal/crm-item-list.md) or when creating an element with the help of [`crm.item.add`](../../universal/crm-item-add.md) ||
-|| **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../../universal/user-defined-object-types/index.md) of the CRM object to which the comment is attached. For example: `lead`, `deal`, `contact`, `company`, `order`, `dynamic_1046` ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | Symbolic name of the CRM item type, for example `deal` or `dynamic_1046`. Type examples are in the [field description](./crm-timeline-comment-fields.md#fields).
+
+Required if a non-zero `ENTITY_TYPE_ID` is not passed ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../data-types.md) | [Numeric identifier of the CRM object type](../../data-types.md#object_type), for example `2` for a deal. If passed and not equal to `0`, it is used instead of `ENTITY_TYPE` ||
 || **COMMENT***
-[`string`](../../../data-types.md) | The text of the comment ||
+[`string`](../../../data-types.md) | The text of the comment. Must not be empty after leading and trailing spaces, tabs, and line breaks are removed. The current user becomes the author ||
 || **FILES**
-[`attached_diskfile`](../../data-types.md#attached_diskfile) | List of files. An array of values described according to the [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../data-types.md#attached_diskfile) | Optional array of files in the format shown in the request body example above ||
 |#
 
 ## Code Examples
@@ -349,8 +351,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -364,7 +366,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Returns the integer identifier of the added comment ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -373,8 +375,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "INVALID_ARG_VALUE",
+    "error_description": "Empty comment message"
 }
 ```
 
@@ -383,12 +385,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| `INVALID_ARG_VALUE` | Empty comment ||
-|| `100` | Required fields are not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `OWNER_NOT_FOUND` | Owner was not found | `ENTITY_ID` is not passed or is not positive, or the CRM item type could not be determined from `ENTITY_TYPE_ID` or `ENTITY_TYPE` ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to edit the CRM item ||
+|| `400` | `INVALID_ARG_VALUE` | Empty comment message | `COMMENT` is not passed or is empty after leading and trailing spaces, tabs, and line breaks are removed ||
+|| `400` | `ADDING_DISABLED` | Could not create comment | The comment could not be created ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required `fields` object is not passed ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -400,4 +402,5 @@ HTTP status: **400**
 - [{#T}](./crm-timeline-comment-list.md)
 - [{#T}](./crm-timeline-comment-delete.md)
 - [{#T}](./crm-timeline-comment-fields.md)
+- [{#T}](./events/on-Crm-Timeline-Comment-Add.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)

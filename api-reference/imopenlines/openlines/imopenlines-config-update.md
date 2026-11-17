@@ -27,8 +27,18 @@ The method `imopenlines.config.update` updates an open channel.
 
 You can obtain the identifier of the open channel when [creating an open channel](./imopenlines-config-add.md) or by using the [method to get the list of open channels](./imopenlines-config-list-get.md) ||
 || **PARAMS**
-[`object`](../../data-types.md) | Object with settings for the update. The set of fields corresponds to the [PARAMS](./imopenlines-config-add.md#params) parameter of the `imopenlines.config.add` method ||
+[`object`](../../data-types.md) | Object with settings for the update. The set of fields corresponds to the [PARAMS](./imopenlines-config-add.md#params) parameter of the `imopenlines.config.add` method.
+
+The method changes only the passed fields; default values from `imopenlines.config.add` are not applied ||
 |#
+
+When passing `PARAMS`, keep in mind:
+
+- `LINE_NAME` cannot be an empty string
+- `QUEUE` replaces the entire queue. The method does not accept an empty array, elements without `ENTITY_TYPE` and `ENTITY_ID`, or a department without employees
+- pass `WORKTIME_FROM` and `WORKTIME_TO` together, as hours with a dot, for example `9` and `18.30`. If the time is in the `09:00` format, the method replaces it with the interval from `9` to `18.30`
+
+If any of these conditions is not met, the method does not save the changes and returns `false`.
 
 ## Code Examples
 
@@ -66,8 +76,8 @@ You can obtain the identifier of the open channel when [creating an open channel
           "WELCOME_MESSAGE": "Y",
           "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
           "WORKTIME_ENABLE": "Y",
-          "WORKTIME_FROM": "09:00",
-          "WORKTIME_TO": "21:00",
+          "WORKTIME_FROM": "9",
+          "WORKTIME_TO": "21",
           "WORKTIME_TIMEZONE": "Europe/Berlin"
         }
       }' \
@@ -104,8 +114,8 @@ You can obtain the identifier of the open channel when [creating an open channel
           "WELCOME_MESSAGE": "Y",
           "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
           "WORKTIME_ENABLE": "Y",
-          "WORKTIME_FROM": "09:00",
-          "WORKTIME_TO": "21:00",
+          "WORKTIME_FROM": "9",
+          "WORKTIME_TO": "21",
           "WORKTIME_TIMEZONE": "Europe/Berlin"
         },
         "auth": "**put_access_token_here**"
@@ -148,10 +158,10 @@ You can obtain the identifier of the open channel when [creating an open channel
             QUEUE_TIME: 45,
             NO_ANSWER_TIME: 120,
             WELCOME_MESSAGE: 'Y',
-            WELCOME_MESSAGE_TEXT: 'Hello! We will reply in a couple of minutes',
+            WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
             WORKTIME_ENABLE: 'Y',
-            WORKTIME_FROM: '09:00',
-            WORKTIME_TO: '21:00',
+            WORKTIME_FROM: '9',
+            WORKTIME_TO: '21',
             WORKTIME_TIMEZONE: 'Europe/Berlin',
           },
         },
@@ -206,10 +216,10 @@ You can obtain the identifier of the open channel when [creating an open channel
                 QUEUE_TIME: 45,
                 NO_ANSWER_TIME: 120,
                 WELCOME_MESSAGE: 'Y',
-                WELCOME_MESSAGE_TEXT: 'Hello! We will reply in a couple of minutes',
+                WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
                 WORKTIME_ENABLE: 'Y',
-                WORKTIME_FROM: '09:00',
-                WORKTIME_TO: '21:00',
+                WORKTIME_FROM: '9',
+                WORKTIME_TO: '21',
                 WORKTIME_TIMEZONE: 'Europe/Berlin',
               },
             },
@@ -262,10 +272,10 @@ You can obtain the identifier of the open channel when [creating an open channel
                 "QUEUE_TIME": 45,
                 "NO_ANSWER_TIME": 120,
                 "WELCOME_MESSAGE": "Y",
-                "WELCOME_MESSAGE_TEXT": "Hello! We will reply in a couple of minutes",
+                "WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
                 "WORKTIME_ENABLE": "Y",
-                "WORKTIME_FROM": "09:00",
-                "WORKTIME_TO": "21:00",
+                "WORKTIME_FROM": "9",
+                "WORKTIME_TO": "21",
                 "WORKTIME_TIMEZONE": "Europe/Berlin",
             },
         ).response
@@ -316,8 +326,8 @@ You can obtain the identifier of the open channel when [creating an open channel
                         'WELCOME_MESSAGE' => 'Y',
                         'WELCOME_MESSAGE_TEXT' => 'Hello! We will respond within a couple of minutes',
                         'WORKTIME_ENABLE' => 'Y',
-                        'WORKTIME_FROM' => '09:00',
-                        'WORKTIME_TO' => '21:00',
+                        'WORKTIME_FROM' => '9',
+                        'WORKTIME_TO' => '21',
                         'WORKTIME_TIMEZONE' => 'Europe/Berlin',
                     ],
                 ]
@@ -362,8 +372,8 @@ You can obtain the identifier of the open channel when [creating an open channel
                 WELCOME_MESSAGE: 'Y',
                 WELCOME_MESSAGE_TEXT: 'Hello! We will respond within a couple of minutes',
                 WORKTIME_ENABLE: 'Y',
-                WORKTIME_FROM: '09:00',
-                WORKTIME_TO: '21:00',
+                WORKTIME_FROM: '9',
+                WORKTIME_TO: '21',
                 WORKTIME_TIMEZONE: 'Europe/Berlin'
             }
         },
@@ -412,8 +422,8 @@ You can obtain the identifier of the open channel when [creating an open channel
                 'WELCOME_MESSAGE' => 'Y',
                 'WELCOME_MESSAGE_TEXT' => 'Hello! We will respond within a couple of minutes',
                 'WORKTIME_ENABLE' => 'Y',
-                'WORKTIME_FROM' => '09:00',
-                'WORKTIME_TO' => '21:00',
+                'WORKTIME_FROM' => '9',
+                'WORKTIME_TO' => '21',
                 'WORKTIME_TIMEZONE' => 'Europe/Berlin',
             ],
         ]
@@ -450,8 +460,8 @@ You can obtain the identifier of the open channel when [creating an open channel
     		"WELCOME_MESSAGE":      "Y",
     		"WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
     		"WORKTIME_ENABLE":      "Y",
-    		"WORKTIME_FROM":        "09:00",
-    		"WORKTIME_TO":          "21:00",
+    		"WORKTIME_FROM":        "9",
+    		"WORKTIME_TO":          "21",
     		"WORKTIME_TIMEZONE":    "Europe/Berlin",
     	},
     })
@@ -496,7 +506,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns:
 - `true` — if the channel was successfully updated
-- `false` — if the channel with the specified `CONFIG_ID` does not exist ||
+- `false` — if the channel with the specified `CONFIG_ID` does not exist or the changes failed validation: an empty name, an invalid queue, or the `AGREEMENT_MESSAGE` = `Y` warning without an available agreement ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

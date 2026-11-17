@@ -1,4 +1,4 @@
-# OnOpenLineMessageDelete Chat Message Deletion Event
+# When Deleting a Message in an Open Channel Chat OnOpenLineMessageDelete
 
 {% note tip "" %}
 
@@ -13,9 +13,14 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnOpenLineMessageDelete` event triggers when a message is deleted in an open line chat.
+The `OnOpenLineMessageDelete` event is triggered when a message in an open channel chat is deleted:
 
-[Subscribe](../../../events/event-bind.md) to the event can only be done through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
+- a customer has deleted a message through a connector, for example, the connector has called the [imconnector.delete.messages](../../imconnector/imconnector-delete-messages.md) method
+- an operator has deleted a message that Bitrix24 has already passed to the external communication channel
+
+For an operator message, the event arrives only if the connector has confirmed its delivery with the [imconnector.send.status.delivery](../../imconnector/imconnector-send-status-delivery.md) method. Without confirmation, Bitrix24 does not know the message ID in the external system and does not send the event. For the live chat, the event about deleting an operator message is not sent.
+
+[Subscribing](../../../events/event-bind.md) to the event can only be done through the application. The event arrives for all open channel communication channels, not only for the application connector. Check the connector code in `CONNECTOR` or `DATA.connector.connector_id`.
 
 {% note info "" %}
 
@@ -27,29 +32,74 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
+The content of `data` depends on who deleted the message.
+
+**Customer message.** `data` contains only the `DATA` key. Its content is the same as for a customer message in the [OnOpenLineMessageAdd](./on-open-line-message-add.md#client-data) event:
+
 ```json
 {
     "event": "ONOPENLINEMESSAGEDELETE",
-    "eventId": 1,
+    "event_handler_id": 147,
     "data": {
-        "CONNECTOR": "livechat",
-        "LINE": 128,
+        "DATA": {
+            "connector": {
+                "connector_id": "my_connector",
+                "line_id": 1,
+                "chat_id": "ext-chat-42",
+                "user_id": 1985
+            },
+            "chat": {
+                "id": "ext-chat-42"
+            },
+            "message": {
+                "id": "ext-msg-501",
+                "user_id": 1985
+            },
+            "ref": [],
+            "extra": []
+        }
+    },
+    "ts": 1714649702,
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": 3600,
+        "scope": "imopenlines",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
+```
+
+**Operator message.** Besides `DATA`, `data` contains the `CONNECTOR` and `LINE` keys. Here `DATA` is an array with one element for each message ID in the external system:
+
+```json
+{
+    "event": "ONOPENLINEMESSAGEDELETE",
+    "event_handler_id": 147,
+    "data": {
+        "CONNECTOR": "my_connector",
+        "LINE": 1,
         "DATA": [
             {
                 "im": {
-                    "chat_id": 1024,
-                    "message_id": 2056
+                    "chat_id": 10587,
+                    "message_id": 80970
                 },
                 "message": {
-                    "id": 2056
+                    "id": "ext-msg-777"
                 },
                 "chat": {
-                    "id": 1024
+                    "id": "ext-chat-42"
                 }
             }
         ]
     },
-    "ts": 1714649632,
+    "ts": 1714649710,
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": 3600,
@@ -74,16 +124,16 @@ Data is transmitted as a POST request {.b24-info}
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONOPENLINEMESSAGEDELETE` ||
-|| **eventId***
-[`integer`](../../../data-types.md) | Event identifier ||
+|| **event_handler_id***
+[`integer`](../../../data-types.md) | Event handler ID ||
 || **data***
-[`object`](../../../data-types.md) | An object containing event data.
+[`object`](../../../data-types.md) | An object with data of the deleted message.
 
 The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -93,64 +143,62 @@ The structure is described [below](#auth) ||
 #|
 || **parameter**
 `type` | **Description** ||
-|| **CONNECTOR***
-[`string`](../../../data-types.md) | Connector identifier ||
-|| **LINE***
-[`integer`](../../../data-types.md) | Identifier of the open line ||
+|| **CONNECTOR**
+[`string`](../../../data-types.md) | Connector code. Arrives only for an operator message ||
+|| **LINE**
+[`integer`](../../../data-types.md) | Open channel ID. Arrives only for an operator message ||
 || **DATA***
-[`array`](../../../data-types.md) | An array of objects with deleted message data.
+[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Message data.
 
-The object structure is described [below](#chat-params) ||
+For a customer message, it is an object; its structure is described in the [OnOpenLineMessageAdd](./on-open-line-message-add.md#client-data) event. For an operator message, it is an array of objects; the element structure is described [below](#operator-data) ||
 |#
 
-#### Array Element DATA {#chat-params}
-
-Each array element `DATA` is an object with the following structure:
+### DATA Element for an Operator Message {#operator-data}
 
 #|
 || **parameter**
 `type` | **Description** ||
 || **im***
-[`object`](../../../data-types.md) | An object with information about a deleted message in a chat.
+[`object`](../../../data-types.md) | An object with information about the message in Bitrix24.
 
 The structure is described [below](#im) ||
 || **message***
-[`object`](../../../data-types.md) | An object with information about a message.
+[`object`](../../../data-types.md) | An object with the message ID in the external system.
 
 The structure is described [below](#message) ||
 || **chat***
-[`object`](../../../data-types.md) | An object with information about a chat.
+[`object`](../../../data-types.md) | An object with information about the chat in the external system.
 
 The structure is described [below](#chat) ||
 |#
 
-##### Parameter im {#im}
+#### Parameter im {#im}
 
 #|
 || **parameter**
 `type` | **Description** ||
 || **chat_id***
-[`integer`](../../../data-types.md) | Identifier of the chat ||
+[`integer`](../../../data-types.md) | Open channel chat ID in Bitrix24 ||
 || **message_id***
-[`integer`](../../../data-types.md) | Identifier of the message ||
+[`integer`](../../../data-types.md) | Message ID in Bitrix24 ||
 |#
 
-##### Parameter message {#message}
+#### Parameter message {#message}
 
 #|
 || **parameter**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the message ||
+[`string`](../../../data-types.md) | Message ID in the external system that the connector passed when confirming delivery ||
 |#
 
-##### Parameter chat {#chat}
+#### Parameter chat {#chat}
 
 #|
 || **parameter**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the chat ||
+[`string`](../../../data-types.md) | Chat ID in the external system ||
 |#
 
 ### Parameter auth {#auth}

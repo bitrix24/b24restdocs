@@ -134,15 +134,15 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdBy: number
         modifiedBy: number
         currency: string
-        status: string
+        status: boolean
         dateStatus: ISODate
         dateDocument: ISODate | null
-        statusBy: number
-        total: number
-        commentary: string
+        statusBy: number | null
+        total: number | null
+        commentary: string | null
         title: string
-        docNumber: string
-        contractorId: number
+        docNumber: string | null
+        contractorId: number | null
       }
     }
 
@@ -358,7 +358,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	ID       int     `json:"id"`
     	DocType  string  `json:"docType"`
     	Title    string  `json:"title"`
-    	Status   string  `json:"status"`
+    	Status   bool    `json:"status"`
     	Total    float64 `json:"total"`
     	Currency string  `json:"currency"`
     }
@@ -387,15 +387,15 @@ HTTP status: **200**
             "createdBy": 1269,
             "modifiedBy": 1269,
             "currency": "EUR",
-            "status": "",
+            "status": false,
             "dateStatus": "2026-11-05T15:59:36+03:00",
             "dateDocument": null,
-            "statusBy": 0,
-            "total": 0,
+            "statusBy": null,
+            "total": null,
             "commentary": "Delivery under invoice 15",
             "title": "Receipt from vendor",
             "docNumber": "IN-0015",
-            "contractorId": 0
+            "contractorId": null
         }
     },
     "time": {
@@ -448,23 +448,23 @@ HTTP status: **200**
 || **currency**
 [`string`](../../data-types.md) | Document currency code, for example `EUR` ||
 || **status**
-[`string`](../../data-types.md) | Processing status: `"1"` — the document is processed, an empty string — not processed ||
+[`boolean`](../../data-types.md) | Processing status: `true` — the document is processed, `false` — not processed ||
 || **dateStatus**
 [`datetime`](../../data-types.md) | Date and time of the last status change ||
 || **dateDocument**
 [`datetime`](../../data-types.md) or `null` | Document date. `null` if the date is not set ||
 || **statusBy**
-[`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
+[`integer`](../../data-types.md) or `null` | Identifier of the user who last changed the status. `null` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
+[`double`](../../data-types.md) or `null` | Document total. `null` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
+[`string`](../../data-types.md) or `null` | Comment. `null` if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
+[`string`](../../data-types.md) or `null` | Incoming document number. `null` if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
+[`integer`](../../data-types.md) or `null` | Vendor ID from the catalog directory. `null` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -512,7 +512,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `responsibleId` | This request requires data type `int` in field `responsibleId` | Pass an integer ||
 || `dateDocument` | This request requires data type `DateTime` in field `dateDocument` | Pass a date with time in ISO 8601 format, for example `2026-10-22T10:00:00+02:00` ||
 || `total` | This request requires data type `float` in field `total` | Pass the total as a number. The same error with type `int` is returned for `contractorId`, `statusBy`, `modifiedBy` ||
-|| `status` | This request requires data type `string` in field `status` | Remove `status` from `fields`: the status is changed by the [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) and [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) methods ||
+|| `status` | This request requires data type `bool` in field `status` | Remove `status` from `fields`: the status is changed by the [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) and [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) methods ||
 || `-` | DOC_TYPE isn't available | Pass one of the types `A`, `S`, `M`, `R`, `D` in uppercase in `docType` ||
 || `-` | Inventory Management is not available on your plan. | The method works only on plans with Inventory Management ||
 |#

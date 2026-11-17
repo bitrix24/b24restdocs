@@ -79,7 +79,7 @@ To reduce the number of HTTP requests, use the [batch](../how-to-call-rest-api/b
 
 If `batch` sequentially executes 50 calls to list methods and each returns 50 records, one HTTP request will return up to 2,500 records. At 2 HTTP requests per second, that is up to 432,000,000 records per day. This is an estimate, not a guaranteed export volume: in practice, the result depends on the resource intensity of the methods, the volume of data, and the activity within Bitrix24.
 
-`batch` reduces the number of HTTP requests but does not eliminate the resource intensity limits of the executed methods. The Bitrix24 REST API is not designed for mass or intensive exchange of large datasets. For reports and analytics on large volumes of data, Bitrix24 offers [BI Builder](https://helpdesk.bitrix24.com/open/25744889/): it retrieves Bitrix24 data through a separate mechanism rather than the REST API.
+`batch` reduces the number of HTTP requests but does not eliminate the resource intensity limits: the time of nested calls counts toward the `operating` of the `batch` method. The Bitrix24 REST API is not designed for mass or intensive exchange of large datasets. For reports and analytics on large volumes of data, Bitrix24 offers [BI Builder](https://helpdesk.bitrix24.com/open/25744889/): it retrieves Bitrix24 data through a separate mechanism rather than the REST API.
 
 Choose an approach based on your task:
 
@@ -125,7 +125,7 @@ At the same time, `operating` does not necessarily drop to zero: the baskets of 
 
 Bitrix24 checks the accumulated time before each call. The call during which the time exceeds the limit runs to completion. The next call is blocked with error `OPERATION_TIME_LIMIT`, and the method remains blocked for 5 minutes, even if old baskets leave the calculation during this time. After the block, the accumulated time of the method is counted from zero.
 
-A `batch` call is accounted for in the `operating` of the `batch` method with half weight: in the cloud, a batch that ran for 2 seconds increases `operating` by about 1 second. Nested calls are executed as separate methods, so the execution time of each is accounted for and checked against its own limit.
+A `batch` call is accounted for in the `operating` of the `batch` method with half weight: in the cloud, a batch that ran for 2 seconds increases `operating` by about 1 second. Nested calls are not counted or blocked individually: their time is included in the time of the whole batch. That is why the `result_time` of nested calls contains no `operating` or `operating_reset_at` keys.
 
 For example, assume the established limit is 480 seconds. An application calls the [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) method, and each call takes 20 seconds:
 

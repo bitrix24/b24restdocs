@@ -11,14 +11,16 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user, except when called with session authorization
 
-The method `imopenlines.network.message.add` sends a message to a user on behalf of the open channel connected in Bitrix24 Network.
+The method `imopenlines.network.message.add` sends a message to a user on behalf of a Bitrix24 Network open channel.
+
+Before sending, connect the channel using the [imopenlines.network.join](./imopenlines-network-join.md) method. If the channel is not connected, the method returns the `NOT_FOUND` error.
 
 Method operation limitations:
-1. The method is unavailable during session authorization. It returns the error `WRONG_AUTH_TYPE` for session authorization.
-2. A message can be sent no more than once per user within one week. There are no limits for accounts with a Partner (NFR) license.
-3. The keyboard can only be used for formatting the link button to an external site.
+- the method is unavailable with session authorization, in which case it returns the `WRONG_AUTH_TYPE` error
+- you can send no more than one message per week to the same user. There is no limit for Bitrix24 with a Partner (NFR) license
+- the keyboard can only be used for link buttons to external sites
 
 ## Method Parameters
 
@@ -28,25 +30,31 @@ Method operation limitations:
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../data-types.md) | Code of the open channel, a string of 32 characters, for example `ab515f5d85a8b844d484f6ea75a2e494` ||
-|| **USER_ID***
-[`integer`](../../data-types.md) | Identifier of the message recipient, for example `2` ||
-|| **MESSAGE***
-[`string`](../../data-types.md) | Text of the message. 
+[`string`](../../data-types.md) | Code of the open channel, a string of 32 characters, for example `ab515f5d85a8b844d484f6ea75a2e494`.
 
-How to format text — in the article [formatting](../../chats/messages/formatting.md) ||
+The channel with this code must be connected using the [imopenlines.network.join](./imopenlines-network-join.md) method ||
+|| **USER_ID***
+[`integer`](../../data-types.md) | Identifier of the user in the current Bitrix24 who receives the message, for example `2`.
+
+You can retrieve the user identifier using the [user.get](../../user/user-get.md) method ||
+|| **MESSAGE***
+[`string`](../../data-types.md) | Text of the message.
+
+How to format text — in the article [Formatting](../../chats/messages/formatting.md) ||
 || **ATTACH**
-[`object`](../../data-types.md) | Attachment.
+[`object`](../../data-types.md) | Attachment. The attachment object in JSON format must be shorter than 60,000 characters.
 
 The format of the attachment is described in the article [How to use attachments](../../chats/messages/attachments.md) ||
 || **KEYBOARD**
-[`object`](../../data-types.md) | Keyboard.
+[`object`](../../data-types.md) | Keyboard. Pass an object with the `BUTTONS` array or the array of buttons itself.
 
 How to create keyboards — in the article [Working with keyboards](../../chats/messages/keyboards.md) ||
 || **URL_PREVIEW**
-[`char`](../../data-types.md) | Link preview. Enabled `Y` by default. 
+[`char`](../../data-types.md) | Link preview. Possible values:
+- `Y` — enabled
+- `N` — disabled
 
-Pass `N` to disable link preview ||
+Default is `Y` ||
 |#
 
 ## Code Examples
@@ -180,13 +188,13 @@ Pass `N` to disable link preview ||
         params: {
           CODE: 'ab515f5d85a8b844d484f6ea75a2e494',
           USER_ID: 2,
-          MESSAGE: 'We have prepared materials on connecting open lines',
+          MESSAGE: 'We have prepared materials for connecting open channels',
           ATTACH: {
             ID: 1,
             COLOR_TOKEN: 'primary',
             BLOCKS: [
               {
-                MESSAGE: 'Attached are the checklist and connection diagram',
+                MESSAGE: 'We have sent a checklist and connection diagram in the attachment',
               },
               {
                 FILE: [
@@ -254,13 +262,13 @@ Pass `N` to disable link preview ||
             params: {
               CODE: 'ab515f5d85a8b844d484f6ea75a2e494',
               USER_ID: 2,
-              MESSAGE: 'We have prepared materials on connecting open lines',
+              MESSAGE: 'We have prepared materials for connecting open channels',
               ATTACH: {
                 ID: 1,
                 COLOR_TOKEN: 'primary',
                 BLOCKS: [
                   {
-                    MESSAGE: 'Attached are the checklist and connection diagram',
+                    MESSAGE: 'We have sent a checklist and connection diagram in the attachment',
                   },
                   {
                     FILE: [
@@ -326,13 +334,13 @@ Pass `N` to disable link preview ||
         bitrix_response = client.imopenlines.network.message.add(
             code="ab515f5d85a8b844d484f6ea75a2e494",
             user_id=2,
-            message="We have prepared materials on connecting open lines",
+            message="We have prepared materials for connecting open channels",
             attach={
                 "ID": 1,
                 "COLOR_TOKEN": "primary",
                 "BLOCKS": [
                     {
-                        "MESSAGE": "Attached are the checklist and connection diagram",
+                        "MESSAGE": "We have sent a checklist and connection diagram in the attachment",
                     },
                     {
                         "FILE": [
@@ -643,8 +651,8 @@ HTTP Status: **200**
         "finish": 1773740787.828814,
         "duration": 0.8288140296936035,
         "processing": 0,
-        "date_start": "2026-03-17T12:46:27+03:00",
-        "date_finish": "2026-03-17T12:46:27+03:00",
+        "date_start": "2026-03-17T12:46:27+01:00",
+        "date_finish": "2026-03-17T12:46:27+01:00",
         "operating_reset_at": 1773741387,
         "operating": 0.17312097549438477
     }
@@ -682,11 +690,11 @@ HTTP Status: **400**
 || `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization ||
 || `400` | `CODE` | You entered an invalid code | Invalid code in the `CODE` parameter, expected a string of 32 characters ||
 || `400` | `IMBOT_ERROR` | Module IMBOT is not installed | IMBOT module is not installed ||
-|| `400` | `NOT_FOUND` | Line not found | Open channel not found ||
-|| `400` | `USER_ID_EMPTY` | User ID can't be empty | User identifier not specified ||
-|| `400` | `USER_MESSAGE_LIMIT` | You can't send more than one message per week to each user | Message limit exceeded for a specific user ||
+|| `400` | `NOT_FOUND` | Line not found | No channel with the specified code is connected to Bitrix24, or the code belongs to a service channel ||
+|| `400` | `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter is missing or is not a number ||
+|| `400` | `USER_MESSAGE_LIMIT` | You cant send more than one message per week to each user | A message from the channel has already been sent to this user within the last 7 days ||
 || `400` | `MESSAGE_EMPTY` | Message can't be empty | Message text not specified ||
-|| `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | Maximum allowable attachment size exceeded 30 KB ||
+|| `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The attachment object in JSON format is longer than 60,000 characters ||
 || `400` | `ATTACH_ERROR` | Incorrect attach params | Attachment object failed validation ||
 || `400` | `KEYBOARD_ERROR` | Incorrect keyboard params | Keyboard object failed validation ||
 || `400` | `WRONG_REQUEST` | Message isn't added | Message not sent ||

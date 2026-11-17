@@ -273,7 +273,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of user identifiers that were successfully added. ||
+[`array`](../../data-types.md) | Array of user identifiers that were successfully added.
+
+Users who are already group members and nonexistent identifiers are skipped. If no users could be added, an empty array is returned. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -299,6 +301,7 @@ HTTP Status: **400**
 || — | `No permissions to add users` | Insufficient rights to add participants. ||
 || — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
 || — | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
+|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `USER_ID` contains a user who is not an employee. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

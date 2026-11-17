@@ -9,21 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not to be deployed to prod_" %}
-
-Do not publish this page until the method is fixed and retested. On a test Bitrix24 account, the method activates the SIP device instead of deactivating it.
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with the User Settings — Modify permission
 
-The method `voximplant.user.deactivatePhone` deactivates a user's SIP device.
+The method `voximplant.user.deactivatePhone` clears the employee's SIP device indicator.
 
 ## Method Parameters
 
@@ -261,7 +251,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Method execution result.
 
-`1` — the SIP device deactivation request was completed ||
+`1` — the user's SIP device has been deactivated. A repeated call for a user without a SIP device also returns `1` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -282,9 +272,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Parameter USER_ID is not set` | Required parameter `USER_ID` is not specified ||
-|| Empty value | `You are not allowed to modify user's settings` | Insufficient permissions to deactivate the user's SIP device ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter USER_ID is not set` | Required parameter `USER_ID` is not specified ||
+|| `400` | Empty value | `You are not allowed to modify user's settings` | Insufficient permissions to deactivate the user's SIP device ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

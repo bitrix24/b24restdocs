@@ -9,103 +9,121 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-In CRM, you can create fields of two types:
-- standard: number, string, date, address, link, file, etc.,
-- custom: application integrations within the CRM detail form.
-  
-With custom fields, you can:
-
-- display data in the CRM detail form that does not fit standard field types. The field value is stored in Bitrix24, while the application shows it within the field and, if necessary, supplements it with data from its service.
-- create interface elements in CRM detail forms. For example, display buttons within the field to control the application.
-- integrate external services into the CRM detail form. For instance, display dynamic information in the field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
+This article explains how an application registers its own field type, how to create a field of this type in a CRM detail form, and how to troubleshoot typical errors. How the handler works inside the field is described in [Custom Field Types: Overview of Methods](../../../widgets/user-field/index.md).
 
 > Quick navigation: [All Methods](#all-methods)
 >
 > User documentation: [Custom fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 
-## Connection with CRM Objects
+## Standard and Custom Types
 
-Custom field types can be added to:
-- [Deals](../../deals/index.md) — use methods [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [Leads](../../leads/index.md) — [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [Contacts](../../contacts/index.md) — [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [Companies](../../companies/index.md) — [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [New Invoices](../invoice.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [Estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [SPAs](../index.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md).
+A CRM field can have a standard or a custom type:
 
-Pass the value to the `USER_TYPE_ID` field in the `rest_#application_ID#_#USER_TYPE_ID#` format. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_userfield1`.
+- standard types are string, number, date, list, address, link, file, and others. The complete list is returned by the [crm.userfield.types](./crm-userfield-types.md) method
+- custom types are types that an application registers with the [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) method. A field of such a type shows the application interface in the CRM detail form, which makes it a widget
 
-To obtain the application `ID`, use the method [app.info](../../../common/system/app-info.md).
+If the value is plain text, a number, a date, or a choice from a list, a standard type is enough. A custom type is needed if the field must:
+
+- display data that standard types do not fit. The value is stored in Bitrix24, and the application shows it and, if necessary, supplements it with data from its own service
+- display controls, for example application buttons
+- load data from an external service: each time the detail form is opened, the field sends a request to the application handler
+
+## How a Custom Field Type Works
+
+1. The application registers the type with the [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) method: it passes the type code `USER_TYPE_ID` and the handler address `HANDLER`. The type code is stored in lowercase: `MyField` becomes `myfield`.
+2. A field of this type is created with the full code `rest_<APP_ID>_<USER_TYPE_ID>`, where `APP_ID` is the `ID` value from the [app.info](../../../common/system/app-info.md) method response.
+3. When a user opens the detail form, Bitrix24 loads `HANDLER` in the field frame and passes the field and item data in `PLACEMENT_OPTIONS`.
+4. The handler passes the value to the detail form with the `setValue` command via [BX24.placement.call](../../../widgets/ui-interaction/bx24-placement-call.md). The value is written to Bitrix24 when the user saves the detail form.
+
+The `userfieldtype.*` methods work only in the application context: when called via a webhook, they return the `WRONG_AUTH_TYPE` error. Only an administrator can call them. These conditions do not apply to creating a field. A field with the full type code can be created via a webhook or from another application — only the permissions and scopes from [How to Create a Custom Type Field](#create-field) are required.
+
+## How to Create a Custom Type Field {#create-field}
+
+A field is created with the universal [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) method or with the `crm.*.userfield.add` method of the required object.
+
+The `crm.*.userfield.add` methods are deprecated, but they create fields with application types. The REST 3.0 methods `crm.<type>.field.custom.add` that replace them do not create such fields.
+
+#|
+|| **Object** | **Field Creation Method** ||
+|| [Deal](../../deals/index.md) | [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) ||
+|| [Lead](../../leads/index.md) | [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) ||
+|| [Contact](../../contacts/index.md) | [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) ||
+|| [Company](../../companies/index.md) | [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) ||
+|| [Estimate](../../quote/index.md) | [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) ||
+|| [New invoice](../invoice.md) | Only [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) ||
+|| [SPA](../user-defined-object-types/index.md) | Only [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) ||
+|#
+
+In the `crm.*.userfield.add` methods, the full code is passed in `fields.USER_TYPE_ID`; in `userfieldconfig.add`, in `field.userTypeId`. For example, for an application with `ID: 123` and the `userfield1` type, the code is `rest_123_userfield1`.
+
+The `crm.*.userfield.add` methods require the `crm` scope, and the `userfieldconfig.add` method requires the `userfieldconfig` and `crm` scopes. All of these methods require the "Allow to modify settings" access permission in CRM.
 
 ## Errors When Working with Custom Field Types
 
 ### Error 400 When Creating a Field
 
-When creating a field with a custom type, you may encounter error `Error! 400: ERROR_CORE: Invalid user type specified. (400)`.
+When creating a field with a custom type, you may get the error `Error! 400: ERROR_CORE: The custom type is invalid. (400)`.
 
-1. Execute the method [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md).
+1. Call the [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md) method from the application that registered the type: the method returns only the types of the calling application.
 
-   - If the method returns the field type `USER_TYPE_ID`, proceed to step 2.
+   - If the required type is in the list, check the code in the field creation request. The full code `rest_<APP_ID>_<USER_TYPE_ID>` is required, where `USER_TYPE_ID` is the value from the `userfieldtype.list` response. If the code is correct, proceed to step 2.
 
-   - If the required field type is not found, register a new type using the method [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md).
+   - If the required field type is not found, register a new type with the [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) method.
 
-2. Execute the method [app.info](../../../common/system/app-info.md). This method will check the correctness of the application installation.
+2. Call the [app.info](../../../common/system/app-info.md) method. The method returns the `INSTALLED` flag, which indicates that the installation is complete.
 
    - If the method returns `INSTALLED = true`, the application is installed correctly.
 
-   - If the method returns `INSTALLED = false`, execute the method [BX24.installFinish](../../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) on the application page. This method will complete the installation of the application with the interface.
+   - If the method returns `INSTALLED = false`, call the [BX24.installFinish](../../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) function on the application page. It completes the installation of the application with an interface.
 
-    ```javascript
-    BX24.init(function(){
-        BX24.installFinish();
-    });
-    ```
+     ```javascript
+     BX24.init(function(){
+         BX24.installFinish();
+     });
+     ```
 
-### Error 50X When Loading a Field
+### The Handler Does Not Open in the Field
 
-If the field was created without errors, but the content is not loading:
+If the field has been created, but the handler does not open in it or shows an error:
 
-1. Check the URL of the handler `HANDLER` specified during field registration using the method [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md). To change the `HANDLER`, use the method [userfieldtype.update](../../../widgets/user-field/userfieldtype-update.md).
+1. Check the `HANDLER` URL specified when registering the field type with the [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md) method. To change `HANDLER`, use the [userfieldtype.update](../../../widgets/user-field/userfieldtype-update.md) method.
 
-2. Ensure that the handler is accessible from the internet:
+2. Make sure that the handler is accessible from the internet:
 
-   - do not use local addresses: `localhost`, `192.168.*`, and other addresses accessible only from the local network,
+   - do not use local addresses: localhost, 192.168.*, and other addresses accessible only from the local network
 
-   - check the handler's availability using public "website availability" services.
+   - check that the `HANDLER` address opens from a device outside your network
 
 3. Check:
 
-   - the correctness of the SSL certificate if HTTPS is used,
+   - that the handler SSL certificate is valid
 
-   - the absence of blocks in `.htaccess` or a firewall on the handler's server,
+   - that `.htaccess` and the firewall on the handler server do not block requests
 
-   - the returned HTTP codes; it should be `200 OK`.
+## Requirements and Recommendations
 
-## General Recommendations
+- The handler must be available over HTTPS: the Bitrix24 page is opened over HTTPS, and the browser blocks a frame loaded over HTTP.
 
-- Use the HTTPS protocol for handlers; otherwise, browsers may block the loading of application content.
+- Give clear names to field types: consider the purpose of the field and its connection with the application.
 
-- Give clear names to field types: consider the purpose of the field and its connection with the application. The field type cannot be renamed after creation — it can only be deleted and registered again.
-
-{% note tip "Typical use-cases and scenarios" %}
-
-- [Embed a Widget into a Lead as a User Field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
-
-- [Widget Embedding Mechanism](../../../widgets/index.md)
-
-{% endnote %}
+- The `USER_TYPE_ID` type code does not change after registration: `userfieldtype.update` changes only the title, description, and handler. For a new code, delete the type and register it again.
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`placement, crm`](../../../scopes/permissions.md)
-> 
-> Who can execute the method: administrator
+> Scope: [`placement`](../../../scopes/permissions.md)
+>
+> Who can execute the methods: administrator, only in the application context
 
 #|
 || **Method** | **Description** ||
 || [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) | Registers a new type of custom field ||
 || [userfieldtype.update](../../../widgets/user-field/userfieldtype-update.md) | Modifies the parameters of an existing field type ||
-|| [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md) | Returns a list of registered field types ||
+|| [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md) | Returns the field types registered by the calling application ||
 || [userfieldtype.delete](../../../widgets/user-field/userfieldtype-delete.md) | Deletes a registered field type ||
 |#
+
+## Continue Learning
+
+- [{#T}](../../../widgets/user-field/index.md)
+- [{#T}](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
+- [{#T}](../../../widgets/index.md)

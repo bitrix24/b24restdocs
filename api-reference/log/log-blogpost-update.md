@@ -423,6 +423,7 @@ HTTP Status: **400**
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_UPDATE_ERROR` | `No write perms` | Insufficient permissions to modify the message. ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_UPDATE_ERROR` | `No post found` | Message not found. ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_UPDATE_ERROR` | `No blog found` | Unable to retrieve the author's blog. ||
+|| — | `Access to one or more message recipients was denied` | `DEST` contains an external user who is not accessible to the current user. The error can occur if the `extranet` module is installed. Portal administrators and department employees are always valid recipients. ||
 || — | `Cannot update blog post` | Internal error while updating the message. ||
 |#
 

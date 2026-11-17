@@ -22,13 +22,17 @@ You can subscribe to timeline comment events through:
 - [outbound webhook](../../../../../local-integrations/local-webhooks.md)
 - [application](../../../../../settings/app-installation/index.md) and the [event.bind](../../../../events/event-bind.md) method
 
-An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
+For example, to subscribe to comment creation in an application, call `BX24.callMethod('event.bind', {event: 'onCrmTimelineCommentAdd', handler: 'https://www.my-domain.com/handler/'});`.
+
+An example of an event handler is provided in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
 
 ## What the Handler Receives
 
-Comment events pass only the identifier of the comment in the `data.ID` field. To retrieve the remaining data, call the [crm.timeline.comment.get](../crm-timeline-comment-get.md) method.
+The event passes the comment identifier in the `data.FIELDS.ID` field. To retrieve the data of a created or updated comment, call the [crm.timeline.comment.get](../crm-timeline-comment-get.md) method. The user must have read permission for at least one linked CRM item.
 
-The events are triggered both for comments added manually in the CRM entity detail form and for comments created with the [crm.timeline.comment.*](../index.md) methods.
+Once a comment is deleted, its data can no longer be retrieved with this method.
+
+Event specifics for updating a comment with multiple bindings are described in the [crm.timeline.comment.update](../crm-timeline-comment-update.md) method.
 
 ## Availability of Servers for Sending and Receiving Events
 

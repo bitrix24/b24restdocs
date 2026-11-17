@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Open channel operators work with dialogues: they accept them for processing, transfer them, complete them, or mark them as spam.
+The methods in this section perform operator actions on an open channel dialogue on behalf of the user calling the method: take the dialogue, skip it, transfer it, complete it, or mark it as spam.
 
 > Quick Navigation: [All Methods](#all-methods)
 >
@@ -17,11 +17,11 @@ Open channel operators work with dialogues: they accept them for processing, tra
 
 ## Operators' Interaction with Other Objects
 
-**Chats.** The operator's actions are applied to the chat using the identifier `CHAT_ID`. This identifier can be obtained through the methods [imopenlines.session.open](../sessions/imopenlines-session-open.md) and [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md).
+**Chats.** All methods in this section work with an open channel chat by its numeric identifier `CHAT_ID` without the `chat` prefix. This identifier can be obtained through the methods [imopenlines.session.open](../sessions/imopenlines-session-open.md) and [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md).
 
-**User.** The operator switches the dialogue to an employee with the identifier `USER_ID`. The user identifier can be retrieved using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
+**User.** The [imopenlines.operator.transfer](./imopenlines-operator-transfer.md) method transfers the dialogue to an employee by the identifier `USER_ID`. The user identifier can be retrieved using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
 
-**Open Channels.** The operator transfers the dialogue to the queue of another open channel using the identifier `QUEUE_ID` or a string in the format `queue<QUEUE_ID>`. The queue identifier can be obtained through the method [imopenlines.config.list.get](../imopenlines-config-list-get.md).
+**Open Channels.** The [imopenlines.operator.transfer](./imopenlines-operator-transfer.md) method transfers the dialogue to an open channel queue by the identifier `QUEUE_ID` or a string in the format `queue<channel ID>`. The channel identifier is the `ID` field in the response of the [imopenlines.config.list.get](../imopenlines-config-list-get.md) method.
 
 {% note tip "User Documentation" %}
 
@@ -34,50 +34,34 @@ Open channel operators work with dialogues: they accept them for processing, tra
 ## Getting Started
 
 1. Get the chat identifier `CHAT_ID` using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) method
-2. If the current operator starts processing a new request, call [imopenlines.operator.answer](./imopenlines-operator-answer.md)
+2. To take the dialogue, call [imopenlines.operator.answer](./imopenlines-operator-answer.md). The method takes the dialogue from the queue or from a chatbot. To take the dialogue from another operator, use [imopenlines.session.intercept](../sessions/imopenlines-session-intercept.md)
 3. If the dialog needs to be transferred to another employee or queue, call [imopenlines.operator.transfer](./imopenlines-operator-transfer.md)
 4. If the operator cannot process the request, transfer it to the next operator using [imopenlines.operator.skip](./imopenlines-operator-skip.md)
-5. If the request is complete, close it using [imopenlines.operator.finish](./imopenlines-operator-finish.md)
+5. If the request is complete, close it using [imopenlines.operator.finish](./imopenlines-operator-finish.md). Another operator's dialogue is closed by the [imopenlines.operator.another.finish](./imopenlines-operator-another-finish.md) method
 6. If the request is inappropriate, mark it as spam using [imopenlines.operator.spam](./imopenlines-operator-spam.md)
 
 ### Rules for Calling imopenlines.operator.transfer
 
-- Only pass one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`. Do not pass `TRANSFER_ID` along with `USER_ID` or `QUEUE_ID` simultaneously
-- Use the employee `USER_ID` or a string in the format `queue<QUEUE_ID>` as `TRANSFER_ID`
+- Only pass one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`
+- Use the employee identifier or a string in the format `queue<channel ID>`, for example `queue3`, as `TRANSFER_ID`
+- The employee must be active; you cannot transfer the dialogue to yourself
 
 ## Response Format of the Methods
 
-All methods in this section return the same response format:
+All methods in this section return `true` in the `result` field if the action is performed. On error, the methods return the error code and text.
 
-- `result` — status of the operation
-- `time` — information about the execution time
-
-```json
-{
-    "result": true,
-    "time": {
-        "start": 1773663032,
-        "finish": 1773663032.493037,
-        "duration": 0.49303698539733887,
-        "processing": 0,
-        "date_start": "2026-03-16T15:10:32+01:00",
-        "date_finish": "2026-03-16T15:10:32+01:00",
-        "operating_reset_at": 1773663632,
-        "operating": 0
-    }
-}
-```
+The [imopenlines.operator.spam](./imopenlines-operator-spam.md) method returns `true` right after the access check, even if the chat has no active dialogue.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialogue permissions
+> Who can execute the method: depends on the method
 
 #| 
 || **Method** | **Description** ||
-|| [imopenlines.operator.answer](./imopenlines-operator-answer.md) | Transfers the dialogue to the current operator ||
-|| [imopenlines.operator.finish](./imopenlines-operator-finish.md) | Completes the dialogue on behalf of the current operator ||
+|| [imopenlines.operator.answer](./imopenlines-operator-answer.md) | Assigns the user as the person responsible for the dialogue ||
+|| [imopenlines.operator.finish](./imopenlines-operator-finish.md) | Completes the dialogue handled by the user ||
 || [imopenlines.operator.another.finish](./imopenlines-operator-another-finish.md) | Completes another operator's dialogue ||
 || [imopenlines.operator.skip](./imopenlines-operator-skip.md) | Passes the dialogue to the next operator in the queue ||
 || [imopenlines.operator.spam](./imopenlines-operator-spam.md) | Marks the dialogue as spam ||

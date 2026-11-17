@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.template.add` adds a new document template.
+The method `documentgenerator.template.add` adds a document template from a `.docx` file.
+
+{% note info "" %}
+
+The method creates templates only for the `rest` module: `moduleId` in the response is always `rest`, and the data provider is `Bitrix\DocumentGenerator\DataProvider\Rest`.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -32,47 +38,32 @@ The method `documentgenerator.template.add` adds a new document template.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Template name ||
-|| **fileId***
-[`integer`](../../data-types.md) | Identifier of the previously uploaded template file from Drive.
-
-You can obtain the file identifier in two ways.
-
-Use one of the file upload methods:
-  - [disk.storage.uploadfile](../../disk/storage/disk-storage-upload-file.md)
-  - [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md)
-
-Use one of the methods to get the list of files:
-  - [disk.storage.getchildren](../../disk/storage/disk-storage-get-children.md)
-  - [disk.folder.getchildren](../../disk/folder/disk-folder-get-children.md)
-
-||
+[`string`](../../data-types.md) | Template name, 1 to 100 characters ||
 || **file***
-[`file`](../../data-types.md#standart-types) | Template file, if it needs to be uploaded. Used instead of the `fileId` parameter.
+[`file`](../../data-types.md#standart-types) | Template file in `.docx` format. Required if `fileId` is not passed.
 
 The file can be passed in three ways:
-- as a base64 string
-- as an array `["file_name.docx","base64_content"]`
-- as a file `multipart/form-data`
+- as a [Base64 String](../../files/how-to-upload-files.md#string) — the file name is not passed in this format
+- as an [Array](../../files/how-to-upload-files.md#array) `["file_name.docx","base64_content"]`
+- as a `multipart/form-data` file with the field name `file`
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+If `fileId` is passed, the `file` parameter is not used ||
+|| **fileId**
+[`integer`](../../data-types.md) | Identifier of the template file in the document generator. Used instead of `file` to create a template based on the file of an existing template.
 
-- [How to Upload Files](../../files/how-to-upload-files.md)
-
-{% endnote %}
-
-||
+You can retrieve the identifier from the `fileId` field using the [documentgenerator.template.list](./document-generator-template-list.md) method. A Drive file identifier does not work here: it is a different identifier ||
 || **numeratorId***
 [`integer`](../../data-types.md) | Identifier of the numerator.
 
-You can obtain the identifier after [creating a numerator](../numerators/document-generator-numerator-add.md) or by using the [method to get the list of numerators](../numerators/document-generator-numerator-list.md)
-||
+You can obtain the identifier after [creating a numerator](../numerators/document-generator-numerator-add.md) or by using the [method to get the list of numerators](../numerators/document-generator-numerator-list.md) ||
 || **region***
-[`string`](../../data-types.md) | Template region, for example, `de` ||
+[`string`](../../data-types.md) | Template region code, for example `de`.
+
+You can retrieve the list of regions using the [documentgenerator.region.list](../region/document-generator-region-list.md) method ||
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the template ||
 || **users**
-[`array`](../../data-types.md) | Users who will have access to the template.
+[`array`](../../data-types.md) | Access codes of the users who have access to the template.
 
 Possible values:
 
@@ -87,7 +78,7 @@ Possible values:
 - `SG{id}_E` — moderators of the working group or project
 - `SG{id}_K` — all members of the working group or project
 
-If not provided, the current user is automatically added ||
+If the parameter is not passed or an empty array is passed, the current user gets access in the `U{id}` format ||
 || **active**
 [`char`](../../data-types.md) | Template activity. Possible values:
 - `Y` — active
@@ -101,12 +92,18 @@ Default is `Y` ||
 
 Default is `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sort index ||
+[`integer`](../../data-types.md) | Sort index. Default is `500` ||
 || **timezone**
 [`string`](../../data-types.md) | Time zone used to display dates in documents generated from the template. Pass an IANA time zone identifier, for example `Europe/Berlin`.
 
 If the field is not passed or is an empty string, dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected ||
 |#
+
+{% note tip "" %}
+
+To learn how to prepare a file and choose a transfer format, see [How to Upload Files](../../files/how-to-upload-files.md).
+
+{% endnote %}
 
 ## Code Examples
 
@@ -120,7 +117,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"SUPPLY_CONTRACT Template","fileId":5641,"numeratorId":1,"region":"de","code":"REST_TEMPLATE","users":["UA"],"active":"Y","withStamps":"N","sort":500}}' \
+    -d '{"fields":{"name":"SUPPLY_CONTRACT Template","file":["supply_contract.docx","base64_encoded_content_here"],"numeratorId":1,"region":"de","code":"REST_TEMPLATE","users":["UA"],"active":"Y","withStamps":"N","sort":500,"timezone":"Europe/Berlin"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.template.add
   ```
 
@@ -130,7 +127,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"SUPPLY_CONTRACT Template","fileId":5641,"numeratorId":1,"region":"de","code":"REST_TEMPLATE","users":["UA"],"active":"Y","withStamps":"N","sort":500},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"SUPPLY_CONTRACT Template","file":["supply_contract.docx","base64_encoded_content_here"],"numeratorId":1,"region":"de","code":"REST_TEMPLATE","users":["UA"],"active":"Y","withStamps":"N","sort":500,"timezone":"Europe/Berlin"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.template.add
   ```
 
@@ -173,14 +170,15 @@ If the field is not passed or is an empty string, dates are displayed in the sha
       params: {
         fields: {
           name: 'SUPPLY_CONTRACT Template',
-          fileId: 5641,
+          file: ['supply_contract.docx', 'base64_encoded_content_here'],
           numeratorId: 1,
-          region: 'ru',
+          region: 'de',
           code: 'REST_TEMPLATE',
           users: ['UA'],
           active: 'Y',
           withStamps: 'N',
           sort: 500,
+          timezone: 'Europe/Berlin',
         },
       },
       requestId: Text.getUuidRfc4122()
@@ -215,14 +213,15 @@ If the field is not passed or is an empty string, dates are displayed in the sha
           params: {
             fields: {
               name: 'SUPPLY_CONTRACT Template',
-              fileId: 5641,
+              file: ['supply_contract.docx', 'base64_encoded_content_here'],
               numeratorId: 1,
-              region: 'ru',
+              region: 'de',
               code: 'REST_TEMPLATE',
               users: ['UA'],
               active: 'Y',
               withStamps: 'N',
               sort: 500,
+              timezone: 'Europe/Berlin',
             },
           },
           requestId: B24Js.Text.getUuidRfc4122()
@@ -253,9 +252,12 @@ If the field is not passed or is an empty string, dates are displayed in the sha
 
   template_fields = {
       "name": "SUPPLY_CONTRACT Template",
-      "fileId": 5641,
+      "file": [
+          "supply_contract.docx",
+          "base64_encoded_content_here",
+      ],
       "numeratorId": 1,
-      "region": "ru",
+      "region": "de",
       "code": "REST_TEMPLATE",
       "users": [
           "UA",
@@ -263,6 +265,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
       "active": "Y",
       "withStamps": "N",
       "sort": 500,
+      "timezone": "Europe/Berlin",
   }
 
   try:
@@ -293,7 +296,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
           [
               'fields' => [
                   'name' => 'SUPPLY_CONTRACT Template',
-                  'fileId' => 5641,
+                  'file' => ['supply_contract.docx', 'base64_encoded_content_here'],
                   'numeratorId' => 1,
                   'region' => 'de',
                   'code' => 'REST_TEMPLATE',
@@ -301,6 +304,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
                   'active' => 'Y',
                   'withStamps' => 'N',
                   'sort' => 500,
+                  'timezone' => 'Europe/Berlin',
               ],
           ]
       );
@@ -320,14 +324,15 @@ If the field is not passed or is an empty string, dates are displayed in the sha
       {
           fields: {
               name: 'SUPPLY_CONTRACT Template',
-              fileId: 5641,
+              file: ['supply_contract.docx', 'base64_encoded_content_here'],
               numeratorId: 1,
               region: 'de',
               code: 'REST_TEMPLATE',
               users: ['UA'],
               active: 'Y',
               withStamps: 'N',
-              sort: 500
+              sort: 500,
+              timezone: 'Europe/Berlin'
           }
       },
       function(result)
@@ -354,7 +359,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
       [
           'fields' => [
               'name' => 'SUPPLY_CONTRACT Template',
-              'fileId' => 5641,
+              'file' => ['supply_contract.docx', 'base64_encoded_content_here'],
               'numeratorId' => 1,
               'region' => 'de',
               'code' => 'REST_TEMPLATE',
@@ -362,6 +367,7 @@ If the field is not passed or is an empty string, dates are displayed in the sha
               'active' => 'Y',
               'withStamps' => 'N',
               'sort' => 500,
+              'timezone' => 'Europe/Berlin',
           ],
       ]
   );
@@ -376,14 +382,15 @@ If the field is not passed or is an empty string, dates are displayed in the sha
     res, err := client.Core().Call(ctx, "documentgenerator.template.add", b24.Params{
     	"fields": b24.Params{
     		"name":        "SUPPLY_CONTRACT Template",
-    		"fileId":      5641,
+    		"file":        []string{"supply_contract.docx", "base64_encoded_content_here"},
     		"numeratorId": 1,
-    		"region":      "ru",
+    		"region":      "de",
     		"code":        "REST_TEMPLATE",
     		"users":       []string{"UA"},
     		"active":      "Y",
     		"withStamps":  "N",
     		"sort":        500,
+    		"timezone":    "Europe/Berlin",
     	},
     })
     if err != nil {
@@ -420,11 +427,11 @@ HTTP Status: **200**
 {
     "result": {
         "template": {
-            "id": "57",
+            "id": "385",
             "name": "SUPPLY_CONTRACT Template",
             "region": "de",
             "code": "REST_TEMPLATE",
-            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=57&ts=0",
+            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=385&ts=1794393725",
             "active": "Y",
             "moduleId": "rest",
             "numeratorId": "1",
@@ -437,21 +444,21 @@ HTTP Status: **200**
             },
             "isDeleted": "N",
             "sort": "500",
-            "createTime": "2026-03-23T16:51:25+01:00",
-            "updateTime": "2026-03-23T16:51:25+01:00",
-            "timezone": null,
-            "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=6d53c1690000071b00000844000001f7f0f1075612a492ef6fe0b4127e521b543e4376&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3JnRzPTAmXz1IeG56TmtsQklGNjRsQlBkNkNiekNwd1U2bnduQk40Mw%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKblJ6UFRBbVh6MUllRzU2VG10c1FrbEdOalJzUWxCa05rTmlla053ZDFVMmJuZHVRazQwTXc9PXw2ZDUzYzE2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzU2MTJhNDkyZWY2ZmUwYjQxMjdlNTIxYjU0M2U0Mzc2Ig%3D%3D.vtTu%2B9Ac%2BT5VgeyDm1jiVBGsmCQagvrqjACd%2BNgDigA%3D"
+            "createTime": "2026-11-11T11:42:03+01:00",
+            "updateTime": "2026-11-11T11:42:03+01:00",
+            "timezone": "Europe/Berlin",
+            "downloadMachine": "https://mysite.com/rest/1/xxxxxxxxxxxxxxxx/documentgenerator.api.template.download/?token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM4NSZ0cz0xNzk0MzkzNzI1Jl89ZjI1VkdnOFlydkdPQUZVRnFpd05NRDBnN3JTTDIySjI%3D%7C...%3D"
         }
     },
     "time": {
-        "start": 1774273885,
-        "finish": 1774273885.843453,
-        "duration": 0.8434529304504395,
-        "processing": 0,
-        "date_start": "2026-03-23T16:51:25+01:00",
-        "date_finish": "2026-03-23T16:51:25+01:00",
-        "operating_reset_at": 1774274485,
-        "operating": 0
+        "start": 1794393723,
+        "finish": 1794393725.630273,
+        "duration": 2.6302731037139893,
+        "processing": 2,
+        "date_start": "2026-11-11T11:42:03+01:00",
+        "date_finish": "2026-11-11T11:42:05+01:00",
+        "operating_reset_at": 1794393960,
+        "operating": 60.87245774269104
     }
 }
 ```
@@ -490,16 +497,16 @@ HTTP Status: **200**
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the template ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template ||
+[`string`](../../data-types.md) | Link to download the template file in the browser of a user authorized in Bitrix24 ||
 || **downloadMachine**
-[`string`](../../data-types.md) | Link to download the template for machine processing ||
+[`string`](../../data-types.md) | Link to download the template file with an access token. Suitable for downloading from an app or script without a browser session ||
 || **active**
 [`char`](../../data-types.md) | Template activity. Possible values:
 - `Y` — active
 - `N` — inactive
 ||
 || **moduleId**
-[`string`](../../data-types.md) | Module identifier ||
+[`string`](../../data-types.md) | Identifier of the template module. For templates created by this method, it is always `rest` ||
 || **numeratorId**
 [`string`](../../data-types.md) | Identifier of the numerator ||
 || **withStamps**
@@ -508,13 +515,13 @@ HTTP Status: **200**
 - `N` — no
 ||
 || **providers**
-[`object`](../../data-types.md) | Template data providers. 
+[`object`](../../data-types.md) | Template data providers.
 
-Key and value are equal to the name of the data provider class ||
+Key and value are equal to the name of the data provider class in lowercase, for example `bitrix\documentgenerator\dataprovider\rest` ||
 || **users**
-[`object`](../../data-types.md) | Access codes to the template. 
+[`object`](../../data-types.md) | Access codes to the template.
 
-Key and value are equal to the access code ||
+Key and value are equal to the access code, for example `UA` or `U1` ||
 || **isDeleted**
 [`char`](../../data-types.md) | Deletion status of the template. Possible values:
 - `Y` — deleted
@@ -550,11 +557,15 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `400` | `100` | Invalid value to match with parameter {fields}. Should be value of type array | Parameter `fields` not passed as an object ||
-|| `400` | `0` | Empty required fields: name, numeratorId, region | Required fields for creating a template not provided: `name`, `numeratorId`, `region`. The error lists the fields that are missing in the request ||
-|| `400` | `0` | Missing file content | Template file not provided ||
-|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify templates ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an object. The passed value is shown in curly braces ||
+|| `400` | `0` | Missing file content | Neither `file` nor `fileId` provided ||
+|| `400` | `0` | Could not save file | Parameter `file` passed in an invalid format, for example an array without the file content ||
+|| `400` | `0` | Empty required fields: name, numeratorId, region | Required fields not provided. The error text lists only the missing fields out of `name`, `numeratorId`, `region` ||
+|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier. | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
+|| `400` | `BX_INVALID_VALUE` | The length of "NAME" should not exceed 100 characters. | The `name` value is longer than 100 characters ||
+|| `400` | `BX_INVALID_VALUE` | The value of "ACTIVE" is invalid. | The `active` field contains a value other than `Y` and `N` ||
+|| `400` | `BX_INVALID_VALUE` | The value of "WITH_STAMPS" is invalid. | The `withStamps` field contains a value other than `Y` and `N` ||
+|| `400` | `0` | You do not have permissions to modify templates | The user does not have permission to modify document generator templates ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for document generator templates
+> Who can execute the method: a user with permission to modify document generator templates
 
 The method `crm.documentgenerator.template.add` adds a new document template.
 
@@ -40,18 +40,13 @@ The method `crm.documentgenerator.template.add` adds a new document template.
 || **numeratorId**^*^
 [`integer`](../../../data-types.md) | Identifier of the numerator. A list of available numerators can be obtained using the method [crm.documentgenerator.numerator.list](../numerator/crm-document-generator-numerator-list.md) ||
 || **region**^*^
-[`string`](../../../data-types.md) | Template region, for example `ru` ||
+[`string`](../../../data-types.md) | Template region, for example `ru`. Available region codes are returned by [documentgenerator.region.list](../../../document-generator/region/document-generator-region-list.md) ||
 || **entityTypeId**^*^
-[`array`](../../../data-types.md) | Array of CRM object identifiers for which the template is available.
+[`array`](../../../data-types.md) | Array of CRM object type identifiers for which the template is available.
 
-Typical values:
-- `1` — lead
-- `2` — deal
-- `3` — contact
-- `4` — company
-- `5` — invoice (old version)
-- `7` — estimate
-- `31` — invoice
+The method ignores identifiers that do not match an available data provider. Pass at least one supported identifier.
+
+Standard type values are listed in the [CRM Object Type](../../data-types.md#object_type) table.
 
 For objects with pipelines, a pipeline suffix is added, for example:
 - `2_category_0` — deal, pipeline `0`
@@ -83,6 +78,10 @@ If the parameter is not provided or is empty, the current user (`U<id>`) is auto
 [`char`](../../../data-types.md) | Include stamp and signature: `Y` or `N`. Default is `N` ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting index ||
+|| **timezone**
+```string | null``` | Template time zone: a canonical IANA identifier, for example `Europe/Berlin`. An empty string or `null` resets the value. Used when time zone support is enabled ||
+|| **titlePattern**
+```string | null``` | Document title pattern. An empty string or `null` resets the value. Used when title pattern support is enabled ||
 |#
 
 ## Code Examples
@@ -93,7 +92,7 @@ Example of adding a document template where:
 - template name — REST Proposal Template
 - numerator identifier — `49`
 - template region — `ru`
-- CRM object identifiers — `2` and `2_category_0`
+- CRM object type identifiers — `2` and `2_category_0`
 - access permission code — `UA`
 
 {% list tabs %}
@@ -137,6 +136,8 @@ Example of adding a document template where:
         code: string | null,
         download: string,
         downloadMachine: string,
+        timezone?: string | null,
+        titlePattern?: string | null,
         active: string,
         moduleId: string,
         numeratorId: string,
@@ -155,7 +156,7 @@ Example of adding a document template where:
         method: 'crm.documentgenerator.template.add',
         params: {
           fields: {
-            name: 'Template KP from REST',
+            name: 'REST Proposal Template',
             file: ['template.docx', '**base64_encoded_content**'],
             numeratorId: 49,
             region: 'de',
@@ -197,7 +198,7 @@ Example of adding a document template where:
             method: 'crm.documentgenerator.template.add',
             params: {
               fields: {
-                name: 'Template KP from REST',
+                name: 'REST Proposal Template',
                 file: ['template.docx', '**base64_encoded_content**'],
                 numeratorId: 49,
                 region: 'de',
@@ -413,7 +414,7 @@ HTTP status: **200**
     "result": {
         "template": {
             "id": "41",
-            "name": "Template from file",
+            "name": "REST Proposal Template",
             "region": "de",
             "code": null,
             "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=41",
@@ -428,7 +429,8 @@ HTTP status: **200**
             "sort": "500",
             "downloadMachine": "https://mysite.com/rest/crm.documentgenerator.template.download.json?...",
             "entityTypeId": [
-                "2"
+                "2",
+                "2_category_0"
             ],
             "createTime": "2026-03-18T15:54:20+03:00",
             "updateTime": "2026-03-18T15:54:20+03:00"
@@ -470,11 +472,11 @@ HTTP status: **200**
 || **region**
 [`string`](../../../data-types.md) | Template region ||
 || **code**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Symbolic code of the template ||
+```string | null``` | Symbolic code of the template ||
 || **download**
 [`string`](../../../data-types.md) | Link to download the template file ||
 || **downloadMachine**
-[`string`](../../../data-types.md) | Link to download the template file for the application ||
+[`string`](../../../data-types.md) | Link to download the template file via the REST API ||
 || **active**
 [`char`](../../../data-types.md) | Template activity: `Y` or `N` ||
 || **moduleId**
@@ -490,11 +492,15 @@ HTTP status: **200**
 || **sort**
 [`string`](../../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../../data-types.md) | Array of CRM object identifiers for which the template is available ||
+[`array`](../../../data-types.md) | Array of CRM object type identifiers for which the template is available. The value may include a qualifier, for example `2_category_0` ||
 || **createTime**
 [`datetime`](../../../data-types.md) | Date and time of template creation ||
 || **updateTime**
 [`datetime`](../../../data-types.md) | Date and time of the last template update ||
+|| **timezone**
+```string | null``` | Template time zone. Returned when time zone support is enabled ||
+|| **titlePattern**
+```string | null``` | Document title pattern. Returned when title pattern support is enabled ||
 |#
 
 ## Error Handling
@@ -513,14 +519,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not provided as an object ||
-|| `0` | Empty required fields: name, numeratorId, region, entityTypeId | Required fields not provided in the `fields` object ||
-|| `0` | Missing file content | Template file not provided in `fields.file` ||
-|| `0` | Could not save file | Failed to save the template file ||
-|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `TITLE_PATTERN_INVALID` | Title pattern must be a string | The value passed in `titlePattern` is not a string ||
+|| `400` | `TITLE_PATTERN_INVALID` | Invalid document title pattern. Check the placeholders and make sure the pattern is no longer than 255 characters | The `titlePattern` value failed placeholder or length validation ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `400` | `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not provided as an object ||
+|| `400` | `0` | Empty required fields: name, numeratorId, region, entityTypeId | Required fields not provided in the `fields` object ||
+|| `400` | `0` | Missing file content | Template file not provided in `fields.file` ||
+|| `400` | `0` | Empty required fields: providers | None of the `entityTypeId` identifiers matches an available data provider ||
+|| `400` | `0` | Could not save file | Failed to save the template file ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier. | An invalid time zone identifier was passed in `timezone` ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

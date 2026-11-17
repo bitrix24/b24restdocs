@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with dialog permissions
+> Who can execute the method: the operator to whom the dialog is assigned
 
-The method `imopenlines.session.mode.pin` pins or unpins a dialog to the current operator.
+The method `imopenlines.session.mode.pin` pins a dialog to the current operator or unpins it.
 
 ## Method Parameters
 
@@ -23,15 +23,17 @@ The method `imopenlines.session.mode.pin` pins or unpins a dialog to the current
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat. 
+[`integer`](../../../data-types.md) | Identifier of the open line chat.
 
 The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 || **ACTIVATE**
 [`string`](../../../data-types.md) | Pinning flag:
-- `Y` — pin
-- `N` — unpin
-  
-Defaults to `Y` ||
+- `Y` — pin. The dialog stays with the operator, and the automatic closing date is moved one week ahead
+- `N` — unpin. The automatic closing date is calculated again according to the queue rules. If the operator has not yet replied to the client, the agent availability check is enabled in the channel settings, and the operator is unavailable, the dialog returns to the queue
+
+Any value other than `N` pins the dialog. Defaults to `Y`.
+
+When the mode changes, a system message is added to the chat ||
 |#
 
 ## Code Examples
@@ -266,7 +268,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the dialog is successfully pinned or unpinned ||
+[`boolean`](../../../data-types.md) | Returns `true` if the dialog is pinned or unpinned. If the dialog is already in the requested mode, the method changes nothing and also returns `true` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -289,10 +291,11 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
-|| `400` | `CHAT_ID` | Invalid chat identifier provided | Empty or invalid `CHAT_ID` provided ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | An invalid `CHAT_ID` is passed, or a chat with this ID is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The specified chat does not belong to open lines ||
 || `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have access to the dialog ||
 || `400` | `USER_ID` | Invalid user identifier provided | User not defined for method execution ||
+|| `400` | Empty value | Empty value | The current user is not the operator of the dialog, or the chat has no dialog data ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

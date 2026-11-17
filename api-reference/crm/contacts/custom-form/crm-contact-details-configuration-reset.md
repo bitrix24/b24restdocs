@@ -13,7 +13,8 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method:
 >  - any user can reset their own personal settings
->  - a user with the "Allow to change settings" access permission in CRM can reset the shared settings and another user's personal settings
+>  - a user with the "Manage CRM item form layout" or "Edit CRM preferences" access permission in CRM can reset the shared settings
+>  - a user with the "Edit CRM preferences" access permission in CRM can reset another user's personal settings
 
 {% note warning "DEPRECATED" %}
 
@@ -21,7 +22,7 @@ The development of this method has been halted. Please use [crm.item.details.con
 
 {% endnote %}
 
-The method resets the contact card configurations: it removes the personal card settings of a specified user or the shared settings defined for all users.
+The method `crm.contact.details.configuration.reset` resets the contact card configuration: it removes the personal card settings of a specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
@@ -31,18 +32,18 @@ The method resets the contact card configurations: it removes the personal card 
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | The scope of the settings. 
+[`string`](../../../data-types.md) | The scope of the settings.
 
 Possible values:
 - **P** — personal settings
 - **C** — shared settings
 
-Default — `P`
+Default — `P`. Any value other than `C` selects the personal settings `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when resetting personal settings.
 
-If not specified, the `id` of the current user is used
+If the parameter is not specified or its value is less than or equal to zero after conversion to an integer, the current user's identifier is used
 ||
 |#
 
@@ -262,7 +263,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | The root element of the response.
 
-Returns `true` if the settings were successfully reset ||
+The method returns `true` if no error occurred during the reset. The value does not confirm that saved settings existed ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -283,8 +284,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**   | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have permission to reset the selected contact card configuration ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -293,5 +294,5 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-contact-details-configuration-get.md)
-- [{#T}](.//crm-contact-details-configuration-set.md)
+- [{#T}](./crm-contact-details-configuration-set.md)
 - [{#T}](./crm-contact-details-configuration-force-common-scope-for-all.md)

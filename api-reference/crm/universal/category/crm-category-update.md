@@ -1,4 +1,4 @@
-# Update Sales Funnel crm.category.update
+# Update a Pipeline crm.category.update
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a user with the permission to manage pipelines. For an SPA of a digital workplace, the permission is checked within that workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method updates the funnel (direction) with the identifier `id`, setting new values for the fields from `fields`. If any field is missing in `fields`, its value will remain unchanged.
+The `crm.category.update` method updates the pipeline with the identifier `id`: it changes the values of the fields passed in `fields`. The values of other fields remain unchanged.
 
 ## Method Parameters
 
@@ -29,56 +29,49 @@ This method updates the funnel (direction) with the identifier `id`, setting new
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which the funnel will be updated            ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the pipeline will be updated ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the pipeline. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a pipeline with the [`crm.category.add`](./crm-category-add.md) method ||
 || **fields***
-[`object`](../../../data-types.md)  |  Field values (detailed description provided [below](#parameter-fields)) for updating the funnel fields in the form of a structure:
+[`object`](../../../data-types.md)  |  Field values (detailed description provided [below](#parametr-fields)) for updating the pipeline fields in the form of a structure:
 
 ```js
 fields: {
-    name: "value",
-    sort: "value",
-    isDefault: "value",
+    name: "Pipeline name",
+    sort: 1000,
+    isDefault: "Y",
 },
 ```
 
   ||
 |#
 
-### Parameter fields
+### Parameter fields {#parametr-fields}
+
+For a full description of the pipeline fields, see [crm.category.fields](./crm-category-fields.md) and the [field table of crm.category.add](./crm-category-add.md#parametr-fields). Update specifics:
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../../data-types.md) | Name of the funnel. The name can be:
-- length cannot exceed `255` characters
-- cannot be empty
-- cannot consist solely of spaces, tabs, etc.
-
-Defaults to `-` ||
+[`string`](../../../data-types.md) | Name of the pipeline ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort index. 
-
-Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and `sort = 0` will be set.
-
-Defaults to `500` || 
+[`integer`](../../../data-types.md) | Sort index. Pass a non-negative number. A negative value is ignored, and the previous value is retained ||
 || **isDefault**
-[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel. Can have values:
-- `Y` — yes, it is
-- `N` — no
+[`boolean`](../../../data-types.md) | Default pipeline flag:
+- `Y` or `true` — yes
+- `N` or `false` — no
 
-Defaults to `N`
+If changing the flag is available for the object type, pass `Y` or `true` to make the updated pipeline the default one. The previous default pipeline loses this flag.
 
 In deals, the `isDefault` field is not available for modification.
 
-You can find out if the field is immutable using the [`crm.category.fields`](./crm-category-fields.md) method. Immutable fields have the property `isReadonly = true` ||
+To check whether the field can be changed for the object type, use the [`crm.category.fields`](./crm-category-fields.md) method: a read-only field has the property `isReadOnly = true` ||
 |#
 
 ## Code Examples
 
-How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
+How to update a pipeline with `id = 4` in an SPA with `entityTypeId = 1152`
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -90,7 +83,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1152,"id":4,"fields":{"name":"New Funnel Name","sort":1000,"isDefault":"Y"}}' \
+    -d '{"entityTypeId":1152,"id":4,"fields":{"name":"New Pipeline Name","sort":1000,"isDefault":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.category.update
     ```
 
@@ -100,7 +93,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1152,"id":4,"fields":{"name":"New Funnel Name","sort":1000,"isDefault":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":1152,"id":4,"fields":{"name":"New Pipeline Name","sort":1000,"isDefault":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.category.update
     ```
 
@@ -132,7 +125,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
           entityTypeId: 1152,
           id: 4,
           fields: {
-            name: 'New funnel name',
+            name: 'New pipeline name',
             sort: 1000,
             isDefault: 'Y',
           },
@@ -170,7 +163,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
               entityTypeId: 1152,
               id: 4,
               fields: {
-                name: 'New funnel name',
+                name: 'New pipeline name',
                 sort: 1000,
                 isDefault: 'Y',
               },
@@ -239,7 +232,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
                     'entityTypeId' => 1152,
                     'id'          => 4,
                     'fields'      => [
-                        'name'     => 'New Funnel Name',
+                        'name'     => 'New Pipeline Name',
                         'sort'     => 1000,
                         'isDefault' => 'Y',
                     ],
@@ -269,7 +262,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
             entityTypeId: 1152,
             id: 4,
             fields: {
-                name: "New Funnel Name",
+                name: "New Pipeline Name",
                 sort: 1000,
                 isDefault: "Y",
             },
@@ -299,7 +292,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
             'entityTypeId' => 1152,
             'id' => 4,
             'fields' => [
-                'name' => "New Funnel Name",
+                'name' => "New Pipeline Name",
                 'sort' => 1000,
                 'isDefault' => "Y"
             ]
@@ -319,7 +312,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
     	"entityTypeId": 1152,
     	"id":           4,
     	"fields": b24.Params{
-    		"name":      "New Funnel Name",
+    		"name":      "New Pipeline Name",
     		"sort":      1000,
     		"isDefault": "Y",
     	},
@@ -358,7 +351,7 @@ HTTP Status: **200**
     "result": {
         "category": {
             "id": 4,
-            "name": "New Funnel Name",
+            "name": "New Pipeline Name",
             "sort": 1000,
             "entityTypeId": 1152,
             "isDefault": "Y"
@@ -382,9 +375,36 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](#category) object ||
+|| **category**
+[`object`](../../../data-types.md) | Object of the updated pipeline within `result`. Its fields are described in the [Object category](#category) section ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Object category {#category}
+
+For a full description of the object, see [crm.category.add](./crm-category-add.md#category). Brief response structure:
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | Pipeline identifier ||
+|| **name**
+[`string`](../../../data-types.md) | Name of the pipeline ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **entityTypeId**
+[`integer`](../../../data-types.md) | CRM object type identifier ||
+|| **isDefault**
+[`boolean`](../../../data-types.md) | Default pipeline flag: `Y` — yes, `N` — no ||
+|| **originId**, **originatorId**
+[`string`](../../../data-types.md) | Identifiers for linking with an external system. Returned for additional deal pipelines ||
+|| **isSystem**
+[`boolean`](../../../data-types.md) | System pipeline flag: `Y` — yes, `N` — no. Returned for contacts and companies ||
+|| **code**
+[`string`](../../../data-types.md) | Symbolic code of the pipeline. Returned for contacts and companies ||
 |#
 
 ## Error Handling
@@ -394,7 +414,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Smart process not found"
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
@@ -403,12 +423,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | Smart process not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `NOT_FOUND` | Element not found | Occurs if the funnel being updated does not exist ||
-|| `ACCESS_DENIED` | Access denied | Occurs if the user updating the funnel does not have sufficient rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {fields} | A required parameter is missing. The name of the missing parameter is returned instead of `{fields}`: `entityTypeId`, `id`, or `fields` ||
+|| `400` | `NOT_FOUND` | Smart Process Automation was not found | The CRM object type with the specified `entityTypeId` was not found ||
+|| `400` | `ENTITY_TYPE_NOT_SUPPORTED` | CRM entity "{entityTypeName}" is not supported | The CRM object does not support pipelines. The name of the object type is returned instead of `{entityTypeName}` ||
+|| `400` | `NOT_FOUND` | Item was not found | Occurs if the pipeline being updated does not exist ||
+|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user updating the pipeline does not have sufficient rights ||
 |#
+
+The error text depends on the Bitrix24 language. The method also returns pipeline saving errors; their set depends on the CRM object type.
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

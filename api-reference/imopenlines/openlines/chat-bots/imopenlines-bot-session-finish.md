@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: application user with a registered chat-bot
 
-The method `imopenlines.bot.session.finish` ends the current dialog of the open line on behalf of the application's chat-bot.
+The method `imopenlines.bot.session.finish` ends the current dialog of the open line on behalf of the application's chat-bot. The method assigns the chat-bot as the person responsible for the dialog and closes the dialog.
 
 ## Method Parameters
 
@@ -260,7 +260,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Contains `true` if the dialog was successfully finished ||
+[`boolean`](../../../data-types.md) | Contains `true` after the method runs.
+
+The method returns `true` even if the chat with the specified `CHAT_ID` is not found or the chat has no active dialog ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -283,8 +285,9 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value is `<= 0` ||
-|| `400` | `BOT_ID_ERROR` | Bot not found | No registered chat-bot found in the application ||
-|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization, which is prohibited for this method ||
+|| `400` | `BOT_ID_ERROR` | Bot not found | No registered chat-bot found in the application or for the provided `CLIENT_ID` ||
+|| `403` | `ACCESS_DENIED` | Access denied! Client ID not specified. | The method was called via a webhook without the `CLIENT_ID` parameter ||
+|| `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with user session authorization. Call the method via a webhook or with the application's OAuth token ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the dialog
+> Who can execute the method: a member of the open line chat or a user with the "Join conversation" permission for this line
 
-The method `imopenlines.operator.answer` assigns the dialog of the open line to the current operator.
+The method `imopenlines.operator.answer` assigns the user calling the method as the person responsible for the open line dialog.
 
 ## Method Parameters
 
@@ -23,10 +23,12 @@ The method `imopenlines.operator.answer` assigns the dialog of the open line to 
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat.
+[`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix.
 
 The identifier can be obtained using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) methods ||
 |#
+
+The method takes the dialog from the queue or from a chatbot. If another operator is already handling the dialog, the method returns the `ANSWER_ALREADY_TAKEN` error. To take the dialog from another operator, use the [imopenlines.session.intercept](../sessions/imopenlines-session-intercept.md) method.
 
 ## Code Examples
 
@@ -41,7 +43,7 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"CHAT_ID":2043}' \
-      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.operator.answer.json
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.operator.answer
     ```
 
 - cURL (OAuth)
@@ -50,8 +52,8 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
-      https://your-domain.bitrix24.com/rest/imopenlines.operator.answer.json
+      -d '{"CHAT_ID":2043,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.operator.answer
     ```
 
 - JS (TS)
@@ -253,7 +255,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the operator successfully took the dialog ||
+[`boolean`](../../../data-types.md) | Returns `true` if the user became the person responsible for the dialog ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -275,10 +277,14 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The specified chat identifier is incorrect | Empty or incorrect `CHAT_ID` ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | The current user does not have access permission to the dialog ||
-|| `400` | `USER_ID` | The specified user identifier is incorrect | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `CHAT_ID` | Chat ID is invalid. | `CHAT_ID` is not provided, the value is less than `1`, or the chat is not found ||
+|| `400` | `CHAT_TYPE` | This chat is not Open Channel | The specified chat does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You do not have permission to access this chat. | The user is not a member of the chat and does not have the "Join conversation" permission for this line ||
+|| `400` | `USER_ID` | User ID is invalid. | The user on behalf of whom the method is executed is not defined ||
+|| `400` | `ANSWER_ALREADY_TAKEN` | Another agent is already handling this conversation. | Another operator is handling the dialog ||
+|| `400` | `IMOL_CHAT_ERROR_ANSWER_ALREADY_RESPONSIBLE` | The agent you are trying to assign is already assigned to this conversation | The user is already handling this dialog ||
+|| `400` | `IMOL_CHAT_ERROR_ANSWER_COMPETITIVE_REQUEST` | There is a concurrent request to accept this conversation | Another request is accepting the dialog at this moment ||
+|| `400` | `IMOL_CHAT_ERROR_ANSWER_NOT_LOAD_SESSION` | Cannot load session | The dialog session could not be loaded or created ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -13,12 +13,12 @@ items:
     href: imopenlines-config-list-get.md  
   - name: Delete an Open Channel  
     href: imopenlines-config-delete.md  
-  - name: Connect External Open Channel to Account  
+  - name: Get Link to the Public Page of Open Channels  
+    href: imopenlines-config-path-get.md  
+  - name: Connect an External Open Channel to Bitrix24  
     href: imopenlines-network-join.md  
   - name: Send Message to User on Behalf of Open Channel  
     href: imopenlines-network-message-add.md  
-  - name: Get Link to Public Page of Open Channels in Account  
-    href: imopenlines-config-path-get.md  
   - name: CRM Chats  
     include:  
       path: chats/b24-toc.yaml  

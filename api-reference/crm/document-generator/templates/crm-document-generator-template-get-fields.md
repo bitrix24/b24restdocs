@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for Document Generator templates
+> Who can execute the method: a user with permission to modify document generator templates, permission to modify the specified template, and access to the specified CRM item data
 
 The method `crm.documentgenerator.template.getfields` returns a card of template fields: which fields are available, their current values, default values, and service indicators.
 
@@ -27,99 +27,16 @@ The method `crm.documentgenerator.template.getfields` returns a card of template
 || **entityTypeId**^*^
 [`integer`](../../../data-types.md) | Identifier of the CRM object type. Needed to select the data provider ||
 || **entityId**
-[`integer`](../../../data-types.md) | Identifier of the CRM object whose data will be used to compute field values ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object whose data will be used to compute field values. If the parameter is omitted, `null` is used ||
 || **values**
-[`object`](../../../data-types.md) | Object format:
-
-```
-{
-    field_1: value_1,
-    field_2: value_2,
-    ...,
-    field_n: value_n,
-}
-```
-
-where:
-- `field_n` — field name
-- `value_n` — field value
-
-`values` are temporary substitutions over the CRM data. The method takes data by `entityTypeId` and `entityId`, then applies values from `values` and recalculates the template fields.
-
-This allows checking the result without changing the data in CRM. For example, if you pass `values.DocumentNumber = "2026-001"`, the `DocumentNumber` field will return this value in the response.
-
-If `values` is not passed, the method will return the card of fields based on the original CRM data and template logic
-||
+[`object`](../../../data-types.md) | Additional values for computing fields without changing CRM data [(more details)](#parameter-values-fields). The effect of a value depends on the field and provider logic. Defaults to an empty object ||
 |#
 
 ### Parameter Values {#parameter-values-fields}
 
-The composition of the `values` keys is determined by the template, data provider, and context (`entityTypeId`, `entityId`), so it may vary in different scenarios.
+The keys in `values` are template field codes, and the values are additional data for computing these fields. The available fields depend on the template and the selected CRM item. For example: `{"DocumentNumber": "2026-001"}`.
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **MyCompanyRequisiteRqCompanyName**
-[`string`](../../../data-types.md) | Short name of the organization ||
-|| **MyCompanyRequisiteRegisteredAddressText**
-[`string`](../../../data-types.md) | Full address ||
-|| **MyCompanyPhone**
-[`string`](../../../data-types.md) | Phone ||
-|| **MyCompanyEmail**
-[`string`](../../../data-types.md) | E-mail ||
-|| **MyCompanyWeb**
-[`string`](../../../data-types.md) | Website ||
-|| **MyCompanyUfLogo**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Logo ||
-|| **RequisiteRqCompanyName**
-[`string`](../../../data-types.md) | Short name of the organization ||
-|| **RequisiteRegisteredAddressText**
-[`string`](../../../data-types.md) | Full address ||
-|| **ClientPhone**
-[`string`](../../../data-types.md) | Phone ||
-|| **ClientEmail**
-[`string`](../../../data-types.md) | Email ||
-|| **ClientWeb**
-[`string`](../../../data-types.md) | Website ||
-|| **DocumentNumber**
-[`string`](../../../data-types.md) | Number ||
-|| **DocumentCreateTime**
-[`string`](../../../data-types.md) | Generation date ||
-|| **ProductsIndex**
-[`string`](../../../data-types.md) | Current number ||
-|| **ProductsProductName**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Name ||
-|| **ProductsProductQuantity**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Quantity ||
-|| **ProductsProductMeasureName**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Units of measure ||
-|| **ProductsProductPriceRaw**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Original price ||
-|| **ProductsProductPriceRawSum**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Total original price ||
-|| **TotalRaw**
-[`string`](../../../data-types.md) | Total original prices ||
-|| **TaxesTaxTitle**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Heading ||
-|| **TaxesTaxRate**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Rate ||
-|| **TaxesTaxValue**
-[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Amount ||
-|| **TotalSum**
-[`string`](../../../data-types.md) | Total amount ||
-|| **MyCompanyAssignedName**
-[`string`](../../../data-types.md) | First Name ||
-|| **MyCompanyAssignedLastName**
-[`string`](../../../data-types.md) | Last Name ||
-|| **MyCompanyAssignedPersonalPhone**
-[`string`](../../../data-types.md) | Phone ||
-|| **MyCompanyAssignedEmail**
-[`string`](../../../data-types.md) | E-Mail ||
-|| **DocumentTitle**
-[`string`](../../../data-types.md) | Document name ||
-|| **MY_COMPANY**
-[`array`](../../../data-types.md) | My company ||
-|#
+The method takes data from `entityTypeId` and `entityId` and computes template fields using `values` and the provider logic. If `values` is omitted, the original CRM data and template logic are used.
 
 ## Code Examples
 
@@ -169,12 +86,12 @@ Example of retrieving document template fields, where:
     }
 
     type TemplateField = {
-      title: string
-      value: string | string[] | null
+      title?: string
+      value: string | string[] | Array<{ value: string; title: string; selected: boolean }> | null
       default?: string | null
       required?: string
       type?: string
-      group: string[]
+      group?: string[]
       chain?: string
     }
 
@@ -384,6 +301,8 @@ Example of retrieving document template fields, where:
 
 HTTP status: **200**
 
+The response example is abbreviated: the available fields and their number depend on the template.
+
 ```json
 {
     "result": {
@@ -449,7 +368,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefield) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`templateFields`](#result) object ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -465,15 +384,17 @@ HTTP status: **200**
 
 #### templateField Type {#templatefield}
 
+The set of properties depends on the field. For example, `title` and `group` may be absent.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **title**
 [`string`](../../../data-types.md) | Field name ||
 || **value**
-[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) | Current field value ||
+```string | array | null``` | Current field value. For a selection field, the array may contain [Value Option Objects](#choice-value) ||
 || **default**
-[`string`](../../../data-types.md) | Default field value ||
+```string | null``` | Default field value ||
 || **required**
 [`char`](../../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
 || **type**
@@ -482,6 +403,19 @@ HTTP status: **200**
 [`array`](../../../data-types.md) | Groups to which the field belongs ||
 || **chain**
 [`string`](../../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
+|#
+
+#### Selection Field Value Option {#choice-value}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **value**
+[`string`](../../../data-types.md) | Option value ||
+|| **title**
+[`string`](../../../data-types.md) | Option name ||
+|| **selected**
+[`boolean`](../../../data-types.md) | Whether the option is selected ||
 |#
 
 ## Error Handling
@@ -500,13 +434,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template or insufficient rights to work with document generator templates ||
-|| `0` | Template not found | Template with the specified `id` not found or unavailable ||
-|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be is public | A required parameter was not provided ||
-|| Empty value | Cannot get fields from deleted template | Cannot get fields from a deleted template ||
-|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {entityTypeId} | CRM item type identifier not provided ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the CRM item data ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Template identifier not provided ||
+|| `400` | `0` | Cannot get fields from deleted template | Cannot retrieve fields from a deleted template ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `0` | You do not have permissions to modify this template | Insufficient permissions to modify the specified template ||
+|| `400` | `0` | No provider for entityTypeId | No data provider found for the specified `entityTypeId` ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

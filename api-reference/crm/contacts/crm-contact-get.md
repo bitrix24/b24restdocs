@@ -1,4 +1,4 @@
-# Get Contact by Id crm.contact.get
+# Get Contact by ID crm.contact.get
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "read" access permission for contacts
+> Who can execute the method: a user with permission to read contacts
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,8 @@ The development of this method has been halted. Please use the REST 3.0 method [
 {% endnote %}
 
 The method `crm.contact.get` returns a contact by its identifier.
+
+The method returns only contacts from the general category. It does not find a contact from another category, such as "Vendor Contacts", and returns the `Not found` error. Retrieve such contacts using [crm.item.get](../universal/crm-item-get.md) with `entityTypeId=3`.
 
 To retrieve a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
@@ -48,7 +50,7 @@ Get contact with `id = 23`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":23}' \
+    -d '{"id":23}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.get
     ```
 
@@ -58,7 +60,7 @@ Get contact with `id = 23`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":23,"auth":"**put_access_token_here**"}' \
+    -d '{"id":23,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.get
     ```
 
@@ -76,13 +78,13 @@ Get contact with `id = 23`
     type CrmContactResult = {
       ID: string
       NAME: string
-      LAST_NAME: string
+      LAST_NAME: string | null
       TYPE_ID: string
       SOURCE_ID: string
-      COMPANY_ID: string
+      COMPANY_ID: string | null
       ASSIGNED_BY_ID: string
       OPENED: string
-      BIRTHDATE: ISODate | null
+      BIRTHDATE: ISODate | '' | null
       DATE_CREATE: ISODate | null
       DATE_MODIFY: ISODate | null
       LAST_ACTIVITY_TIME: ISODate | null
@@ -151,7 +153,7 @@ Get contact with `id = 23`
 
     ```php        
     try {
-        $contactId = 123; // Example contact ID
+        $contactId = 23; // Example contact ID
         $contactResult = $serviceBuilder
             ->getCRMScope()
             ->contact()
@@ -193,7 +195,7 @@ Get contact with `id = 23`
     $result = CRest::call(
         'crm.contact.get',
         [
-            'ID' => 23
+            'id' => 23
         ]
     );
 
@@ -236,7 +238,7 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "ID": "43",
+        "ID": "23",
         "POST": "Administrator",
         "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
         "HONORIFIC": "HNR_RU_1",
@@ -263,7 +265,6 @@ HTTP Status: **200**
         "ORIGINATOR_ID": null,
         "ORIGIN_ID": null,
         "ORIGIN_VERSION": null,
-        "FACE_ID": null,
         "LAST_ACTIVITY_TIME": "2024-08-15T10:38:21+02:00",
         "ADDRESS": null,
         "ADDRESS_2": null,
@@ -329,10 +330,10 @@ HTTP Status: **200**
 || **result**
 [`contact`](#contact) | Root element of the response. Contains information about the contact fields. The structure is described [below](#contact) ||
 || **time**
-[`time`](../../data-types.md) | Object containing information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
-### contact
+#### contact Object {#contact}
 
 #|
 || **Name**
@@ -352,7 +353,7 @@ HTTP Status: **200**
 || **LAST_NAME**
 [`string`](../../data-types.md) | Last name ||
 || **PHOTO**
-[`file`](../../data-types.md) | Photo ||
+[`file`](../../data-types.md) | Photo. An object with the fields `id` — file identifier, `showUrl` — preview URL, and `downloadUrl` — download URL. `null` if there is no photo ||
 || **LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead from which the contact was created ||
 || **TYPE_ID**
@@ -362,23 +363,23 @@ HTTP Status: **200**
 || **SOURCE_DESCRIPTION**
 [`text`](../../data-types.md) | Additional information about the source ||
 || **COMPANY_ID**
-[`crm_company`](../data-types.md) | Identifier of the main company ||
+[`crm_company`](../data-types.md) | Identifier of the main company. Deprecated field: a contact can be linked to multiple companies. Use [crm.contact.company.items.get](./company/crm-contact-company-items-get.md) to retrieve their list ||
 || **BIRTHDATE**
-[`date`](../../data-types.md) | Date of birth ||
+[`date`](../../data-types.md) | Date of birth. Returned as a string with the date, time, and time zone, for example `2001-11-11T03:00:00+03:00`. An empty string if no date is set ||
 || **EXPORT**
-[`boolean`](../../data-types.md) | Whether the contact is included in exports. Possible values:
+[`char`](../../data-types.md) | Whether the contact is included in exports. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_PHONE**
-[`boolean`](../../data-types.md) | Is a phone number provided. Possible values:
+[`char`](../../data-types.md) | Whether a phone number is provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_EMAIL**
-[`boolean`](../../data-types.md) | Is an e-mail provided. Possible values:
+[`char`](../../data-types.md) | Whether an e-mail is provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`](../../data-types.md) | Is an open line provided. Possible values:
+[`char`](../../data-types.md) | Whether an open line is provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
@@ -392,21 +393,19 @@ HTTP Status: **200**
 || **MODIFY_BY_ID**
 [`user`](../../data-types.md) | Modified by ||
 || **OPENED**
-[`boolean`](../../data-types.md) | Is it available to everyone. Possible values:
+[`char`](../../data-types.md) | Whether the contact is available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
-|| **FACE_ID**
-[`integer`](../../data-types.md) | Link to faces from the `faceid` module ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Last activity ||
 || **LAST_ACTIVITY_BY**
-[`user`](../../data-types.md) | Who performed the last activity in the timeline ||
+[`user`](../../data-types.md) | Author of the last activity in the timeline ||
+|| **LAST_COMMUNICATION_TIME**
+[`string`](../../data-types.md) | Date and time of the last communication with the contact. Returned as a string in the Bitrix24 date format rather than ISO 8601, for example `09/23/2026 06:27:48 pm`. `null` if there have been no communications ||
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Type of traffic. Possible values:
-- `CPC` — ads
-- `CPM` — banners ||
+[`string`](../../data-types.md) | Type of traffic. For example, `CPC` — ads, `CPM` — banners ||
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
@@ -427,20 +426,19 @@ HTTP Status: **200**
 
 **Fields for external data source connections**
 
-If the contact was created by an external system, then:
-- the `ORIGINATOR_ID` field stores the string identifier of that system
-- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
-- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
+These fields are populated if the contact was created by an external system.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`](../../data-types.md) | External source ||
+[`string`](../../data-types.md) | Identifier of the external system ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the element in the external source ||
+[`string`](../../data-types.md) | Identifier of the contact in the external system ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Version of the original ||
+[`string`](../../data-types.md) | Version of the contact data in the external system ||
+|| **PARENT_ID_...**
+[`crm_entity`](../data-types.md) | Identifier of the parent SPA item. For example, `PARENT_ID_153` is an item of the SPA with `entityTypeId=153`. The field is returned if the SPA is linked to contacts as a parent ||
 |#
 
 **Deprecated Fields**
@@ -468,9 +466,26 @@ Address fields in the contact are deprecated and are only used for compatibility
 [`integer`](../../data-types.md) | Identifier of the location address ||
 |#
 
+The response may contain custom contact fields, such as `UF_CRM_1720697698689`. Their set depends on the Bitrix24 settings. Use [crm.contact.fields](crm-contact-fields.md) to retrieve descriptions of the available fields.
+
+#### crm_multifield Item {#crm_multifield}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the multiple field value ||
+|| **VALUE_TYPE**
+[`string`](../../data-types.md) | Value kind, for example `WORK` — work ||
+|| **VALUE**
+[`string`](../../data-types.md) | Value: phone number, e-mail, website address, or messenger ||
+|| **TYPE_ID**
+[`string`](../../data-types.md) | Field type: `PHONE`, `EMAIL`, `WEB`, `IM`, or `LINK` ||
+|#
+
 {% note tip "Fields of type `crm_multifield`" %}
 
-Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are explicitly returned by this method only if the values of this field are not equal to `null`.
+The `PHONE`, `EMAIL`, `WEB`, `IM`, and `LINK` fields are included in the response if there are values for the corresponding type.
 
 {% endnote %}
 
@@ -490,10 +505,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Description** | **Value** ||
-|| `ID is not defined or invalid` | The `id` parameter was not provided or the provided value is not a positive integer ||
-|| `Access denied` | The user does not have permission to "Read" the contact ||
-|| `Not found` | The contact with the provided `id` was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is not provided, or its value is not greater than 0 after conversion to an integer ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to read the contact ||
+|| `400` | Empty value | `Not found` | The contact with the provided `id` was not found or does not belong to the general category ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with read permission for at least one linked CRM item
 
-Retrieves information about a comment type deal.
+The `crm.timeline.comment.get` method retrieves information about a comment in the CRM timeline.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ Retrieves information about a comment type deal.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Comment identifier, a positive integer. Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 |#
 
 ## Code Examples
@@ -70,16 +70,16 @@ Retrieves information about a comment type deal.
       CREATED: ISODate
       COMMENT: string
       AUTHOR_ID: string
-      FILES: Record<string, {
+      FILES?: Record<string, {
         id: number
         date: ISODate
         type: string
         name: string
         size: number
-        image?: { width: number; height: number }
+        image: { width: number; height: number } | false
         authorId: number
         authorName: string
-        urlPreview: string
+        urlPreview: string | null
         urlShow: string
         urlDownload: string
       }>
@@ -266,8 +266,8 @@ HTTP status: **200**
         "COMMENT": "New comment was added",
         "AUTHOR_ID": "1",
         "FILES": {
-            "1": {
-                "id": 1,
+            "930": {
+                "id": 930,
                 "date": "2020-03-02T12:00:00+03:00",
                 "type": "image",
                 "name": "1.gif",
@@ -282,8 +282,8 @@ HTTP status: **200**
                 "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                 "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
             },
-            "2": {
-                "id": 2,
+            "931": {
+                "id": 931,
                 "date": "2020-03-02T12:00:00+03:00",
                 "type": "image",
                 "name": "2.gif",
@@ -304,8 +304,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -317,9 +317,61 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response. The values for the `result` field correspond to [comment fields](./crm-timeline-comment-fields.md#fields). ||
+[`object`](../../../data-types.md) | Object with information about the comment [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+The full field description is in the [crm.timeline.comment.fields](./crm-timeline-comment-fields.md#fields) method. The `ID`, `ENTITY_ID`, and `AUTHOR_ID` identifiers are of type `integer`, but may be returned as strings in JSON.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Comment identifier ||
+|| **ENTITY_ID**
+[`integer`](../../../data-types.md) | Identifier of the first linked CRM item that the user has permission to read ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | Type of the CRM item specified in `ENTITY_ID` ||
+|| **CREATED**
+[`datetime`](../../../data-types.md) | Date and time the comment was created ||
+|| **COMMENT**
+[`string`](../../../data-types.md) | Comment text ||
+|| **AUTHOR_ID**
+[`integer`](../../../data-types.md) | Identifier of the comment author ||
+|| **FILES**
+[`object`](../../../data-types.md) | Comment files. The key is the file identifier on Drive, the value is a file object [(detailed description)](#files). The field is returned if the comment has files, the Drive module is available, and data for at least one file was retrieved ||
+|#
+
+#### FILES Element {#files}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | File identifier on Drive ||
+|| **date**
+[`datetime`](../../../data-types.md) | Date and time the file was created ||
+|| **type**
+[`string`](../../../data-types.md) | Content type: `image`, `video`, or `file` ||
+|| **name**
+[`string`](../../../data-types.md) | File name ||
+|| **size**
+[`integer`](../../../data-types.md) | File size in bytes ||
+|| **image**
+[`object`](../../../data-types.md), [`boolean`](../../../data-types.md) | Dimensions of the image or video preview: `width` and `height` of type `integer`, in pixels. For other files — `false` ||
+|| **authorId**
+[`integer`](../../../data-types.md) | Identifier of the user who created the file ||
+|| **authorName**
+[`string`](../../../data-types.md) | Name of the user who created the file ||
+|| **urlPreview**
+[`string`](../../../data-types.md) or `null` | Preview link. If no preview is available — `null` ||
+|| **urlShow**
+[`string`](../../../data-types.md) | Link to view an image or download any other file ||
+|| **urlDownload**
+[`string`](../../../data-types.md) | File download link ||
 |#
 
 ## Error Handling
@@ -338,10 +390,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| Empty string | Not found. | The element with the specified parameters was not found ||
-|| Empty string | Access denied. | No permission to edit the CRM element ||
-|| Empty string | ID is not defined or invalid. | Required fields are not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Not found. | No timeline record with the specified `id` was found ||
+|| `400` | Empty value | Access denied. | No read permission for any CRM item linked to the comment, or the comment has no bindings ||
+|| `400` | Empty value | ID is not defined or invalid. | The `id` parameter is not passed or contains an invalid identifier ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

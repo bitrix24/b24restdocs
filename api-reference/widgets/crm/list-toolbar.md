@@ -21,7 +21,27 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method using a code from the [table](#codes). The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by an administrator or by an employee with permission to create applications
+2. A menu item appears above the list with the name from the `TITLE` parameter. If no name is passed, the application name is shown. Items with the same `GROUP_NAME` are combined into a submenu
+3. When a user clicks the item, Bitrix24 opens the handler in a frame. The handler receives a POST request with the data described in the [What the Handler Receives](#handler-data) section
+4. The handler calls REST on behalf of the current user with the token from `AUTH_ID`: for example, it retrieves items with the [crm.item.list](../../crm/universal/crm-item-list.md) method. The list filter and the selected rows are not passed to the handler
+
+## When to Use
+
+The placement suits actions on the list as a whole, when the application does not need a specific item. For example:
+
+- export deals to an external system
+- open an application report or settings right from the list
+- run bulk processing of items that the application selects itself via REST
+
+If the action applies to a single item, choose another placement:
+
+- [CRM_XXX_LIST_MENU](./list-menu.md) — an item in the context menu of a list row; the handler receives the item ID
+- [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md) — an item in the top button menu of the item card; the handler receives the item ID
+
+## Where the Widget is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
@@ -30,7 +50,9 @@ The widget is not displayed in the interface until the application installation 
 || `CRM_COMPANY_LIST_TOOLBAR` | Dropdown menu item above the list of [companies](../../crm/companies/index.md) ||
 || `CRM_DEAL_LIST_TOOLBAR` | Dropdown menu item above the list of [deals](../../crm/deals/index.md) ||
 || `CRM_SMART_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_ORDER_LIST_TOOLBAR` | Dropdown menu item above the list of [online store orders](../../sale/order/index.md) ||
+|| `CRM_ORDER_LIST_TOOLBAR` | Dropdown menu item above the list of [online store orders](../../sale/order/index.md).
+
+The `placement` and `crm` scopes are enough to register it, as with the other codes. The `sale` scope is needed only if the handler works with orders via the `sale.*` methods ||
 || `CRM_QUOTE_LIST_TOOLBAR` | Dropdown menu item above the list of [estimates](../../crm/quote/index.md) ||
 || `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom CRM object type elements. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
 |#
@@ -41,7 +63,7 @@ Open a CRM list and click the arrow next to the button on the right side of the 
 
 ![Menu item above the deal list](./_images/CRM_DEAL_LIST_TOOLBAR.png "Menu item above the deal list")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 

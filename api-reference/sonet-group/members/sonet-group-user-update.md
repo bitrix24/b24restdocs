@@ -295,7 +295,7 @@ HTTP status: **200**
 || **result**
 [`array`](../../data-types.md) | Array of user identifiers for which the role was successfully updated.
 
-An empty array means that there was an attempt to change the role of the group or project owner. ||
+An empty array means there is nothing to change: the specified users are not group members, already have the role from `ROLE`, or are the owner of the group or project. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -322,6 +322,7 @@ HTTP status: **400**
 || — | `Incorrect role code` | An unsupported value for `ROLE` was provided. ||
 || — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
 || — | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
+|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and the `E` role is assigned to a user who is not an employee. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

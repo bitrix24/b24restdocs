@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents.
+> Who can execute the method: a user with permissions to view and create document generator documents and access to the CRM object used to create the document
 
 The method `crm.documentgenerator.document.add` creates a document based on a template for a CRM object.
 
@@ -25,18 +25,7 @@ The method `crm.documentgenerator.document.add` creates a document based on a te
 || **templateId**^*^
 [`integer`](../../../data-types.md) | Identifier of the document template ||
 || **entityTypeId**^*^
-[`integer`](../../../data-types.md) | Identifier of the CRM object type for which the document is created.
-
-Typical values:
-- `1` — lead
-- `2` — deal
-- `3` — contact
-- `4` — company
-- `5` — invoice (old version)
-- `7` — estimate
-- `31` — invoice
-
-For Smart Processes, their `entityTypeId` is passed, for example, `177` ||
+[`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type) for which the document is created ||
 || **entityId**^*^
 [`integer`](../../../data-types.md) | Identifier of the CRM object based on which the document is created ||
 || **values**
@@ -55,7 +44,7 @@ where:
 - `field_n` — field code of the document
 - `value_n` — field value
 
-The set of keys depends on the specific template and data provider. Available fields can be viewed using the method [crm.documentgenerator.document.getfields](./crm-document-generator-document-get-fields.md) ||
+The set of keys depends on the template and data provider. Available template fields can be retrieved using [crm.documentgenerator.template.getfields](../templates/crm-document-generator-template-get-fields.md) ||
 || **stampsEnabled**
 [`integer`](../../../data-types.md) | Include stamp and signature:
 - `1` — include
@@ -63,37 +52,7 @@ The set of keys depends on the specific template and data provider. Available fi
 
 Default is `0` ||
 || **fields**
-[`object`](../../../data-types.md) | Additional descriptions of document fields for generation.
-
-The `fields` parameter is used for more precise field configuration. In most scenarios, the `values` parameter is sufficient.
-
-In `fields`, a field descriptor object is passed. Example:
-
-```json
-{
-    "DocumentTitle": {
-        "title": "Document Title",
-        "value": "Demo Implementation of Product 1",
-        "required": "Y",
-        "default": "Demo Implementation of Product 1",
-        "chain": [
-            {},
-            "getTitle"
-        ],
-        "VALUE": "Test via fields"
-    }
-}
-```
-
-The list of `fields` keys is not fixed and depends on the template.
-
-How to access available parameters:
-- before creating the document — [crm.documentgenerator.template.getfields](../templates/crm-document-generator-template-get-fields.md), field `templateFields`
-- for the created document — [crm.documentgenerator.document.getfields](./crm-document-generator-document-get-fields.md), field `documentFields`
-
-Service fields `SOURCE` and `DOCUMENT` are ignored.
-
-Some computed fields may not be overridden via `fields` ||
+[`object`](../../../data-types.md) | Additional descriptions of document fields. Available fields can be retrieved using [crm.documentgenerator.template.getfields](../templates/crm-document-generator-template-get-fields.md) and [crm.documentgenerator.document.getfields](./crm-document-generator-document-get-fields.md). The `SOURCE` and `DOCUMENT` fields are ignored ||
 |#
 
 {% note info "Method Feature" %}
@@ -111,7 +70,6 @@ Example of creating a document where:
 - `entityTypeId` — `2` (deal)
 - `entityId` — `101`
 - document number is passed via `values.DocumentNumber`
-- for `fields.DocumentTitle`, a descriptor object is passed
 
 {% list tabs %}
 
@@ -121,7 +79,7 @@ Example of creating a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Name","value":"Demo fulfillment of product 1","required":"Y","default":"Demo fulfillment of product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1}' \
+    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"stampsEnabled":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.document.add
     ```
 
@@ -131,7 +89,7 @@ Example of creating a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Name","value":"Demo fulfillment of product 1","required":"Y","default":"Demo fulfillment of product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
+    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.document.add
     ```
 
@@ -148,7 +106,7 @@ Example of creating a document where:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DocumentAddResult = {
       document: {
-        id: number
+        id: number | string
         title: string
         number: string
         createTime: ISODate
@@ -156,30 +114,30 @@ Example of creating a document where:
         createdBy: number
         updatedBy: number | null
         changeStampsEnabled: boolean
-        changeStampsDisabledReason: string
+        changeStampsDisabledReason?: string
         changeQrCodeEnabled: boolean
         qrCodeEnabled: boolean
-        changeQrCodeDisabledReason: string
-        products: {
-          currencyId: string
-          totalSum: string
-          totalRows: number
+        changeQrCodeDisabledReason?: string
+        products?: {
+          currencyId: string | null
+          totalSum: string | number | null
+          totalRows: string | number | null
         }
         stampsEnabled: boolean
         downloadUrl: string
         downloadUrlMachine: string
         publicUrl: string | null
         isTransformationError: boolean
-        transformationErrorMessage: string
-        transformationErrorCode: string
-        templateId: string
-        pullTag: string
+        transformationErrorMessage?: string
+        transformationErrorCode?: number | string
+        templateId: number | string
+        pullTag?: string
         emailDiskFile: number
-        entityTypeId: string
-        entityId: string
+        entityTypeId: number | string
+        entityId: number | string
         values: Record<string, unknown>
-        imageUrl: string
-        pdfUrl: string
+        imageUrl?: string
+        pdfUrl?: string
       }
     }
 
@@ -192,16 +150,6 @@ Example of creating a document where:
           entityId: 101,
           values: {
             DocumentNumber: '2026-001',
-          },
-          fields: {
-            DocumentTitle: {
-              title: 'Document title',
-              value: 'Demo product delivery 1',
-              required: 'Y',
-              default: 'Demo product delivery 1',
-              chain: [{}, 'getTitle'],
-              VALUE: 'Test via fields',
-            },
           },
           stampsEnabled: 1,
         },
@@ -241,16 +189,6 @@ Example of creating a document where:
               values: {
                 DocumentNumber: '2026-001',
               },
-              fields: {
-                DocumentTitle: {
-                  title: 'Document title',
-                  value: 'Demo product delivery 1',
-                  required: 'Y',
-                  default: 'Demo product delivery 1',
-                  chain: [{}, 'getTitle'],
-                  VALUE: 'Test via fields',
-                },
-              },
               stampsEnabled: 1,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -288,16 +226,6 @@ Example of creating a document where:
             values={
                 "DocumentNumber": "2026-001",
             },
-            fields={
-                "DocumentTitle": {
-                    "title": "Document Name",
-                    "value": "Demo fulfillment of product 1",
-                    "required": "Y",
-                    "default": "Demo fulfillment of product 1",
-                    "chain": [{}, "getTitle"],
-                    "VALUE": "Test via fields",
-                },
-            },
             stamps_enabled=1,
         ).response
         result = bitrix_response.result
@@ -330,19 +258,6 @@ Example of creating a document where:
                     'values' => [
                         'DocumentNumber' => '2026-001',
                     ],
-                    'fields' => [
-                        'DocumentTitle' => [
-                            'title' => 'Document Name',
-                            'value' => 'Demo fulfillment of product 1',
-                            'required' => 'Y',
-                            'default' => 'Demo fulfillment of product 1',
-                            'chain' => [
-                                [],
-                                'getTitle',
-                            ],
-                            'VALUE' => 'Test via fields',
-                        ],
-                    ],
                     'stampsEnabled' => 1,
                 ]
             );
@@ -373,16 +288,6 @@ Example of creating a document where:
             values: {
                 DocumentNumber: '2026-001',
             },
-            fields: {
-                DocumentTitle: {
-                    title: 'Document Name',
-                    value: 'Demo fulfillment of product 1',
-                    required: 'Y',
-                    default: 'Demo fulfillment of product 1',
-                    chain: [{}, 'getTitle'],
-                    VALUE: 'Test via fields',
-                }
-            },
             stampsEnabled: 1,
         },
         (result) => {
@@ -408,19 +313,6 @@ Example of creating a document where:
             'values' => [
                 'DocumentNumber' => '2026-001',
             ],
-            'fields' => [
-                'DocumentTitle' => [
-                    'title' => 'Document Name',
-                    'value' => 'Demo fulfillment of product 1',
-                    'required' => 'Y',
-                    'default' => 'Demo fulfillment of product 1',
-                    'chain' => [
-                        [],
-                        'getTitle',
-                    ],
-                    'VALUE' => 'Test via fields',
-                ],
-            ],
             'stampsEnabled' => 1,
         ]
     );
@@ -440,19 +332,6 @@ Example of creating a document where:
     	"entityId":     101,
     	"values": b24.Params{
     		"DocumentNumber": "2026-001",
-    	},
-    	"fields": b24.Params{
-    		"DocumentTitle": b24.Params{
-    			"title":    "Document Title",
-    			"value":    "Demo Implementation of Product 1",
-    			"required": "Y",
-    			"default":  "Demo Implementation of Product 1",
-    			"chain": []any{
-    				b24.Params{},
-    				"getTitle",
-    			},
-    			"VALUE": "Test via fields",
-    		},
     	},
     	"stampsEnabled": 1,
     })
@@ -566,7 +445,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Document identifier ||
+```integer | string``` | Document identifier ||
 || **title**
 [`string`](../../../data-types.md) | Document name ||
 || **number**
@@ -578,19 +457,19 @@ HTTP status: **200**
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
+```integer | null``` | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
 [`boolean`](../../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
-[`string`](../../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed ||
+[`string`](../../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed. The field may be absent ||
 || **changeQrCodeEnabled**
 [`boolean`](../../../data-types.md) | Can the QR code be enabled or disabled ||
 || **qrCodeEnabled**
 [`boolean`](../../../data-types.md) | Current state of the QR code ||
 || **changeQrCodeDisabledReason**
-[`string`](../../../data-types.md) | Reason why the QR code cannot be changed ||
+[`string`](../../../data-types.md) | Reason why the QR code cannot be changed. The field may be absent ||
 || **products**
-[`object`](../../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
+[`object`](../../../data-types.md) | Summary information about the document's products: `currencyId` — currency code, a string or `null`; `totalSum` — total amount, a number, numeric string, or `null`; `totalRows` — row count, a number, numeric string, or `null`. The field may be absent ||
 || **stampsEnabled**
 [`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
@@ -598,25 +477,25 @@ HTTP status: **200**
 || **downloadUrlMachine**
 [`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **publicUrl**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document ||
+```string | null``` | Public link to the document ||
 || **isTransformationError**
 [`boolean`](../../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
 [`string`](../../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
 || **transformationErrorCode**
-[`string`](../../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
+```integer | string``` | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
-[`integer`](../../../data-types.md) | Identifier of the template ||
+```integer | string``` | Identifier of the template ||
 || **pullTag**
-[`string`](../../../data-types.md) | Event tag for document transformation ||
+[`string`](../../../data-types.md) | Event tag for document transformation. The field may be absent ||
 || **emailDiskFile**
 [`integer`](../../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Identifier of the CRM object type ||
+```integer | string``` | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+```integer | string``` | Identifier of the CRM object ||
 || **values**
-[`object`](../../../data-types.md) | Values of the document fields passed during creation ||
+[`object`](../../../data-types.md) | Values of document fields, including values passed during creation and service values ||
 || **imageUrl**
 [`string`](../../../data-types.md) | Link to the document image, if already created ||
 || **pdfUrl**
@@ -639,27 +518,27 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | No provider for entityTypeId | No data provider found for the provided `entityTypeId` ||
-|| `0` | Empty required parameter "value" | `entityId` not provided or is empty ||
-|| `0` | Cannot create document on deleted template | Cannot create a document based on a deleted template ||
-|| `0` | Cannot create document | Error creating document based on the template ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to create the document ||
-|| `DOCGEN_LIMIT_ERROR` | Maximum count of documents has been reached | Exceeded the limit of documents in the plan ||
-|| `0` | Error getting next number | Failed to get the next document number from the number generator ||
-|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be is public | Low-level error when calling without a valid `templateId` ||
-|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
-|| `0` | Template not found | Template with the specified `templateId` not found or unavailable ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | No provider for entityTypeId | No data provider found for the provided `entityTypeId` ||
+|| `400` | `0` | Empty required parameter "value" | `entityId` not provided or is empty ||
+|| `400` | `0` | Cannot create document on deleted template | Cannot create a document based on a deleted template ||
+|| `400` | `0` | Cannot create document | Error creating document based on the template ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to create the document ||
+|| `400` | `DOCGEN_LIMIT_ERROR` | Maximum count of documents has been reached | Exceeded the limit of documents in the plan ||
+|| `400` | `0` | Error getting next number | Failed to get the next document number from the number generator ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `0` | Template was not found | Template with the specified `templateId` not found ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-update.md)
-- [{#T}](./crm-document-generator-document-get-fields.md)
+- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-list.md)
 - [{#T}](./crm-document-generator-document-delete.md)
+- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](../templates/crm-document-generator-template-get-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

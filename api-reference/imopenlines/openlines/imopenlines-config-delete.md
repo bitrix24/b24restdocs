@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to modify open channels
+> Who can execute the method: a user with the "Edit" permission for "Open Channels"
 
 The method `imopenlines.config.delete` removes an open channel.
 
@@ -25,7 +25,7 @@ The method `imopenlines.config.delete` removes an open channel.
 || **CONFIG_ID***
 [`integer`](../../data-types.md) | Identifier of the open channel.
 
-You can obtain the identifier of the open channel when [creating an open channel](./imopenlines-config-add.md) or by using the [method to get the list of open channels](./imopenlines-config-list-get.md) ||
+The identifier is returned by the [imopenlines.config.add](./imopenlines-config-add.md) method when a channel is created. To retrieve the identifiers of existing channels, use the [imopenlines.config.list.get](./imopenlines-config-list-get.md) method ||
 |#
 
 ## Code Examples
@@ -282,8 +282,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CONFIG_ID_EMPTY` | Config ID can't be empty | The `CONFIG_ID` parameter is missing or incorrectly provided ||
-|| `403` | `CONFIG_WRONG_USER_PERMISSION` | Permission denied | Insufficient rights to delete the channel ||
+|| `400` | `CONFIG_ID_EMPTY` | Config ID can't be empty | The `CONFIG_ID` parameter is missing or is not a positive number ||
+|| `403` | `CONFIG_WRONG_USER_PERMISSION` | Permission denied | The user does not have permission to edit the settings of this channel ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

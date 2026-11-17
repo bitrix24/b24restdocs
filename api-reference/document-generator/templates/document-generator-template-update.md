@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.template.update` updates an existing template.
+The method `documentgenerator.template.update` modifies a document template.
 
 ## Method Parameters
 
@@ -23,11 +23,13 @@ The method `documentgenerator.template.update` updates an existing template.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Template identifier.
+[`integer`](../../data-types.md) | Template identifier. Instead of `id`, you can pass the `templateId` parameter.
 
 You can obtain the template identifier after [creating a template](./document-generator-template-add.md) or by using the [method to retrieve the list of templates](./document-generator-template-list.md) ||
 || **fields***
-[`object`](../../data-types.md) | Template fields to update [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Template fields to modify [(detailed description)](#fields).
+
+Pass only the fields you need to change: the other fields keep their current values. If you pass an empty object, the method returns the template unchanged, and only `updateTime` is updated ||
 |#
 
 ### Parameter fields {#fields}
@@ -36,27 +38,28 @@ You can obtain the template identifier after [creating a template](./document-ge
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | Template name ||
+[`string`](../../data-types.md) | Template name, 1 to 100 characters. An empty string is not allowed ||
 || **file**
-[`file`](../../data-types.md#standart-types) | New template file. It can be passed in three ways:
-- as a base64 string
-- as an array `["file_name.docx","base64_content"]`
-- as a file `multipart/form-data`
+[`file`](../../data-types.md#standart-types) | New template file in `.docx` format. The previous template file is deleted if no documents or other templates reference it.
 
-{% note tip "Typical use-cases and scenarios" %}
+The file can be passed in three ways:
+- as a [Base64 String](../../files/how-to-upload-files.md#string) — the file name is not passed in this format
+- as an [Array](../../files/how-to-upload-files.md#array) `["file_name.docx","base64_content"]`
+- as a `multipart/form-data` file with the field name `file`
 
-- [How to upload files](../../files/how-to-upload-files.md)
-
-{% endnote %}
-||
+The method does not accept the `fileId` parameter: if you pass it, the value is ignored ||
 || **numeratorId**
-[`integer`](../../data-types.md) | Identifier of the numerator ||
+[`integer`](../../data-types.md) | Identifier of the numerator.
+
+You can obtain the identifier after [creating a numerator](../numerators/document-generator-numerator-add.md) or by using the [method to get the list of numerators](../numerators/document-generator-numerator-list.md) ||
 || **region**
-[`string`](../../data-types.md) | Template region, for example `de` ||
+[`string`](../../data-types.md) | Template region code, for example `de`.
+
+You can retrieve the list of regions using the [documentgenerator.region.list](../region/document-generator-region-list.md) method ||
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the template ||
 || **users**
-[`array`](../../data-types.md) | Users who will have access to the template.
+[`array`](../../data-types.md) | Access codes of the users who have access to the template. The passed list completely replaces the current one.
 
 Possible values:
 
@@ -69,12 +72,15 @@ Possible values:
 - `SG{id}` — working group or project
 - `SG{id}_A` — owner of the working group or project
 - `SG{id}_E` — moderators of the working group or project
-- `SG{id}_K` — all members of the working group or project 
-||
+- `SG{id}_K` — all members of the working group or project
+
+An empty array does not change the current list ||
 || **providers**
-[`array`](../../data-types.md) | List of data providers ||
+[`array`](../../data-types.md) | List of template data provider classes, for example `["Bitrix\\DocumentGenerator\\DataProvider\\Rest"]`. The passed list completely replaces the current one.
+
+A class must inherit from `Bitrix\DocumentGenerator\DataProvider`, otherwise it is not saved. If none of the passed classes qualifies, the template is left with no providers. An empty array does not change the current list ||
 || **active**
-[`char`](../../data-types.md) | Activity status. Possible values:
+[`char`](../../data-types.md) | Template activity. Possible values:
 - `Y` — active
 - `N` — inactive
 ||
@@ -91,6 +97,12 @@ Possible values:
 An empty string resets the template time zone: dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected. If the field is not passed, the current value is kept ||
 |#
 
+{% note tip "" %}
+
+To learn how to prepare a file and choose a transfer format, see [How to Upload Files](../../files/how-to-upload-files.md).
+
+{% endnote %}
+
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
@@ -103,7 +115,7 @@ An empty string resets the template time zone: dates are displayed in the shared
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":57,"fields":{"name":"SUPPLY_CONTRACT_NEW Template","numeratorId":3,"code":"REST_TEMPLATE","users":["U503"],"sort":700}}' \
+    -d '{"id":385,"fields":{"name":"SUPPLY_CONTRACT_NEW Template","numeratorId":3,"code":"REST_TEMPLATE_NEW","users":["U1269"],"sort":700}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.template.update
   ```
 
@@ -113,7 +125,7 @@ An empty string resets the template time zone: dates are displayed in the shared
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":57,"fields":{"name":"SUPPLY_CONTRACT_NEW Template","numeratorId":3,"code":"REST_TEMPLATE","users":["U503"],"sort":700},"auth":"**put_access_token_here**"}' \
+    -d '{"id":385,"fields":{"name":"SUPPLY_CONTRACT_NEW Template","numeratorId":3,"code":"REST_TEMPLATE_NEW","users":["U1269"],"sort":700},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.template.update
   ```
 
@@ -154,12 +166,12 @@ An empty string resets the template time zone: dates are displayed in the shared
       const response = await $b24.actions.v2.call.make<TemplateUpdateResult>({
         method: 'documentgenerator.template.update',
         params: {
-          id: 57,
+          id: 385,
           fields: {
             name: 'SUPPLY_CONTRACT_NEW Template',
             numeratorId: 3,
-            code: 'REST_TEMPLATE',
-            users: ['U503'],
+            code: 'REST_TEMPLATE_NEW',
+            users: ['U1269'],
             sort: 700,
           },
         },
@@ -193,12 +205,12 @@ An empty string resets the template time zone: dates are displayed in the shared
           const response = await $b24.actions.v2.call.make({
             method: 'documentgenerator.template.update',
             params: {
-              id: 57,
+              id: 385,
               fields: {
                 name: 'SUPPLY_CONTRACT_NEW Template',
                 numeratorId: 3,
-                code: 'REST_TEMPLATE',
-                users: ['U503'],
+                code: 'REST_TEMPLATE_NEW',
+                users: ['U1269'],
                 sort: 700,
               },
             },
@@ -231,16 +243,16 @@ An empty string resets the template time zone: dates are displayed in the shared
   template_fields = {
       "name": "SUPPLY_CONTRACT_NEW Template",
       "numeratorId": 3,
-      "code": "REST_TEMPLATE",
+      "code": "REST_TEMPLATE_NEW",
       "users": [
-          "U503",
+          "U1269",
       ],
       "sort": 700,
   }
 
   try:
       bitrix_response = client.documentgenerator.template.update(
-          bitrix_id=57,
+          bitrix_id=385,
           fields=template_fields,
       ).response
       result = bitrix_response.result
@@ -265,12 +277,12 @@ An empty string resets the template time zone: dates are displayed in the shared
       $response = $b24Service->core->call(
           'documentgenerator.template.update',
           [
-              'id' => 57,
+              'id' => 385,
               'fields' => [
                   'name' => 'SUPPLY_CONTRACT_NEW Template',
                   'numeratorId' => 3,
-                  'code' => 'REST_TEMPLATE',
-                  'users' => ['U503'],
+                  'code' => 'REST_TEMPLATE_NEW',
+                  'users' => ['U1269'],
                   'sort' => 700,
               ],
           ]
@@ -289,12 +301,12 @@ An empty string resets the template time zone: dates are displayed in the shared
   BX24.callMethod(
       'documentgenerator.template.update',
       {
-          id: 57,
+          id: 385,
           fields: {
               name: 'SUPPLY_CONTRACT_NEW Template',
               numeratorId: 3,
-              code: 'REST_TEMPLATE',
-              users: ['U503'],
+              code: 'REST_TEMPLATE_NEW',
+              users: ['U1269'],
               sort: 700
           }
       },
@@ -320,12 +332,12 @@ An empty string resets the template time zone: dates are displayed in the shared
   $result = CRest::call(
       'documentgenerator.template.update',
       [
-          'id' => 57,
+          'id' => 385,
           'fields' => [
               'name' => 'SUPPLY_CONTRACT_NEW Template',
               'numeratorId' => 3,
-              'code' => 'REST_TEMPLATE',
-              'users' => ['U503'],
+              'code' => 'REST_TEMPLATE_NEW',
+              'users' => ['U1269'],
               'sort' => 700,
           ],
       ]
@@ -339,12 +351,12 @@ An empty string resets the template time zone: dates are displayed in the shared
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "documentgenerator.template.update", b24.Params{
-    	"id": 57,
+    	"id": 385,
     	"fields": b24.Params{
     		"name":        "SUPPLY_CONTRACT_NEW Template",
     		"numeratorId": 3,
-    		"code":        "REST_TEMPLATE",
-    		"users":       []string{"U503"},
+    		"code":        "REST_TEMPLATE_NEW",
+    		"users":       []string{"U1269"},
     		"sort":        700,
     	},
     })
@@ -382,11 +394,11 @@ HTTP Status: **200**
 {
     "result": {
         "template": {
-            "id": "57",
+            "id": "385",
             "name": "SUPPLY_CONTRACT_NEW Template",
             "region": "de",
-            "code": "REST_TEMPLATE",
-            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=57&ts=0",
+            "code": "REST_TEMPLATE_NEW",
+            "download": "https://mysite.com/bitrix/services/main/ajax.php?action=documentgenerator.api.template.download&SITE_ID=s1&id=385&ts=1794393725",
             "active": "Y",
             "moduleId": "rest",
             "numeratorId": "3",
@@ -395,25 +407,25 @@ HTTP Status: **200**
                 "bitrix\\documentgenerator\\dataprovider\\rest": "bitrix\\documentgenerator\\dataprovider\\rest"
             },
             "users": {
-                "U503": "U503"
+                "U1269": "U1269"
             },
             "isDeleted": "N",
             "sort": "700",
-            "createTime": "2026-03-23T16:51:25+02:00",
-            "updateTime": "2026-03-23T17:26:39+02:00",
+            "createTime": "2026-11-11T11:42:03+01:00",
+            "updateTime": "2026-11-11T11:42:18+01:00",
             "timezone": null,
-            "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=6d53c1690000071b00000844000001f7f0f1075612a492ef6fe0b4127e521b543e4376&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3JnRzPTAmXz1UdDBpNDBOU2hvQkxtN1Y5VmhEZm1MbTU2ZmQ0d3puNA%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZHxkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKblJ6UFRBbVh6MVVkREJwTkRCT1UyaHZRa3h0TjFZNVZtaEVabTFNYlRVMlptUTBkM3B1TkE9PXw2ZDUzYzE2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzU2MTJhNDkyZWY2ZmUwYjQxMjdlNTIxYjU0M2U0Mzc2Ig%3D%3D.6kAmDGdiQCSZI%2Bcm%2Fg86RUqVH5dMvSDxHbx20yjOYK4%3D"
+            "downloadMachine": "https://mysite.com/rest/1/xxxxxxxxxxxxxxxx/documentgenerator.api.template.download/?token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM4NSZ0cz0xNzk0MzkzNzI1Jl89aFhVSmV4Mmx2V2JUdlRnVVpBUGlYNG0yeXZKZlZhNEU%3D%7C...%3D"
         }
     },
     "time": {
-        "start": 1774275999,
-        "finish": 1774275999.631086,
-        "duration": 0.6310861110687256,
+        "start": 1794393738,
+        "finish": 1794393738.490731,
+        "duration": 0.49073100090026855,
         "processing": 0,
-        "date_start": "2026-03-23T17:26:39+02:00",
-        "date_finish": "2026-03-23T17:26:39+02:00",
-        "operating_reset_at": 1774276599,
-        "operating": 0
+        "date_start": "2026-11-11T11:42:18+01:00",
+        "date_finish": "2026-11-11T11:42:18+01:00",
+        "operating_reset_at": 1794394200,
+        "operating": 3.634577989578247
     }
 }
 ```
@@ -452,16 +464,16 @@ HTTP Status: **200**
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the template ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template ||
+[`string`](../../data-types.md) | Link to download the template file in the browser of a user authorized in Bitrix24 ||
 || **downloadMachine**
-[`string`](../../data-types.md) | Link to download the template for machine processing ||
+[`string`](../../data-types.md) | Link to download the template file with an access token. Suitable for downloading from an app or script without a browser session ||
 || **active**
 [`char`](../../data-types.md) | Template activity status. Possible values:
 - `Y` — active
 - `N` — inactive
 ||
 || **moduleId**
-[`string`](../../data-types.md) | Module identifier ||
+[`string`](../../data-types.md) | Identifier of the template module. The method does not change the module; for templates of REST apps, it is `rest` ||
 || **numeratorId**
 [`string`](../../data-types.md) | Identifier of the numerator ||
 || **withStamps**
@@ -470,13 +482,13 @@ HTTP Status: **200**
 - `N` — no
 ||
 || **providers**
-[`object`](../../data-types.md) | Data providers of the template. 
+[`object`](../../data-types.md) | Data providers of the template.
 
-Key and value are equal to the name of the data provider class ||
+Key and value are equal to the name of the data provider class in lowercase, for example `bitrix\documentgenerator\dataprovider\rest` ||
 || **users**
-[`object`](../../data-types.md) | Access codes to the template. 
+[`object`](../../data-types.md) | Access codes to the template.
 
-Key and value are equal to the access code ||
+Key and value are equal to the access code, for example `UA` or `U1` ||
 || **isDeleted**
 [`char`](../../data-types.md) | Deletion status of the template. Possible values:
 - `Y` — deleted
@@ -513,10 +525,15 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an object. The passed value is shown in curly braces ||
 || `400` | `0` | Template was not found | Template with the specified `id` not found ||
-|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
-|| `400` | `0` | You do not have permissions to modify this template | Insufficient rights to modify the specified template ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify templates ||
+|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier. | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
+|| `400` | `BX_EMPTY_REQUIRED` | The field NAME is required. | The `name` field contains an empty string ||
+|| `400` | `BX_INVALID_VALUE` | The length of "NAME" should not exceed 100 characters. | The `name` value is longer than 100 characters ||
+|| `400` | `BX_INVALID_VALUE` | The value of "ACTIVE" is invalid. | The `active` field contains a value other than `Y` and `N` ||
+|| `400` | `BX_INVALID_VALUE` | The value of "WITH_STAMPS" is invalid. | The `withStamps` field contains a value other than `Y` and `N` ||
+|| `400` | `0` | You do not have permissions to modify templates | The user does not have permission to modify document generator templates ||
+|| `400` | `0` | You do not have permissions to modify this template | The user does not have permission to modify this template, for example the permission covers only their own templates ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

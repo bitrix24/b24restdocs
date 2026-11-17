@@ -69,7 +69,9 @@ Possible values:
 
 Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+If you pass `Y`, the `SKIP_OPENLINES`, `SKIP_DIALOG`, `SKIP_CHAT`, `ONLY_COPILOT`, and `ONLY_CHANNEL` parameters are ignored ||
   || **ONLY_COPILOT**
   [`string`](../data-types.md) | Return only BitrixGPT chats.
 
