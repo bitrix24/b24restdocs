@@ -69,7 +69,9 @@ Boolean fields accept and return `true` or `false`. The string values `Y` and `N
 || **group**
 [`object`](#group) | Group/project. An object of type [group](#group). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **stageId**
-[`integer`](../data-types.md) | Stage identifier. Use if the task is in a group/project. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `stage` object instead ||
+[`integer`](../data-types.md) | Stage identifier. Use if the task is in a group/project. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `stage` object instead.
+
+When the task is updated, the stage must exist and belong to the task's group; otherwise, [tasks.task.update](./tasks-task-update-rest-v3.md) returns the `TASKS_STAGE_NOT_FOUND` or `TASKS_STAGE_DIFFERENT_STAGES` error ||
 || **stage**
 [`object`](#stage) | Stage. An object of type [stage](#stage). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **epicId**
@@ -476,7 +478,12 @@ Custom fields of a task are created by the methods [task.item.userfield.*](./use
 || **startDate**
 [`string`](../data-types.md) | Start date of repetition ||
 || **repeatTill**
-[`string`](../data-types.md) | Until what date to repeat ||
+[`string`](../data-types.md) | When to stop repeating:
+- `endless` — no end date
+- `date` — until the date in `endDate`
+- `times` — after the number of repetitions in `times`
+
+For older templates without a value, `date` or `endless` is returned ||
 || **endDate**
 [`string`](../data-types.md) | End date of repetition ||
 || **times**
@@ -494,6 +501,12 @@ Custom fields of a task are created by the methods [task.item.userfield.*](./use
 [`integer`](../data-types.md) | Task ID ||
 || **mailboxId**
 [`integer`](../data-types.md) | Mailbox ID ||
+|| **sourceType**
+[`string`](../data-types.md) | Email source type:
+- `mail_message` — an email from Webmail
+- `crm_activity` — an email from a CRM activity ||
+|| **sourceId**
+[`integer`](../data-types.md) | Source ID: the email in Webmail or the CRM activity, depending on `sourceType` ||
 || **title**
 [`string`](../data-types.md) | Email title ||
 || **body**

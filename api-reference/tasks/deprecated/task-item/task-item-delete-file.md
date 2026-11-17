@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to detach the file from the task
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,8 @@ The development of this method has been halted. Please use [tasks.task.update](.
 {% endnote %}
 
 The method `task.item.deletefile` removes a file link from a task.
+
+If the file is not attached to the task or the user does not have permission to detach it, the method returns the `ERROR_CORE` error with the text `TASKS_ERROR_EXCEPTION_#4; Access denied; 4/TE/ACTION_NOT_ALLOWED<br>`.
 
 ## Method Parameters
 
