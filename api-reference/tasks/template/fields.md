@@ -42,7 +42,7 @@ Access to tasks is required to work with templates. Available actions and some f
 || **STAGE_ID**
 [`integer`](../../data-types.md) | Stage identifier. Default is `0` ||
 || **CREATED_BY**
-[`integer`](../../data-types.md) | Creator identifier ||
+[`integer`](../../data-types.md) | Creator identifier. The value cannot be set via REST: on creation, the user who calls the method becomes the creator; on update, the field does not change ||
 || **RESPONSIBLE_ID**
 [`integer`](../../data-types.md) | Responsible person identifier ||
 || **DEPENDS_ON**

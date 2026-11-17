@@ -281,6 +281,7 @@ HTTP Status: **400**
 || `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
 - the user does not have permission to manage the public link to the file
 - public links are disabled in the Bitrix24 settings
+- the Bitrix24 plan does not allow public links to objects of this type. Files and boards are checked separately
 
 The response does not indicate which reason applies ||
 |#

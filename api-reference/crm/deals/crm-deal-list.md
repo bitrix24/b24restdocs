@@ -68,9 +68,13 @@ Possible prefix values:
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
+- `*` — word search. The value is split into words, and each word must occur in the field as a substring, in any order. For non-string fields, it works as `=`
+- `*=` — same as `*`
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+In the filter, the `LAST_COMMUNICATION_TIME` field accepts a date in ISO 8601 format, for example, `2026-01-01T00:00:00+01:00`.
 
 The LIKE filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` (deal type `TYPE_ID`, stage `STAGE_ID`, etc.).
 

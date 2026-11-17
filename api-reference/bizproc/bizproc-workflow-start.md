@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator or a user with permission to start business processes for the document. For leads, contacts, companies, and deals, this is permission to edit the item
 
 The method `bizproc.workflow.start` initiates a new business process.
 
@@ -54,6 +54,8 @@ PARAMETERS: {
     'resp_employee': user_14 // Employee ID — 14
 }
 ```
+
+For a parameter of the "File" type, pass an array of the file name and its contents in [Base64](../files/how-to-upload-files.md), for example `["report.txt", "SGVsbG8="]`. You can pass a file ID instead of the contents, but a user without administrator permissions can pass only the ID of the file set in the template as the parameter's default value. Any other ID causes the `ERROR_WRONG_FILE_PARAMETER` error, and the process does not start
 ||
 |#
 
@@ -311,7 +313,9 @@ HTTP Status: **400**
 || `400` | Empty value | Template type and DOCUMENT_ID mismatch! | The document type in the template does not match the type determined from `DOCUMENT_ID`.
 
 Attempting to start the template on an entity for which it was not created ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `400` | `ERROR_WRONG_FILE_PARAMETER` | Invalid value for a parameter of type "File". Pass the file name and its contents in base64, or the ID of the file set as this parameter's default value. | A user without administrator permissions passed to a "File" parameter the ID of a file that is not set in the template as the parameter's default value, or a value in the wrong format. This check is not performed for administrators ||
+|| `400` | `ERROR_WRONG_FILE_PARAMETER` | Cannot upload file. | The file could not be saved from the passed contents, for example, the contents are not in Base64 ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to start business processes for the document ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

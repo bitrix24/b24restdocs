@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to Scrum
+> Who can execute the method: Scrum owner or moderator, administrator
 
 The method `tasks.api.scrum.sprint.delete` deletes a sprint.
 
@@ -281,7 +281,7 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | `Access denied` | No access to the Scrum ||
+|| `400` | `0` | `Access denied` | The user is not the Scrum owner or moderator and is not an administrator ||
 || `400` | `0` | `Sprint not found` | The sprint with the specified `id` is not found ||
 || `400` | `0` | `It is forbidden remove a sprint with items` | The sprint has tasks, but the Scrum has no backlog to move them to ||
 || `400` | `0` | `Sprint items have not been moved to backlog` | Failed to move tasks from the sprint to the backlog ||

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Full access" permission for the required file
+> Who can execute the method: a user with "Edit" access permission for the required file
 
 The method `disk.file.restoreFromVersion` restores a file from a specific version.
 

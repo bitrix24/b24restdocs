@@ -19,7 +19,7 @@ The method `tasks.api.scrum.sprint.list` returns a list of sprints.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-All parameters are optional. The method returns only sprints of Scrums the user is a member of; without parameters, it returns all such sprints. Specify field names in `order`, `filter`, and `select` in uppercase. Available fields are listed in the [Available Fields for filter, order, and select](#fields) table.
+All parameters are optional. The method returns only sprints of Scrums whose tasks the user can view; without parameters, it returns all such sprints. Specify field names in `order`, `filter`, and `select` in uppercase. Available fields are listed in the [Available Fields for filter, order, and select](#fields) table.
 
 #|
 || **Name**

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method returns a list of epics. The list includes only epics from the groups the user is a member of.
+This method returns a list of epics. The list includes only epics of Scrums whose tasks the user can view.
 
 ## Method Parameters
 

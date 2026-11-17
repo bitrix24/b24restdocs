@@ -285,6 +285,7 @@ If a link to the root was created earlier, the method returns its address, but t
 || `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
 - the user does not have permission to manage the public link to the folder
 - public links are disabled in the Bitrix24 settings
+- the Bitrix24 plan does not allow public links to folders
 
 The response does not indicate which reason applies ||
 |#

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to edit Scrum tasks
 
 The method `tasks.api.scrum.backlog.delete` removes the backlog.
 
@@ -277,7 +277,7 @@ HTTP status: **400**
 || **Code** | **Error message** | **Description** ||
 || `0` | Backlog id not found | The backlog identifier `id` was not provided ||
 || `0` | Backlog not found | Error occurs when trying to delete a non-existent backlog ||
-|| `0` | Access denied | Missing appropriate access permissions ||
+|| `0` | Access denied | The user does not have permission to edit tasks of the Scrum the backlog belongs to. Permission to view tasks is not enough ||
 || `0` | It is forbidden remove a backlog with items | The backlog cannot be deleted if it contains tasks ||
 || `0` | Backlog not deleted | Could not delete the backlog ||
 || `0` | Unknown error | Another error ||
