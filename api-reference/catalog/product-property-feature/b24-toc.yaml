@@ -5,13 +5,31 @@ items:
     href: index.md  
   - name: Add Property Parameters  
     href: catalog-product-property-feature-add.md  
+  - name: Add Product or Variation Property Parameter v 3.0
+    href: catalog-product-property-feature-add-rest-v3.md
   - name: Update Parameter Values  
     href: catalog-product-property-feature-update.md  
+  - name: Update Product or Variation Property Parameter v 3.0
+    href: catalog-product-property-feature-update-rest-v3.md
   - name: Retrieve Property Parameter Values  
     href: catalog-product-property-feature-get.md  
+  - name: Get Product or Variation Property Parameter v 3.0
+    href: catalog-product-property-feature-get-rest-v3.md
   - name: Get List of Parameters  
     href: catalog-product-property-feature-list.md  
+  - name: Get a List of Product or Variation Property Parameters v 3.0
+    href: catalog-product-property-feature-list-rest-v3.md
   - name: Retrieve Available Parameters  
     href: catalog-product-property-feature-get-available-features-by-property.md  
+  - name: Get Available Property Parameters v 3.0
+    href: catalog-product-property-feature-available-list.md
   - name: Get Parameter Fields  
     href: catalog-product-property-feature-get-fields.md  
+  - name: Get List of Property Parameter Fields v 3.0
+    href: catalog-product-property-feature-field-list.md
+  - name: Get Property Parameter Field
+    href: catalog-product-property-feature-field-get.md
+  - name: Get List of Available Property Parameter Fields
+    href: catalog-product-property-feature-available-field-list.md
+  - name: Get Available Property Parameter Field
+    href: catalog-product-property-feature-available-field-get.md

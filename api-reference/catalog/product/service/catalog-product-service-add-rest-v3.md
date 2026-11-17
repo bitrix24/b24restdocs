@@ -247,7 +247,7 @@ Possible values:
 || **properties**
 [`object`](../../../data-types.md) | Service property values. The keys are `PROPERTY_{id}`, where `{id}` is the property identifier, for example `{"PROPERTY_301": "SRV-001"}`. For a multiple property, pass an array of values.
 
-Property identifiers can be retrieved using the [catalog.productProperty.list](../../product-property/catalog-product-property-list.md) or [catalog.product.fields.getbyfilter](../catalog-product-fields-get-by-filter.md) method ||
+Property identifiers can be retrieved using the [catalog.product.property.list](../../product-property/catalog-product-property-list-rest-v3.md) or [catalog.product.fields.getbyfilter](../catalog-product-fields-get-by-filter.md) method ||
 |#
 
 Bitrix24 sets the service type `type` itself. The `id`, `dateCreate`, `timestampX`, `type`, `available`, and `bundle` fields are read-only, and passing them causes an error. Set the service price using the [catalog.price.add](../../price/catalog-price-add-rest-v3.md) method.

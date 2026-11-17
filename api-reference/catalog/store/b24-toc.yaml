@@ -5,13 +5,27 @@ items:
     href: index.md
   - name: Add Warehouse
     href: catalog-store-add.md
+  - name: Add Warehouse v 3.0
+    href: catalog-store-add-rest-v3.md
   - name: Update Warehouse
     href: catalog-store-update.md
+  - name: Update Warehouse v 3.0
+    href: catalog-store-update-rest-v3.md
   - name: Get Warehouse Field Values
     href: catalog-store-get.md
+  - name: Get Warehouse Field Values v 3.0
+    href: catalog-store-get-rest-v3.md
   - name: Get List of Warehouses
     href: catalog-store-list.md
+  - name: Get a List of Warehouses v 3.0
+    href: catalog-store-list-rest-v3.md
   - name: Delete Warehouse
     href: catalog-store-delete.md
-  - name: Get Warehouse Fields
+  - name: Delete Warehouse v 3.0
+    href: catalog-store-delete-rest-v3.md
+  - name: Get Available Warehouse Fields
     href: catalog-store-get-fields.md
+  - name: Get List of Warehouse Fields v 3.0
+    href: catalog-store-field-list.md
+  - name: Get Warehouse Field
+    href: catalog-store-field-get.md

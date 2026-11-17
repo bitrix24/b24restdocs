@@ -362,3 +362,4 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 - [{#T}](./catalog-price-type-lang-add-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-update-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-delete-rest-v3.md)
+- [{#T}](./catalog-price-type-lang-list-rest-v3.md)

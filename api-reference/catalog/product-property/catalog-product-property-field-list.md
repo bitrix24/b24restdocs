@@ -294,6 +294,12 @@ HTTP status: **200**
                 "editableGroups": null
             },
             {
+                "name": "timestampX",
+                "type": "object",
+                "requiredGroups": null,
+                "editableGroups": null
+            },
+            {
                 "name": "iblockId",
                 "type": "int",
                 "requiredGroups": [
@@ -310,7 +316,17 @@ HTTP status: **200**
                     "add"
                 ],
                 "editableGroups": [
-                    "add"
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "active",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
                 ]
             },
             {
@@ -318,7 +334,8 @@ HTTP status: **200**
                 "type": "int",
                 "requiredGroups": null,
                 "editableGroups": [
-                    "add"
+                    "add",
+                    "update"
                 ]
             },
             {
@@ -326,23 +343,163 @@ HTTP status: **200**
                 "type": "string",
                 "requiredGroups": null,
                 "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "defaultValue",
+                "type": "string",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "propertyType",
+                "type": "string",
+                "requiredGroups": [
                     "add"
+                ],
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "userType",
+                "type": "string",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "userTypeSettings",
+                "type": "array",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "rowCount",
+                "type": "int",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "colCount",
+                "type": "int",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "listType",
+                "type": "string",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
                 ]
             },
             {
                 "name": "multiple",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "multipleCnt",
+                "type": "int",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "xmlId",
                 "type": "string",
                 "requiredGroups": null,
                 "editableGroups": [
-                    "add"
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "fileType",
+                "type": "string",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "linkIblockId",
+                "type": "int",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "withDescription",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "searchable",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "filtrable",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
                 ]
             },
             {
                 "name": "isRequired",
+                "type": "bool",
+                "requiredGroups": null,
+                "editableGroups": [
+                    "add",
+                    "update"
+                ]
+            },
+            {
+                "name": "hint",
                 "type": "string",
                 "requiredGroups": null,
                 "editableGroups": [
-                    "add"
+                    "add",
+                    "update"
                 ]
             },
             {
@@ -354,13 +511,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1792660564,
-        "finish": 1792660565.000883,
-        "duration": 1.0008831024169922,
-        "processing": 1,
-        "date_start": "2026-10-22T12:16:04+02:00",
-        "date_finish": "2026-10-22T12:16:05+02:00",
-        "operating_reset_at": 1792661160,
+        "start": 1794922796,
+        "finish": 1794922796.373659,
+        "duration": 0.3736588954925537,
+        "processing": 0,
+        "date_start": "2026-11-17T16:39:56+02:00",
+        "date_finish": "2026-11-17T16:39:56+02:00",
+        "operating_reset_at": 1794923340,
         "operating": 0
     }
 }
@@ -387,9 +544,9 @@ The table lists all properties that can be requested.
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | Field name: `id`, `iblockId`, `name`, `sort`, `code`, `multiple`, `isRequired`, `controlId` ||
+[`string`](../../data-types.md) | Field name: `id`, `timestampX`, `iblockId`, `name`, `active`, `sort`, `code`, `defaultValue`, `propertyType`, `userType`, `userTypeSettings`, `rowCount`, `colCount`, `listType`, `multiple`, `multipleCnt`, `xmlId`, `fileType`, `linkIblockId`, `withDescription`, `searchable`, `filtrable`, `isRequired`, `hint`, `controlId` ||
 || **type**
-[`string`](../../data-types.md) | Type in the metadata: `int` or `string`. `string` for `multiple` and `isRequired`: values are passed as the strings `Y` and `N` ||
+[`string`](../../data-types.md) | Type in the metadata: `int`, `string`, `bool`, `array`, or `object`. `object` for `timestampX`: the get and list methods return the date as a string in ISO 8601 format ||
 || **title**
 [`string`](../../data-types.md) | Field title. Matches `name` ||
 || **description**
@@ -397,15 +554,15 @@ The table lists all properties that can be requested.
 || **validationRules**
 [`array`](../../data-types.md) | Validation rules. An empty array for property fields ||
 || **requiredGroups**
-[`array`](../../data-types.md) or `null` | Operations in which the field is required. `["add"]` for `iblockId` and `name`; `null` for the other fields ||
+[`array`](../../data-types.md) or `null` | Operations in which the field is required. `["add"]` for `iblockId`, `name`, and `propertyType`; `null` for the other fields ||
 || **filterable**
-[`boolean`](../../data-types.md) | `true` — the field is available for filtering. `false` for all fields ||
+[`boolean`](../../data-types.md) | `true` — the field can be used for filtering in [catalog.product.property.list](./catalog-product-property-list-rest-v3.md) ||
 || **sortable**
-[`boolean`](../../data-types.md) | `true` — the field is available for sorting. `false` for all fields ||
+[`boolean`](../../data-types.md) | `true` — the field can be used for sorting in [catalog.product.property.list](./catalog-product-property-list-rest-v3.md) ||
 || **editable**
-[`boolean`](../../data-types.md) | `true` — the field can be passed in the operations from `editableGroups`. `false` for `id` and `controlId` ||
+[`boolean`](../../data-types.md) | `true` — the field can be passed in the operations from `editableGroups`. `false` for `id`, `timestampX`, and `controlId` ||
 || **editableGroups**
-[`array`](../../data-types.md) or `null` | Operations in which the field can be set. `["add"]` for `iblockId`, `name`, `sort`, `code`, `multiple`, and `isRequired`; `null` for `id` and `controlId` ||
+[`array`](../../data-types.md) or `null` | Operations in which the field can be set. `["add"]` for `iblockId`: the catalog of a property cannot be changed after creation. `null` for `id`, `timestampX`, and `controlId`; `["add","update"]` for the other fields ||
 || **multiple**
 [`boolean`](../../data-types.md) | Multiple value flag. `false` for all fields ||
 || **elementType**

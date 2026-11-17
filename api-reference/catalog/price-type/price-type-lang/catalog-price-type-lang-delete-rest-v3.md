@@ -31,7 +31,7 @@ The method `catalog.pricetype.lang.delete` deletes a price type name translation
 || **id***
 [`integer`](../../../data-types.md) | Translation identifier.
 
-The identifier is returned by the [catalog.pricetype.lang.add](./catalog-price-type-lang-add-rest-v3.md) method. REST 3.0 has no method for retrieving the list of translations; the identifiers of existing translations are returned by the [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) method of the previous API version ||
+The identifier is returned by the [catalog.pricetype.lang.add](./catalog-price-type-lang-add-rest-v3.md) method. The identifiers of existing translations are returned by the [catalog.pricetype.lang.list](./catalog-price-type-lang-list-rest-v3.md) method ||
 |#
 
 ## Code Examples
@@ -321,7 +321,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no translation with this identifier. Check the identifier using the [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) method ||
+|| `id` | Entity with ID `#ID#` was not found | There is no translation with this identifier. Check the identifier using the [catalog.pricetype.lang.list](./catalog-price-type-lang-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -339,4 +339,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 - [{#T}](./catalog-price-type-lang-add-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-update-rest-v3.md)
+- [{#T}](./catalog-price-type-lang-get-rest-v3.md)
+- [{#T}](./catalog-price-type-lang-list-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-field-list.md)

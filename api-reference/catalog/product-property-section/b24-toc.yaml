@@ -5,7 +5,17 @@ items:
     href: index.md  
   - name: Set Section Property Settings  
     href: catalog-product-property-section-set.md  
+  - name: Set Section Property Settings v 3.0
+    href: catalog-product-property-section-set-rest-v3.md
   - name: Get Section Property Setting Values  
     href: catalog-product-property-section-get.md  
+  - name: Get Section Property Settings v 3.0
+    href: catalog-product-property-section-get-rest-v3.md
   - name: Get List of Section Property Settings  
     href: catalog-product-property-section-list.md  
+  - name: Get a List of Section Property Settings v 3.0
+    href: catalog-product-property-section-list-rest-v3.md
+  - name: Get List of Section Property Settings Fields
+    href: catalog-product-property-section-field-list.md
+  - name: Get Section Property Settings Field
+    href: catalog-product-property-section-field-get.md

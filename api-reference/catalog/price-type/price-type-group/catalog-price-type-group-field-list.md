@@ -337,7 +337,7 @@ HTTP status: **200**
             },
             {
                 "name": "access",
-                "type": "string",
+                "type": "bool",
                 "requiredGroups": [
                     "add"
                 ],
@@ -383,7 +383,7 @@ The description contents depend on `select`. The table lists all properties that
 || **name**
 [`string`](../../../data-types.md) | Field name: `id`, `catalogGroupId`, `groupId`, `access` ||
 || **type**
-[`string`](../../../data-types.md) | Type in the metadata: `int` or `string` ||
+[`string`](../../../data-types.md) | Type in the metadata: `int` or `bool` ||
 || **title**
 [`string`](../../../data-types.md) | Field title. Matches `name` ||
 || **description**
@@ -445,4 +445,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 - [{#T}](./catalog-price-type-group-add-rest-v3.md)
 - [{#T}](./catalog-price-type-group-delete-rest-v3.md)
+- [{#T}](./catalog-price-type-group-list-rest-v3.md)
 - [{#T}](./catalog-price-type-group-field-get.md)

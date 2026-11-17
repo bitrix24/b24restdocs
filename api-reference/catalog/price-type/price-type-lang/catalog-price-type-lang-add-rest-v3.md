@@ -57,7 +57,7 @@ The `id` field is filled in automatically; if you pass it in `fields`, the metho
 
 {% note warning "" %}
 
-If the price type already has a translation into this language, the method returns HTTP status **500** with the `INTERNAL_SERVER_ERROR` error. Check the existing translations using the [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) method of the previous API version.
+If the price type already has a translation into this language, the method returns HTTP status **500** with the `INTERNAL_SERVER_ERROR` error. Check the existing translations using the [catalog.pricetype.lang.list](./catalog-price-type-lang-list-rest-v3.md) method.
 
 {% endnote %}
 
@@ -455,6 +455,8 @@ HTTP status: **500**
 ## Continue Learning
 
 - [{#T}](./catalog-price-type-lang-update-rest-v3.md)
+- [{#T}](./catalog-price-type-lang-get-rest-v3.md)
+- [{#T}](./catalog-price-type-lang-list-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-delete-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-get-languages-rest-v3.md)
 - [{#T}](./catalog-price-type-lang-field-list.md)

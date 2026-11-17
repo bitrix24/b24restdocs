@@ -25,11 +25,11 @@ Price type bindings to customer groups manage group access to price types in the
 
 ## Bindings in REST 3.0
 
-In [REST 3.0](../../../rest-v3.md), bindings have methods for adding and deleting, as well as the `catalog.pricetype.group.field.list` and `catalog.pricetype.group.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+In [REST 3.0](../../../rest-v3.md), bindings can be added, retrieved as a list, and deleted. The [catalog.pricetype.group.field.list](./catalog-price-type-group-field-list.md) and [catalog.pricetype.group.field.get](./catalog-price-type-group-field-get.md) methods return the description of binding fields. Methods available in both API versions are marked `v 3.0` in the table.
 
 Specifics of the new version methods:
 
-- the new version has no method for retrieving a list of bindings. The binding identifier is returned by the [catalog.pricetype.group.add](./catalog-price-type-group-add-rest-v3.md) method or by the previous version method [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md)
+- the new version cannot retrieve a single binding by its identifier. Find it using the [catalog.pricetype.group.list](./catalog-price-type-group-list-rest-v3.md) method with a filter by `id`, for example `[["id","=",85]]`
 - a binding cannot be updated. To change the group or the access type, delete the binding and create a new one
 - when a price type is created, Bitrix24 automatically adds two bindings to group `1`: for viewing and for purchasing. Adding the same binding again returns an error
 - method names are written in lowercase: `catalog.pricetype.group.add`
@@ -38,14 +38,12 @@ Specifics of the new version methods:
 
 **Price Type.** The binding is created for a specific price type in the `catalogGroupId` field. You can obtain the price type identifier using the methods [catalog.priceType.list](../catalog-price-type-list.md) and [catalog.priceType.get](../catalog-price-type-get.md).
 
-**Customer Group.** The binding is created for a specific customer group in the `groupId` field. For existing bindings, `groupId` can be retrieved using the method [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md).
+**Customer Group.** The binding is created for a specific customer group in the `groupId` field. For existing bindings, `groupId` can be retrieved using the [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md) or [catalog.pricetype.group.list](./catalog-price-type-group-list-rest-v3.md) method.
 
-**Access Type.** The `access` field defines the rights of the group to the price type.
+**Access Type.** The `access` field defines the rights of the group to the price type. In the previous API version, it is a `Y` or `N` string; in REST 3.0, `true` or `false`:
 
-Available values:
-
-- `Y` — the group can purchase at the price type
-- `N` — the group can only view the price type
+- `Y` or `true` — the group can purchase at the price type
+- `N` or `false` — the group can only view the price type
 
 ## Overview of Methods {#all-methods}
 
@@ -60,6 +58,7 @@ Available values:
 || [catalog.priceTypeGroup.add](./catalog-price-type-group-add.md) | Adds a price type binding to a customer group ||
 || [catalog.pricetype.group.add](./catalog-price-type-group-add-rest-v3.md) | Adds a price type binding to a customer group v 3.0 ||
 || [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md) | Returns a list of price type bindings to customer groups ||
+|| [catalog.pricetype.group.list](./catalog-price-type-group-list-rest-v3.md) | Returns a list of price type bindings to customer groups v 3.0 ||
 || [catalog.priceTypeGroup.delete](./catalog-price-type-group-delete.md) | Deletes a price type binding from a customer group ||
 || [catalog.pricetype.group.delete](./catalog-price-type-group-delete-rest-v3.md) | Deletes a price type binding from a customer group v 3.0 ||
 || [catalog.priceTypeGroup.getFields](./catalog-price-type-group-get-fields.md) | Returns the fields of price type bindings to customer groups ||

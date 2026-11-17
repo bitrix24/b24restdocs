@@ -36,12 +36,11 @@ The translation uses:
 
 ## Translations in REST 3.0
 
-In [REST 3.0](../../../rest-v3.md), translations have methods for adding, updating, deleting, and retrieving available languages, as well as the `catalog.pricetype.lang.field.list` and `catalog.pricetype.lang.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+In [REST 3.0](../../../rest-v3.md), translations can be added, updated, retrieved one at a time or as a list, and deleted. The [catalog.pricetype.lang.getlanguages](./catalog-price-type-lang-get-languages-rest-v3.md) method returns the available languages. The [catalog.pricetype.lang.field.list](./catalog-price-type-lang-field-list.md) and [catalog.pricetype.lang.field.get](./catalog-price-type-lang-field-get.md) methods return the description of translation fields. Methods available in both API versions are marked `v 3.0` in the table.
 
 Specifics of the new version methods:
 
-- the new version has no methods for retrieving a translation or a list of translations. The translation identifier is returned by the [catalog.pricetype.lang.add](./catalog-price-type-lang-add-rest-v3.md) method or by the previous version method [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md)
-- a second translation into the same language, or changing `lang` to a language that already has a translation, returns a server error with the HTTP status `500`. Before adding, check the price type translations using the [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) method
+- a second translation into the same language, or changing `lang` to a language that already has a translation, returns a server error with the HTTP status `500`. Before adding, check the price type translations using the [catalog.pricetype.lang.list](./catalog-price-type-lang-list-rest-v3.md) method
 - method names are written in lowercase: `catalog.pricetype.lang.getlanguages`
 
 ## Linking Translations to Other Objects
@@ -65,7 +64,9 @@ Specifics of the new version methods:
 || [catalog.priceTypeLang.update](./catalog-price-type-lang-update.md) | Updates the translation for the price type name ||
 || [catalog.pricetype.lang.update](./catalog-price-type-lang-update-rest-v3.md) | Updates the translation for the price type name v 3.0 ||
 || [catalog.priceTypeLang.get](./catalog-price-type-lang-get.md) | Returns the values of the fields for the price type name translation ||
+|| [catalog.pricetype.lang.get](./catalog-price-type-lang-get-rest-v3.md) | Returns a price type name translation v 3.0 ||
 || [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) | Returns a list of price type name translations by filter ||
+|| [catalog.pricetype.lang.list](./catalog-price-type-lang-list-rest-v3.md) | Returns a list of price type name translations by filter v 3.0 ||
 || [catalog.priceTypeLang.delete](./catalog-price-type-lang-delete.md) | Deletes the translation for the price type name ||
 || [catalog.pricetype.lang.delete](./catalog-price-type-lang-delete-rest-v3.md) | Deletes the translation for the price type name v 3.0 ||
 || [catalog.priceTypeLang.getLanguages](./catalog-price-type-lang-get-languages.md) | Returns the available languages for translation ||

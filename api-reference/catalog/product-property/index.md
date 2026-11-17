@@ -50,7 +50,7 @@ You can change the type using the [catalog.productProperty.update](./catalog-pro
 ## How to Start
 
 1. Get the trade catalog identifier using [catalog.catalog.list](../catalog/catalog-catalog-list.md)
-2. Create a property using [catalog.productProperty.add](./catalog-product-property-add.md)
+2. Create a property using [catalog.productProperty.add](./catalog-product-property-add.md) or [catalog.product.property.add](./catalog-product-property-add-rest-v3.md)
 3. If the property should be available only in specific sections, configure the binding using [catalog.productPropertySection.*](../product-property-section/index.md)
 4. If the property has the List type, add values using [catalog.productPropertyEnum.*](../product-property-enum/index.md)
 5. Use the property code in product, service, parent product, or variation methods
@@ -58,27 +58,28 @@ You can change the type using the [catalog.productProperty.update](./catalog-pro
 ## Limitations and Specifics
 
 - Properties are created only in a trade catalog. If you pass an information block that is not a catalog, the `catalog.productProperty.add` method returns an error, and `catalog.productProperty.list` returns an empty list
-- In `catalog.productProperty.update`, the `iblockId` field is required even if only the name changes
+- In `catalog.productProperty.update`, the `iblockId` field is required even if only the name changes. In `catalog.product.property.update`, it cannot be passed
 - Deleting a property deletes its values for all products and variations. The deletion cannot be undone
-- Property flags are passed as `Y` or `N` strings
+- In the `catalog.productProperty.*` methods, property flags are passed as `Y` or `N` strings; in the REST 3.0 methods, as `true` or `false` values
 
 ## Properties in REST 3.0
 
-In [REST 3.0](../../rest-v3.md), properties have the [catalog.product.property.add](./catalog-product-property-add-rest-v3.md) method for adding, the `catalog.product.property.field.list` and `catalog.product.property.field.get` methods for retrieving the field schema, and the [catalog.product.property.type.list](./catalog-product-property-type-list.md) directory of property types. A property can be retrieved, updated, and deleted with the methods of the previous API version.
+In [REST 3.0](../../rest-v3.md), properties are added, updated, retrieved, and deleted using the [catalog.product.property.add](./catalog-product-property-add-rest-v3.md), [catalog.product.property.update](./catalog-product-property-update-rest-v3.md), [catalog.product.property.get](./catalog-product-property-get-rest-v3.md), [catalog.product.property.list](./catalog-product-property-list-rest-v3.md), and [catalog.product.property.delete](./catalog-product-property-delete-rest-v3.md) methods. The `catalog.product.property.field.list` and `catalog.product.property.field.get` methods return the description of property fields, and the [catalog.product.property.type.list](./catalog-product-property-type-list.md) method returns the list of property types. Methods available in both API versions are marked `v 3.0` in the table.
 
-Specifics of the adding method:
+The REST 3.0 methods differ from the previous ones:
 
-- the method creates a string property; the property type cannot be passed
-- the `multiple` and `isRequired` flags are also passed as `Y` or `N` strings, not `true` or `false`
-- only `id` and `controlId` are filled in the response. The field values of the new property can be retrieved using the [catalog.productProperty.get](./catalog-product-property-get.md) method
+- the `active`, `multiple`, `searchable`, `filtrable`, `isRequired`, and `withDescription` flags are passed and returned as `true` or `false` values, not as `Y` and `N` strings
+- the adding and updating methods return all property fields
+- the `catalog.product.property.update` method does not accept `iblockId`: the catalog of a property cannot be changed after creation; the method returns an error
+- the `BoolEnum` type for a checkbox property can be set only when the property is created
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the methods:
-> - a user with permission to view the catalog — for `catalog.productProperty.get`, `catalog.productProperty.list`, and `catalog.productProperty.getFields`
-> - a user with permission to view the catalog and permission to edit the catalog information block — for adding, updating, and deleting properties, including `catalog.product.property.add`
+> - a user with permission to view the catalog — for `catalog.productProperty.get`, `catalog.productProperty.list`, `catalog.productProperty.getFields`, `catalog.product.property.get`, and `catalog.product.property.list`
+> - a user with permission to view the catalog and permission to edit the catalog information block — for adding, updating, and deleting properties
 > - any user — for `catalog.product.property.field.*`, `catalog.product.property.type.list`, and `catalog.product.property.type.field.*`
 
 #|
@@ -86,9 +87,13 @@ Specifics of the adding method:
 || [catalog.productProperty.add](./catalog-product-property-add.md) | Adds a product or variation property ||
 || [catalog.product.property.add](./catalog-product-property-add-rest-v3.md) | Adds a product or variation property v 3.0 ||
 || [catalog.productProperty.update](./catalog-product-property-update.md) | Updates the fields of a product or variation property ||
+|| [catalog.product.property.update](./catalog-product-property-update-rest-v3.md) | Updates the fields of a product or variation property v 3.0 ||
 || [catalog.productProperty.get](./catalog-product-property-get.md) | Returns the values of the fields of a product or variation property ||
+|| [catalog.product.property.get](./catalog-product-property-get-rest-v3.md) | Returns the values of the fields of a product or variation property v 3.0 ||
 || [catalog.productProperty.list](./catalog-product-property-list.md) | Returns a list of product or variation properties ||
+|| [catalog.product.property.list](./catalog-product-property-list-rest-v3.md) | Returns a list of product or variation properties v 3.0 ||
 || [catalog.productProperty.delete](./catalog-product-property-delete.md) | Deletes a product or variation property ||
+|| [catalog.product.property.delete](./catalog-product-property-delete-rest-v3.md) | Deletes a product or variation property v 3.0 ||
 || [catalog.productProperty.getFields](./catalog-product-property-get-fields.md) | Returns the fields of a product or variation property ||
 || [catalog.product.property.field.list](./catalog-product-property-field-list.md) | Returns a list of product property fields v 3.0 ||
 || [catalog.product.property.field.get](./catalog-product-property-field-get.md) | Returns the description of a product property field ||

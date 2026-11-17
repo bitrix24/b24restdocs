@@ -95,7 +95,7 @@ The REST 3.0 methods are described in the following sections:
 || [CRM](./crm/index.md) | Work with items of deals, leads, contacts, companies, estimates, invoices, and SPAs, their fields, pipelines and stages, product items, requisites, addresses, activities, card views, and directories. This section also includes [CRM forms](./crm/form/index.md) — the `crm.form.*` group of methods. The timeline, the document generator, automation, and other CRM sections are still available only in the old version ||
 || [Knowledge Base 2.0](./note/index.md) | Maintain knowledge bases, documents, and attached files ||
 || [E-mail](./mail/index.md) | Work with mailboxes, messages, and recipients ||
-|| [Trade Catalog](./catalog/index.md) | Work with trade catalogs, catalog sections, products, services, variations, product images and properties, inventory documents, prices, price types, rounding rules, markups, units of measurement, ratios, and VAT rates ||
+|| [Trade Catalog](./catalog/index.md) | Work with trade catalogs, catalog sections, products, services, variations, product images and properties, property values, property parameters, section property settings, warehouses, inventory balances, inventory documents, prices, price types, rounding rules, markups, units of measurement, ratios, and VAT rates ||
 || [Company Structure](./departments/index.md) | Work with departments, teams, members, and roles — the `humanresources.*` group of methods. The `department.*` methods of the same section belong to the old version ||
 || [Event Log](./event-log/index.md) | Retrieve the entries of the Bitrix24 event log ||
 || [Time Tracking Records](./timeman/record/index.md) | Retrieve and modify time tracking records ||

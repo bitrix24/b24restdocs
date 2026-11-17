@@ -9,12 +9,20 @@ items:
     href: catalog-product-property-add-rest-v3.md
   - name: Update Property
     href: catalog-product-property-update.md
+  - name: Update Product or Variation Property v 3.0
+    href: catalog-product-property-update-rest-v3.md
   - name: Get Property Field Values
     href: catalog-product-property-get.md
+  - name: Get Values of Product or Variation Property Fields v 3.0
+    href: catalog-product-property-get-rest-v3.md
   - name: Get List of Properties
     href: catalog-product-property-list.md
+  - name: Get a List of Product or Variation Properties v 3.0
+    href: catalog-product-property-list-rest-v3.md
   - name: Delete Property
     href: catalog-product-property-delete.md
+  - name: Delete Product or Variation Property v 3.0
+    href: catalog-product-property-delete-rest-v3.md
   - name: Get Property Fields
     href: catalog-product-property-get-fields.md
   - name: Get List of Product Property Fields v 3.0

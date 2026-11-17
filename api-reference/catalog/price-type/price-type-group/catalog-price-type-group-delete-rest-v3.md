@@ -31,7 +31,7 @@ The method `catalog.pricetype.group.delete` deletes a price type binding to a cu
 || **id***
 [`integer`](../../../data-types.md) | Binding identifier.
 
-The identifier is returned by the [catalog.pricetype.group.add](./catalog-price-type-group-add-rest-v3.md) method. REST 3.0 has no method for retrieving the list of bindings; the identifiers of existing bindings are returned by the [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md) method of the previous API version ||
+The identifier is returned by the [catalog.pricetype.group.add](./catalog-price-type-group-add-rest-v3.md) method. The identifiers of existing bindings are returned by the [catalog.pricetype.group.list](./catalog-price-type-group-list-rest-v3.md) method ||
 |#
 
 ## Code Examples
@@ -321,7 +321,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no binding with this identifier. Check the identifier using the [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md) method ||
+|| `id` | Entity with ID `#ID#` was not found | There is no binding with this identifier. Check the identifier using the [catalog.pricetype.group.list](./catalog-price-type-group-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -338,5 +338,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./catalog-price-type-group-add-rest-v3.md)
+- [{#T}](./catalog-price-type-group-list-rest-v3.md)
 - [{#T}](./catalog-price-type-group-field-list.md)
 - [{#T}](./catalog-price-type-group-field-get.md)

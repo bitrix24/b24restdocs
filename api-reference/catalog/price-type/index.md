@@ -32,7 +32,7 @@ Specifics of the new version methods:
 - the `base` field accepts `true` or `false`. The value `true` for another type removes the flag from the previous base type, and `false` for the base type leaves Bitrix24 without a base price type
 - a new price type is available for viewing and purchasing only to the administrators group. The `catalog.pricetype.group.*` methods grant access to other groups
 - the [catalog.pricetype.delete](./catalog-price-type-delete-rest-v3.md) method deletes the prices of this type, bindings to customer groups, name translations, and rounding rules along with the price type. The base type cannot be deleted
-- the new version has no methods for retrieving bindings and translations. Use the [catalog.priceTypeGroup.list](./price-type-group/catalog-price-type-group-list.md) and [catalog.priceTypeLang.list](./price-type-lang/catalog-price-type-lang-list.md) methods
+- customer group bindings have no `get` and `update` methods. Bindings are retrieved using the [catalog.pricetype.group.list](./price-type-group/catalog-price-type-group-list-rest-v3.md) method; to change a binding, delete it and create it again. The `access` field accepts `true` or `false`
 
 ## Relationship with Other Objects
 

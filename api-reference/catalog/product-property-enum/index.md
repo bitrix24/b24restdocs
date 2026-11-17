@@ -46,6 +46,17 @@ A property of type `List` has a set of permissible values. Each value is stored 
 
 **Product Card.** If a product or variation has a property of type `List`, the `id` of the required value is passed in the field of that property.
 
+## Values in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), list property values have their own methods. Methods available in both API versions are marked `v 3.0` in the table. Two methods return the field descriptions: [catalog.product.property.enum.field.list](./catalog-product-property-enum-field-list.md) returns all fields, like [catalog.productPropertyEnum.getFields](./catalog-product-property-enum-get-fields.md), and [catalog.product.property.enum.field.get](./catalog-product-property-enum-field-get.md) returns one field by name.
+
+Specifics of the new version methods:
+
+- the [catalog.product.property.enum.update](./catalog-product-property-enum-update-rest-v3.md) method changes only the passed fields: you do not need to pass `value` and `xmlId` in every call. A value cannot be moved to another property: if you pass `propertyId`, the method returns an error
+- the `def` flag is passed as `true` or `false`, not `Y` or `N`. The methods do not clear the flag on other values of the property, so a property can end up with several default values
+- the external ID `xmlId` must be unique among the values of all list properties in Bitrix24, not only within one property
+- the [catalog.product.property.enum.list](./catalog-product-property-enum-list-rest-v3.md) method does not accept negation by `propertyId` in the filter and does not sort by `def`
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
@@ -53,13 +64,21 @@ A property of type `List` has a set of permissible values. Each value is stored 
 > Who can execute the methods:
 > - a user with the "View product catalog" permission — to retrieve values and field descriptions
 > - a user with the "View product catalog" permission and permission to modify the information block of the property — to add, update, and delete values
+> - any user — for the field descriptions in REST 3.0, the `catalog.product.property.enum.field.*` methods
 
 #| 
 || **Method** | **Description** ||
 || [catalog.productPropertyEnum.add](./catalog-product-property-enum-add.md) | Adds a list property value ||
+|| [catalog.product.property.enum.add](./catalog-product-property-enum-add-rest-v3.md) | Adds a list property value v 3.0 ||
 || [catalog.productPropertyEnum.update](./catalog-product-property-enum-update.md) | Modifies a list property value ||
+|| [catalog.product.property.enum.update](./catalog-product-property-enum-update-rest-v3.md) | Modifies a list property value v 3.0 ||
 || [catalog.productPropertyEnum.get](./catalog-product-property-enum-get.md) | Returns a list property value by identifier ||
+|| [catalog.product.property.enum.get](./catalog-product-property-enum-get-rest-v3.md) | Returns a list property value by identifier v 3.0 ||
 || [catalog.productPropertyEnum.list](./catalog-product-property-enum-list.md) | Returns a list of list property values by filter ||
+|| [catalog.product.property.enum.list](./catalog-product-property-enum-list-rest-v3.md) | Returns a list of list property values by filter v 3.0 ||
 || [catalog.productPropertyEnum.delete](./catalog-product-property-enum-delete.md) | Deletes a list property value ||
+|| [catalog.product.property.enum.delete](./catalog-product-property-enum-delete-rest-v3.md) | Deletes a list property value v 3.0 ||
 || [catalog.productPropertyEnum.getFields](./catalog-product-property-enum-get-fields.md) | Returns the description of the fields of a list property value ||
+|| [catalog.product.property.enum.field.list](./catalog-product-property-enum-field-list.md) | Returns the description of the fields of a list property value v 3.0 ||
+|| [catalog.product.property.enum.field.get](./catalog-product-property-enum-field-get.md) | Returns the description of a list property value field ||
 |#

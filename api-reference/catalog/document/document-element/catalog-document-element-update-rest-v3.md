@@ -46,11 +46,11 @@ An empty object `{}` causes an error ||
 || **storeFrom**
 [`integer`](../../../data-types.md) | Identifier of the source warehouse the product is written off from. Used in transfer and write-off documents.
 
-The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list-rest-v3.md) method ||
 || **storeTo**
 [`integer`](../../../data-types.md) | Identifier of the receiving warehouse. Used in receipt, stock adjustment, transfer, and return documents.
 
-The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list-rest-v3.md) method ||
 || **amount**
 [`double`](../../../data-types.md) | Product quantity ||
 || **purchasingPrice**

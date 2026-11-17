@@ -243,7 +243,7 @@ Possible values:
 
 Pass the value of a single property as an object `{"VALUE": "..."}`, for example `{"PROPERTY_301": {"VALUE": "SRV-002"}}`: the method skips a string without an object and returns no error. For a multiple property, pass an array of values, for example `["linen", "cotton"]`, which replaces the previous values.
 
-Property identifiers can be retrieved using the [catalog.productProperty.list](../../product-property/catalog-product-property-list.md) method ||
+Property identifiers can be retrieved using the [catalog.product.property.list](../../product-property/catalog-product-property-list-rest-v3.md) method ||
 |#
 
 The `iblockId` field cannot be changed. The `id`, `dateCreate`, `timestampX`, `type`, `available`, and `bundle` fields are read-only, and passing them causes an error.

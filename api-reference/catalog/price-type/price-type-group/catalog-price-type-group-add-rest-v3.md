@@ -48,23 +48,17 @@ The identifier can be retrieved using the [catalog.pricetype.list](../catalog-pr
 
 When a price type is created, Bitrix24 automatically adds bindings to the administrators group with the identifier `1` with both access types ||
 || **access***
-[`string`](../../../data-types.md) | Price access type.
+[`boolean`](../../../data-types.md) | Price access type.
 
 Possible values:
 
-- `Y` — permission to purchase at this price type
-- `N` — permission to view this price type
+- `true` — permission to purchase at this price type
+- `false` — permission to view this price type
 
-Values in a different case, for example `y`, cause a validation error ||
+The `Y` and `N` strings from the previous API version cause a validation error ||
 |#
 
 The combination of `catalogGroupId`, `groupId`, and `access` must be unique. The `id` field is filled in automatically; if you pass it in `fields`, the method returns an error.
-
-{% note warning "" %}
-
-In the method response, the `access` field comes in a different format: `"1"` for `Y` and an empty string for `N`. The value in the `Y` or `N` format is returned by the [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md) method of the previous API version.
-
-{% endnote %}
 
 ## Code Examples
 
@@ -86,7 +80,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"catalogGroupId":21,"groupId":2,"access":"Y"}}' \
+    -d '{"fields":{"catalogGroupId":21,"groupId":2,"access":true}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.pricetype.group.add
     ```
 
@@ -96,7 +90,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"catalogGroupId":21,"groupId":2,"access":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"catalogGroupId":21,"groupId":2,"access":true},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.pricetype.group.add
     ```
 
@@ -113,7 +107,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         id: number
         catalogGroupId: number
         groupId: number
-        access: string
+        access: boolean
       }
     }
 
@@ -124,7 +118,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           fields: {
             catalogGroupId: 21,
             groupId: 2,
-            access: 'Y',
+            access: true,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -157,7 +151,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
               fields: {
                 catalogGroupId: 21,
                 groupId: 2,
-                access: 'Y',
+                access: true,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -182,24 +176,36 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - Python
 
+    `b24pysdk` has no wrapper for this method, and the SDK sends to REST 3.0 only the methods listed in `Config().api_v3_methods`. Add the method to this list and call it with `call_method` of the client token, passing `prefer_version=3`.
+
     ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    from b24pysdk import Config
+    from b24pysdk.errors import BitrixSDKException
+    from b24pysdk.errors.v3 import BitrixAPIError
+
+    method = "catalog.pricetype.group.add"
+    Config().configure(api_v3_methods=Config().api_v3_methods | {method})
+    bitrix_token = client.get_token()
 
     try:
-        bitrix_response = client.catalog.pricetype.group.add(
-            fields={
-                "catalogGroupId": 21,
-                "groupId": 2,
-                "access": "Y",
+        response = bitrix_token.call_method(
+            api_method=method,
+            params={
+                "fields": {
+                    "catalogGroupId": 21,
+                    "groupId": 2,
+                    "access": True,
+                },
             },
-        ).response
-        result = bitrix_response.result
+            prefer_version=3,
+        )
+        result = response["result"]
         print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
+            f"code: {error.code}",
+            f"message: {error.error.message}",
             sep="\n",
         )
     except BitrixSDKException as error:
@@ -222,7 +228,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                     'fields' => [
                         'catalogGroupId' => 21,
                         'groupId' => 2,
-                        'access' => 'Y',
+                        'access' => true,
                     ],
                 ]
             );
@@ -248,7 +254,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             fields: {
                 catalogGroupId: 21,
                 groupId: 2,
-                access: 'Y',
+                access: true,
             },
         },
         result => {
@@ -273,7 +279,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             'fields' => [
                 'catalogGroupId' => 21,
                 'groupId' => 2,
-                'access' => 'Y',
+                'access' => true,
             ],
         ]
     );
@@ -291,7 +297,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	"fields": b24.Params{
     		"catalogGroupId": 21,
     		"groupId":        2,
-    		"access":         "Y",
+    		"access":         true,
     	},
     })
     if err != nil {
@@ -308,7 +314,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	ID             int    `json:"id"`
     	CatalogGroupID int    `json:"catalogGroupId"`
     	GroupID        int    `json:"groupId"`
-    	Access         string `json:"access"`
+    	Access         bool   `json:"access"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parsing the response: %w", err)
@@ -329,7 +335,7 @@ HTTP status: **200**
             "id": 169,
             "catalogGroupId": 21,
             "groupId": 2,
-            "access": "1"
+            "access": true
         }
     },
     "time": {
@@ -370,9 +376,9 @@ HTTP status: **200**
 || **groupId**
 [`integer`](../../../data-types.md) | User group identifier ||
 || **access**
-[`string`](../../../data-types.md) | Access type:
-- `"1"` — purchase, `Y` in the request
-- an empty string — view, `N` in the request ||
+[`boolean`](../../../data-types.md) | Access type:
+- `true` — purchase
+- `false` — view ||
 |#
 
 ## Error Handling
@@ -405,10 +411,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `catalogGroupId` | This request requires data type `int` in field `catalogGroupId` | Pass a number ||
-|| `access` | This request requires data type `string` in field `access` | Pass the string `Y` or `N` ||
+|| `access` | This request requires data type `bool` in field `access` | Pass `true` or `false` instead of `Y` or `N` ||
 || `-` | The specified price type does not exist | Check the price type identifier using the [catalog.pricetype.list](../catalog-price-type-list-rest-v3.md) method ||
 || `-` | The specified group does not exist | Pass the identifier of an existing user group ||
-|| `-` | Invalid access type provided. The available values are: Y, N | Pass `Y` or `N` in uppercase in `access` ||
 || `-` | The specified access type for this group already exists | This binding already exists. Bindings to group `1` are created together with the price type ||
 |#
 
@@ -449,6 +454,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./catalog-price-type-group-delete-rest-v3.md)
+- [{#T}](./catalog-price-type-group-list-rest-v3.md)
 - [{#T}](./catalog-price-type-group-field-list.md)
 - [{#T}](./catalog-price-type-group-field-get.md)
 - [{#T}](../catalog-price-type-add-rest-v3.md)

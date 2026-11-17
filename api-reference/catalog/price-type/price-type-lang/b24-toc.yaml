@@ -13,8 +13,12 @@ items:
     href: catalog-price-type-lang-update-rest-v3.md
   - name: Get Translation Field Values
     href: catalog-price-type-lang-get.md
+  - name: Get Price Type Name Translation v 3.0
+    href: catalog-price-type-lang-get-rest-v3.md
   - name: Get List of Translations
     href: catalog-price-type-lang-list.md
+  - name: Get List of Price Type Name Translations v 3.0
+    href: catalog-price-type-lang-list-rest-v3.md
   - name: Delete Translation
     href: catalog-price-type-lang-delete.md
   - name: Delete Price Type Name Translation v 3.0

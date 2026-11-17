@@ -65,7 +65,7 @@ The identifier can be retrieved using the [catalog.catalog.list](./catalog-catal
 
 Pass it together with `productIblockId`.
 
-The identifier can be retrieved using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method ||
+The identifier can be retrieved using the [catalog.product.property.list](../product-property/catalog-product-property-list-rest-v3.md) method ||
 |#
 
 The `iblockId` field cannot be changed after the catalog is created. The `id`, `iblockTypeId`, `lid`, and `name` fields are read-only.

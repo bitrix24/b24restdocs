@@ -34,12 +34,29 @@ The `catalog.product.property.field.get` method returns the description of a pro
 Available fields:
 
 - `id` — property identifier
-- `iblockId` — information block identifier
-- `name` — property name
+- `timestampX` — date and time of the last change
+- `iblockId` — trade catalog identifier
+- `name` — name
+- `active` — activity
 - `sort` — sort order
 - `code` — symbolic code
-- `multiple` — multiple property flag
-- `isRequired` — required property flag
+- `defaultValue` — default value
+- `propertyType` — base type
+- `userType` — custom type
+- `userTypeSettings` — custom type settings
+- `rowCount` — number of input field rows
+- `colCount` — number of input field columns
+- `listType` — list appearance
+- `multiple` — multiple property
+- `multipleCnt` — number of fields for multiple values
+- `xmlId` — external identifier
+- `fileType` — file extensions
+- `linkIblockId` — linked information block
+- `withDescription` — description for the value
+- `searchable` — included in search
+- `filtrable` — included in filtering
+- `isRequired` — required
+- `hint` — hint
 - `controlId` — name of the property field in the information block forms ||
 || **select**
 [`array`](../../data-types.md) | An array of strings with the names of the description properties to return in the response.
@@ -360,7 +377,7 @@ The description contents depend on `select`. The table lists all properties that
 || **name**
 [`string`](../../data-types.md) | Field name ||
 || **type**
-[`string`](../../data-types.md) | Type in the metadata: `int` or `string`. `string` for `multiple` and `isRequired`: values are passed as the strings `Y` and `N` ||
+[`string`](../../data-types.md) | Type in the metadata: `int`, `string`, `bool`, `array`, or `object`. `object` for `timestampX`: the get and list methods return the date as a string in ISO 8601 format ||
 || **title**
 [`string`](../../data-types.md) | Field title. Matches `name` ||
 || **description**
@@ -368,15 +385,15 @@ The description contents depend on `select`. The table lists all properties that
 || **validationRules**
 [`array`](../../data-types.md) | Validation rules. An empty array for property fields ||
 || **requiredGroups**
-[`array`](../../data-types.md) or `null` | Operations in which the field is required. `["add"]` for `iblockId` and `name`; `null` for the other fields ||
+[`array`](../../data-types.md) or `null` | Operations in which the field is required. `["add"]` for `iblockId`, `name`, and `propertyType`; `null` for the other fields ||
 || **filterable**
-[`boolean`](../../data-types.md) | `true` — the field is available for filtering. `false` for all fields ||
+[`boolean`](../../data-types.md) | `true` — the field can be used for filtering in [catalog.product.property.list](./catalog-product-property-list-rest-v3.md) ||
 || **sortable**
-[`boolean`](../../data-types.md) | `true` — the field is available for sorting. `false` for all fields ||
+[`boolean`](../../data-types.md) | `true` — the field can be used for sorting in [catalog.product.property.list](./catalog-product-property-list-rest-v3.md) ||
 || **editable**
-[`boolean`](../../data-types.md) | `true` — the field can be passed in the operations from `editableGroups`. `false` for `id` and `controlId` ||
+[`boolean`](../../data-types.md) | `true` — the field can be passed in the operations from `editableGroups`. `false` for `id`, `timestampX`, and `controlId` ||
 || **editableGroups**
-[`array`](../../data-types.md) or `null` | Operations in which the field can be set. `["add"]` for `iblockId`, `name`, `sort`, `code`, `multiple`, and `isRequired`; `null` for `id` and `controlId` ||
+[`array`](../../data-types.md) or `null` | Operations in which the field can be set. `["add"]` for `iblockId`: the catalog of a property cannot be changed after creation. `null` for `id`, `timestampX`, and `controlId`; `["add","update"]` for the other fields ||
 || **multiple**
 [`boolean`](../../data-types.md) | Multiple value flag. `false` for all fields ||
 || **elementType**

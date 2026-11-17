@@ -181,7 +181,7 @@ Possible values:
 
 Pass the value of a single property as a string or a number, and the values of a multiple property as an array.
 
-Property identifiers can be retrieved using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method. Properties of the "File" type are currently not saved ||
+Property identifiers can be retrieved using the [catalog.product.property.list](../product-property/catalog-product-property-list-rest-v3.md) method. Properties of the "File" type are currently not saved ||
 |#
 
 The `id`, `type`, `available`, `bundle`, `dateCreate`, and `timestampX` fields are filled in automatically. If you pass them in `fields`, the method returns an error.

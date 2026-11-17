@@ -9,6 +9,8 @@ items:
     href: catalog-price-type-group-add-rest-v3.md
   - name: Get List of Bindings  
     href: catalog-price-type-group-list.md  
+  - name: Get a List of Price Type Bindings to Customer Groups v 3.0
+    href: catalog-price-type-group-list-rest-v3.md
   - name: Delete Binding  
     href: catalog-price-type-group-delete.md  
   - name: Delete Price Type Binding to Customer Group v 3.0

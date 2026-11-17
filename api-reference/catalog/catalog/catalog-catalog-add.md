@@ -73,7 +73,7 @@ Default: `0` — a product catalog ||
 
 Pass it together with `productIblockId`.
 
-The identifier can be retrieved using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method.
+The identifier can be retrieved using the [catalog.product.property.list](../product-property/catalog-product-property-list-rest-v3.md) method.
 
 Default: `0` ||
 |#
