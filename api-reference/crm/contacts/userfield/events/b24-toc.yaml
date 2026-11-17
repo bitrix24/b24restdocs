@@ -7,7 +7,7 @@ items:
     href: on-crm-contact-user-field-add.md
   - name: When Updating a Custom Field
     href: on-crm-contact-user-field-update.md
-  - name: When Changing the Set of Values for a List-Type Custom Field
+  - name: When Setting Values for a List Custom Field
     href: on-crm-contact-user-field-set-enum-values.md
   - name: When Deleting a Custom Field
     href: on-crm-contact-user-field-delete.md

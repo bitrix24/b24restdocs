@@ -19,11 +19,13 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.contact.userfield.list` returns a list of custom fields for contacts based on a filter.
-
-It also outputs information about these fields, but without the name assigned to the field by the user, only the internal identifier. If you need the user-defined field name, use the method [crm.contact.list](../crm-contact-list.md), which outputs both standard and custom fields.
+The `crm.contact.userfield.list` method returns a list of custom contact fields by filter.
 
 ## Method Parameters
+
+The `filter` and `order` parameters are optional. If `filter` is omitted, the method returns all custom contact fields.
+
+The method returns all matching fields in a single response. The `start` parameter does not affect the result.
 
 #|
 || **Name**
@@ -41,10 +43,14 @@ It also outputs information about these fields, but without the name assigned to
 ```
 
 where:
-- `field_n` — the name of the field by which the selection of custom fields will be filtered
+- `field_n` — the name of the field by which the custom fields will be filtered
 - `value_n` — the filter value (only exact matches are available)
 
-All conditions for individual fields are combined using `AND`. See the [list of available fields for filtering](#filterable) below ||
+All conditions for individual fields are combined using `AND`.
+
+The method silently ignores keys with prefixes such as `>ID` or `%FIELD_NAME`, keys outside the list, empty strings, and arrays in values: the condition is not applied, and the response includes fields without this restriction.
+
+See the [list of available fields for filtering](#filterable) below ||
 || **order**
 [`object`](../../../data-types.md) | Object format:
 
@@ -58,7 +64,7 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 ```
 
 where:
-- `field_n` — the name of the field by which the selection of elements will be sorted
+- `field_n` — the name of the field by which the custom fields are sorted
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
@@ -89,7 +95,7 @@ By default:
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Code of the custom field ||
+[`string`](../../../data-types.md) | Full field name with the `UF_CRM_` prefix, for example `UF_CRM_MANAGER_NOTE`. The prefix-free code passed when creating the field will not find it ||
 || **USER_TYPE_ID**
 [`string`](../../../data-types.md) | Type of the custom field. Possible values:
 - `string` — string
@@ -115,9 +121,13 @@ By default:
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Is the custom field multiple (`Y` — yes / `N` — no) ||
+[`char`](../../../data-types.md) | Is the custom field multiple? Possible values:
+- `Y` — yes
+- `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Is the custom field mandatory (`Y` — yes / `N` — no) ||
+[`char`](../../../data-types.md) | Is the custom field mandatory? Possible values:
+- `Y` — yes
+- `N` — no ||
 || **SHOW_FILTER**
 [`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
@@ -126,19 +136,22 @@ By default:
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Show in the list (`Y` — yes / `N` — no).
-
-This parameter does not affect anything within `crm`
-||
+[`char`](../../../data-types.md) | Show in the list. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allow user editing (`Y` — yes / `N` — no) ||
+[`char`](../../../data-types.md) | Allow user editing. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Are field values included in the search (`Y` — yes / `N` — no)
+[`char`](../../../data-types.md) | Are field values included in the search? Possible values:
+- `Y` — yes
+- `N` — no
 
 This parameter does not affect anything within `crm`
 ||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). If `LANG` is provided, the method returns the field labels in this language:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -156,7 +169,7 @@ Get a list of custom fields that:
 2. are mandatory
 3. have custom field labels in German
 
-Set the following sort order for this selection: field type and sort index in ascending order.
+Sort the result by field type and sort index in ascending order.
 
 {% list tabs %}
 
@@ -200,16 +213,11 @@ Set the following sort order for this selection: field type and sort index in as
       SORT: string
       MULTIPLE: string
       MANDATORY: string
-      EDIT_FORM_LABEL: string
-      LIST_COLUMN_LABEL: string
+      EDIT_FORM_LABEL: string | null
+      LIST_COLUMN_LABEL: string | null
     }
 
     try {
-      // crm.contact.userfield.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<CrmContactUserfieldListItem[]>({
         method: 'crm.contact.userfield.list',
         params: {
@@ -222,7 +230,6 @@ Set the following sort order for this selection: field type and sort index in as
             USER_TYPE_ID: 'ASC',
             SORT: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -251,11 +258,6 @@ Set the following sort order for this selection: field type and sort index in as
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.contact.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.contact.userfield.list',
             params: {
@@ -268,7 +270,6 @@ Set the following sort order for this selection: field type and sort index in as
                 USER_TYPE_ID: 'ASC',
                 SORT: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -339,37 +340,6 @@ Set the following sort order for this selection: field type and sort index in as
             },
             order={"ID": "ASC"},
         ).as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.contact.userfield.list(
-            filter={
-                "MULTIPLE": "Y",
-                "MANDATORY": "Y",
-                "LANG": "de",
-            },
-            order={"ID": "DESC"},
-        ).as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -501,8 +471,6 @@ Set the following sort order for this selection: field type and sort index in as
     	fmt.Println(it.ID, it.EntityID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
     if res.Total != nil {
     	fmt.Println("total:", *res.Total)
     }
@@ -688,7 +656,7 @@ HTTP status: **200**
 || **result**
 [`userfield[]`](crm-contact-userfield-get.md#userfield) | Root element of the response, contains a list of custom fields.
 
-The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all ||
+The labels `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, and `HELP_MESSAGE` are returned only when `filter.LANG` is non-empty — as a string in that language or `null`. Without `filter.LANG`, they are absent from the response. For an `enumeration` field, `LIST` items additionally contain `XML_ID` ||
 || **total**
 [`integer`](../../../data-types.md) | Number of found custom fields ||
 || **time**
@@ -711,10 +679,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Parameter 'order' must be array` | The provided `order` is not an object ||
-|| Empty value | `Parameter 'filter' must be array` | The provided `filter` is not an object ||
-|| Empty value | `Access denied` | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | The provided `order` is not an object ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | The provided `filter` is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to read contacts ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

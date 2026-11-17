@@ -1,4 +1,4 @@
-# Custom Contact Fields: Overview of Methods
+# Custom Contact Fields: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -9,57 +9,38 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Custom fields store information about a [contact](../index.md) in various data formats: string, number, link, address, and others. The group of methods `crm.contact.userfield.*` creates such fields, changes their settings, returns the list, and deletes them.
+Custom fields store contact information in various data formats: string, number, link, address, and others. A field is created once and appears in all Bitrix24 contact detail forms.
+
+{% note warning "" %}
+
+The development of the `crm.contact.userfield.*` methods has been halted. For new development, use the REST 3.0 [crm.contact.field.custom.*](../../rest-v3/fields/index.md) methods. The REST 3.0 methods do not create List `enumeration` and File `file` fields. Use [crm.contact.userfield.add](./crm-contact-userfield-add.md) for these types.
+
+{% endnote %}
 
 > Quick navigation: [all methods and events](#all-methods)
 >
 > User documentation: [Custom fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 
+## Custom Field Names
+
+Bitrix24, not the developer, generates the field name. If necessary, the `UF_CRM_` prefix is added to the code passed in the `FIELD_NAME` parameter of [crm.contact.userfield.add](./crm-contact-userfield-add.md): the code `MANAGER_NOTE` becomes the name `UF_CRM_MANAGER_NOTE`. The method page describes the complete conversion rules.
+
+The resulting name is the key used to write and retrieve the field value in contact methods, such as [crm.contact.add](../crm-contact-add.md) and [crm.contact.list](../crm-contact-list.md). The [crm.contact.fields](../crm-contact-fields.md) method returns custom fields together with system fields.
+
 ## How to Get Started
 
-1. Find out the available field types with the [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) method — the type identifier is passed in the `USER_TYPE_ID` field.
-2. Check which settings the selected type supports with the [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) method — their values are passed in the `SETTINGS` object.
-3. Create a field with the [crm.contact.userfield.add](./crm-contact-userfield-add.md) method. The required fields of the request are `FIELD_NAME` and `USER_TYPE_ID`.
-4. Check the result with the [crm.contact.userfield.list](./crm-contact-userfield-list.md) method: the system adds the `UF_CRM_` prefix to the code you pass, so the resulting field name differs from the one you sent.
-5. Write the field value into a contact with the [crm.contact.add](../crm-contact-add.md) and [crm.contact.update](../crm-contact-update.md) methods — pass it together with the system fields in `fields`.
-6. Subscribe to the [custom field events](./events/index.md) if your application needs to know about changes in the structure of the fields.
+1. Select the field type. The [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) method returns the list of types with identifiers for the `USER_TYPE_ID` parameter, for example, `double` for a number. The [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) method describes the common field properties: whether it is required or multiple, and its sort order.
+2. Retrieve the type settings for the `SETTINGS` parameter with [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md), for example, `PRECISION` for number precision. The `crm.contact.userfield.add` method does not accept all type settings. The supported settings are listed on the [method page](./crm-contact-userfield-add.md#settings).
+3. Create a field, for example, a `string` field with the code `MANAGER_NOTE`, using [crm.contact.userfield.add](./crm-contact-userfield-add.md). The method returns the field identifier.
+4. Retrieve the field name with the `UF_CRM_` prefix by passing the identifier returned by `crm.contact.userfield.add` to [crm.contact.userfield.get](./crm-contact-userfield-get.md), or find it in the [crm.contact.userfield.list](./crm-contact-userfield-list.md) response.
+5. Write the value to a contact with [crm.contact.update](../crm-contact-update.md): `"fields": {"UF_CRM_MANAGER_NOTE": "Call back on Friday"}`. For an `enumeration` field, pass the item `ID` from the `LIST` array.
+6. Retrieve the value with [crm.contact.get](../crm-contact-get.md). It will be returned in `UF_CRM_MANAGER_NOTE`.
 
-## Types of Custom Fields
+The `crm.contact.userfield.*` methods work only with contact fields. To manage fields of different objects with one group of methods, use [userfieldconfig.*](../../universal/userfieldconfig/index.md). The choice between these two groups is described on the [Custom Fields in CRM](../../universal/user-defined-fields/index.md) page.
 
-Use the method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) to retrieve the available types of custom fields. The method returns the identifier and name of each type.
+The custom field object structure is described in the [`userfield`](./crm-contact-userfield-get.md#userfield) section.
 
-```json
-{
-    "ID": "double",
-    "title": "Number"
-}
-```
-
-Use the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) to get a list of characteristics of custom fields. The method will return the codes of the characteristics along with their type and name.
-
-```json
-"MANDATORY": {
-    "type": "char",
-    "title": "Required"
-}
-```
-
-## Custom Field Settings
-
-Use the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) to obtain a list of available settings. The method will return the supported settings for the requested field type.
-
-```json
-"DEFAULT_VALUE": {
-    "type": "double",
-    "title": "Default value"
-},
-"PRECISION": {
-    "type": "int",
-    "title": "Precision"
-}
-```
-
-## Errors When Working with Custom Fields
+## Errors When Working with Custom Fields {#errors}
 
 When creating or deleting custom fields, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error. The reason for the error can be found in the server logs at the time of the request:
 
@@ -80,9 +61,11 @@ When creating or deleting custom fields, the request may be interrupted with an 
 
 ## Overview of Methods and Events {#all-methods}
 
+Events report changes to field settings, not to their values in contacts. For subscription instructions, see [Custom Contact Field Events](./events/index.md).
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method — creating, modifying, and deleting custom fields is available only to a CRM administrator, while retrieving a field and a list of fields is available to any user with the "read" access permission for contacts. Any user can subscribe to the events
+> Who can execute the method: depending on the method. A user with the "Edit CRM preferences" permission in CRM can create, modify, and delete fields. Any user with read access to contacts can retrieve a field and a list of fields. Any user can subscribe to events. Administrator permissions are required for offline events
 
 {% list tabs %}
 
@@ -93,7 +76,7 @@ When creating or deleting custom fields, the request may be interrupted with an 
     || [crm.contact.userfield.add](./crm-contact-userfield-add.md) | Creates a new custom field for contacts ||
     || [crm.contact.userfield.update](./crm-contact-userfield-update.md) | Updates an existing custom field for contacts ||
     || [crm.contact.userfield.get](./crm-contact-userfield-get.md) | Returns a custom field for contacts by ID ||
-    || [crm.contact.userfield.list](./crm-contact-userfield-list.md) | Returns a list of custom fields for contacts by filter ||
+    || [crm.contact.userfield.list](./crm-contact-userfield-list.md) | Returns a list of custom fields for contacts ||
     || [crm.contact.userfield.delete](./crm-contact-userfield-delete.md) | Deletes a custom field for contacts ||
     |#
 

@@ -1,4 +1,4 @@
-# Get Custom Contact Field by Id crm.contact.userfield.get
+# Retrieve a Contact Custom Field by ID crm.contact.userfield.get
 
 {% note tip "" %}
 
@@ -250,7 +250,7 @@ Get the custom field with `id = 399`
 
 {% endlist %}
 
-### Response Handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -391,19 +391,21 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Userfield
+#### userfield Object {#userfield}
+
+Numeric `ID` and `SORT` values are returned as strings, including in `LIST` items.
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the custom field ||
+[`string`](../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | String identifier binding the custom field to the entity. 
+[`string`](../../../data-types.md) | String identifier binding the custom field to the entity.
 
-In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is automatically assigned ||
+Always `CRM_CONTACT` for contact fields ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Field code. Unique ||
+[`string`](../../../data-types.md) | Field name with the `UF_CRM_` prefix, unique within contacts. Use this name to write and read the field value in contact methods, such as [crm.contact.update](../crm-contact-update.md) and [crm.contact.get](../crm-contact-get.md). This method does not return field values from contacts ||
 || **USER_TYPE_ID**
 [`string`](../../../data-types.md) | Data type of the custom field. Possible values:
 - `string` — string
@@ -425,42 +427,42 @@ In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is aut
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External code ||
+[`string`](../../../data-types.md) | External code. If not specified, `null` ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting index ||
+[`string`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Indicates whether the field is multiple. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Is the field mandatory? Possible values:
+[`char`](../../../data-types.md) | Is the field mandatory? Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **SHOW_FILTER**
-[`boolean`](../../../data-types.md) | Indicates whether to show the field in the filter. Possible values:
+[`char`](../../../data-types.md) | Field display mode in the filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Should the user field be shown in the list?
+[`char`](../../../data-types.md) | Should the user field be shown in the list?
 
-This parameter does not affect anything within `crm`.
+Affects the default set of contact list columns. The user can customize the columns.
 
 Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allows user editing. Possible values:
+[`char`](../../../data-types.md) | Allows user editing. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Are the field values searchable?
+[`char`](../../../data-types.md) | Are the field values searchable?
 
 This parameter does not affect anything within `crm`.
 
@@ -469,320 +471,43 @@ Possible values:
 - `N` — no
 ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
+[`object`](../../../data-types.md) | Additional field parameters depend on `USER_TYPE_ID`. Settings available when creating a field are described in [Parameter SETTINGS](./crm-contact-userfield-add.md#settings). The response may contain additional field type settings ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values. Returned for the `enumeration` field type ||
 || **EDIT_FORM_LABEL**
-[`lang_map`](../../data-types.md) | Label in the edit form ||
+[`lang_map`](../../data-types.md#lang-ids) | Label in the edit form for all Bitrix24 languages ||
 || **LIST_COLUMN_LABEL**
-[`lang_map`](../../data-types.md) | Header in the list ||
+[`lang_map`](../../data-types.md#lang-ids) | Header in the list for all Bitrix24 languages ||
 || **LIST_FILTER_LABEL**
-[`lang_map`](../../data-types.md) | Filter label in the list ||
+[`lang_map`](../../data-types.md#lang-ids) | Filter label in the list for all Bitrix24 languages ||
 || **ERROR_MESSAGE**
-[`lang_map`](../../data-types.md) | Error message ||
+[`lang_map`](../../data-types.md#lang-ids) | Error message for all Bitrix24 languages ||
 || **HELP_MESSAGE**
-[`lang_map`](../../data-types.md) | Help ||
+[`lang_map`](../../data-types.md#lang-ids) | Help for all Bitrix24 languages ||
 || **USER_TYPE_OWNER**
-[`string`](../../../data-types.md) | `CLIENT_ID` of the application that serves this field type.
-
-Returned when the field type is custom ||
+[`string`](../../../data-types.md) | `CLIENT_ID` of the application that serves this field type. Returned if the field type is custom. If the application is not found, `null` ||
 |#
 
-### Parameter Settings {#settings}
 
-{% list tabs %}
-
-- double
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **PRECISION**
-    [`integer`](../../../data-types.md) | Precision (number of decimal places) ||
-    || **SIZE**
-    [`integer`](../../../data-types.md) | Input field size for display ||
-    || **MIN_VALUE**
-    [`double`](../../../data-types.md) | Minimum value (0 — do not check) ||
-    || **MAX_VALUE**
-    [`double`](../../../data-types.md) | Maximum value (0 — do not check) ||
-    || **DEFAULT_VALUE**
-    [`double`](../../../data-types.md) | Default value ||
-    |#
-
-- boolean
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DEFAULT_VALUE**
-    [`integer`](../../../data-types.md) | Is it a default value. Possible values:
-    - `0` — no
-    - `1` — yes ||
-    || **DISPLAY**
-    [`string`](../../../data-types.md) | Appearance. Possible values:
-    - `CHECKBOX` — checkbox
-    - `RADIO` — radio buttons
-    - `DROPDOWN` — dropdown list ||
-    || **LABEL**
-    [`string[]`](../../../data-types.md) | Labels for values, where:
-    - array item with index `0` — label for value `No`
-    - array item with index `1` — label for value `Yes`
-    ||
-    || **LABEL_CHECKBOX**
-    [`string`](../../../data-types.md) | Checkbox label ||
-    |#
-
-- date
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DEFAULT_VALUE**
-    [`object`](../../../data-types.md) | Default value. Object format:
-
-    ```
-    {
-        TYPE: 'NONE'|'FIXED'|'NONE',
-        VALUE: date
-    }
-    ```
-
-    where:
-    - `TYPE` — default value type:
-        - `NONE` — none
-        - `NOW` — current date
-        - `FIXED` — date from `VALUE`
-    - `VALUE` has type `date` ||
-    |#
-
-- integer
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **SIZE**
-    [`integer`](../../../data-types.md) | Input field size for display ||
-    || **MIN_VALUE**
-    [`integer`](../../../data-types.md) | Minimum value (0 — do not check) ||
-    || **MAX_VALUE**
-    [`integer`](../../../data-types.md) | Maximum value (0 — do not check) ||
-    || **DEFAULT_VALUE**
-    [`integer`](../../../data-types.md) | Default value ||
-    |#
-
-- datetime
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DEFAULT_VALUE**
-    [`object`](../../../data-types.md) | Default value. Object format:
-
-    ```
-    {
-        TYPE: 'NONE'|'FIXED'|'NONE',
-        VALUE: datetime
-    }
-    ```
-
-    where:
-    - `TYPE` — default value type:
-        - `NONE` — none
-        - `NOW` — current date and time
-        - `FIXED` — date and time from `VALUE`
-    - `VALUE` has type `datetime` ||
-    || **USE_SECOND**
-    [`boolean`](../../../data-types.md) | Use seconds. Possible values:
-    - `Y` — yes
-    - `N` — no ||
-    || **USE_TIMEZONE**
-    [`boolean`](../../../data-types.md) | Use time zones. Possible values:
-    - `Y` — yes
-    - `N` — no ||
-    |#
-
-- string
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **SIZE**
-    [`integer`](../../../data-types.md) | Input field size for display ||
-    || **ROWS**
-    [`integer`](../../../data-types.md) | Number of input field lines ||
-    || **REGEXP**
-    [`string`](../../../data-types.md) | Regular expression for validation ||
-    || **MIN_LENGTH**
-    [`integer`](../../../data-types.md) | Minimum string length (0 — do not check) ||
-    || **MAX_LENGTH**
-    [`integer`](../../../data-types.md) | Maximum string length (0 — do not check) ||
-    || **DEFAULT_VALUE**
-    [`string`](../../../data-types.md) | Default value ||
-    |#
-
-- enumeration
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DISPLAY**
-    [`string`](../../../data-types.md) | Appearance. Possible values:
-    - `LIST` — list
-    - `CHECKBOX` — checkboxes
-    - `UI` — searchable list
-    - `DIALOG` — entity selection dialog ||
-    || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | List height ||
-    || **CAPTION_NO_VALUE**
-    [`string`](../../../data-types.md) | Label when value is missing ||
-    || **SHOW_NO_VALUE**
-    [`boolean`](../../../data-types.md) | Whether to show an empty value for a required field. Possible values:
-    - `Y` — yes
-    - `N` — no ||
-    |#
-
-- iblock_section|iblock_element
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DISPLAY**
-    [`string`](../../../data-types.md) | Appearance. Possible values:
-    - `LIST` — list
-    - `CHECKBOX` — checkboxes
-    - `UI` — searchable list
-    - `DIALOG` — entity selection dialog ||
-    || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | List height ||
-    || **IBLOCK_ID**
-    [`integer`](../../../data-types.md) | Information block ID ||
-    || **DEFAULT_VALUE**
-    [`integer`](../../../data-types.md) | Default value ||
-    || **ACTIVE_FILTER**
-    [`boolean`](../../../data-types.md) | Show only active items. Possible values:
-    - `Y` — yes
-    - `N` — no ||
-    |#
-
-- crm_status
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **ENTITY_TYPE**
-    [`object`](../../../data-types.md) | CRM directory. The structure is similar to the elements returned by the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
-    |#
-
-- crm
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **LEAD**
-    [`boolean`](../../../data-types.md) | Whether binding to Leads is enabled ||
-    || **CONTACT**
-    [`boolean`](../../../data-types.md) | Whether binding to Contacts is enabled ||
-    || **COMPANY**
-    [`boolean`](../../../data-types.md) | Whether binding to Companies is enabled ||
-    || **DEAL**
-    [`boolean`](../../../data-types.md) | Whether binding to Deals is enabled ||
-    || **ORDER**
-    [`boolean`](../../../data-types.md) | Whether binding to Orders is enabled ||
-    || **QUOTE**
-    [`boolean`](../../../data-types.md) | Whether binding to Commercial proposals is enabled ||
-    || **SMART_INVOICE**
-    [`boolean`](../../../data-types.md) | Whether binding to New invoices is enabled ||
-    || **DYNAMIC_...**
-    [`boolean`](../../../data-types.md) | Whether binding to a specific SPA is enabled.
-
-    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the SPA type ID to which the binding is enabled ||
-    |#
-
-- money
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **DEFAULT_VALUE**
-    [`string`](../../../data-types.md) | Default value.
-
-    The value of this field has the format: ```{VALUE}|{CURRENCY}```, where:
-    - `VALUE` — default amount of money
-    - `CURRENCY` — string currency identifier
-
-    For example: ```300|USD``` — 300 dollars
-
-    ||
-    |#
-
-- address
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **SHOW_MAP**
-    [`boolean`](../../../data-types.md) | Show map ||
-    |#
-
-- url
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **POPUP**
-    [`boolean`](../../../data-types.md) | Open in a new window ||
-    || **SIZE**
-    [`integer`](../../../data-types.md) | Input field size for display ||
-    || **MIN_LENGTH**
-    [`integer`](../../../data-types.md) | Minimum string length (0 — do not check) ||
-    || **MAX_LENGTH**
-    [`integer`](../../../data-types.md) | Maximum string length (0 — do not check) ||
-    || **DEFAULT_VALUE**
-    [`string`](../../../data-types.md) | Default value ||
-    || **ROWS**
-    [`integer`](../../../data-types.md) | Number of input field lines ||
-    |#
-
-- file
-
-    #|
-    || **Name**
-    `type` | **Description** ||
-    || **SIZE**
-    [`integer`](../../../data-types.md) | Input field size for display ||
-    || **LIST_WIDTH**
-    [`integer`](../../../data-types.md) | Maximum width for display in the list ||
-    || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | Maximum height for display in the list ||
-    || **MAX_SHOW_SIZE**
-    [`integer`](../../../data-types.md) | Maximum allowable size for display in the list (0 — no limit) ||
-    || **MAX_ALLOWED_SIZE**
-    [`integer`](../../../data-types.md) | Maximum allowable file size for upload (0 — do not check) ||
-    || **EXTENSIONS**
-    [`string[]`](../../../data-types.md) | Allowed extensions ||
-    || **TARGET_BLANK**
-    [`boolean`](../../../data-types.md) | Open file in a new tab ||
-    |#
-
-{% endlist %}
-
-### uf_enum_element Type {#uf_enum_element}
+#### uf_enum_element Type {#uf_enum_element}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the list element ||
+[`string`](../../../data-types.md) | Identifier of the list element ||
 || **VALUE**
 [`string`](../../../data-types.md) | Value of the list element ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting index ||
+[`string`](../../../data-types.md) | Sorting index ||
 || **DEF**
-[`boolean`](../../../data-types.md) | Indicates whether the list element is the default value. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the list element is the default value. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 |#
+
+The method does not return the list item's external code `XML_ID`. [crm.contact.userfield.list](./crm-contact-userfield-list.md) returns it.
 
 ## Error Handling
 
@@ -800,18 +525,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | Occurs when:
-- the user does not have administrative rights
-- the user attempts to access a custom field not linked to contacts ||
-|| Empty value | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have read permission for contacts, or the field is not linked to contacts ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is missing, is not numeric, or is less than or equal to zero ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The custom field with the provided `id` was not found ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-contact-userfield-add.md)
 - [{#T}](./crm-contact-userfield-update.md)
 - [{#T}](./crm-contact-userfield-list.md)

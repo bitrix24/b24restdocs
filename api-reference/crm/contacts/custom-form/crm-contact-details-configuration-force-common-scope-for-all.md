@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Allow to change settings" access permission in CRM
+> Who can execute the method: a user with the "Manage CRM item form layout" or "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-This method allows you to enforce a common contact card for all users.
+The `crm.contact.details.configuration.forceCommonScopeForAll` method sets a common contact card for all users and deletes their personal card settings.
+
+## Method Parameters
 
 No parameters required.
 
@@ -209,7 +211,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Values
+### Returned Data
 
 #|
 || **Name**
@@ -239,8 +241,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**   | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have the "Manage CRM item form layout" or "Edit CRM preferences" permission in CRM ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method:
 >  - any user can retrieve their own personal settings and the shared settings
->  - a user with the "Allow to change settings" access permission in CRM can retrieve another user's personal settings
+>  - a user with the "Edit CRM preferences" access permission in CRM can retrieve another user's personal settings
 
 {% note warning "DEPRECATED" %}
 
@@ -21,7 +21,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-Retrieves the contact card configurations: reads the personal card configurations of the specified user or the shared configurations set for all users.
+The method `crm.contact.details.configuration.get` retrieves the personal card configuration of the specified user or the shared configuration for all users.
 
 ## Method Parameters
 
@@ -31,18 +31,18 @@ Retrieves the contact card configurations: reads the personal card configuration
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | The scope of the settings. 
+[`string`](../../../data-types.md) | The scope of the settings.
 
 Possible values:
 - **P** — personal settings
 - **C** — shared settings
 
-Default — `P`
+Default — `P`. Any value other than `C` selects the personal settings `P`
 ||
 || **userId**
-[`user`](../../../data-types.md) | User identifier. Required only when requesting another user's personal settings.
+[`user`](../../../data-types.md) | User identifier. Required only when requesting another user's personal settings. The method does not check whether the user exists.
 
-If not specified, the current user's ID is used
+If the parameter is not specified or its value is less than or equal to zero after conversion to an integer, the current user's identifier is used
 ||
 |#
 
@@ -331,7 +331,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned Values
+### Returned Data
 
 #|
 || **Name**
@@ -339,7 +339,7 @@ HTTP status: **200**
 || **result**
 [`section[]`](#section) | The root element of the response.
 
-Contains the configuration of the sections of the detail form of the entity.
+Contains the configuration of the contact detail card sections.
 
 Returns `null` if there is no configuration ||
 || **time**
@@ -348,7 +348,7 @@ Returns `null` if there is no configuration ||
 
 #### Section
 
-Describes an individual section containing fields within the `item` card
+Describes an individual section containing fields within the contact card
 
 #|
 || **Name**
@@ -360,7 +360,7 @@ Describes an individual section containing fields within the `item` card
 || **type**
 [`string`](../../../data-types.md) | Type of the section ||
 || **elements**
-[`section_element[]`](#section_element) | List of fields displayed in the entity card with additional settings ||
+[`section_element[]`](#section_element) | List of fields displayed in the contact card with additional settings ||
 |#
 
 #### section_element
@@ -373,11 +373,13 @@ Configuration of an individual field within a section
 || **name**
 [`string`](../../../data-types.md) | Field identifier ||
 || **optionFlags**
-[`boolean`](../../../data-types.md) | Whether to always show the field. 
+[`integer`](../../../data-types.md) or [`string`](../../../data-types.md) | Whether to always show the field.
 
 Possible values:
-- `"1"` — yes
-- `"0"` — no
+- `1` or `"1"` — the "Always show" option is enabled
+- `0` or `"0"` — the "Always show" option is disabled
+
+Other numeric flag values may also be returned
 
 ||
 || **options**
@@ -401,7 +403,7 @@ The structure is described [below](#options) ||
 `CONTACT`
 `MYCOMPANY_ID` | The country code for the default phone number format is a string of two Latin letters.
 
-For example `"RU"` ||
+For example, `"RU"` ||
 || **isPayButtonVisible**
 [`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is visible.
 
@@ -436,8 +438,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**   | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user requested another user's personal settings and does not have the "Edit CRM preferences" permission in CRM ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -446,5 +448,5 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-contact-details-configuration-set.md)
-- [{#T}](./crm-contact-details-configuration-force-common-scope-for-all.md)
 - [{#T}](./crm-contact-details-configuration-reset.md)
+- [{#T}](./crm-contact-details-configuration-force-common-scope-for-all.md)

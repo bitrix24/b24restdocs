@@ -1,4 +1,4 @@
-# Event on Changing the Set of Values for a Custom List-type Field onCrmContactUserFieldSetEnumValues
+# Event When Values Are Set for a Custom Contact List Field onCrmContactUserFieldSetEnumValues
 
 {% note tip "" %}
 
@@ -11,13 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: any user. Administrator permissions are required for offline events
 
-The event `onCrmContactUserFieldSetEnumValues` is triggered when the set of values for a custom list-type field on contacts is changed.
+The `ONCRMCONTACTUSERFIELDSETENUMVALUES` event is triggered after values are set for a custom contact list field. The event is sent even if the set of values has not changed.
 
 {% note info "" %}
 
-Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md).
 
 {% endnote %}
 
@@ -46,7 +46,6 @@ Data is transmitted as a POST request {.b24-info}
     "status": "F",
     "client_endpoint": "https://some-domain.bitrix24.com/rest/",
     "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-    "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
     "application_token": "51856fefc120afa4b628cc82d3935cce"
   }
 }
@@ -62,7 +61,7 @@ In this case — `ONCRMCONTACTUSERFIELDSETENUMVALUES` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | An object containing information about a custom field whose list of possible values has changed.
+[`object`](../../../../data-types.md) | An object containing information about a custom field for which list values were set.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
@@ -70,9 +69,9 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md), in Unix timestamp format ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -83,14 +82,16 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the custom field whose list of possible values has changed ||
+[`integer`](../../../../data-types.md) | Identifier of the custom field for which list values were set ||
 || **ENTITY_ID**
 [`userFieldEntityId`](../../../data-types.md#object_type) | Type of CRM object to which the custom field is attached.
 
 In this case — `CRM_CONTACT` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Code of the custom field whose list of possible values has changed ||
+[`string`](../../../../data-types.md) | Code of the custom field for which list values were set ||
 |#
+
+List values are not included in the event. Retrieve them using [crm.contact.userfield.get](../crm-contact-userfield-get.md) with the `ID` from the event.
 
 ### Parameter auth {#auth}
 
@@ -100,6 +101,7 @@ In this case — `CRM_CONTACT` ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-contact-user-field-add.md)
 - [{#T}](./on-crm-contact-user-field-update.md)
 - [{#T}](./on-crm-contact-user-field-delete.md)

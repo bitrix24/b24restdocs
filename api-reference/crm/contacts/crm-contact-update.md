@@ -21,8 +21,6 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.contact.update` updates an existing contact.
 
-It is recommended to pass the complete set of address fields when updating an address.
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -34,10 +32,10 @@ It is recommended to pass the complete set of address fields when updating an ad
 [`integer`](../../data-types.md) | The identifier of the contact to be changed.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
-|| **fields***
+|| **fields**
 [`object`](../../data-types.md) | An object in the following format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -54,7 +52,9 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only the fields that need to be changed should be passed in `fields`
+Pass only the fields you want to change in `fields`. When updating an address, pass all address fields: address fields omitted from the request are cleared.
+
+If `fields` is omitted, the method returns `true` without changing anything
 ||
 || **params**
 [`object`](../../data-types.md) | An object containing a set of additional parameters.
@@ -85,8 +85,7 @@ The list of available salutation types can be obtained using [`crm.status.list`]
 [`crm_status`](../data-types.md) | Contact type.
 The list of available contact types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
 || **SOURCE_ID**
-[`crm_status`](../data-types.md) | Source
-The list of available source types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
+[`crm_status`](../data-types.md) | Source. The list of available source types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the source ||
 || **POST**
@@ -102,7 +101,7 @@ The list of available source types can be obtained using [`crm.status.list`](../
 - `Y` — yes
 - `N` — no ||
 || **ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Identifier of the user responsible for the item ||
+[`user`](../../data-types.md) | Identifier of the user responsible for the contact ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company for the contact.
 
@@ -114,9 +113,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
-- `CPC` — ads
-- `CPM` — banners ||
+[`string`](../../data-types.md) | Traffic type. For example, `CPC` — ads, `CPM` — banners ||
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
@@ -124,35 +121,32 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **PHONE**
-[`crm_multifield[]`](../data-types.md) | Phone ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Phone ||
 || **EMAIL**
-[`crm_multifield[]`](../data-types.md) | E-mail ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | E-mail ||
 || **WEB**
-[`crm_multifield[]`](../data-types.md) | Website ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Website ||
 || **IM**
-[`crm_multifield[]`](../data-types.md) | Messenger ||
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Messenger ||
 || **LINK**
-[`crm_multifield[]`](../data-types.md) | Links. System field ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Links. System field ||
+||**UF_...**
+[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the portal settings, contacts may have a set of custom fields of defined types.
+Depending on the Bitrix24 settings, contacts may have a set of custom fields of defined types.
 
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
 A custom field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
-||**PARENT_ID_...** | Relationship fields.
+||**PARENT_ID_...**
+[`crm_entity`](../data-types.md) | Relationship fields.
 
-If there are smart processes related to contacts on the portal, there is a field for each such smart process that stores the relationship between that smart process and the contact. The field itself stores the identifier of the element of that smart process.
-
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of that smart process related to the current contact ||
+If a smart process is linked to contacts as a parent, the `PARENT_ID_...` field stores the identifier of its item. For example, `PARENT_ID_153` is the identifier of an item in the parent smart process with `entityTypeId=153` ||
 |#
 
 **Fields for external data sources**
 
-If the contact was created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+These fields are populated if the contact was created by an external system.
 
 #|
 || **Name**
@@ -160,11 +154,9 @@ If the contact was created by an external system, then:
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
-
-If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to overwriting of the data ||
+[`string`](../../data-types.md) | Identifier of the contact in the external system ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Version of the original ||
+[`string`](../../data-types.md) | Version of the contact data in the external system ||
 |#
 
 **Deprecated fields**
@@ -200,13 +192,9 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Should the update event of the contact be registered in the activity stream? Possible values:
-- `Y` — yes
-- `N` — no
-
-Default is `N` ||
+[`boolean`](../../data-types.md) | The parameter is accepted for compatibility and does not affect contact updates: the method ignores it ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../../data-types.md) | Should the update of the contact be registered in the history? Possible values:
+[`boolean`](../../data-types.md) | Whether to record the contact update in the history. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -227,7 +215,7 @@ Update contact with `id = 43`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"NAME":"John","BIRTHDATE":"11.11.1999","TYPE_ID":"RECOMMENDATION","SOURCE_ID":"WEB","POST":"Network Administrator","COMMENTS":"New comment","OPENED":"N","EXPORT":"Y","ASSIGNED_BY_ID":1,"COMPANY_ID":12,"COMPANY_IDS":[13,15],"UF_CRM_1720697698689":"Example of a new value for a custom field of type \"String\"","PARENT_ID_1224":14},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
+    -d '{"ID":43,"FIELDS":{"NAME":"John","BIRTHDATE":"11.11.1999","TYPE_ID":"RECOMMENDATION","SOURCE_ID":"WEB","POST":"Network Administrator","COMMENTS":"New comment","OPENED":"N","EXPORT":"Y","ASSIGNED_BY_ID":1,"COMPANY_ID":13,"COMPANY_IDS":[13,15],"UF_CRM_1720697698689":"Example of a new value for a custom field of type \"String\"","PARENT_ID_1224":14},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.update
     ```
 
@@ -237,7 +225,7 @@ Update contact with `id = 43`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"NAME":"John","BIRTHDATE":"11.11.1999","TYPE_ID":"RECOMMENDATION","SOURCE_ID":"WEB","POST":"Network Administrator","COMMENTS":"New comment","OPENED":"N","EXPORT":"Y","ASSIGNED_BY_ID":1,"COMPANY_ID":12,"COMPANY_IDS":[13,15],"UF_CRM_1720697698689":"Example of a new value for a custom field of type \"String\"","PARENT_ID_1224":14},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":43,"FIELDS":{"NAME":"John","BIRTHDATE":"11.11.1999","TYPE_ID":"RECOMMENDATION","SOURCE_ID":"WEB","POST":"Network Administrator","COMMENTS":"New comment","OPENED":"N","EXPORT":"Y","ASSIGNED_BY_ID":1,"COMPANY_ID":13,"COMPANY_IDS":[13,15],"UF_CRM_1720697698689":"Example of a new value for a custom field of type \"String\"","PARENT_ID_1224":14},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.update
     ```
 
@@ -266,7 +254,7 @@ Update contact with `id = 43`
             OPENED: 'N',
             EXPORT: 'Y',
             ASSIGNED_BY_ID: 1,
-            COMPANY_ID: 12,
+            COMPANY_ID: 13,
             COMPANY_IDS: [13, 15],
             UF_CRM_1720697698689: 'Example new value of a custom field of type "String"',
             PARENT_ID_1224: 14,
@@ -317,7 +305,7 @@ Update contact with `id = 43`
                 OPENED: 'N',
                 EXPORT: 'Y',
                 ASSIGNED_BY_ID: 1,
-                COMPANY_ID: 12,
+                COMPANY_ID: 13,
                 COMPANY_IDS: [13, 15],
                 UF_CRM_1720697698689: 'Example new value of a custom field of type "String"',
                 PARENT_ID_1224: 14,
@@ -352,13 +340,13 @@ Update contact with `id = 43`
 
     ```php        
     try {
-        $contactId = 123; // Example contact ID
+        $contactId = 43; // Example contact ID
         $fields = [
             'NAME' => 'John',
             'LAST_NAME' => 'Doe',
             'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
-            'PHONE' => '123456789',
-            'EMAIL' => 'john.doe@example.com',
+            'PHONE' => [['VALUE' => '123456789', 'VALUE_TYPE' => 'WORK']],
+            'EMAIL' => [['VALUE' => 'john.doe@example.com', 'VALUE_TYPE' => 'WORK']],
             'ADDRESS' => '123 Main St',
             'ADDRESS_CITY' => 'Anytown',
             'ADDRESS_COUNTRY' => 'USA',
@@ -371,7 +359,7 @@ Update contact with `id = 43`
             ->contact()
             ->update($contactId, $fields, $params);
         if ($result->isSuccess()) {
-            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+            var_export($result->getCoreResponse()->getResponseData()->getResult());
         } else {
             print('Update failed.');
         }
@@ -397,7 +385,7 @@ Update contact with `id = 43`
                 OPENED: "N",
                 EXPORT: "Y",
                 ASSIGNED_BY_ID: 1,
-                COMPANY_ID: 12,
+                COMPANY_ID: 13,
                 COMPANY_IDS: [13, 15],
                 UF_CRM_1720697698689: "Example of a new value for a custom field of type \"String\"",
                 PARENT_ID_1224: 14,
@@ -435,7 +423,7 @@ Update contact with `id = 43`
                 'OPENED' => 'N',
                 'EXPORT' => 'Y',
                 'ASSIGNED_BY_ID' => 1,
-                'COMPANY_ID' => 12,
+                'COMPANY_ID' => 13,
                 'COMPANY_IDS' => [13, 15],
                 'UF_CRM_1720697698689' => 'Example of a new value for a custom field of type "String"',
                 'PARENT_ID_1224' => 14,
@@ -468,7 +456,7 @@ Update contact with `id = 43`
     		"OPENED":               "N",
     		"EXPORT":               "Y",
     		"ASSIGNED_BY_ID":       1,
-    		"COMPANY_ID":           12,
+		"COMPANY_ID":           13,
     		"COMPANY_IDS":          []int{13, 15},
     		"UF_CRM_1720697698689": "Example of a new value for a custom field of type \"String\"",
     		"PARENT_ID_1224":       14,
@@ -493,7 +481,7 @@ Update contact with `id = 43`
 
 ### Update a Multiple Field
 
-To overwrite an existing value of a multiple field, pass the `ID` of the field you want to change and its new value/type.
+To overwrite an existing value of a multiple field, pass the `ID` of the value you want to change and the new `VALUE` and `VALUE_TYPE`. If `VALUE_TYPE` is omitted, the value type is reset to `WORK`.
 
 Suppose there are the following values for the `PHONE` field:
 
@@ -538,7 +526,7 @@ To change the value of the phone with `ID = 223`, pass the following `fields` pa
 
 ### Delete a Single Value from a Multiple Field
 
-To delete one of the values from a multiple field, pass their identifiers and either the parameter `DELETE = 'Y'` or an empty `VALUE`.
+To delete a single value from a multiple field, pass its identifier and the parameter `DELETE = 'Y'`, an empty `VALUE`, or omit `VALUE`.
 
 Suppose there are the following values for the `PHONE` field:
 
@@ -608,7 +596,7 @@ As a result, the following will remain:
 
 ### Add a New Value to a Multiple Field
 
-To add a new value, simply enter it. Existing values will not be changed.
+To add a value, pass it without an `ID`. Existing values will not change.
 
 Example of adding a new value `55555`:
 
@@ -625,7 +613,7 @@ Example of adding a new value `55555`:
 }
 ```
 
-### Response Handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -651,7 +639,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, `true` in case of success ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -670,12 +658,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code**      | **Description** | **Value** ||
-|| Empty value | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| Empty value | `Parameter 'params' must be array` | The `params` parameter is not an object ||
-|| Empty value | `Access denied` | The user does not have permission to "Edit" contacts ||
-|| Empty value | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is missing or its value is no greater than 0 after conversion to an integer ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The `fields` parameter is not an object ||
+|| `400` | Empty value | `Parameter 'params' must be array.` | The `params` parameter is not an object ||
+|| `400` | Empty value | `Contact is not found` | The contact was not found ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to "Edit" contacts ||
+|| `400` | Empty value | Disk resource exhausted | Insufficient Drive space to retain the file ||
+|| `400` | Empty value | The "First Name" and "Last Name" fields cannot both be empty. Please fill in at least one of them | After the update, the contact has neither `NAME` nor `LAST_NAME`. For example, an empty `NAME` was passed and the last name is not filled in ||
+|| `400` | `ERROR_CORE` | The field "Work e-mail" contains an invalid address.<br> | An invalid address was passed in `EMAIL`. The field name in the text depends on `VALUE_TYPE` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
