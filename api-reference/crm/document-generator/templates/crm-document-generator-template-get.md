@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for document generator templates
+> Who can execute the method: a user with permission to modify document generator templates and permission to modify the specified template
 
 The method `crm.documentgenerator.template.get` returns information about a template by its identifier.
+
+The method also returns a template with `isDeleted = Y` if its record was retained because of linked documents. A physically deleted template cannot be retrieved.
+
+The file of a template marked as deleted has been removed and cannot be downloaded.
 
 ## Method Parameters
 
@@ -23,7 +27,7 @@ The method `crm.documentgenerator.template.get` returns information about a temp
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../../data-types.md) | Identifier of the template ||
+[`integer`](../../../data-types.md) | Template identifier. You can pass `templateId` instead of `id` ||
 |#
 
 ## Code Examples
@@ -74,11 +78,13 @@ Example of retrieving a document template, where:
         code: string | null
         download: string
         downloadMachine: string
+        timezone?: string | null
+        titlePattern?: string | null
         active: string
         moduleId: string
         numeratorId: string
         withStamps: string
-        users: Record<string, string>
+        users: Record<string, string> | []
         isDeleted: string
         sort: string
         entityTypeId: string[]
@@ -290,7 +296,8 @@ HTTP status: **200**
                 "2"
             ],
             "createTime": "2026-03-18T15:54:20+03:00",
-            "updateTime": "2026-03-18T17:26:29+03:00"
+            "updateTime": "2026-03-18T17:26:29+03:00",
+            "timezone": null
         }
     },
     "time": {
@@ -329,11 +336,11 @@ HTTP status: **200**
 || **region**
 [`string`](../../../data-types.md) | Template region ||
 || **code**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Symbolic code of the template ||
+```string | null``` | Symbolic code of the template ||
 || **download**
-[`string`](../../../data-types.md) | Link to download the template file ||
+[`string`](../../../data-types.md) | Link to download the template file via the Bitrix24 web interface ||
 || **downloadMachine**
-[`string`](../../../data-types.md) | Link to download the template file for the application ||
+[`string`](../../../data-types.md) | Link to download the template file via the REST API ||
 || **active**
 [`char`](../../../data-types.md) | Template activity: `Y` or `N` ||
 || **moduleId**
@@ -343,17 +350,21 @@ HTTP status: **200**
 || **withStamps**
 [`char`](../../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **users**
-[`object`](../../../data-types.md) | Object of access permission codes in the format `{"UA":"UA"}` ||
+```object | array``` | Access permission codes in the format `{"UA":"UA"}`. If there are no codes, an empty array `[]` is returned ||
 || **isDeleted**
 [`char`](../../../data-types.md) | Template deletion flag: `Y` or `N` ||
 || **sort**
 [`string`](../../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../../data-types.md) | Array of CRM object identifiers for which the template is available ||
+[`array`](../../../data-types.md) | Array of CRM object type identifiers for which the template is available. The value may include a qualifier, for example `2_category_0` ||
 || **createTime**
 [`datetime`](../../../data-types.md) | Date and time of template creation ||
 || **updateTime**
 [`datetime`](../../../data-types.md) | Date and time of the last template update ||
+|| **timezone**
+```string | null``` | Template time zone. Returned when time zone support is enabled ||
+|| **titlePattern**
+```string | null``` | Document title pattern. Returned when title pattern support is enabled ||
 |#
 
 ## Error Handling
@@ -372,11 +383,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Template not found | Template with the specified `id` not found or unavailable ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template ||
-|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `0` | You do not have permissions to modify this template | Insufficient permissions to modify the specified template ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Template identifier not provided ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents.
+> Who can execute the method: a user with permissions to view and modify document generator documents and access to the document. If the document template exists and has not been deleted, access to it is required; an exception applies to administrators according to the document generator settings
 
 The method `crm.documentgenerator.document.update` updates an existing document.
 
@@ -25,7 +25,7 @@ The method `crm.documentgenerator.document.update` updates an existing document.
 || **id**^*^
 [`integer`](../../../data-types.md) | Document identifier ||
 || **values**
-[`object`](../../../data-types.md) | An object containing the field values of the document.
+[`object`](../../../data-types.md) | An object containing the field values of the document. The provided values replace the stored values of the corresponding fields. Fields that are not provided retain their previously assigned values.
 
 Format:
 
@@ -39,6 +39,8 @@ Format:
 where:
 - `field_n` — document field code
 - `value_n` — field value
+
+The `stampsEnabled` value inside `values` is ignored. To control stamp and signature inclusion, pass the separate `stampsEnabled` parameter.
 
 The list of available fields depends on the template and document.
 
@@ -109,14 +111,14 @@ Example of updating a document where:
         createdBy: string | null
         updatedBy: number | null
         changeStampsEnabled: boolean
-        changeStampsDisabledReason: string
+        changeStampsDisabledReason?: string
         changeQrCodeEnabled: boolean
         qrCodeEnabled: boolean
-        changeQrCodeDisabledReason: string
-        products: {
-          currencyId: string
-          totalSum: string
-          totalRows: number
+        changeQrCodeDisabledReason?: string
+        products?: {
+          currencyId: string | null
+          totalSum: string | number | null
+          totalRows: string | number | null
         }
         stampsEnabled: boolean
         downloadUrl: string
@@ -129,8 +131,8 @@ Example of updating a document where:
         entityTypeId: string
         entityId: string
         values: Record<string, unknown>
-        imageUrl: string
-        pdfUrl: string
+        imageUrl?: string
+        pdfUrl?: string
       }
     }
 
@@ -365,7 +367,7 @@ HTTP status: **200**
             "id": "61",
             "createTime": "2026-03-20T14:42:39+03:00",
             "createdBy": null,
-            "updateTime": "2026-03-20T14:42:38+03:00",
+            "updateTime": "2026-03-20T14:42:40+03:00",
             "updatedBy": 577,
             "stampsEnabled": true,
             "isTransformationError": false,
@@ -424,7 +426,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document identifier ||
+```integer | string``` | Document identifier ||
 || **title**
 [`string`](../../../data-types.md) | Document name ||
 || **number**
@@ -434,9 +436,9 @@ HTTP status: **200**
 || **updateTime**
 [`datetime`](../../../data-types.md) | Update date ||
 || **createdBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who created the document ||
+```integer | string | null``` | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
+```integer | string | null``` | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
 [`boolean`](../../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
@@ -448,7 +450,7 @@ HTTP status: **200**
 || **changeQrCodeDisabledReason**
 [`string`](../../../data-types.md) | Reason why the QR code cannot be changed ||
 || **products**
-[`object`](../../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
+[`object`](../../../data-types.md) | Summary information about the document's products: `currencyId` — currency code, a string or `null`; `totalSum` — total amount, a number, numeric string, or `null`; `totalRows` — row count, a number, numeric string, or `null` ||
 || **stampsEnabled**
 [`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
@@ -456,23 +458,23 @@ HTTP status: **200**
 || **downloadUrlMachine**
 [`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **publicUrl**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document ||
+```string | null``` | Public link to the document ||
 || **isTransformationError**
 [`boolean`](../../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
 [`string`](../../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
 || **transformationErrorCode**
-[`string`](../../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
+```integer | string``` | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the template ||
+```integer | string``` | Identifier of the template ||
 || **pullTag**
 [`string`](../../../data-types.md) | Event tag for document transformation ||
 || **emailDiskFile**
 [`integer`](../../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
+```integer | string``` | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
+```integer | string``` | Identifier of the CRM object ||
 || **values**
 [`object`](../../../data-types.md) | Field values of the document after the update ||
 || **imageUrl**
@@ -497,15 +499,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
-|| `0` | Document not found | Document with the specified `id` not found or unavailable ||
-|| `0` | Document not found | Document does not belong to the CRM module ||
-|| `0` | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
-|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
-|| `0` | Cant update not saved document | Attempt to update an unsaved document ||
-|| `0` | DOCUMENT_FILE_NOT_PROCESSABLE_ERROR | Template file is corrupted or has an invalid structure ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found or unavailable ||
+|| `400` | `0` | Document not found | Document does not belong to the CRM module ||
+|| `400` | `0` | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `0` | Cant update not saved document | Attempt to update an unsaved document ||
+|| `400` | `0` | Cannot create document because the template is invalid or damaged | Template file is corrupted or has an invalid structure ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -514,8 +516,8 @@ HTTP status: **400**
 
 - [{#T}](./crm-document-generator-document-add.md)
 - [{#T}](./crm-document-generator-document-get.md)
-- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](./crm-document-generator-document-list.md)
 - [{#T}](./crm-document-generator-document-delete.md)
+- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](../templates/crm-document-generator-template-get-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

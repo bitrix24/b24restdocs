@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents.
+> Who can execute the method: a user with permissions to view and modify document generator documents and access to the document
 
 The method `crm.documentgenerator.document.delete` removes a document.
+
+Deleting a document is irreversible. The public link stops working. For related DOCX files, PDF files, and images that are not used by other documents or templates, the system attempts to delete them from storage, including Drive.
 
 ## Method Parameters
 
@@ -23,7 +25,7 @@ The method `crm.documentgenerator.document.delete` removes a document.
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) | Document identifier. The identifier can be retrieved using [crm.documentgenerator.document.list](./crm-document-generator-document-list.md) ||
 |#
 
 ## Code Examples
@@ -264,7 +266,7 @@ HTTP status: **400**
 ```json
 {
     "error": "100",
-    "error_description": "Bitrix\\DocumentGenerator\\Document constructor must be is public"
+    "error_description": "Could not find value for parameter {id}"
 }
 ```
 
@@ -273,12 +275,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
-|| `0` | Document not found | Document with the specified `id` not found ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
-|| Empty value | Document not found | Document does not belong to the `crm` module ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents ||
+|| `400` | `0` | You do not have permissions to modify this document | No permission to modify the document ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
+|| `400` | `0` | Document not found | The document template belongs to a module other than `crm` ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -289,4 +293,5 @@ HTTP status: **400**
 - [{#T}](./crm-document-generator-document-update.md)
 - [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-list.md)
+- [{#T}](./events/on-crm-document-generator-document-delete.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for document generator templates
+> Who can execute the method: a user with permission to modify document generator templates and permission to modify the specified template
 
 The method `crm.documentgenerator.template.delete` removes a document template.
+
+If documents have been created from the template, the method retains them, marks the template as `isDeleted = Y`, and deletes its file. Such a template is excluded from [crm.documentgenerator.template.list](./crm-document-generator-template-list.md) by default. If there are no linked documents, the template is physically deleted.
 
 ## Method Parameters
 
@@ -23,7 +25,7 @@ The method `crm.documentgenerator.template.delete` removes a document template.
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../../data-types.md) | Identifier of the template ||
+[`integer`](../../../data-types.md) | Template identifier. Must be a positive number. You can retrieve the identifier using [crm.documentgenerator.template.list](./crm-document-generator-template-list.md) ||
 |#
 
 ## Code Examples
@@ -273,11 +275,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Template not found | Template with the specified `id` not found or unavailable ||
-|| `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template ||
-|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Template identifier `id` not provided ||
+|| `400` | `0` | Template not found | The specified template does not belong to CRM ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `400` | `0` | You do not have permissions to modify this template | Insufficient permissions to modify the specified template ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

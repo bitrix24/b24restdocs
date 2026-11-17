@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents
+> Who can execute the method: a user with permission to view document generator documents, permission to modify the specified document, and access to it
 
-The method `crm.documentgenerator.document.enablepublicurl` enables or disables the public link for a document.
+The method `crm.documentgenerator.document.enablepublicurl` enables or disables the public link for a document. The document is accessible through the public link without logging in to Bitrix24.
 
 ## Method Parameters
 
@@ -273,6 +273,26 @@ HTTP status: **200**
 }
 ```
 
+When `status = 0`, the link is disabled:
+
+```json
+{
+    "result": {
+        "publicUrl": null
+    },
+    "time": {
+        "start": 1774011939,
+        "finish": 1774011939.899233,
+        "duration": 0.8992331027984619,
+        "processing": 0,
+        "date_start": "2026-03-20T16:05:39+03:00",
+        "date_finish": "2026-03-20T16:05:39+03:00",
+        "operating_reset_at": 1774012539,
+        "operating": 0.3236720561981201
+    }
+}
+```
+
 ### Returned Data
 
 #|
@@ -290,7 +310,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **publicUrl**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document. Returns `status = 0` when `null` ||
+```string | null``` | Public link to the document. Returns `null` when `status = 0` ||
 |#
 
 ## Error Handling
@@ -300,7 +320,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Document was not found."
 }
 ```
 
@@ -310,21 +330,22 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
+|| `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
-|| `0` | Document not found | Document with the specified `id` not found ||
-|| Empty value | Document not found | Document does not belong to the `crm` module ||
-|| Empty value | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
-|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `0` | Document was not found | Document with the specified `id` not found ||
+|| `0` | Document not found | Document does not belong to the `crm` module ||
+|| `0` | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
+|| `0` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-document-generator-document-get.md)
+- [{#T}](./crm-document-generator-document-add.md)
 - [{#T}](./crm-document-generator-document-update.md)
-- [{#T}](./crm-document-generator-document-delete.md)
+- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-list.md)
+- [{#T}](./crm-document-generator-document-delete.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

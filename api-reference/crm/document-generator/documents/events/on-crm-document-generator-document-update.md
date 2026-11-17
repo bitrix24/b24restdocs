@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` will trigger when an existing document is updated.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` will trigger when a document linked to a CRM object is updated. An update is a successful save of an existing document after regeneration. The list of changed fields and their values are not passed in the event.
 
 {% note info "" %}
 
@@ -40,7 +40,7 @@ Data is transmitted as a POST request {.b24-info}
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
-        "scope": "crm, documentgenerator",
+        "scope": "crm",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "L",
@@ -72,7 +72,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

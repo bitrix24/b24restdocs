@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "view" access permission for document generator documents
+> Who can execute the method: a user with permission to view document generator documents and access to the specified document
 
 The method `crm.documentgenerator.document.get` returns the document data by its identifier.
 
@@ -23,12 +23,14 @@ The method `crm.documentgenerator.document.get` returns the document data by its
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) | Document identifier. Can be retrieved using [crm.documentgenerator.document.list](./crm-document-generator-document-list.md) ||
 |#
 
 {% note info "Method Feature" %}
 
-`pdfUrl` and `imageUrl` may be absent immediately after the document is created or updated, as the conversion is performed asynchronously. If the links are needed right away, repeat the request after 30-40 seconds.
+If the PDF or image has not yet been generated, the method may start document conversion.
+
+Conversion is asynchronous. If the links are needed right away, repeat the request 30–40 seconds after creating or updating the document.
 
 {% endnote %}
 
@@ -81,26 +83,26 @@ Example of retrieving a document with identifier `61`.
         createdBy: string
         updatedBy: string | null
         changeStampsEnabled: boolean
-        changeStampsDisabledReason: string
+        changeStampsDisabledReason?: string
         changeQrCodeEnabled: boolean
         qrCodeEnabled: boolean
-        changeQrCodeDisabledReason: string
-        products: {
-          currencyId: string
-          totalSum: string
-          totalRows: number
+        changeQrCodeDisabledReason?: string
+        products?: {
+          currencyId: string | null
+          totalSum: number | string | null
+          totalRows: number | string | null
         }
         stampsEnabled: boolean
         downloadUrl: string
         downloadUrlMachine: string
-        imageUrl: string
+        imageUrl?: string
         imageUrlMachine: string
-        pdfUrl: string
+        pdfUrl?: string
         pdfUrlMachine: string
         publicUrl: string | null
         isTransformationError: boolean
-        templateId: string
-        pullTag: string
+        templateId?: string
+        pullTag?: string
         emailDiskFile: number
         entityTypeId: string
         entityId: string
@@ -369,7 +371,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document identifier ||
+```integer | string``` | Document identifier ||
 || **title**
 [`string`](../../../data-types.md) | Document name ||
 || **number**
@@ -379,9 +381,9 @@ HTTP status: **200**
 || **updateTime**
 [`datetime`](../../../data-types.md) | Document update date ||
 || **createdBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the user who created the document ||
+```integer | string``` | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
+```integer | string | null``` | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
 [`boolean`](../../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
@@ -393,7 +395,7 @@ HTTP status: **200**
 || **changeQrCodeDisabledReason**
 [`string`](../../../data-types.md) | Reason why the QR code cannot be changed ||
 || **products**
-[`object`](../../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
+[`object`](../../../data-types.md) | Summary information about the document's products [(Detailed Description)](#products). The field is present if data is available for at least one of the metrics ||
 || **stampsEnabled**
 [`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
@@ -401,33 +403,46 @@ HTTP status: **200**
 || **downloadUrlMachine**
 [`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **imageUrl**
-[`string`](../../../data-types.md) | Link to the document image. May be an empty string immediately after creation or update ||
+[`string`](../../../data-types.md) | Link to the document image. The field is present when the image has been generated ||
 || **imageUrlMachine**
 [`string`](../../../data-types.md) | Link to the document image for machine access ||
 || **pdfUrl**
-[`string`](../../../data-types.md) | Link to the PDF document. May be an empty string immediately after creation or update ||
+[`string`](../../../data-types.md) | Link to the PDF document. The field is present when the PDF has been generated ||
 || **pdfUrlMachine**
 [`string`](../../../data-types.md) | Link to the PDF document for machine access ||
 || **publicUrl**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document ||
+```string | null``` | Public link to the document ||
+|| **publicUrlView**
+[`object`](../../../data-types.md) | Public link view information. The field is present when a public link exists; contains the `time` field with the date and time of the view ||
 || **isTransformationError**
-[`boolean`](../../../data-types.md) | Flag indicating a document conversion error ||
-|| **transformationErrorMessage**
-[`string`](../../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
-|| **transformationErrorCode**
-[`string`](../../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
+[`boolean`](../../../data-types.md) | `false` in a successful response ||
+|| **transformationCancelReason**
+[`object`](../../../data-types.md) | Reason for conversion cancellation, with the fields `message`, `code`, and `customData`. The field is present if a reason is set ||
 || **templateId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the document template ||
+```integer | string``` | Identifier of the document template. The field is present if the template is found ||
 || **pullTag**
-[`string`](../../../data-types.md) | Event tag for document transformation ||
+[`string`](../../../data-types.md) | Event tag for document transformation. The field is present if the tag is set ||
 || **emailDiskFile**
-[`integer`](../../../data-types.md) | Identifier of the file on Drive for sending via email ||
+[`integer`](../../../data-types.md) | Identifier of the file on Drive for sending via email. Returns `0` if no suitable file is found on Drive ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
+```integer | string``` | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
+```integer | string``` | Identifier of the CRM object ||
 || **values**
 [`object`](../../../data-types.md) | Field values of the document ||
+|#
+
+#### Products Type {#products}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **currencyId**
+```string | null``` | Currency code ||
+|| **totalSum**
+```number | string | null``` | Total product amount ||
+|| **totalRows**
+```number | string | null``` | Number of product items ||
 |#
 
 ## Error Handling
@@ -448,11 +463,11 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
-|| `0` | Document not found | Document with the specified `id` not found or unavailable ||
-|| Empty value | Document not found | Document does not belong to the `crm` module ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
-|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `0` | Document was not found | Document with the specified `id` not found ||
+|| `0` | Document not found | Document does not belong to the `crm` module ||
+|| `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `0` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -461,7 +476,7 @@ HTTP status: **400**
 
 - [{#T}](./crm-document-generator-document-add.md)
 - [{#T}](./crm-document-generator-document-update.md)
-- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](./crm-document-generator-document-list.md)
 - [{#T}](./crm-document-generator-document-delete.md)
+- [{#T}](./crm-document-generator-document-get-fields.md)
 - [{#T}](../templates/crm-document-generator-template-get.md)

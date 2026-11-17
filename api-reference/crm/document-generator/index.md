@@ -1,8 +1,8 @@
 # Document Generator: Overview of Methods and Events
 
-The document generator in CRM allows you to prepare a template, configure a numbering system, create a document from a template, or upload a ready-made file. It supports deals, leads, contacts, companies, invoices, estimates, and elements of Smart Process Automation (SPA).
+The document generator in CRM supports deals, leads, contacts, companies, invoices, estimates, and SPA items.
 
-The section consists of three main parts. In [Numerators](./numerator/index.md), you configure the number template and counter. In [Document Templates](./templates/index.md), you upload a `.docx` file, link it to the numerator, region, and types of CRM entities. In [Documents](./documents/index.md), you create a document from a template or upload a ready-made file, obtain links to the file, include a public link, and modify or delete the document.
+A [Numbering Rule](./numerator/index.md) defines the number template and counter. A [Document Template](./templates/index.md) links a `.docx` file to a numbering rule, region, and CRM object types. A [Document](./documents/index.md) can be created from a template or uploaded as a ready-made file; you can retrieve links to it, enable a public link, modify it, or delete it.
 
 For example, you can create a numerator for deals, link it to the deal template, and then create documents for specific deals.
 
@@ -24,14 +24,14 @@ Choose a tool for developing with an AI agent:
 
 ## Getting Started
 
+If the file is already prepared, upload it using [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md). To create a document from a template, follow these steps:
+
 1. Create a numerator using the method [crm.documentgenerator.numerator.add](./numerator/crm-document-generator-numerator-add.md) — this sets the number template for documents.
 2. Prepare a `.docx` template file in Base64 format — [How to upload files](../../files/how-to-upload-files.md).
 3. Define the `entityTypeId` of the required CRM object — the values are provided in the table [CRM Object Types](../data-types.md#object_type).
 4. Upload the template using the method [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md): pass the name, file, `numeratorId`, `entityTypeId`, and `region`.
 5. Obtain the `entityId` of the required CRM object using the method [crm.item.list](../universal/crm-item-list.md).
-6. Choose how to work with the document:
-   - to create a document from a template, use [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md).
-   - to upload a ready-made file, use [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md).
+6. Create the document using [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md).
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -50,9 +50,7 @@ Choose a tool for developing with an AI agent:
 Bitrix24 has two parallel groups of document generator methods:
 
 - `crm.documentgenerator.*` — this section. The document is linked to a CRM object via `entityTypeId` and `entityId`, and the template is populated with data from a deal, lead, contact, company, invoice, estimate, or SPA element.
-- `documentgenerator.*` — the [Document Generator](../../document-generator/index.md) section. The document is built from application data via `providerClassName` and `value`, and it has no access to CRM data.
-
-For CRM scenarios, use the methods of this section.
+- `documentgenerator.*` — the [Document Generator](../../document-generator/index.md) section. The document is built from application data and an external identifier, `value`; REST calls use the application data provider, which has no access to CRM data.
 
 ## Relationships with Other Objects
 
@@ -62,7 +60,7 @@ For CRM scenarios, use the methods of this section.
 
 **Documents.** A document is created from a template using the method [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) or a ready-made file is uploaded using the method [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) — in both cases, the document is attached to a CRM object.
 
-**CRM Entities.** Templates and documents use `entityTypeId` and `entityId`. The values of `entityTypeId` for standard objects are provided in the table [CRM Object Types](../data-types.md#object_type). For Smart Processes, `entityTypeId` can be obtained using the method [crm.type.list](../universal/user-defined-object-types/crm-type-list.md). The identifier of the required object `entityId` is obtained using the method [crm.item.list](../universal/crm-item-list.md).
+**CRM Entities.** When configuring a template, specify CRM object types in `entityTypeId`. When creating a document, specify the object type in `entityTypeId` and the record identifier in `entityId`. The values of `entityTypeId` for standard objects are provided in the table [CRM Object Types](../data-types.md#object_type). For SPAs, `entityTypeId` can be retrieved using [crm.type.list](../universal/user-defined-object-types/crm-type-list.md). The identifier of the required object, `entityId`, is retrieved using [crm.item.list](../universal/crm-item-list.md).
 
 **Regions.** The template is linked to the country via the `region` parameter. The `region` value is passed in the method [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md), for example, `de`. A list of available regions can be obtained using the method [documentgenerator.region.list](../../document-generator/region/document-generator-region-list.md).
 
@@ -119,9 +117,10 @@ For CRM scenarios, use the methods of this section.
 
     #| 
     || **Event** | **Triggered** ||
-    || [onCrmDocumentGeneratorDocumentAdd](./documents/events/on-crm-document-generator-document-add.md) | When generating a document manually or using the methods [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) and [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) ||
+    || [onCrmDocumentGeneratorDocumentAdd](./documents/events/on-crm-document-generator-document-add.md) | When a document is created manually or using [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md), or a ready-made document is uploaded using [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) ||
     || [onCrmDocumentGeneratorDocumentUpdate](./documents/events/on-crm-document-generator-document-update.md) | When modifying a document manually or using the method [crm.documentgenerator.document.update](./documents/crm-document-generator-document-update.md) ||
-    || [onCrmDocumentGeneratorDocumentDelete](./documents/events/on-crm-document-generator-document-delete.md) | When deleting a document manually or using the method [crm.documentgenerator.document.delete](./documents/crm-document-generator-document-delete.md) ||
+    || [onCrmDocumentGeneratorDocumentDelete](./documents/events/on-crm-document-generator-document-delete.md) | When deletion of a document is attempted manually or using [crm.documentgenerator.document.delete](./documents/crm-document-generator-document-delete.md). The event is generated before deletion is complete ||
     |#
 
 {% endlist %}
+

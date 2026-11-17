@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents.
+> Who can execute the method: a user with permission to view document generator documents
 
 The method `crm.documentgenerator.document.upload` uploads a prepared document and attaches it to a CRM object.
 
@@ -34,16 +34,7 @@ The method `crm.documentgenerator.document.upload` uploads a prepared document a
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**^*^
-[`integer`](../../../data-types.md) | Identifier of the CRM object type.
-
-Typical values:
-- `1` — lead
-- `2` — deal
-- `3` — contact
-- `4` — company
-- `7` — estimate
-
-For SPAs, their `entityTypeId` is passed, for example, `177` ||
+[`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type) ||
 || **entityId**^*^
 [`integer`](../../../data-types.md) | Identifier of the CRM object to which the document is attached ||
 || **fileContent**^*^
@@ -51,7 +42,7 @@ For SPAs, their `entityTypeId` is passed, for example, `177` ||
 
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 || **region**^*^
-[`string`](../../../data-types.md) | Template region code, for example, `ru` ||
+[`string`](../../../data-types.md) | Template region code, for example, `ru`. The list of regions can be retrieved using [documentgenerator.region.list](../../../document-generator/region/document-generator-region-list.md) ||
 || **title**^*^
 [`string`](../../../data-types.md) | Document name ||
 || **number**^*^
@@ -65,6 +56,8 @@ More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 |#
+
+Required fields must contain values other than an empty string or the string `0`. The `entityId` value must be greater than zero.
 
 {% note info "Method specifics" %}
 
@@ -91,7 +84,7 @@ Example of uploading a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"entityTypeId":2,"entityId":101,"fileContent":"**base64_docx_content**","region":"de","title":"Product demonstration","number":"2026-001","pdfContent":"**base64_pdf_content**","imageContent":"**base64_image_content**"}}' \
+    -d '{"fields":{"entityTypeId":2,"entityId":101,"fileContent":"**base64_docx_content**","region":"ru","title":"Product demonstration","number":"2026-001"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.document.upload
     ```
 
@@ -101,7 +94,7 @@ Example of uploading a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"entityTypeId":2,"entityId":101,"fileContent":"**base64_docx_content**","region":"de","title":"Product demonstration","number":"2026-001","pdfContent":"**base64_pdf_content**","imageContent":"**base64_image_content**"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"entityTypeId":2,"entityId":101,"fileContent":"**base64_docx_content**","region":"ru","title":"Product demonstration","number":"2026-001"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.document.upload
     ```
 
@@ -131,9 +124,9 @@ Example of uploading a document where:
         qrCodeEnabled: boolean
         changeQrCodeDisabledReason: string
         products: {
-          currencyId: string
-          totalSum: string
-          totalRows: number
+          currencyId: string | null
+          totalSum: string | number | null
+          totalRows: string | number | null
         }
         stampsEnabled: boolean
         isTransformationError: boolean
@@ -158,10 +151,8 @@ Example of uploading a document where:
             entityId: 101,
             fileContent: '**base64_docx_content**',
             region: 'de',
-            title: 'Demo Sales Document',
+            title: 'Product demonstration',
             number: '2026-001',
-            pdfContent: '**base64_pdf_content**',
-            imageContent: '**base64_image_content**',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -199,10 +190,8 @@ Example of uploading a document where:
                 entityId: 101,
                 fileContent: '**base64_docx_content**',
                 region: 'de',
-                title: 'Demo Sales Document',
+                title: 'Product demonstration',
                 number: '2026-001',
-                pdfContent: '**base64_pdf_content**',
-                imageContent: '**base64_image_content**',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -241,8 +230,6 @@ Example of uploading a document where:
                 "region": "de",
                 "title": "Product demonstration",
                 "number": "2026-001",
-                "pdfContent": "**base64_pdf_content**",
-                "imageContent": "**base64_image_content**",
             },
         ).response
         result = bitrix_response.result
@@ -276,8 +263,6 @@ Example of uploading a document where:
                         'region' => 'de',
                         'title' => 'Product demonstration',
                         'number' => '2026-001',
-                        'pdfContent' => '**base64_pdf_content**',
-                        'imageContent' => '**base64_image_content**',
                     ],
                 ]
             );
@@ -309,8 +294,6 @@ Example of uploading a document where:
                 region: 'de',
                 title: 'Product demonstration',
                 number: '2026-001',
-                pdfContent: '**base64_pdf_content**',
-                imageContent: '**base64_image_content**',
             },
         },
         (result) => {
@@ -337,8 +320,6 @@ Example of uploading a document where:
                 'region' => 'de',
                 'title' => 'Product demonstration',
                 'number' => '2026-001',
-                'pdfContent' => '**base64_pdf_content**',
-                'imageContent' => '**base64_image_content**',
             ],
         ]
     );
@@ -360,8 +341,6 @@ Example of uploading a document where:
     		"region":       "ru",
     		"title":        "Product demonstration",
     		"number":       "2026-001",
-    		"pdfContent":   "**base64_pdf_content**",
-    		"imageContent": "**base64_image_content**",
     	},
     })
     if err != nil {
@@ -470,7 +449,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document identifier ||
+```integer | string``` | Document identifier ||
 || **title**
 [`string`](../../../data-types.md) | Document name ||
 || **number**
@@ -480,9 +459,9 @@ HTTP status: **200**
 || **updateTime**
 [`datetime`](../../../data-types.md) | Update date ||
 || **createdBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the user who created the document ||
+```integer | string``` | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
+```integer | string | null``` | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
 [`boolean`](../../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
@@ -494,7 +473,7 @@ HTTP status: **200**
 || **changeQrCodeDisabledReason**
 [`string`](../../../data-types.md) | Reason why the QR code cannot be changed ||
 || **products**
-[`object`](../../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
+[`object`](../../../data-types.md) | Summary information about the document's products: `currencyId` — currency code, a string or `null`; `totalSum` — total amount, a number, numeric string, or `null`; `totalRows` — row count, a number, numeric string, or `null` ||
 || **stampsEnabled**
 [`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
@@ -502,7 +481,7 @@ HTTP status: **200**
 || **downloadUrlMachine**
 [`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **publicUrl**
-[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document ||
+```string | null``` | Public link to the document ||
 || **isTransformationError**
 [`boolean`](../../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
@@ -510,17 +489,17 @@ HTTP status: **200**
 || **transformationErrorCode**
 [`string`](../../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the template ||
+```integer | string``` | Identifier of the template ||
 || **pullTag**
 [`string`](../../../data-types.md) | Event tag for document transformation ||
 || **emailDiskFile**
 [`integer`](../../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
+```integer | string``` | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
+```integer | string``` | Identifier of the CRM object ||
 || **values**
-[`object`](../../../data-types.md) \| [`null`](../../../data-types.md) | Field values of the document ||
+```object | null``` | Field values of the document ||
 || **imageUrl**
 [`string`](../../../data-types.md) | Link to the document image, if already created ||
 || **pdfUrl**
@@ -537,8 +516,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "100",
-    "error_description": "Invalid value {} to match with parameter {fields}. Should be value of type array."
+    "error": "0",
+    "error_description": "Empty required fields: entityTypeId, fileContent, region, entityId, title, number"
 }
 ```
 
@@ -547,23 +526,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `100` | Invalid value {} to match with parameter {fields}. Should be value of type array. | The `fields` parameter is not provided in object format ||
-|| `0` | Empty required fields: entityTypeId, fileContent, region, entityId | Required fields not provided in `fields` ||
-|| `0` | Empty required fields: fileContent | The required field `fields.fileContent` was not provided. ||
-|| `0` | Wrong "entityTypeId" field value | An invalid `fields.entityTypeId` was provided ||
-|| `0` | No provider for entityTypeId | No suitable CRM provider found for `fields.entityTypeId` ||
-|| `0` | Wrong "entityId" field value | An invalid `fields.entityId` was provided ||
-|| `0` | Missing file content | `fields.fileContent` not provided or unreadable ||
-|| `0` | Could not save file | Failed to save the uploaded file ||
-|| `0` | Module crm is not installed | The `crm` module is unavailable during DG processing ||
-|| `0` | Wrong provider ... | Incorrect document provider defined ||
-|| `0` | Application not found | Failed to determine the current REST application ||
-|| `0` | Error generating file for template | Failed to create a service file for the hidden template ||
-|| `0` | Error getting template | Failed to get or create a hidden template for upload ||
-|| Empty value | You do not have permissions to view documents | Insufficient permissions to view documents ||
-|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `400` | `0` | Empty required fields: entityTypeId, fileContent, region, entityId, title, number | Required fields are missing from the empty `fields` object ||
+|| `400` | `0` | Empty required fields: fileContent | The required field `fields.fileContent` was not provided ||
+|| `400` | `0` | Wrong "entityTypeId" field value | An invalid `fields.entityTypeId` was provided ||
+|| `400` | `0` | No provider for entityTypeId | No suitable CRM provider found for `fields.entityTypeId` ||
+|| `400` | `0` | Wrong "entityId" field value | An invalid `fields.entityId` was provided ||
+|| `400` | `0` | Could not save file | Failed to save the uploaded file ||
+|| `400` | `0` | Module crm is not installed | The `crm` module is unavailable during DG processing ||
+|| `400` | `0` | Wrong provider ... | Incorrect document provider defined ||
+|| `400` | `0` | Application not found | Failed to determine the current REST application ||
+|| `400` | `0` | Error generating file for template | Failed to create a service file for the hidden template ||
+|| `400` | `0` | Error getting template | Failed to get or create a hidden template for upload ||
+|| `400` | `0` | You do not have permissions to view documents | Insufficient permissions to view documents ||
+|| `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -571,7 +548,7 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-document-generator-document-add.md)
-- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-update.md)
+- [{#T}](./crm-document-generator-document-get.md)
 - [{#T}](./crm-document-generator-document-list.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)
