@@ -80,6 +80,12 @@ At least one of the parameters must be specified: `ELEMENT_ID` or `ELEMENT_CODE`
 `type` | **Description** ||
 || **NAME***
 [`string`](../../data-types.md) | Name of the element ||
+|| **PREVIEW_PICTURE**
+[`array`](../../data-types.md) \| [`integer`](../../data-types.md) | Preview image, if the field is added to the list. Pass an array of the file name and its contents in [base64](../../files/how-to-upload-files.md), for example `["image.png", "iVBORw0KGgo..."]`.
+
+You can pass a file ID only if it matches the current field value — the image then stays unchanged. Any other ID causes the `ERROR_ELEMENT_FIELD_VALUE` error ||
+|| **DETAIL_PICTURE**
+[`array`](../../data-types.md) \| [`integer`](../../data-types.md) | Detail image, if the field is added to the list. Passed the same way as `PREVIEW_PICTURE` ||
 || **PROPERTY_PropertyId** | Custom properties.
 
 Any property of the element can be configured as multiple. For multiple properties, pass an array, even if there is only one value.
@@ -396,7 +402,7 @@ HTTP status: **400**
 || `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found. ||
 || `ERROR_ELEMENT_NOT_FOUND` | Element not found | Element with such `ID`/`CODE` not found. ||
 || `ERROR_UPDATE_ELEMENT` | — | Error updating the element. ||
-|| `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | Field value validation error. ||
+|| `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | A file ID that does not match the current field value was passed in `PREVIEW_PICTURE`, `DETAIL_PICTURE`, or a File property. Pass the file as an array of the name and the contents in base64 ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to update the element. ||
 |#
 

@@ -72,6 +72,10 @@ Supports replacements: `#list_id#`, `#section_id#`, `#element_id#`, `#group_id#`
 `type` | **Description** ||
 || **NAME***
 [`string`](../../data-types.md) | Name of the element ||
+|| **PREVIEW_PICTURE**
+[`array`](../../data-types.md) | Preview image, if the field is added to the list. Pass an array of the file name and its contents in [base64](../../files/how-to-upload-files.md), for example `["image.png", "iVBORw0KGgo..."]`. The method does not accept a file ID and returns the `ERROR_ELEMENT_FIELD_VALUE` error ||
+|| **DETAIL_PICTURE**
+[`array`](../../data-types.md) | Detail image, if the field is added to the list. Passed the same way as `PREVIEW_PICTURE` ||
 || **PROPERTY_PropertyId** | Custom properties.
 
 Any property of the element can be configured as multiple. For multiple properties, pass an array, even if there is only one value. 
@@ -401,7 +405,7 @@ HTTP status: **400**
 || `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
 || `ERROR_ELEMENT_ALREADY_EXISTS` | Element already exists | An element with this `CODE` already exists ||
 || `ERROR_ADD_ELEMENT` | — | Error adding element ||
-|| `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | Field value validation error ||
+|| `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | A file ID was passed in `PREVIEW_PICTURE`, `DETAIL_PICTURE`, or a File property. Pass the file as an array of the name and the contents in base64 ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to add element ||
 |#
 

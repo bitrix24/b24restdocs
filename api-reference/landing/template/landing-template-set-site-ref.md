@@ -44,7 +44,9 @@ The key is the identifier of the template area, and the value is the page identi
 
 Area identifiers depend on the site template. They can be determined by the template, for example, through the [landing.template.getlist](./landing-template-get-list.md) method and the `CONTENT` field: in the markup, areas are denoted as `#AREA_1#`, `#AREA_2#`, and so on.
 
-In `data`, only the numeric part of such an identifier should be passed: `1`, `2`. If a key is not provided for a saved area in `data` or if a value of `0`, an empty string, `null`, or a negative number is passed, the binding will be removed. ||
+In `data`, only the numeric part of such an identifier should be passed: `1`, `2`. If a key is not provided for a saved area in `data` or if a value of `0`, an empty string, `null`, or a negative number is passed, the binding will be removed.
+
+A page that is not yet assigned as an area can be assigned only if the user has the "change settings" permission for this page. Otherwise, the binding is not saved, and the method does not report an error ||
 |#
 
 ## Code Examples
