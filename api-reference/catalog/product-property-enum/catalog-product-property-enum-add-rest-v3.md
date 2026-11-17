@@ -447,7 +447,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `-` | Only list properties are supported | Specify a property of the "List" type ||
 || `BX_INVALID_VALUE` | A record "External ID" set to "#XML_ID#" already exists in the database | Pass a different `xmlId`. The ID must be unique among the values of all list properties ||
 || `BX_EMPTY_REQUIRED` | The field Value is required | Pass a non-empty string in `value` ||
-|| `BX_INVALID_VALUE` | The length of "Value" should not exceed 255 characters | Shorten `value` to 255 characters and `xmlId` to 200 ||
+|| `BX_INVALID_VALUE` | The length of "Value" should not exceed 255 characters | Shorten `value` to 255 characters ||
 || `def` | This request requires data type `bool` in field `def` | Pass `true` or `false`, not `Y` or `N` ||
 |#
 
