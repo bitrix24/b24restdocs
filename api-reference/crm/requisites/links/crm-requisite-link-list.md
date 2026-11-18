@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "read" access permission for CRM objects
+> Who can execute the method: a user with permission to read the CRM object. When filtering by type without a specific object, permission to read objects of that type is checked; without a type and an object, permission to read at least one available type is checked
 
-Retrieves a list of links for company details based on the filter.
+The method `crm.requisite.link.list` retrieves a list of links for company details based on the filter.
 
 ## Method Parameters
+
+All parameters are optional.
 
 #|
 || **Name**
@@ -27,27 +29,15 @@ If the array is not provided or an empty array is passed, all available fields f
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected requisite links in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to [requisite link fields](#fields).
+Possible values for `field` correspond to [requisite link fields](#fields). Unknown filter fields are ignored without an error, so check the field names. Only the exact keys `ENTITY_TYPE_ID` and `ENTITY_ID`, including with the `=` prefix, are used for the permission check.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. For numeric fields, use the following prefixes:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
-    - `"mol%"` — searches for values starting with "mol"
-    - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
-    - `"mol%"` — searches for values not starting with "mol"
-    - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal 
@@ -66,11 +56,13 @@ Possible values for `order`:
 
 The page size of results is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
+To select the second page of results, pass the value `50`; for the third page, pass `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number.
+
+If `start` is negative, the method returns the first page without counting the total number of records
 ||
 |#
 
@@ -87,7 +79,7 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
@@ -125,7 +117,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ENTITY_ID":"ASC"},"filter":{"@ENTITY_TYPE_ID":[1,2,7,31]}}' \
+    -d '{"order":{"ENTITY_ID":"ASC"},"filter":{"@ENTITY_TYPE_ID":[2,7,31]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.link.list
     ```
 
@@ -135,7 +127,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ENTITY_ID":"ASC"},"filter":{"@ENTITY_TYPE_ID":[1,2,7,31]},"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"ENTITY_ID":"ASC"},"filter":{"@ENTITY_TYPE_ID":[2,7,31]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.link.list
     ```
 
@@ -169,7 +161,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
         method: 'crm.requisite.link.list',
         params: {
           order: { ENTITY_ID: 'ASC' },
-          filter: { '@ENTITY_TYPE_ID': [1, 2, 7, 31] }, // Leads, deals, quotes, invoices
+          filter: { '@ENTITY_TYPE_ID': [2, 7, 31] }, // Deals, quotes, invoices
           start: 0,
         },
         requestId: Text.getUuidRfc4122()
@@ -208,7 +200,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
             method: 'crm.requisite.link.list',
             params: {
               order: { ENTITY_ID: 'ASC' },
-              filter: { '@ENTITY_TYPE_ID': [1, 2, 7, 31] }, // Leads, deals, quotes, invoices
+              filter: { '@ENTITY_TYPE_ID': [2, 7, 31] }, // Deals, quotes, invoices
               start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -243,7 +235,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     try:
         bitrix_response = client.crm.requisite.link.list(
             order={"ENTITY_ID": "ASC"},
-            filter={"@ENTITY_TYPE_ID": [1, 2, 7, 31]},
+            filter={"@ENTITY_TYPE_ID": [2, 7, 31]},
             start=0,
         ).response
         result = bitrix_response.result
@@ -270,35 +262,8 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     try:
         bitrix_response = client.crm.requisite.link.list(
             order={"ENTITY_ID": "ASC"},
-            filter={"@ENTITY_TYPE_ID": [1, 2, 7, 31]},
+            filter={"@ENTITY_TYPE_ID": [2, 7, 31]},
         ).as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.requisite.link.list(
-            order={"ENTITY_ID": "ASC"},
-            filter={"@ENTITY_TYPE_ID": [1, 2, 7, 31]},
-        ).as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -325,7 +290,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
                 'crm.requisite.link.list',
                 [
                     'order' => ['ENTITY_ID' => 'ASC'],
-                    'filter' => ['@ENTITY_TYPE_ID' => [1, 2, 7, 31]],
+                    'filter' => ['@ENTITY_TYPE_ID' => [2, 7, 31]],
                 ]
             );
     
@@ -347,7 +312,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     BX24.callMethod(
         "crm.requisite.link.list", {
             order: {"ENTITY_ID": "ASC"},
-            filter: {"@ENTITY_TYPE_ID": [1, 2, 7, 31]}    // Leads, deals, quotes, invoices.
+            filter: {"@ENTITY_TYPE_ID": [2, 7, 31]}    // Deals, quotes, invoices.
         },
         function (result)
         {
@@ -374,7 +339,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
         'crm.requisite.link.list',
         [
             'order' => ['ENTITY_ID' => 'ASC'],
-            'filter' => ['@ENTITY_TYPE_ID' => [1, 2, 7, 31]]
+            'filter' => ['@ENTITY_TYPE_ID' => [2, 7, 31]]
         ]
     );
 
@@ -392,7 +357,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     		"ENTITY_ID": "ASC",
     	},
     	"filter": b24.Params{
-    		"@ENTITY_TYPE_ID": []int{1, 2, 7, 31},
+    		"@ENTITY_TYPE_ID": []int{2, 7, 31},
     	},
     }, b24.WithIdempotent())
     if err != nil {
@@ -516,18 +481,20 @@ HTTP status: **200**
 || **result**
 [`array`](../../../data-types.md)| An array of objects with information from the selected requisite links. Each element contains the selected [requisite link fields](#fields) ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found. Not returned if `start` is negative ||
+|| **next**
+[`integer`](../../../data-types.md) | The `start` value for retrieving the next page. Returned if there is a next page and `start` is non-negative ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
-    "error": 0,
+    "error": "",
     "error_description": "Access denied."
 }
 ```
@@ -537,8 +504,9 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `Access denied` | Insufficient access permissions to retrieve the list of requisite links ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | Insufficient permissions to read the CRM object or objects of the corresponding type ||
+|| `400` | `100` | Unknown field definition ... | An unknown link field is specified in `select` or `order` ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -549,3 +517,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-link-get.md)
 - [{#T}](./crm-requisite-link-unregister.md)
 - [{#T}](./crm-requisite-link-fields.md)
+- [{#T}](./index.md)

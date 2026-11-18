@@ -19,7 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 methods 
 
 {% endnote %}
 
-This method removes the link between requisites and the object.
+The method `crm.requisite.link.unregister` removes the link between requisites and a CRM object.
+
+Unlike [crm.requisite.link.register](./crm-requisite-link-register.md) with zero requisite identifiers, this method deletes the link record instead of retaining it with zero values.
 
 ## Method Parameters
 
@@ -36,12 +38,12 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
+[`integer`](../../../data-types.md) | Positive identifier of the object to which the link belongs.
 
 Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 |#
@@ -275,9 +277,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the link removal:
-- `true` — link removed
-- `false` — link not removed
+[`boolean`](../../../data-types.md) | Result of the request:
+- `true` — the call succeeded, including when the link did not exist
+- `false` — the `entityTypeId` value is not in the list of available object types
 ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
@@ -285,7 +287,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -299,10 +301,9 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `entityTypeId is not defined or invalid` | The object type identifier is not set or has an invalid value ||
-|| `entityId is not defined or invalid` | The object identifier is not set or has an invalid value ||
-|| `Access denied` | Insufficient access permissions to remove the requisite link ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `entityId is not defined or invalid.` | The object identifier is not set or has an invalid value ||
+|| `400` | Empty value | `Access denied.` | Insufficient permissions to edit the CRM object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -313,3 +314,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-link-get.md)
 - [{#T}](./crm-requisite-link-list.md)
 - [{#T}](./crm-requisite-link-fields.md)
+- [{#T}](./index.md)

@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 Links maintain the correspondence between a CRM object and the Company details used in the context of that object.
 
-For example, there is an invoice. To print it, the Company details of the selling company (my company) and the buying company (the customer) are required. Since a company may have multiple sets of Company details, it is unclear which ones to use for printing the invoice. This is where a link is needed to specify the required Company details.
+For example, to print an invoice, you need the Company details of the seller (my company) and the buyer (the customer). Each company may have several sets of Company details, and the link specifies which ones to use for the invoice.
 
-The fields **REQUISITE_ID** and **BANK_DETAIL_ID** store the identifiers of the Company details and banking details, respectively, used for the buying company. The fields **MC_REQUISITE_ID** and **MC_BANK_DETAIL_ID** store similar identifiers for the selling company.
+The fields **REQUISITE_ID** and **BANK_DETAIL_ID** store the identifiers of the customer's Company details and banking details. The customer can be a company or a contact. The fields **MC_REQUISITE_ID** and **MC_BANK_DETAIL_ID** store similar identifiers for my company.
 
-If any identifier has a value of `0`, it is considered unselected. The Company details of the selling company or the banking details may not be selected.
+A value of `0` in a Company details or banking details field means that the corresponding details are not selected. You can pass `0` in all four fields.
+
+The `register`, `get`, `unregister`, and `fields` methods are deprecated: their counterparts are in the REST 3.0 [Requisites](../../rest-v3/requisites/index.md) group, and the limitations of the replacement are described on the method pages. The `list` method has no counterpart.
 
 > Quick navigation: [All Methods](#all-methods)
 >
@@ -29,13 +31,6 @@ If any identifier has a value of `0`, it is considered unselected. The Company d
 4. Find the banking details using the [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) method
 5. Register a link using the [crm.requisite.link.register](./crm-requisite-link-register.md) method
 6. Verify the link using the [crm.requisite.link.get](./crm-requisite-link-get.md) or [crm.requisite.link.list](./crm-requisite-link-list.md) method
-
-## Link Identifiers
-
-- `ENTITY_TYPE_ID` — the CRM object type for which Company details are being selected. Values can be retrieved using the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) method
-- `ENTITY_ID` — the CRM object identifier. For deals, this is returned by [crm.deal.list](../../deals/crm-deal-list.md); for estimates, by [crm.quote.list](../../quote/crm-quote-list.md); and for new invoices and dynamic objects, by [crm.item.list](../../universal/crm-item-list.md)
-- `REQUISITE_ID` and `MC_REQUISITE_ID` — the identifiers of the customer's Company details and my company's Company details. These can be retrieved using the [crm.requisite.list](../universal/crm-requisite-list.md) method
-- `BANK_DETAIL_ID` and `MC_BANK_DETAIL_ID` — the identifiers of the customer's banking details and my company's banking details. These can be retrieved using the [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) method
 
 ## Fields of the Link Between Requisite and CRM Object
 
@@ -52,7 +47,7 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) ||
 || **ENTITY_ID***
@@ -77,11 +72,24 @@ Details identifiers can be obtained using the [crm.requisite.list](../universal/
 Bank details identifiers can be obtained using the [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) method ||
 |#
 
+Example of a link object from the [crm.requisite.link.get](./crm-requisite-link-get.md) response: the customer's Company details `305` are selected, while their banking details are not (`0`); for my company, Company details `3` and banking details `3` are selected.
+
+```json
+{
+    "ENTITY_TYPE_ID": 2,
+    "ENTITY_ID": 6553,
+    "REQUISITE_ID": "305",
+    "BANK_DETAIL_ID": "0",
+    "MC_REQUISITE_ID": "3",
+    "MC_BANK_DETAIL_ID": "3"
+}
+```
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: depending on the method — access permissions are checked against the CRM object the requisites are linked to
+> Who can execute the methods: `get` requires permission to read the CRM object, `register` and `unregister` require permission to edit it. Requirements for `list` and `fields` are described on the method pages
 
 #|
 || **Method** | **Description** ||

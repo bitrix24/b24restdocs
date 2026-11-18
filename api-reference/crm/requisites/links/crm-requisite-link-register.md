@@ -19,9 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 methods 
 
 {% endnote %}
 
-This method registers a link between requisites and an object.
+The method `crm.requisite.link.register` registers a link between requisites and a CRM object. Calling it again for the same object overwrites the link with the passed values.
 
-For successful registration, the requisite IDs must belong to the client and seller selected in the linked object. If a requisite is not available, its ID is passed as `0`. You can even specify all requisite IDs as zero. In this case, it is considered that the requisites are not linked to the object.
+For successful registration, the requisite IDs must belong to the client and seller selected in the linked object. If a requisite is not available, its ID is passed as `0`. You can even specify all requisite IDs as zero. In this case, it is considered that the requisites are not linked to the object. A bank requisite must belong to the selected requisite; you cannot specify a bank requisite without the corresponding client or my company requisite.
 
 ## Method Parameters
 
@@ -31,10 +31,10 @@ For successful registration, the requisite IDs must belong to the client and sel
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields for the requisite link — an object of the form `{"field": "value"[, ...]}` ||
+[`object`](../../../data-types.md) | A set of fields for the requisite link — an object of the form `{"field": "value"[, ...]}` [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -49,7 +49,7 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
@@ -349,22 +349,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the link registration:
-- `true` — link registered
-- `false` — link not registered
-||
+[`boolean`](../../../data-types.md) | `true` — the link registration request succeeded ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "Entity is not found"
+    "error_description": "REQUISITE_ID is not defined or invalid."
 }
 ```
 
@@ -373,21 +370,27 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | The object type identifier is not set or has an invalid value ||
-|| `ENTITY_ID is not defined or invalid` | The object identifier is not set or has an invalid value ||
-|| `REQUISITE_ID is not defined or invalid` | Client requisite identifier is not set or has an invalid value ||
-|| `BANK_DETAIL_ID is not defined or invalid` | Client bank requisite identifier is not set or has an invalid value ||
-|| `MC_REQUISITE_ID is not defined or invalid` | My company requisite identifier is not set or has an invalid value ||
-|| `MC_BANK_DETAIL_ID is not defined or invalid` | My company bank requisite identifier is not set or has an invalid value ||
-|| `The Requisite with ID '60' is not found` | Client requisite with the specified identifier not found ||
-|| `The Requisite with ID '60' is not assigned to Company with ID '5'` | Client requisite with the specified identifier does not belong to the company specified in the object ||
-|| `The BankDetail with ID '24' is not found` | Client bank requisite with the specified identifier not found ||
-|| `The BankDetail with ID '24' is not assigned to Requisite with ID '60'` | Client bank requisite with the specified identifier does not belong to the specified requisite ||
-|| `The Requisite of your company with ID '2' is not found` | My company requisite with the specified identifier not found ||
-|| `The Requisite with ID '2' is not assigned to your company with ID '3010'` | My company requisite with the specified identifier does not belong to my company specified in the object ||
-|| `The BankDetail of your company with ID '2' is not found` | My company bank requisite with the specified identifier not found ||
-|| `The BankDetail of your company with ID '2' is not assigned to Requisite of your company with ID '2'` | My company bank requisite with the specified identifier does not belong to the specified requisite ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ENTITY_TYPE_ID is not defined or invalid.` | The object type identifier is not set or has an invalid value ||
+|| `400` | Empty value | `ENTITY_ID is not defined or invalid.` | The object identifier is not set or has an invalid value ||
+|| `400` | Empty value | `REQUISITE_ID is not defined or invalid.` | Client requisite identifier is not set or has an invalid value ||
+|| `400` | Empty value | `BANK_DETAIL_ID is not defined or invalid.` | Client bank requisite identifier is not set or has an invalid value ||
+|| `400` | Empty value | `MC_REQUISITE_ID is not defined or invalid.` | My company requisite identifier is not set or has an invalid value ||
+|| `400` | Empty value | `MC_BANK_DETAIL_ID is not defined or invalid.` | My company bank requisite identifier is not set or has an invalid value ||
+|| `400` | Empty value | `The Requisite with ID '60' is not found.` | Client requisite with the specified identifier not found ||
+|| `400` | Empty value | `The Requisite with ID '60' is not assigned to Company with ID '5'.` | Client requisite with the specified identifier does not belong to the client specified in the object ||
+|| `400` | Empty value | `The BankDetail with ID '24' is not found.` | Client bank requisite with the specified identifier not found ||
+|| `400` | Empty value | `The BankDetail with ID '24' is not assigned to Requisite with ID '60'.` | Client bank requisite with the specified identifier does not belong to the specified requisite ||
+|| `400` | Empty value | `The Requisite of your company with ID '2' is not found.` | My company requisite with the specified identifier not found ||
+|| `400` | Empty value | `The Requisite with ID '2' is not assigned to your company with ID '3010'.` | My company requisite with the specified identifier does not belong to my company specified in the object ||
+|| `400` | Empty value | `The BankDetail of your company with ID '2' is not found.` | My company bank requisite with the specified identifier not found ||
+|| `400` | Empty value | `The BankDetail of your company with ID '2' is not assigned to Requisite of your company with ID '2'.` | My company bank requisite with the specified identifier does not belong to the specified requisite ||
+|| `400` | Empty value | `Entity type is not defined or invalid.` | The CRM object type does not support requisite links ||
+|| `400` | Empty value | `Requisite with ID '60' can not be tied to the Deal in which the client is not selected.` | No client who owns the requisite is selected in the object ||
+|| `400` | Empty value | `Requisite of your company with ID '60' can not be tied to the Deal in which your company is not selected.` | My company is not selected in the object. The error text contains the `REQUISITE_ID` value, not `MC_REQUISITE_ID` ||
+|| `400` | Empty value | `The BankDetail can not be assigned without Requisite.` | A client bank requisite is specified without a client requisite ||
+|| `400` | Empty value | `The BankDetail of your company can not be assigned without Requisite of your company.` | A bank requisite of my company is specified without a requisite of my company ||
+|| `400` | Empty value | `Access denied.` | The user has no permission to edit the CRM object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -398,3 +401,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-link-list.md)
 - [{#T}](./crm-requisite-link-unregister.md)
 - [{#T}](./crm-requisite-link-fields.md)
+- [{#T}](./index.md)

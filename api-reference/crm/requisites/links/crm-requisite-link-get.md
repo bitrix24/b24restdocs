@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 methods 
 
 {% endnote %}
 
-The method returns the link of the requisites with the object.
+The method `crm.requisite.link.get` returns the link of the requisites with a CRM object.
 
 ## Method Parameters
 
@@ -37,12 +37,12 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
+[`integer`](../../../data-types.md) | Positive identifier of the object to which the link belongs.
 
 Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md). ||
 |#
@@ -209,8 +209,8 @@ Identifiers of objects can be obtained using the following methods: [crm.deal.li
     ```js
     BX24.callMethod(
         "crm.requisite.link.get", {
-            entityTypeId: 31,        // Type Identifier (Account)
-            entityId: 315,             // Account Identifier
+            entityTypeId: 31,        // Type identifier (Invoice)
+            entityId: 315,             // Invoice identifier
         },
         function(result)
         {
@@ -294,13 +294,23 @@ HTTP status: **200**
 }
 ```
 
+If `entityTypeId` is not supported or `entityId` is not a positive identifier, the method returns HTTP status 200 and `result: false`:
+
+```json
+{
+    "result": false
+}
+```
+
+The `time` service object is omitted for brevity.
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-`Object`| An object containing the values of the requisite link fields ||
+[`object`](../../../data-types.md), [`boolean`](../../../data-types.md) | An object with the values of the requisite link fields, or `false` if the parameters are invalid ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -318,7 +328,7 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
@@ -327,26 +337,26 @@ Object type identifiers can be obtained using the method [crm.enum.ownertype](..
 
 Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 || **REQUISITE_ID**
-[`integer`](../../../data-types.md) | Identifier of the client's requisite selected for the object. 
+[`string`](../../../data-types.md) | Identifier of the client's requisite selected for the object.
 
 Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **BANK_DETAIL_ID**
-[`integer`](../../../data-types.md) | Identifier of the client's bank requisite selected for the object.
+[`string`](../../../data-types.md) | Identifier of the client's bank requisite selected for the object.
 
 Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 || **MC_REQUISITE_ID**
-[`integer`](../../../data-types.md) | Identifier of my company's requisite selected for the object. 
+[`string`](../../../data-types.md) | Identifier of my company's requisite selected for the object.
 
 Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **MC_BANK_DETAIL_ID**
-[`integer`](../../../data-types.md) | Identifier of my company's bank requisite selected for the object. 
+[`string`](../../../data-types.md) | Identifier of my company's bank requisite selected for the object.
 
 Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -360,11 +370,9 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `entityTypeId is not defined or invalid` | The object type identifier is not set or has an invalid value ||
-|| `entityId is not defined or invalid` | The object identifier is not set or has an invalid value ||
-|| `Not found` | The requisite link was not found ||
-|| `Access denied` | Insufficient access permissions to retrieve the requisite link ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Not found` | The requisite link was not found ||
+|| `400` | Empty value | `Access denied.` | Insufficient access permissions to retrieve the requisite link ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -375,3 +383,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-link-list.md)
 - [{#T}](./crm-requisite-link-unregister.md)
 - [{#T}](./crm-requisite-link-fields.md)
+- [{#T}](./index.md)

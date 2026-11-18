@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to read at least one CRM item or SPA item in a digital workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,8 @@ The development of this method has been halted. Please use the REST 3.0 methods 
 {% endnote %}
 
 The method `crm.requisite.link.fields` returns a formal description of the requisite link fields.
+
+## Method Parameters
 
 No parameters.
 
@@ -234,7 +236,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Object type ID"
+            "title": "Entity type ID"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -243,7 +245,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Object ID"
+            "title": "Entity ID"
         },
         "REQUISITE_ID": {
             "type": "integer",
@@ -252,7 +254,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to details"
+            "title": "Bind to details"
         },
         "BANK_DETAIL_ID": {
             "type": "integer",
@@ -261,7 +263,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to bank details"
+            "title": "Bind to banking details"
         },
         "MC_REQUISITE_ID": {
             "type": "integer",
@@ -270,7 +272,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to my company's details"
+            "title": "Bind to my company's details"
         },
         "MC_BANK_DETAIL_ID": {
             "type": "integer",
@@ -279,7 +281,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to my company's bank details"
+            "title": "Bind to my company's banking details"
         }
     },
     "time": {
@@ -318,7 +320,7 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md))
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
@@ -367,7 +369,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 - false — no
 ||
 || **isMultiple**
-[`boolean`](../../../data-types.md) | "Immutable" attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Multiple" attribute. Possible values:
 - true — yes
 - false — no
 ||
@@ -377,10 +379,28 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 - false — no
 ||
 || **title**
-[`string`](../../../data-types.md) | Field identifier ||
+[`string`](../../../data-types.md) | Field name ||
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user has no permission to read any CRM item or SPA item in digital workplaces ||
+|#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -390,3 +410,4 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 - [{#T}](./crm-requisite-link-get.md)
 - [{#T}](./crm-requisite-link-list.md)
 - [{#T}](./crm-requisite-link-unregister.md)
+- [{#T}](./index.md)
