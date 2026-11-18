@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Up to 7 records can be pinned in a CRM item timeline. Pinned records will simultaneously appear under the new activity creation form and in their original chronological position within the timeline.
+The `crm.timeline.item.*` methods pin and unpin records in a CRM item timeline. Up to seven records can be pinned in a single item. Pinned records appear both under the activity creation form and in their chronological position in the timeline. After a record is unpinned, it stays in its chronological position.
 
 > Quick navigation: [All Methods](#all-methods)
 >
@@ -17,16 +17,19 @@ Up to 7 records can be pinned in a CRM item timeline. Pinned records will simult
 
 ## Getting Started
 
-1. Retrieve the timeline record identifier `id`
-2. Specify the CRM item to which the record is linked: `ownerTypeId` and `ownerId`
+1. Retrieve the timeline record identifier `id`. The methods that return it are listed in [Relationship with Other Objects](#links)
+2. Specify the CRM item to which the record is linked in `ownerTypeId` and `ownerId`
 3. Pin the record using the [crm.timeline.item.pin](./crm-timeline-item-pin.md) method
-4. If a record should no longer be pinned, use the [crm.timeline.item.unpin](./crm-timeline-item-unpin.md) method
+4. Unpin the record using the [crm.timeline.item.unpin](./crm-timeline-item-unpin.md) method if it should no longer be pinned or you need to free up a slot for a new one
 
-## Connection with CRM Entities
+## Relationship with Other Objects {#links}
 
-**CRM item.** The methods verify that the timeline record is linked to the CRM item passed in `ownerTypeId` and `ownerId`. The User must have permissions to edit this CRM item.
+**CRM item.** A record is pinned in the timeline of a specific CRM item. Pass the [object type](../../data-types.md#object_type) in `ownerTypeId` and the item ID in `ownerId`. The record must be linked to this item.
 
-**Comments.** Use the [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) or [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) method to retrieve the `id` of a timeline record.
+**Timeline records.** The methods accept a timeline record identifier in `id`. This is not an activity ID. The following REST methods return this `id`:
+
+- comments: [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) and [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md)
+- log records: [crm.timeline.logmessage.add](../logmessage/crm-timeline-logmessage-add.md) and [crm.timeline.logmessage.list](../logmessage/crm-timeline-logmessage-list.md)
 
 ## Overview of Methods {#all-methods}
 

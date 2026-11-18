@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to edit the CRM item
 
-The `crm.timeline.item.pin` method pins an entry in the timeline.
+The `crm.timeline.item.pin` method pins an entry in a CRM item timeline.
 
 ## Method Parameters
 
@@ -23,11 +23,11 @@ The `crm.timeline.item.pin` method pins an entry in the timeline.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the timeline item, for example `999`. You can obtain the id using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the timeline item, for example `999`. This is not an activity ID. You can retrieve the `id` using the [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) and [crm.timeline.logmessage.list](../logmessage/crm-timeline-logmessage-list.md) methods or from the response of [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) and [crm.timeline.logmessage.add](../logmessage/crm-timeline-logmessage-add.md) ||
 || **ownerTypeId***
-[`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
+[`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM element to which the item is linked, for example `10` ||
+[`integer`](../../../data-types.md) | Identifier of the CRM element to which the item is linked, for example `10`. If the item is linked to several CRM elements, it is pinned only in this element ||
 |#
 
 ## Code Examples
@@ -251,7 +251,7 @@ HTTP status: **200**
         "processing": 0.032338857650756836,
         "date_start": "2024-04-03T10:26:32+02:00",
         "date_finish": "2024-04-03T10:26:33+02:00",
-        "operating_reset_at": 1705765533,
+        "operating_reset_at": 1712133392,
         "operating": 3.3076241016387939
     }
 }
@@ -263,7 +263,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`null`](../../../data-types.md) | Result of the operation. Always returns `null` ||
+[`null`](../../../data-types.md) | Result of the operation. Returns `null`, including when the method is called again for an entry that is already pinned, if fewer than seven entries are pinned in the item ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -275,7 +275,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Item was not found."
 }
 ```
 
@@ -284,13 +284,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Only three events can be added to favorites ||
-|| `100` | Required fields are not provided ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Element not found ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
-|| `CAN_NOT_CHANGE_PINNED` | Unable to perform the operation ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | A required parameter `id`, `ownerTypeId`, or `ownerId` is not passed. The error text contains the parameter name ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | The parameter value is not a number ||
+|| `400` | `OWNER_NOT_FOUND` | Owner was not found | An unknown `ownerTypeId` is passed, or the `ownerId` value is less than or equal to `0` ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM item ||
+|| `400` | `NOT_FOUND` | Item was not found | There is no record with the passed `id`, or it is not linked to the CRM item passed in `ownerTypeId` and `ownerId` ||
+|| `400` | `0` | You can pin up to 7 activities | Seven records are already pinned in the CRM item. The error is also returned when the method is called again for a record that is already one of the seven pinned. Unpin one of the records using the [crm.timeline.item.unpin](./crm-timeline-item-unpin.md) method ||
+|| `400` | `CAN_NOT_CHANGE_PINNED` | Database error text | Failed to save the pin to the database ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -298,3 +299,5 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-timeline-item-unpin.md)
+- [{#T}](../comments/crm-timeline-comment-list.md)
+- [{#T}](../logmessage/crm-timeline-logmessage-list.md)
