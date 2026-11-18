@@ -19,7 +19,9 @@ The development of this method has been halted. Please use the REST 3.0 method `
 
 {% endnote %}
 
-The method returns a formal description of the address fields.
+Retrieves a formal description of the address fields.
+
+## Method Parameters
 
 No parameters.
 
@@ -224,7 +226,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -373,7 +375,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attributes) ||
+[`object`](../../../data-types.md) | An object where each key is a field identifier and each value is an object with [field attributes](#attributes) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -393,12 +395,12 @@ Enumeration elements "Address Type" can be obtained using the method [crm.enum.a
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Requisites (and requisites to companies or contacts) or Leads.
+Addresses are linked to requisites of companies or contacts, or to leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this link is only possible on some old accounts where the old address handling mode has been specifically enabled by support.
+When adding an address, you can also pass a company (`4`) or a contact (`3`): the address is retained in a requisite, see [crm.address.add](./crm-address-add.md#fields) for details. To update or delete an address, pass a requisite (`8`)
 ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Identifier of the parent object ||
+[`integer`](../../../data-types.md) | Identifier of the address owner ||
 || **ADDRESS_1**
 [`string`](../../../data-types.md) | Street, house, building, structure ||
 || **ADDRESS_2**
@@ -414,18 +416,14 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
-[`string`](../../../data-types.md) | Country code.
+[`string`](../../../data-types.md) | Country code from the location directory of the `sale` module.
 
-Not used, retained for backward compatibility. An empty string can be specified as a value.
+Retained only if `COUNTRY` matches the country name for this code in the directory. Otherwise, the code is cleared. You can pass an empty string
 ||
 || **LOC_ADDR_ID**
 [`integer`](../../../data-types.md) | Identifier of the location address.
 
-This field contains the identifier of the address object in the `Location` module, associated with the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
-
-If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
-
-If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+Links the CRM address to an address in the `location` module, which can contain additional location data. For how this field affects writing the address, see [crm.address.add](./crm-address-add.md#fields) and [crm.address.update](./crm-address-update.md#fields)
 ||
 || **ANCHOR_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the main parent object type.
@@ -476,10 +474,12 @@ This field contains the identifier of the parent object of the requisite (compan
 - false — no
 ||
 || **title**
-[`string`](../../../data-types.md) | Field identifier ||
+[`string`](../../../data-types.md) | Field name ||
 |#
 
 ## Error Handling
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
@@ -489,5 +489,6 @@ This field contains the identifier of the parent object of the requisite (compan
 - [{#T}](./crm-address-update.md)
 - [{#T}](./crm-address-list.md)
 - [{#T}](./crm-address-delete.md)
+- [{#T}](./index.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

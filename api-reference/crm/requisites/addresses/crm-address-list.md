@@ -13,19 +13,23 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts, companies, and leads
 
+The result includes only addresses of objects the user has read access to.
+
 {% note warning "DEPRECATED" %}
 
 The development of this method has been halted. Please use the REST 3.0 method [crm.address.list](../../rest-v3/addresses/crm-address-list-rest-v3.md).
 
 {% endnote %}
 
-The method returns a list of addresses based on the filter.
+Retrieves a list of addresses based on the filter.
 
-Addresses are moved to the details. In the CRM card, they are displayed as a separate field.
+Company and contact addresses are stored in requisites.
 
-Multiple details can be linked to a CRM object. Within a detail, there can be several addresses (each of a different type).
+Multiple requisites can be linked to a CRM object. A requisite can have several addresses, each of a different type.
 
 ## Method Parameters
+
+All method parameters are optional.
 
 #|
 || **Name**
@@ -33,11 +37,11 @@ Multiple details can be linked to a CRM object. Within a detail, there can be se
 || **select**
 [`array`](../../../data-types.md) | An array of fields to select (see [address fields](#fields)).
 
-If the array is not provided or an empty array is passed, all available address fields will be selected. ||
+If the array is not provided or is empty, all available address fields are selected ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering selected addresses in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to [address fields](#fields).
+Possible values for `field` correspond to [address fields](#fields). An unknown filter field is ignored without an error, and the result includes addresses without that condition applied.
 
 An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -75,11 +79,13 @@ Possible values for `order`:
 
 The page size of results is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
+To retrieve the second page of results, pass the value `50`, for the third page — `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number 
+`start = (N-1) * 50`, where `N` is the desired page number.
+
+Pass `start: -1` to retrieve the first page without counting the total number of records
 ||
 |#
 
@@ -98,12 +104,12 @@ Enumeration elements for "Address Type" can be obtained using the method [crm.en
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Details (and details to companies or contacts) or Leads.
+Use `8` for requisite addresses and `1` for lead addresses.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this link is only possible on some older accounts where the old address handling mode was specifically enabled by support.
+For backward compatibility, an `ENTITY_TYPE_ID` filter with the company (`4`) or contact (`3`) value is converted to an `ANCHOR_TYPE_ID` filter. If `ENTITY_ID` is also passed in the filter, it is converted to `ANCHOR_ID`
 ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Identifier of the parent object ||
+[`integer`](../../../data-types.md) | Identifier of the parent object ||
 || **ADDRESS_1**
 [`string`](../../../data-types.md) | Street, house, building, structure ||
 || **ADDRESS_2**
@@ -119,18 +125,10 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
-[`string`](../../../data-types.md) | Country code.
-
-Not used, retained for backward compatibility. An empty string can be specified as a value.
+[`string`](../../../data-types.md) | Country code from the location directory of the `sale` module. The response may contain `null`
 ||
 || **LOC_ADDR_ID**
-[`integer`](../../../data-types.md) | Identifier of the location address.
-
-This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
-
-If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string fields of the address in this case, they will be filled from the location address.
-
-If at least one string field was specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+[`integer`](../../../data-types.md) | Identifier of the linked address in the Location module. For details, see the [address field descriptions](./index.md#fields)
 ||
 || **ANCHOR_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the main parent object's type.
@@ -139,12 +137,12 @@ This field is for internal use. The value is automatically filled when adding an
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-This field contains the identifier of the parent object's type of the detail (company or contact) if the address is linked to the detail. If the address is linked to a lead, this value will be the lead type identifier.
+This field contains the identifier of the parent object's type of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead type identifier.
 ||
 || **ANCHOR_ID**
 [`integer`](../../../data-types.md) | This field is for internal use. The value is automatically filled when adding an address.
 
-This field contains the identifier of the parent object of the detail (company or contact) if the address is linked to the detail. If the address is linked to a lead, this value will be the lead identifier.
+This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead identifier.
 ||
 |#
 
@@ -152,7 +150,7 @@ This field contains the identifier of the parent object of the detail (company o
 
 {% include [Note on Examples](../../../../_includes/examples.md) %}
 
-Searching for addresses linked to the Detail type:
+Search for addresses linked to the Requisite type:
 
 {% list tabs %}
 
@@ -162,7 +160,7 @@ Searching for addresses linked to the Detail type:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"TYPE_ID":"asc"},"filter":{"ENTITY_TYPE_ID":8,"ENTITY_ID":7335},"limit":10}' \
+    -d '{"order":{"TYPE_ID":"asc"},"filter":{"ENTITY_TYPE_ID":8,"ENTITY_ID":7335},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.list
     ```
 
@@ -172,7 +170,7 @@ Searching for addresses linked to the Detail type:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"TYPE_ID":"asc"},"filter":{"ENTITY_TYPE_ID":8,"ENTITY_ID":7335},"limit":10,"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"TYPE_ID":"asc"},"filter":{"ENTITY_TYPE_ID":8,"ENTITY_ID":7335},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.list
     ```
 
@@ -191,13 +189,13 @@ Searching for addresses linked to the Detail type:
       TYPE_ID: string
       ENTITY_TYPE_ID: string
       ENTITY_ID: string
-      ADDRESS_1: string
-      ADDRESS_2: string
-      CITY: string
-      POSTAL_CODE: string
-      REGION: string
-      PROVINCE: string
-      COUNTRY: string
+      ADDRESS_1: string | null
+      ADDRESS_2: string | null
+      CITY: string | null
+      POSTAL_CODE: string | null
+      REGION: string | null
+      PROVINCE: string | null
+      COUNTRY: string | null
       COUNTRY_CODE: string | null
       LOC_ADDR_ID: string
       ANCHOR_TYPE_ID: string
@@ -289,7 +287,7 @@ Searching for addresses linked to the Detail type:
         bitrix_response = client.crm.address.list(
             select=["TYPE_ID", "ENTITY_TYPE_ID", "ENTITY_ID", "ADDRESS_1", "ADDRESS_2", "CITY", "POSTAL_CODE", "COUNTRY"],
             filter={"ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335},
-            order={"TYPE_ID": "ASC"},
+            order={"TYPE_ID": "asc"},
             start=0,
         ).response
         result = bitrix_response.result
@@ -317,7 +315,7 @@ Searching for addresses linked to the Detail type:
         bitrix_response = client.crm.address.list(
             select=["TYPE_ID", "ENTITY_TYPE_ID", "ENTITY_ID", "ADDRESS_1", "CITY", "COUNTRY"],
             filter={"ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335},
-            order={"TYPE_ID": "ASC"},
+            order={"TYPE_ID": "asc"},
         ).as_list().response
         result = bitrix_response.result
         for item in result:
@@ -346,17 +344,17 @@ Searching for addresses linked to the Detail type:
                 [
                     'order' => ['TYPE_ID' => 'asc'],
                     'filter' => ['ENTITY_TYPE_ID' => 8, 'ENTITY_ID' => 7335],
-                    'limit' => 10,
+                    'start' => 0,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
-    
+
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching address list: ' . $e->getMessage();
@@ -371,7 +369,7 @@ Searching for addresses linked to the Detail type:
         {
             order: { "TYPE_ID": "asc"},
             filter: { "ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335},
-            limit: 10
+            start: 0
         },
         function(result)
         {
@@ -397,7 +395,7 @@ Searching for addresses linked to the Detail type:
         [
             'order' => ['TYPE_ID' => 'asc'],
             'filter' => ['ENTITY_TYPE_ID' => 8, 'ENTITY_ID' => 7335],
-            'limit' => 10
+            'start' => 0
         ]
     );
 
@@ -409,7 +407,7 @@ Searching for addresses linked to the Detail type:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -444,88 +442,31 @@ HTTP Status: **200**
 }
 ```
 
-If a contact has 2 different details to which addresses are linked:
-
-HTTP Status: **200**
-
-```json
-{
-    "result": [
-        {
-            "TYPE_ID": "1",
-            "ENTITY_TYPE_ID": "8",
-            "ENTITY_ID": "7335",
-            "ADDRESS_1": "Address 2",
-            "ADDRESS_2": "701",
-            "CITY": "Los Angeles",
-            "POSTAL_CODE": "625003",
-            "REGION": "California",
-            "PROVINCE": "California",
-            "COUNTRY": "USA",
-            "COUNTRY_CODE": null,
-            "LOC_ADDR_ID": "479",
-            "ANCHOR_TYPE_ID": "3",
-            "ANCHOR_ID": "17192"
-        },
-        {
-            "TYPE_ID": "1",
-            "ENTITY_TYPE_ID": "8",
-            "ENTITY_ID": "7335",
-            "ADDRESS_1": "Address",
-            "ADDRESS_2": "2",
-            "CITY": "Los Angeles",
-            "POSTAL_CODE": "666000",
-            "REGION": "California",
-            "PROVINCE": "California",
-            "COUNTRY": "USA",
-            "COUNTRY_CODE": null,
-            "LOC_ADDR_ID": "129",
-            "ANCHOR_TYPE_ID": "3",
-            "ANCHOR_ID": "17192"
-        }
-    ],
-    "total": 2,
-    "time": {
-        "start": 1716301758.664873,
-        "finish": 1716301759.73158,
-        "duration": 1.0667071342468262,
-        "processing": 0.028820037841796875,
-        "date_start": "2024-05-21T16:29:18+02:00",
-        "date_finish": "2024-05-21T16:29:19+02:00",
-        "operating": 0
-    }
-}
-```
-
-{% note info "Additional Information about the Result" %}
-
-The **ANCHOR_TYPE_ID** field is filled with a value from [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) (in this example, it is Contacts), and the **ANCHOR_ID** field contains the ID of the object (in this case, the Contact).
-
-The **ANCHOR_TYPE_ID** and **ANCHOR_ID** fields in the two examples above are the same, indicating that both addresses belong to the same Contact.
-
-{% endnote %}
-
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | An array of objects with information about the selected addresses. Each element contains the selected [address fields](#fields) ||
+[`array`](../../../data-types.md) | An array of objects with information about the selected addresses. Each element contains the selected [address fields](#fields). If there are no addresses, an empty array `[]` is returned. Text fields may contain `null`.
+
+Address fields of the integer type may be returned in JSON as strings, for example `"TYPE_ID": "1"` ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found. Not returned with `start: -1` ||
+|| **next**
+[`integer`](../../../data-types.md) | The offset of the next page. Pass it in `start`. Returned if there is a next page, except in the `start: -1` mode ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "",
+    "error_description": "Parameter 'order' must be array."
 }
 ```
 
@@ -533,9 +474,12 @@ HTTP Status: **40x**, **50x**
 
 ### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `Access denied` | Insufficient access rights to retrieve the list of addresses. No read access to companies, contacts, leads ||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array` | The passed `order` is not an object or an array ||
+|| `400` | Empty value | `Parameter 'filter' must be array` | The passed `filter` is not an object or an array ||
+|| `400` | `100` | `Unknown field definition ...` | An unknown address field is passed in `select` or `order` ||
+|| `400` | Empty value | `Access denied` | No read permission for companies, contacts, or leads ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -546,4 +490,5 @@ HTTP Status: **40x**, **50x**
 - [{#T}](./crm-address-update.md)
 - [{#T}](./crm-address-delete.md)
 - [{#T}](./crm-address-fields.md)
+- [{#T}](./index.md)
 
