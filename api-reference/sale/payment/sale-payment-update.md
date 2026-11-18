@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.payment.update` is used to update fields of the payment collection item.
+The method `sale.payment.update` updates an existing order payment.
+
+Pass only the fields to change in `fields`, plus the required `paySystemId`: it is required on every update, even if the payment system does not change. Fields you do not pass retain their values, but changing the payment status, return, or responsible person can automatically update related service fields.
 
 ## Method Parameters
 
@@ -23,53 +25,12 @@ The method `sale.payment.update` is used to update fields of the payment collect
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../data-types.md) | Payment identifier ||
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Payment identifier ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating a payment in the form of a structure:
-
-```js
-fields: {
-    paySystemId: "value",
-    paid: "value",
-    datePaid: "value",
-    empPaidId: "value",
-    psStatus: "value",
-    psStatusCode: "value",
-    psStatusDescription: "value",
-    psStatusMessage: "value",
-    psSum: "value",
-    psCurrency: "value",
-    psResponseDate: "value",
-    payVoucherNum: "value",
-    payVoucherDate: "value",
-    datePayBefore: "value",
-    dateBill: "value",
-    xmlId: "value",
-    sum: "value",
-    companyId: "value",
-    payReturnNum: "value",
-    priceCod: "value",
-    payReturnDate: "value",
-    empReturnId: "value",
-    payReturnComment: "value",
-    responsibleId: "value",
-    empResponsibleId: "value",
-    isReturn: "value",
-    comments: "value",
-    updated1c: "value",
-    id1c: "value",
-    version1c: "value",
-    externalPayment: "value",
-    psInvoiceId: "value",
-    marked: "value",
-    reasonMarked: "value",
-    empMarkedId: "value",
-}
-```
- ||
+[`object`](../../data-types.md) | Fields for updating a payment [(detailed description)](#fields) ||
 |#
 
-## Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -77,25 +38,21 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **paySystemId***
-[`sale_paysystem.id`](../data-types.md) | Payment system identifier ||
+[`sale_paysystem.id`](../data-types.md#sale_paysystem) | Payment system identifier. Required on every update ||
 || **paid**
-[`string`](../../data-types.md) | Payment status:
+[`string`](../../data-types.md) | Paid flag:
 
 - `Y` — yes
-- `N` — no
-
-Defaults to `N` ||
+- `N` — no ||
 || **datePaid**
 [`datetime`](../../data-types.md) | Payment date ||
 || **empPaidId**
-[`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
+[`user.id`](../../data-types.md) | Identifier of the user who made the payment. When the payment switches to `paid = Y`, the field is set to the current user ||
 || **psStatus**
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
+[`string`](../../data-types.md) | Whether the payment succeeded according to the payment system. Options:
 
 - `Y` — yes
-- `N` — no
-
-Defaults to `null` ||
+- `N` — no ||
 || **psStatusCode**
 [`string`](../../data-types.md) | Payment system status code ||
 || **psStatusDescription**
@@ -113,24 +70,19 @@ Defaults to `null` ||
 || **payVoucherDate**
 [`datetime`](../../data-types.md) | Payment document date ||
 || **datePayBefore**
-[`datetime`](../../data-types.md) | Deprecated.
-
-Date by which the invoice must be paid ||
+[`datetime`](../../data-types.md) | Invoice payment due date ||
 || **dateBill**
 [`datetime`](../../data-types.md) | Invoice date ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier ||
 || **sum**
-[`double`](../../data-types.md) | Payment amount ||
+[`double`](../../data-types.md) | Payment amount. The amount of a payment that is already paid cannot be changed ||
 || **companyId**
-[`integer`](../../data-types.md) | Identifier of the company that will receive the payment
-
-Currently not used ||
+[`integer`](../../data-types.md) | Identifier of the company that will receive the payment ||
 || **payReturnNum**
 [`string`](../../data-types.md) | Return document number ||
 || **priceCod**
-[`double`](../../data-types.md) | Relevant only for on-premise version
-Cost of payment upon delivery. Used for cash on delivery ||
+[`double`](../../data-types.md) | Cost of payment upon delivery. Used for cash on delivery ||
 || **payReturnDate**
 [`date`](../../data-types.md) | Return document date ||
 || **empReturnId**
@@ -140,45 +92,37 @@ Cost of payment upon delivery. Used for cash on delivery ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the payment ||
 || **empResponsibleId**
-[`user.id`](../../data-types.md) | Identifier of the user who assigned the responsible person ||
+[`user.id`](../../data-types.md) | Identifier of the user who assigned the responsible person. When `responsibleId` changes, the field is set to the current user ||
 || **isReturn**
-[`string`](../../data-types.md) | Was the return processed:
+[`string`](../../data-types.md) | Return mode:
 
-- `Y` — yes
-- `N` — no
-
-Defaults to N ||
+- `Y` — to the internal account
+- `P` — through the payment system
+- `N` — no return ||
 || **comments**
 [`string`](../../data-types.md) | Comments on the payment ||
 || **updated1c**
-[`string`](../../data-types.md) | Payment updated via QuickBooks and other similar platforms:
+[`string`](../../data-types.md) | Whether the payment was updated through an ERP system:
 
 - `Y` — yes
-- `N` — no
-
-Defaults to N ||
+- `N` — no ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Identifier in the ERP system ||
 || **version1c**
-[`string`](../../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Version of the payment document from the ERP system ||
 || **externalPayment**
-[`string`](../../data-types.md) | Relevant only for on-premise version
-Whether it is an external payment. Used for import from QuickBooks and other similar platforms via XML
+[`string`](../../data-types.md) | Whether it is an external payment. Used for import from an ERP system via XML
 
 - `Y` — yes
 - `F` — yes, loaded with the order
-- `N` — no
-
-Defaults to `N` ||
+- `N` — no ||
 || **psInvoiceId**
 [`string`](../../data-types.md) | Payment identifier in the payment system ||
 || **marked**
-[`string`](../../data-types.md) | Marking flag. Indicates whether the payment is marked as problematic:
+[`string`](../../data-types.md) | Indicates whether the payment is marked as problematic:
 
 - `Y` — yes
-- `N` — no
-
-Defaults to `N` ||
+- `N` — no ||
 || **reasonMarked**
 [`string`](../../data-types.md) | Reason for marking ||
 || **empMarkedId**
@@ -197,7 +141,7 @@ Defaults to `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":144,"fields":{"paySystemId":1,"paid":"Y","datePaid":"2024-04-10T10:00:00","empPaidId":1,"psStatus":"Y","psSum":100,"psCurrency":"USD","psResponseDate":"2024-04-10T10:00:00","sum":100,"companyId":1,"responsibleId":1,"empResponsibleId":1,"isReturn":"N","externalPayment":"N","psInvoiceId":1,"marked":"N"}}' \
+    -d '{"id":144,"fields":{"paySystemId":1,"paid":"Y","datePaid":"2024-04-10T10:00:00","empPaidId":1,"psStatus":"Y","psSum":100,"psCurrency":"USD","psResponseDate":"2024-04-10T10:00:00","sum":100,"companyId":1,"responsibleId":1,"empResponsibleId":1,"isReturn":"N","externalPayment":"N","psInvoiceId":"1","marked":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.payment.update
     ```
 
@@ -207,7 +151,7 @@ Defaults to `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":144,"fields":{"paySystemId":1,"paid":"Y","datePaid":"2024-04-10T10:00:00","empPaidId":1,"psStatus":"Y","psSum":100,"psCurrency":"USD","psResponseDate":"2024-04-10T10:00:00","sum":100,"companyId":1,"responsibleId":1,"empResponsibleId":1,"isReturn":"N","externalPayment":"N","psInvoiceId":1,"marked":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":144,"fields":{"paySystemId":1,"paid":"Y","datePaid":"2024-04-10T10:00:00","empPaidId":1,"psStatus":"Y","psSum":100,"psCurrency":"USD","psResponseDate":"2024-04-10T10:00:00","sum":100,"companyId":1,"responsibleId":1,"empResponsibleId":1,"isReturn":"N","externalPayment":"N","psInvoiceId":"1","marked":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.payment.update
     ```
 
@@ -226,17 +170,17 @@ Defaults to `N` ||
       payment: {
         accountNumber: string,
         comments: string,
-        companyId: number,
+        companyId: number | null,
         currency: string,
         dateBill: ISODate | null,
         dateMarked: ISODate | null,
         datePaid: ISODate | null,
         datePayBefore: ISODate | null,
         dateResponsibleId: ISODate | null,
-        empMarkedId: number,
-        empPaidId: number,
-        empResponsibleId: number,
-        empReturnId: number,
+        empMarkedId: number | null,
+        empPaidId: number | null,
+        empResponsibleId: number | null,
+        empReturnId: number | null,
         externalPayment: string,
         id: number,
         id1c: string,
@@ -253,17 +197,17 @@ Defaults to `N` ||
         paySystemXmlId: string,
         payVoucherDate: ISODate | null,
         payVoucherNum: string,
-        priceCod: string,
+        priceCod: number,
         psCurrency: string,
-        psInvoiceId: number,
+        psInvoiceId: string,
         psResponseDate: ISODate | null,
         psStatus: string,
         psStatusCode: string,
         psStatusDescription: string,
         psStatusMessage: string,
-        psSum: number,
+        psSum: number | null,
         reasonMarked: string,
-        responsibleId: number,
+        responsibleId: number | null,
         sum: number,
         updated1c: string,
         version1c: string,
@@ -282,36 +226,17 @@ Defaults to `N` ||
             datePaid: '2024-04-10T10:00:00',
             empPaidId: 1,
             psStatus: 'Y',
-            psStatusCode: '',
-            psStatusDescription: '',
-            psStatusMessage: '',
             psSum: 100,
             psCurrency: 'USD',
             psResponseDate: '2024-04-10T10:00:00',
-            payVoucherNum: '',
-            payVoucherDate: '2024-04-10T10:00:00',
-            datePayBefore: '2024-04-10T10:00:00',
-            dateBill: '2024-04-10T10:00:00',
-            xmlId: '',
             sum: 100,
             companyId: 1,
-            payReturnNum: '',
-            priceCod: 100,
-            payReturnDate: '2024-04-10T10:00:00',
-            empReturnId: 1,
-            payReturnComment: '',
             responsibleId: 1,
             empResponsibleId: 1,
             isReturn: 'N',
-            comments: '',
-            updated1c: 'N',
-            id1c: '',
-            version1c: '',
             externalPayment: 'N',
-            psInvoiceId: 1,
+            psInvoiceId: '1',
             marked: 'N',
-            reasonMarked: '',
-            empMarkedId: 1,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -351,36 +276,17 @@ Defaults to `N` ||
                 datePaid: '2024-04-10T10:00:00',
                 empPaidId: 1,
                 psStatus: 'Y',
-                psStatusCode: '',
-                psStatusDescription: '',
-                psStatusMessage: '',
                 psSum: 100,
                 psCurrency: 'USD',
                 psResponseDate: '2024-04-10T10:00:00',
-                payVoucherNum: '',
-                payVoucherDate: '2024-04-10T10:00:00',
-                datePayBefore: '2024-04-10T10:00:00',
-                dateBill: '2024-04-10T10:00:00',
-                xmlId: '',
                 sum: 100,
                 companyId: 1,
-                payReturnNum: '',
-                priceCod: 100,
-                payReturnDate: '2024-04-10T10:00:00',
-                empReturnId: 1,
-                payReturnComment: '',
                 responsibleId: 1,
                 empResponsibleId: 1,
                 isReturn: 'N',
-                comments: '',
-                updated1c: 'N',
-                id1c: '',
-                version1c: '',
                 externalPayment: 'N',
-                psInvoiceId: 1,
+                psInvoiceId: '1',
                 marked: 'N',
-                reasonMarked: '',
-                empMarkedId: 1,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -424,7 +330,7 @@ Defaults to `N` ||
         "empResponsibleId": 1,
         "isReturn": "N",
         "externalPayment": "N",
-        "psInvoiceId": 1,
+        "psInvoiceId": "1",
         "marked": "N",
     }
 
@@ -463,36 +369,17 @@ Defaults to `N` ||
                         'datePaid'             => '2024-04-10T10:00:00',
                         'empPaidId'            => 1,
                         'psStatus'             => 'Y',
-                        'psStatusCode'         => '',
-                        'psStatusDescription'  => '',
-                        'psStatusMessage'      => '',
                         'psSum'                => 100,
                         'psCurrency'           => 'USD',
                         'psResponseDate'       => '2024-04-10T10:00:00',
-                        'payVoucherNum'        => '',
-                        'payVoucherDate'       => '2024-04-10T10:00:00',
-                        'datePayBefore'        => '2024-04-10T10:00:00',
-                        'dateBill'             => '2024-04-10T10:00:00',
-                        'xmlId'                => '',
                         'sum'                  => 100,
                         'companyId'            => 1,
-                        'payReturnNum'         => '',
-                        'priceCod'             => 100,
-                        'payReturnDate'        => '2024-04-10T10:00:00',
-                        'empReturnId'          => 1,
-                        'payReturnComment'     => '',
                         'responsibleId'        => 1,
                         'empResponsibleId'     => 1,
                         'isReturn'             => 'N',
-                        'comments'             => '',
-                        'updated1c'            => 'N',
-                        'id1c'                 => '',
-                        'version1c'            => '',
                         'externalPayment'      => 'N',
-                        'psInvoiceId'          => 1,
+                        'psInvoiceId'          => '1',
                         'marked'               => 'N',
-                        'reasonMarked'         => '',
-                        'empMarkedId'          => 1,
                     ],
                 ]
             );
@@ -522,36 +409,17 @@ Defaults to `N` ||
                 datePaid: '2024-04-10T10:00:00',
                 empPaidId: 1,
                 psStatus: 'Y',
-                psStatusCode: '',
-                psStatusDescription: '',
-                psStatusMessage: '',
                 psSum: 100,
                 psCurrency: 'USD',
                 psResponseDate: '2024-04-10T10:00:00',
-                payVoucherNum: '',
-                payVoucherDate: '2024-04-10T10:00:00',
-                datePayBefore: '2024-04-10T10:00:00',
-                dateBill: '2024-04-10T10:00:00',
-                xmlId: '',
                 sum: 100,
                 companyId: 1,
-                payReturnNum: '',
-                priceCod: 100,
-                payReturnDate: '2024-04-10T10:00:00',
-                empReturnId: 1,
-                payReturnComment: '',
                 responsibleId: 1,
                 empResponsibleId: 1,
                 isReturn: 'N',
-                comments: '',
-                updated1c: 'N',
-                id1c: '',
-                version1c: '',
                 externalPayment: 'N',
-                psInvoiceId: 1,
+                psInvoiceId: '1',
                 marked: 'N',
-                reasonMarked: '',
-                empMarkedId: 1,
             }
         },
         function(result) {
@@ -579,36 +447,17 @@ Defaults to `N` ||
                 'datePaid' => '2024-04-10T10:00:00',
                 'empPaidId' => 1,
                 'psStatus' => 'Y',
-                'psStatusCode' => '',
-                'psStatusDescription' => '',
-                'psStatusMessage' => '',
                 'psSum' => 100,
                 'psCurrency' => 'USD',
                 'psResponseDate' => '2024-04-10T10:00:00',
-                'payVoucherNum' => '',
-                'payVoucherDate' => '2024-04-10T10:00:00',
-                'datePayBefore' => '2024-04-10T10:00:00',
-                'dateBill' => '2024-04-10T10:00:00',
-                'xmlId' => '',
                 'sum' => 100,
                 'companyId' => 1,
-                'payReturnNum' => '',
-                'priceCod' => 100,
-                'payReturnDate' => '2024-04-10T10:00:00',
-                'empReturnId' => 1,
-                'payReturnComment' => '',
                 'responsibleId' => 1,
                 'empResponsibleId' => 1,
                 'isReturn' => 'N',
-                'comments' => '',
-                'updated1c' => 'N',
-                'id1c' => '',
-                'version1c' => '',
                 'externalPayment' => 'N',
-                'psInvoiceId' => 1,
+                'psInvoiceId' => '1',
                 'marked' => 'N',
-                'reasonMarked' => '',
-                'empMarkedId' => 1,
             ]
         ]
     );
@@ -639,7 +488,7 @@ Defaults to `N` ||
     		"empResponsibleId": 1,
     		"isReturn":         "N",
     		"externalPayment":  "N",
-    		"psInvoiceId":      1,
+            "psInvoiceId":      "1",
     		"marked":           "N",
     	},
     })
@@ -698,7 +547,7 @@ HTTP status: **200**
             "orderId": 200,
             "paid": "Y",
             "payReturnComment": "",
-            "payReturnDate": "2024-04-10T09:00:00+02:00",
+            "payReturnDate": "2024-04-10",
             "payReturnNum": "",
             "paySystemId": 1,
             "paySystemIsCash": "N",
@@ -706,9 +555,9 @@ HTTP status: **200**
             "paySystemXmlId": "",
             "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherNum": "",
-            "priceCod": "100",
+            "priceCod": 100,
             "psCurrency": "USD",
-            "psInvoiceId": 1,
+            "psInvoiceId": "1",
             "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psStatus": "Y",
             "psStatusCode": "",
@@ -741,8 +590,8 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **payment**
-[`sale_order_payment`](../data-types.md) | Object with information about the updated payment ||
+|| **result.payment**
+[`sale_order_payment`](../data-types.md#sale_order_payment) | Updated payment. In addition to the input fields, the object contains the payment `id`, the order `orderId`, the number `accountNumber`, the currency `currency`, the payment system name, type, and external code (`paySystemName`, `paySystemIsCash`, `paySystemXmlId`), and the dates of marking and of changing the responsible person (`dateMarked`, `dateResponsibleId`) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request processing time ||
 |#
@@ -753,7 +602,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200640400001,
+    "error": "200640400001",
     "error_description":"payment does not exist"
 }
 ```
@@ -764,10 +613,20 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200640400001` | The payment being updated was not found ||
-|| `200040300020` | Insufficient permissions to update the payment ||
+|| `200640400001` | `payment is not exists`
+
+The payment being updated was not found ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to update the payment ||
 || `100` | Parameter `id` not specified ||
-|| `100` | Parameter `fields` not specified or empty ||
+|| `100` | Parameter `fields` not specified ||
+|| `0` | `Required fields: paySystemId`
+
+`paySystemId` is not passed in `fields`, including when the `fields` object is empty ||
+|| `0` | `Order total cannot be changed if the status is "Paid"`
+
+A different amount is passed for a payment that is already paid ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user
 
-The method `sale.payment.getFields` retrieves the available payment fields.
+The method `sale.payment.getFields` returns the description of the payment fields: the field type, whether it is required, and whether it can be written.
 
 No parameters.
 
@@ -355,7 +355,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "type": "datetime"
+                "type": "date"
             },
             "payReturnNum": {
                 "isImmutable": false,
@@ -510,30 +510,25 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **payment**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_payment](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object whose keys are the field identifiers of the [`sale_order_payment`](../data-types.md#sale_order_payment) object and whose values are objects of type [`rest_field_description`](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **401**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
 }
 ```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|#
+The method has no errors of its own. Only general REST errors are possible, for example, `insufficient_scope` if the application or webhook does not have the `sale` scope.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

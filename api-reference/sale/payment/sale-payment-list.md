@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
 The method `sale.payment.list` retrieves a list of payments.
+
+## Method Parameters
+
+All parameters are optional.
 
 #|
 || **Name**
@@ -28,15 +32,16 @@ Possible values for the array elements correspond to the fields of the [sale_ord
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected payments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_order_payment](../data-types.md#sale_order_payment) object.
+Possible values for `field` correspond to the fields of the [sale_order_payment](../data-types.md#sale_order_payment) object. The method skips a condition with an unknown field without an error, so a typo in a field name widens the selection.
 
 An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `@` — in a list of values (IN), the filter value is an array
+- `%` — LIKE, searches for a substring in any position of the string. The % symbol in the filter value does not need to be passed
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
 - `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
@@ -60,17 +65,21 @@ Possible values for order:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+By default, payments are sorted by `id` in ascending order
  ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
  
 The page size of results is always static: 50 records.
  
-To select the second page of results, the value `50` must be passed. To select the third page of results, the value is `100`, and so on.
+To select the second page of results, pass the value `50`. For the third page, pass `100`, and so on.
  
 The formula for calculating the `start` parameter value:
  
-`start = (N-1) * 50`, where `N` — the number of the desired page ||
+`start = (N-1) * 50`, where `N` — the number of the desired page.
+ 
+If you pass `-1`, the method returns the first 50 records without counting the total number: the `total` and `next` fields are not included in the response. This makes the request faster on large selections ||
 |#
 
 ## Code Examples
@@ -85,7 +94,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["paySystemXmlId","paySystemIsCash","accountNumber","id","orderId","paid","datePaid","empPaidId","paySystemId","psStatus","psStatusCode","psStatusDescription","psStatusMessage","psSum","psCurrency","psResponseDate","payVoucherNum","payVoucherDate","datePayBefore","dateBill","xmlId","sum","currency","paySystemName","companyId","payReturnNum","priceCod","payReturnDate","empReturnId","payReturnComment","responsibleId","empResponsibleId","dateResponsibleId","isReturn","comments","updated1c","id1c","version1c","externalPayment","psInvoiceId","marked","reasonMarked","dateMarked","empMarkedId"],"filter":{"<id":10,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"}}' \
+    -d '{"select":["paySystemXmlId","paySystemIsCash","accountNumber","id","orderId","paid","datePaid","empPaidId","paySystemId","psStatus","psStatusCode","psStatusDescription","psStatusMessage","psSum","psCurrency","psResponseDate","payVoucherNum","payVoucherDate","datePayBefore","dateBill","xmlId","sum","currency","paySystemName","companyId","payReturnNum","priceCod","payReturnDate","empReturnId","payReturnComment","responsibleId","empResponsibleId","dateResponsibleId","isReturn","comments","updated1c","id1c","version1c","externalPayment","psInvoiceId","marked","reasonMarked","dateMarked","empMarkedId"],"filter":{"<id":10,"paid":"N"},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.payment.list
     ```
 
@@ -95,7 +104,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["paySystemXmlId","paySystemIsCash","accountNumber","id","orderId","paid","datePaid","empPaidId","paySystemId","psStatus","psStatusCode","psStatusDescription","psStatusMessage","psSum","psCurrency","psResponseDate","payVoucherNum","payVoucherDate","datePayBefore","dateBill","xmlId","sum","currency","paySystemName","companyId","payReturnNum","priceCod","payReturnDate","empReturnId","payReturnComment","responsibleId","empResponsibleId","dateResponsibleId","isReturn","comments","updated1c","id1c","version1c","externalPayment","psInvoiceId","marked","reasonMarked","dateMarked","empMarkedId"],"filter":{"<id":10,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["paySystemXmlId","paySystemIsCash","accountNumber","id","orderId","paid","datePaid","empPaidId","paySystemId","psStatus","psStatusCode","psStatusDescription","psStatusMessage","psSum","psCurrency","psResponseDate","payVoucherNum","payVoucherDate","datePayBefore","dateBill","xmlId","sum","currency","paySystemName","companyId","payReturnNum","priceCod","payReturnDate","empReturnId","payReturnComment","responsibleId","empResponsibleId","dateResponsibleId","isReturn","comments","updated1c","id1c","version1c","externalPayment","psInvoiceId","marked","reasonMarked","dateMarked","empMarkedId"],"filter":{"<id":10,"paid":"N"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.payment.list
     ```
 
@@ -123,7 +132,7 @@ The formula for calculating the `start` parameter value:
         dateResponsibleId: ISODate | null
         empMarkedId: number | null
         empPaidId: number | null
-        empResponsibleId: number
+        empResponsibleId: number | null
         empReturnId: number | null
         externalPayment: string
         id: number
@@ -141,9 +150,9 @@ The formula for calculating the `start` parameter value:
         paySystemXmlId: string
         payVoucherDate: ISODate | null
         payVoucherNum: string
-        priceCod: string
+        priceCod: number | null
         psCurrency: string
-        psInvoiceId: number | null
+        psInvoiceId: string
         psResponseDate: ISODate | null
         psStatus: string
         psStatusCode: string
@@ -151,7 +160,7 @@ The formula for calculating the `start` parameter value:
         psStatusMessage: string
         psSum: number | null
         reasonMarked: string
-        responsibleId: number
+        responsibleId: number | null
         sum: number
         updated1c: string
         version1c: string
@@ -216,13 +225,11 @@ The formula for calculating the `start` parameter value:
           ],
           filter: {
             '<id': 10,
-            '@personTypeId': [3, 4],
-            payed: 'N',
+            paid: 'N',
           },
           order: {
             id: 'desc',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -307,13 +314,11 @@ The formula for calculating the `start` parameter value:
               ],
               filter: {
                 '<id': 10,
-                '@personTypeId': [3, 4],
-                payed: 'N',
+                paid: 'N',
               },
               order: {
                 id: 'desc',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -391,16 +396,11 @@ The formula for calculating the `start` parameter value:
             ],
             filter={
                 "<id": 10,
-                "@personTypeId": [
-                    3,
-                    4,
-                ],
-                "payed": "N",
+                "paid": "N",
             },
             order={
                 "id": "desc",
             },
-            start='1713451909.778956',
         ).response
         result = bitrix_response.result
         print(result)
@@ -474,8 +474,7 @@ The formula for calculating the `start` parameter value:
                     ],
                     'filter' => [
                         '<id'           => 10,
-                        '@personTypeId' => [3, 4],
-                        'payed'         => 'N',
+                        'paid'         => 'N',
                     ],
                     'order' => [
                         'id' => 'desc',
@@ -549,8 +548,7 @@ The formula for calculating the `start` parameter value:
             ],
             "filter": {
                 "<id": 10,
-                "@personTypeId": [3, 4],
-                "payed": "N",
+                "paid": "N",
             },
             "order": {
                 "id": "desc",
@@ -622,8 +620,7 @@ The formula for calculating the `start` parameter value:
             ],
             'filter' => [
                 "<id" => 10,
-                "@personTypeId" => [3, 4],
-                "payed" => "N",
+                "paid" => "N",
             ],
             'order' => [
                 "id" => "desc",
@@ -644,8 +641,7 @@ The formula for calculating the `start` parameter value:
     	"select": []string{"paySystemXmlId", "paySystemIsCash", "accountNumber", "id", "orderId", "paid", "datePaid", "empPaidId", "paySystemId", "psStatus", "psStatusCode", "psStatusDescription", "psStatusMessage", "psSum", "psCurrency", "psResponseDate", "payVoucherNum", "payVoucherDate", "datePayBefore", "dateBill", "xmlId", "sum", "currency", "paySystemName", "companyId", "payReturnNum", "priceCod", "payReturnDate", "empReturnId", "payReturnComment", "responsibleId", "empResponsibleId", "dateResponsibleId", "isReturn", "comments", "updated1c", "id1c", "version1c", "externalPayment", "psInvoiceId", "marked", "reasonMarked", "dateMarked", "empMarkedId"},
     	"filter": b24.Params{
     		"<id":           10,
-    		"@personTypeId": []int{3, 4},
-    		"payed":         "N",
+        "paid":          "N",
     	},
     	"order": b24.Params{
     		"id": "desc",
@@ -700,9 +696,9 @@ HTTP status: **200**
                 "paySystemXmlId": "bx_64134ba550ffa",
                 "payVoucherDate": null,
                 "payVoucherNum": "",
-                "priceCod": "0.000000",
+                "priceCod": 0,
                 "psCurrency": "",
-                "psInvoiceId": null,
+                "psInvoiceId": "",
                 "psResponseDate": null,
                 "psStatus": "",
                 "psStatusCode": "",
@@ -715,7 +711,7 @@ HTTP status: **200**
                 "updated1c": "N",
                 "version1c": "",
                 "xmlId": "bx_634989d809dc8"
-            },
+            }
         ]
     },
     "total": 1,
@@ -738,9 +734,11 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **payments**
-[`sale_order_payment[]`](../data-types.md) | An array of objects containing information about the selected payments ||
+[`sale_order_payment[]`](../data-types.md#sale_order_payment) | Array of the selected payments inside `result`. The set of fields is defined by `select`. If nothing is found, the array is empty ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found. Not returned when `start` = `-1` ||
+|| **next**
+[`integer`](../../data-types.md) | The value to pass in `start` to retrieve the next page. Returned if there is a next page ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -751,8 +749,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error":"200040300010",
+    "error_description":"Access Denied"
 }
 ```
 
@@ -762,7 +760,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read payments ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read payments ||
+|| `100` | `Invalid order "<VALUE>"`
+
+A sort direction other than `asc` and `desc` is passed in `order` ||
+|| `100` | `Order must be a string`
+
+The sort direction in `order` is not passed as a string ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

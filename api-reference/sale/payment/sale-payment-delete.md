@@ -13,18 +13,18 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.payment.delete` deletes a payment.
+The method `sale.payment.delete` deletes a payment. A paid payment (`paid = Y`) cannot be deleted: cancel the payment first.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id**^*^
-[`sale_order_payment.id`](../data-types.md) | Payment identifier ||
+|| **id***
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Payment identifier ||
 |#
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 ## Code Examples
 
@@ -163,8 +163,6 @@ The method `sale.payment.delete` deletes a payment.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -250,7 +248,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of payment deletion ||
+[`boolean`](../../data-types.md) | `true` if the payment is deleted successfully ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -261,7 +259,7 @@ HTTP Status: **400**
 
 ```json
 {	
-    "error":200640400001,
+    "error": "200640400001",
     "error_description":"payment does not exist"
 }
 ```
@@ -272,9 +270,18 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200640400001` | Payment to be deleted not found ||
-|| `200040300020` | Insufficient permissions to delete payment ||
-|| `100` | Parameter `id` not specified ||
+|| `200640400001` | `payment is not exists`
+
+Payment to be deleted not found ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to delete payment ||
+|| `100` | `Could not find value for parameter {id}`
+
+Parameter `id` not specified ||
+|| `SALE_PAYMENT_DELETE_EXIST_PAID` | `Partial payment done. Cancel payment`
+
+The payment is marked as paid (`paid = Y`) ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

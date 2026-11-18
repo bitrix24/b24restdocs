@@ -1,4 +1,4 @@
-# Get Payment by Id sale.payment.get
+# Get Payment by ID sale.payment.get
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
 The method `sale.payment.get` retrieves the values of all payment fields by `Id`.
 
@@ -23,7 +23,7 @@ The method `sale.payment.get` retrieves the values of all payment fields by `Id`
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../data-types.md) | Payment identifier ||
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Payment identifier. Can be retrieved using the [sale.payment.list](./sale-payment-list.md) method ||
 |#
 
 ## Code Examples
@@ -94,9 +94,9 @@ The method `sale.payment.get` retrieves the values of all payment fields by `Id`
         paySystemXmlId: string
         payVoucherDate: ISODate | null
         payVoucherNum: string
-        priceCod: string
+        priceCod: number | null
         psCurrency: string
-        psInvoiceId: number | null
+        psInvoiceId: string
         psResponseDate: ISODate | null
         psStatus: string
         psStatusCode: string
@@ -323,9 +323,9 @@ HTTP status: **200**
             "paySystemXmlId": "bx_64134ba550ffa",
             "payVoucherDate": null,
             "payVoucherNum": "",
-            "priceCod": "0",
+            "priceCod": 0,
             "psCurrency": "",
-            "psInvoiceId": null,
+            "psInvoiceId": "",
             "psResponseDate": null,
             "psStatus": "",
             "psStatusCode": "",
@@ -359,7 +359,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **payment**
-[`sale_order_payment`](../data-types.md) | Payment information ||
+[`sale_order_payment`](../data-types.md#sale_order_payment) | Payment object inside `result`: `orderId` is the order ID, `sum` is the amount, `currency` is the currency, `paid` is the paid flag (`Y` for paid, `N` for unpaid), and `paySystemId` is the payment system ID. The full set of fields is given in the type description ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -370,7 +370,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200640400001,
+    "error": "200640400001",
     "error_description":"payment does not exist"
 }
 ```
@@ -381,15 +381,19 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200640400001` | Payment not found ||
-|| `200040300010` | Insufficient permissions to read payment ||
+|| `200640400001` | `payment is not exists`
+
+Payment with the specified `id` not found ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read payment ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./sale-payment-add.md)

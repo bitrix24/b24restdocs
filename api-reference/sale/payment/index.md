@@ -40,7 +40,7 @@ The `sale.payment.add`, `sale.payment.get`, and `sale.payment.update` methods re
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator
+> Who can execute the methods: retrieve payments — store manager, retrieve the field description — any user, add, update, and delete payments — administrator
 
 #| 
 || **Method** | **Description** ||
