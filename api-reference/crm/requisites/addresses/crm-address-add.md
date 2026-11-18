@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "add" access permission for the contact, company, or lead that owns the address
+> Who can execute the method: a user with "edit" access permission for the contact, company, or lead that owns the address
 
 {% note warning "DEPRECATED" %}
 
@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 methods:
 
 {% endnote %}
 
-This method adds a new address for a requisite or lead. For the user, this address appears as the address of a contact, company, or lead.
+Adds a new address for a requisite or lead. For the user, this address appears as the address of a contact, company, or lead.
 
 Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-type.md) can be created, linked to a single requisite.
 
@@ -31,10 +31,10 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the address ||
+[`object`](../../../data-types.md) | An object with fields for adding the address [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -44,19 +44,17 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Elements of the enumeration "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Elements of the enumeration "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
 Identifiers of object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Requisites (and requisites are linked to companies or contacts) or Leads.
-
-For backward compatibility, the ability to link Addresses with Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
+An address can be linked to a requisite (`8`) or a lead (`1`). For backward compatibility, you can pass a company (`4`) or a contact (`3`): the address is retained in the requisite where this company or contact already has a primary address of the same type. If there is none, it goes to the requisite selected in the card, otherwise to the first requisite in ascending order of `SORT` and `ID`. If there are no requisites, Bitrix24 creates a new one
 ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Identifier of the parent object ([requisite](../universal/index.md) or [lead](../../leads/index.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the parent object: a [requisite](../universal/index.md) or a [lead](../../leads/index.md). With `ENTITY_TYPE_ID=4` or `3`, pass the company or contact ID, respectively ||
 || **ADDRESS_1**
 [`string`](../../../data-types.md) | Street, house, building, structure ||
 || **ADDRESS_2**
@@ -72,18 +70,14 @@ For backward compatibility, the ability to link Addresses with Contacts or Compa
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
-[`string`](../../../data-types.md) | Country code.
-
-Not used, retained for backward compatibility. An empty string can be specified as a value.
+[`string`](../../../data-types.md) | Country code. Retained only if `COUNTRY` exactly matches the country name for this code. If `COUNTRY` is not passed or does not match, the code is cleared
 ||
 || **LOC_ADDR_ID**
 [`integer`](../../../data-types.md) | Identifier of the location address.
 
-This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address in CRM with location information that is not in the CRM address fields.
+Lets you use an existing address of the `location` module, including data that the CRM address fields do not have. If the location address is already linked to another object, a copy of it is created.
 
-If the identifier of the `location` module address is specified when creating the address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
-
-If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+If no string address fields are passed, they are filled from the location address; to create a CRM address, at least one of them must be non-empty. If at least one of the `ADDRESS_1`, `ADDRESS_2`, `CITY`, `POSTAL_CODE`, `REGION`, `PROVINCE`, `COUNTRY` fields is passed, only the passed fields are retained in CRM. They also update the corresponding fields of the location address
 ||
 |#
 
@@ -213,7 +207,7 @@ If at least one string field is specified, only the specified fields will be sav
             fields={
                 "TYPE_ID": 1,
                 "ENTITY_TYPE_ID": 8,
-                "ENTITY_ID": 7335,
+                "ENTITY_ID": 1,
                 "ADDRESS_1": "15 Main Street",
                 "ADDRESS_2": "Suite 300",
                 "CITY": "Boston",
@@ -221,7 +215,6 @@ If at least one string field is specified, only the specified fields will be sav
                 "REGION": "Suffolk County",
                 "PROVINCE": "Massachusetts",
                 "COUNTRY": "United States",
-                "COUNTRY_CODE": "US",
             },
         ).response
         result = bitrix_response.result
@@ -262,11 +255,11 @@ If at least one string field is specified, only the specified fields will be sav
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding address: ' . $e->getMessage();
@@ -384,9 +377,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of adding the address:
-- `true` — added
-- `false` — not added 
+[`boolean`](../../../data-types.md) | The value `true` means that the request completed without an error.
+
+If you pass only `TYPE_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID`, the method returns `true`, but no address is created. Pass a non-empty text address field or the `LOC_ADDR_ID` of a location address with non-empty address fields, then check the result with the [crm.address.list](./crm-address-list.md) method
 ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
@@ -394,7 +387,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -407,13 +400,13 @@ HTTP status: **40x**, **50x**
 
 ### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | Parent object type identifier is not specified or has an invalid value. ||
-|| `ENTITY_ID is not defined or invalid` | Parent object identifier is not specified or has an invalid value ||
-|| `TypeAddress exists` | An address of this type already exists for the specified parent object ||
-|| `Access denied` | Insufficient access permissions to add the address ||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `TYPE_ID is not defined or invalid` | The address type is not specified or is invalid ||
+|| `400` | Empty value | `ENTITY_TYPE_ID is not defined or invalid` | The parent object type is not specified or is invalid ||
+|| `400` | Empty value | `ENTITY_ID is not defined or invalid` | The parent object identifier is not specified or is not a positive number ||
+|| `400` | Empty value | `TypeAddress exists` | The parent object already has an address of this type ||
+|| `400` | Empty value | `Access denied` | No permission to edit the address owner, or the parent object type does not support adding an address ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -424,6 +417,7 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-address-list.md)
 - [{#T}](./crm-address-delete.md)
 - [{#T}](./crm-address-fields.md)
+- [{#T}](./index.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)

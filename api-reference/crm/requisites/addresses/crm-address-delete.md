@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 methods:
 
 {% endnote %}
 
-The method deletes an address.
+Deletes an address by its address type, owner type, and owner ID.
 
 ## Method Parameters
 
@@ -29,10 +29,10 @@ The method deletes an address.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for deleting the address ||
+[`object`](../../../data-types.md) | Fields that identify the address to delete [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -42,26 +42,24 @@ The method deletes an address.
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
 Identifiers for object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Details (which are already linked to companies or contacts) or Leads.
-
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
+Addresses are linked to requisites (`8`) of companies or contacts, or to leads (`1`). To delete a company or contact address, pass `8` and the requisite ID
 ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Identifier of the parent object ([detail](../universal/index.md) or [lead](../../leads/index.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the parent object: a [requisite](../universal/index.md) or a [lead](../../leads/index.md). You can retrieve the `TYPE_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID` values of an existing address with the [crm.address.list](./crm-address-list.md) method ||
 |#
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Searching for addresses linked to the Detail type:
+Delete a requisite address:
 
 {% list tabs %}
 
@@ -71,7 +69,7 @@ Searching for addresses linked to the Detail type:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1}}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":7335}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.delete
     ```
 
@@ -81,7 +79,7 @@ Searching for addresses linked to the Detail type:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":7335},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.delete
     ```
 
@@ -101,8 +99,8 @@ Searching for addresses linked to the Detail type:
         params: {
           fields: {
             TYPE_ID: 1,
-            ENTITY_TYPE_ID: 3,
-            ENTITY_ID: 1,
+            ENTITY_TYPE_ID: 8,
+            ENTITY_ID: 7335,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -137,8 +135,8 @@ Searching for addresses linked to the Detail type:
             params: {
               fields: {
                 TYPE_ID: 1,
-                ENTITY_TYPE_ID: 3,
-                ENTITY_ID: 1,
+                ENTITY_TYPE_ID: 8,
+                ENTITY_ID: 7335,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -202,12 +200,12 @@ Searching for addresses linked to the Detail type:
                 [
                     'fields' => [
                         'TYPE_ID'       => 1,
-                        'ENTITY_TYPE_ID' => 3,
-                        'ENTITY_ID'     => 1,
+                        'ENTITY_TYPE_ID' => 8,
+                        'ENTITY_ID'     => 7335,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -227,8 +225,8 @@ Searching for addresses linked to the Detail type:
             fields:
             {
                 "TYPE_ID": 1,
-                "ENTITY_TYPE_ID": 3,
-                "ENTITY_ID": 1
+                "ENTITY_TYPE_ID": 8,
+                "ENTITY_ID": 7335
             }
         },
         function(result)
@@ -251,8 +249,8 @@ Searching for addresses linked to the Detail type:
         [
             'fields' => [
                 'TYPE_ID' => 1,
-                'ENTITY_TYPE_ID' => 3,
-                'ENTITY_ID' => 1
+                'ENTITY_TYPE_ID' => 8,
+                'ENTITY_ID' => 7335
             ]
         ]
     );
@@ -269,8 +267,8 @@ Searching for addresses linked to the Detail type:
     res, err := client.Core().Call(ctx, "crm.address.delete", b24.Params{
     	"fields": b24.Params{
     		"TYPE_ID":        1,
-    		"ENTITY_TYPE_ID": 3,
-    		"ENTITY_ID":      1,
+    		"ENTITY_TYPE_ID": 8,
+    		"ENTITY_ID":      7335,
     	},
     })
     if err != nil {
@@ -310,17 +308,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the address deletion:
-- `true` — deleted
-- `false` — not deleted
-||
+[`boolean`](../../../data-types.md) | Result of the request: `true` ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -333,13 +328,13 @@ HTTP status: **40x**, **50x**
 
 ### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `TYPE_ID is not defined or invalid` | The address type identifier is not specified or has an invalid value ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | The parent object type identifier is not specified or has an invalid value ||
-|| `ENTITY_ID is not defined or invalid` | The parent object identifier is not specified or has an invalid value ||
-|| `TypeAddress not found` | The address to delete was not found ||
-|| `Access denied` | Insufficient access permissions to delete the address ||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `TYPE_ID is not defined or invalid` | The address type identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `ENTITY_TYPE_ID is not defined or invalid` | The parent object type identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `ENTITY_ID is not defined or invalid` | The parent object identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `TypeAddress not found` | The address to delete was not found ||
+|| `400` | Empty value | `Access denied` | Insufficient access permissions to delete the address ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

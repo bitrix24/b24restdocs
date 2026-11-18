@@ -19,7 +19,7 @@ The development of this method has been halted. Please use the REST 3.0 methods:
 
 {% endnote %}
 
-This method updates the address for a contact or lead.
+Updates an existing address of a requisite or lead. Does not create a new address.
 
 ## Method Parameters
 
@@ -29,12 +29,12 @@ This method updates the address for a contact or lead.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` to update the address.
+[`object`](../../../data-types.md) | A set of fields to update the address [(detailed description)](#fields).
 
-Values for the fields **TYPE_ID**, **ENTITY_TYPE_ID**, **ENTITY_ID** must be specified as they identify the address being modified. Other fields are specified if their values need to be changed ||
+Always pass `TYPE_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID`: they identify the address. Also pass all text address fields whose values you want to retain or change. If you pass only some of the text fields, the rest are cleared. If you pass none of the `ADDRESS_1`, `ADDRESS_2`, `CITY`, `POSTAL_CODE`, `REGION`, `PROVINCE`, and `COUNTRY` fields, the values may be filled from the specified or previously linked `location` address. The `COUNTRY_CODE` field alone does not prevent this ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -51,12 +51,10 @@ Enumeration elements for "Address Type" can be retrieved using the method [crm.e
 
 Object type identifiers can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Contacts (which are linked to companies or contacts) or Leads.
-
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by support.
+Specify a requisite (`8`) or a lead (`1`). For a requisite address of a company or contact, pass type `8` and the ID of the requisite itself: the method looks up the address by the specified `ENTITY_TYPE_ID` and `ENTITY_ID`
 ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Identifier for the parent object ||
+[`integer`](../../../data-types.md) | Identifier of the address owner: a requisite or a lead ||
 || **ADDRESS_1**
 [`string`](../../../data-types.md) | Street, house, building, structure ||
 || **ADDRESS_2**
@@ -72,23 +70,21 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
-[`string`](../../../data-types.md) | Country code.
-
-Not used, retained for backward compatibility. An empty string can be specified as a value.
+[`string`](../../../data-types.md) | Country code from the location directory of the `sale` module. If the code is not found, does not match the country name in `COUNTRY`, or the resulting `COUNTRY` value is empty, the country code is cleared
 ||
 || **LOC_ADDR_ID**
-[`integer`](../../../data-types.md) | 
-Identifier for the location address.
+[`integer`](../../../data-types.md) |
+Identifier of the address in the `location` module linked to the CRM address. Lets you use location data that the CRM text fields do not have.
 
-This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
+The condition for filling fields from `location` is described in the [fields](#fields) parameter. When address fields are passed, only the corresponding passed fields are updated in `location`. If the specified `location` object is linked to another address, a copy of it is created.
 
-If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the newly created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
-
-If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+CRM fields cleared during a partial update may come back from `location` on the next call without the address fields listed in `fields`; to clear them in `location` as well, pass empty strings
 ||
 |#
 
 ## Code Examples
+
+In the examples, the street and city of a requisite address are updated.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -100,7 +96,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"}}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.update
     ```
 
@@ -110,7 +106,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.update
     ```
 
@@ -129,11 +125,11 @@ If at least one string field is specified, only the specified fields will be sav
         method: 'crm.address.update',
         params: {
           fields: {
-            TYPE_ID: 1,           // identifies the address
-            ENTITY_TYPE_ID: 3,    // identifies the address
-            ENTITY_ID: 1,         // identifies the address
-            ADDRESS_1: 'Street, 261', // field to update
-            CITY: 'City',                   // field to update
+            TYPE_ID: 1,
+            ENTITY_TYPE_ID: 8,
+            ENTITY_ID: 1,
+            ADDRESS_1: 'Street, 261',
+            CITY: 'Los Angeles',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -167,11 +163,11 @@ If at least one string field is specified, only the specified fields will be sav
             method: 'crm.address.update',
             params: {
               fields: {
-                TYPE_ID: 1,           // identifies the address
-                ENTITY_TYPE_ID: 3,    // identifies the address
-                ENTITY_ID: 1,         // identifies the address
-                ADDRESS_1: 'Street, 261', // field to update
-                CITY: 'City',                   // field to update
+                TYPE_ID: 1,
+                ENTITY_TYPE_ID: 8,
+                ENTITY_ID: 1,
+                ADDRESS_1: 'Street, 261',
+                CITY: 'Los Angeles',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -206,15 +202,9 @@ If at least one string field is specified, only the specified fields will be sav
             fields={
                 "TYPE_ID": 1,
                 "ENTITY_TYPE_ID": 8,
-                "ENTITY_ID": 7335,
-                "ADDRESS_1": "25 Market Street",
-                "ADDRESS_2": "Floor 5",
-                "CITY": "Boston",
-                "POSTAL_CODE": "02109",
-                "REGION": "Suffolk County",
-                "PROVINCE": "Massachusetts",
-                "COUNTRY": "United States",
-                "COUNTRY_CODE": "US",
+                "ENTITY_ID": 1,
+                "ADDRESS_1": "Street, 261",
+                "CITY": "Los Angeles",
             },
         ).response
         result = bitrix_response.result
@@ -243,18 +233,18 @@ If at least one string field is specified, only the specified fields will be sav
                 [
                     'fields' => [
                         'TYPE_ID'        => 1,
-                        'ENTITY_TYPE_ID' => 3,
+                        'ENTITY_TYPE_ID' => 8,
                         'ENTITY_ID'      => 1,
                         'ADDRESS_1'      => 'Street, 261',
                         'CITY'           => 'Los Angeles',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating address: ' . $e->getMessage();
@@ -269,11 +259,11 @@ If at least one string field is specified, only the specified fields will be sav
         {
             fields:
             {
-                "TYPE_ID": 1,           //
-                "ENTITY_TYPE_ID": 3,    // - Identifying fields.
-                "ENTITY_ID": 1,         //
-                "ADDRESS_1": "Street, 261", // - Fields whose values are changing.
-                "CITY": "Los Angeles"                    //
+                "TYPE_ID": 1,
+                "ENTITY_TYPE_ID": 8,
+                "ENTITY_ID": 1,
+                "ADDRESS_1": "Street, 261",
+                "CITY": "Los Angeles"
             }
         },
         function(result)
@@ -294,7 +284,7 @@ If at least one string field is specified, only the specified fields will be sav
         [
             'fields' => [
                 'TYPE_ID' => 1,
-                'ENTITY_TYPE_ID' => 3,
+                'ENTITY_TYPE_ID' => 8,
                 'ENTITY_ID' => 1,
                 'ADDRESS_1' => 'Street, 261',
                 'CITY' => 'Los Angeles'
@@ -314,7 +304,7 @@ If at least one string field is specified, only the specified fields will be sav
     res, err := client.Core().Call(ctx, "crm.address.update", b24.Params{
     	"fields": b24.Params{
     		"TYPE_ID":        1,
-    		"ENTITY_TYPE_ID": 3,
+    		"ENTITY_TYPE_ID": 8,
     		"ENTITY_ID":      1,
     		"ADDRESS_1":      "Street, 261",
     		"CITY":           "Los Angeles",
@@ -357,9 +347,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the address update:
-- `true` — updated
-- `false` — not updated 
+[`boolean`](../../../data-types.md) | `true` — the address update request completed
 ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
@@ -367,7 +355,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -380,13 +368,13 @@ HTTP status: **40x**, **50x**
 
 ### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | Parent object type identifier is not specified or has an invalid value. ||
-|| `ENTITY_ID is not defined or invalid` | Parent object identifier is not specified or has an invalid value. ||
-|| `TypeAddress not found` | Address not found ||
-|| `Access denied` | Insufficient access permissions to update the address ||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `TYPE_ID is not defined or invalid` | The address type identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `ENTITY_TYPE_ID is not defined or invalid` | The address owner type identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `ENTITY_ID is not defined or invalid` | The address owner identifier is not specified or has an invalid value ||
+|| `400` | Empty value | `TypeAddress not found` | No address with the specified `TYPE_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID` was found ||
+|| `400` | Empty value | `Access denied` | No permission to edit the address owner ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -397,3 +385,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-address-list.md)
 - [{#T}](./crm-address-delete.md)
 - [{#T}](./crm-address-fields.md)
+- [{#T}](./index.md)
