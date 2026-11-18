@@ -81,8 +81,10 @@ The structure is described [below](#auth) ||
 || **ENTITY_ID**
 [`string`](../../../../data-types.md) | Identifier of the object to which the custom field belongs. In this case — `CRM_LEAD` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the updated custom field ||
+[`string`](../../../../data-types.md) | Code of the custom field that was changed ||
 |#
+
+The event does not pass the changes themselves. Retrieve the current field settings with the [crm.lead.userfield.get](../crm-lead-userfield-get.md) method, passing the `ID` from the event.
 
 ### Parameter auth {#auth}
 
@@ -94,3 +96,4 @@ The structure is described [below](#auth) ||
 - [{#T}](../../../../events/event-bind.md)
 - [{#T}](./on-crm-lead-user-field-add.md)
 - [{#T}](./on-crm-lead-user-field-delete.md)
+- [{#T}](./on-crm-lead-user-field-set-enum-values.md)

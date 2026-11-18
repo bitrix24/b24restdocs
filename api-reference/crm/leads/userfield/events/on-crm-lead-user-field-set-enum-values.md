@@ -81,8 +81,10 @@ The structure is described [below](#auth) ||
 || **ENTITY_ID**
 [`string`](../../../../data-types.md) | Identifier of the object to which the custom field belongs. In this case — `CRM_LEAD` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the custom field ||
+[`string`](../../../../data-types.md) | Code of the custom field ||
 |#
+
+List values are not passed in the event. Retrieve the current values in `LIST` with the [crm.lead.userfield.get](../crm-lead-userfield-get.md) method, passing the `ID` from the event.
 
 ### Parameter auth {#auth}
 

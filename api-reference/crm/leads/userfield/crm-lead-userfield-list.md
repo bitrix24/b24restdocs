@@ -21,7 +21,13 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.lead.userfield.list` returns a list of custom fields for leads based on a filter.
 
+The method returns all fields that match the filter in a single response, without pagination. The `start` parameter is ignored, and `next` is not returned.
+
 ## Method Parameters
+
+All parameters are optional. Without `filter`, the method returns all custom fields of leads.
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,7 +46,7 @@ The method `crm.lead.userfield.list` returns a list of custom fields for leads b
 - `field_n` — the name of the field by which the selection of custom fields will be filtered
 - `value_n` — the filter value
 
-All conditions for individual fields are combined using `AND`. See the [list of available fields for filtering](#filterable) below. ||
+Only exact match is supported. Conditions are combined using `AND`. Keys with the `>`, `!`, `%` prefixes, unknown keys, array values, and empty strings are ignored. See the [list of available fields for filtering](#filterable) below. ||
 || **order**
 [`object`](../../../data-types.md) | Object format:
 ```
@@ -57,14 +63,17 @@ All conditions for individual fields are combined using `AND`. See the [list of 
     - `ASC` — ascending order
     - `DESC` — descending order
 
+The direction is case-insensitive. If a value other than `ASC` is passed, `DESC` is used.
+
 Available fields for sorting:
 - `ID` — identifier of the custom field
+- `ENTITY_ID` — field object: `CRM_LEAD`
 - `FIELD_NAME` — code of the custom field
 - `USER_TYPE_ID` — type of the custom field
 - `XML_ID` — external code
 - `SORT` — sort index
 
-By default:
+If `order` is not set or contains no available sort fields, the following order is used:
 ```
 {
     "SORT": "ASC",
@@ -84,36 +93,18 @@ By default:
 || **FIELD_NAME**
 [`string`](../../../data-types.md) | Code of the custom field ||
 || **USER_TYPE_ID**
-[`string`](../../../data-types.md) | Type of the custom field. Possible values:
-- `string` — string
-- `integer` — integer
-- `double` — number
-- `boolean` — yes/no
-- `datetime` — date/time
-- `date` — date
-- `money` — money
-- `url` — link
-- `address` — address
-- `enumeration` — list
-- `file` — file
-- `employee` — binding to an employee
-- `crm_status` — binding to the CRM directory
-- `iblock_section` — binding to information block sections
-- `iblock_element` — binding to information block elements
-- `crm` — binding to CRM elements
-- [custom field types](../../universal/user-defined-fields/userfield-type.md)
-||
+[`string`](../../../data-types.md) | Field type identifier. The available types are returned by [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Indicates whether the custom field is multiple.
+[`char`](../../../data-types.md) | Indicates whether the custom field is multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Indicates whether the custom field is mandatory. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the custom field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -123,20 +114,20 @@ Possible values:
 - `E` — mask
 - `S` — substring ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to allow user editing. Possible values:
+[`char`](../../../data-types.md) | Whether to allow user editing. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Whether the field values participate in search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the specified language will be provided:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). Selects the language of labels and does not filter fields by the presence of a translation. When `LANG` is passed, the response additionally contains labels in the specified language (strings or `null`):
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -148,10 +139,7 @@ Possible values:
 
 {% include [Example Notes](../../../../_includes/examples.md) %}
 
-Get a list of custom fields that:
-- are multiple,
-- are mandatory,
-- have custom field labels in German. The filter by the `LANG` parameter will additionally provide the field names in the response.
+Retrieve multiple required fields with labels in German. Sort them by type and sort index.
 
 {% list tabs %}
 
@@ -185,7 +173,7 @@ Get a list of custom fields that:
 
     declare const $b24: B24Frame
 
-    // Shape of each user field returned in result[] (with filter.LANG the label fields are strings)
+    // Shape of each user field returned in result[] (filter.LANG adds translated labels)
     type CrmLeadUserFieldListItem = {
       ID: string
       ENTITY_ID: string
@@ -196,29 +184,23 @@ Get a list of custom fields that:
       MULTIPLE: string
       MANDATORY: string
       SHOW_IN_LIST: string
-      EDIT_FORM_LABEL: string
-      LIST_COLUMN_LABEL: string
+      EDIT_FORM_LABEL: string | null
+      LIST_COLUMN_LABEL: string | null
     }
 
     try {
-      // crm.lead.userfield.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<CrmLeadUserFieldListItem[]>({
         method: 'crm.lead.userfield.list',
         params: {
           filter: {
             MULTIPLE: 'Y',
             MANDATORY: 'Y',
-            LANG: 'ru',
+            LANG: 'de',
           },
           order: {
             USER_TYPE_ID: 'ASC',
             SORT: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -228,7 +210,7 @@ Get a list of custom fields that:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('User fields on this page:', result.length, result)
+        console.info('User fields:', result.length, result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -247,24 +229,18 @@ Get a list of custom fields that:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.lead.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.lead.userfield.list',
             params: {
               filter: {
                 MULTIPLE: 'Y',
                 MANDATORY: 'Y',
-                LANG: 'ru',
+                LANG: 'de',
               },
               order: {
                 USER_TYPE_ID: 'ASC',
                 SORT: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -276,7 +252,7 @@ Get a list of custom fields that:
           }
 
           const result = response.getData().result
-          console.info('User fields on this page:', result.length, result)
+          console.info('User fields:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -289,85 +265,27 @@ Get a list of custom fields that:
 
 - Python
 
-    Example
-
     ```python
-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
     try:
-        bitrix_response = client.crm.lead.userfield.list(
-            filter={"MANDATORY": "N", "SHOW_IN_LIST": "Y"},
-            order={"SORT": "ASC", "ID": "DESC"},
-        ).response
+        bitrix_response = client.crm.lead.userfield.list(filter={
+            "MANDATORY": "Y",
+            "MULTIPLE": "Y",
+            "LANG": "de",
+        }, order={
+            "USER_TYPE_ID": "ASC",
+            "SORT": "ASC",
+        }).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
+        print('Bitrix API error', f'error: {error.error}', f'error_description: {error.error_description}', sep='\n')
     except BitrixSDKException as error:
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
 
-    Example `as_list`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.lead.userfield.list(
-            filter={"SHOW_IN_LIST": "Y"},
-            order={"SORT": "ASC"},
-        ).as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.lead.userfield.list(
-            filter={"SHOW_IN_LIST": "Y"},
-            order={"ID": "DESC"},
-        ).as_list_fast(descending=True).response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
 
 - PHP
 
@@ -435,7 +353,7 @@ Get a list of custom fields that:
         [
             'filter' => [
                 'MULTIPLE' => "Y",
-                'MANDATORY' => "N",
+                'MANDATORY' => "Y",
                 'LANG' => "de",
             ],
             'order' => [
@@ -458,7 +376,7 @@ Get a list of custom fields that:
     	"filter": b24.Params{
     		"MULTIPLE":  "Y",
     		"MANDATORY": "Y",
-    		"LANG":      "ru",
+    		"LANG":      "de",
     	},
     	"order": b24.Params{
     		"USER_TYPE_ID": "ASC",
@@ -484,8 +402,6 @@ Get a list of custom fields that:
     	fmt.Println(it.ID, it.EntityID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
     if res.Total != nil {
     	fmt.Println("total:", *res.Total)
     }
@@ -501,28 +417,6 @@ HTTP Status: **200**
 {
     "result": [
         {
-            "ID": "5815",
-            "ENTITY_ID": "CRM_LEAD",
-            "FIELD_NAME": "UF_CRM_1713790573",
-            "USER_TYPE_ID": "crm_status",
-            "XML_ID": null,
-            "SORT": "100",
-            "MULTIPLE": "Y",
-            "MANDATORY": "N",
-            "SHOW_FILTER": "I",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "Y",
-            "IS_SEARCHABLE": "N",
-            "SETTINGS": {
-                "ENTITY_TYPE": "INDUSTRY"
-            },
-            "EDIT_FORM_LABEL": "Directory",
-            "LIST_COLUMN_LABEL": "Directory",
-            "LIST_FILTER_LABEL": "Directory",
-            "ERROR_MESSAGE": null,
-            "HELP_MESSAGE": null
-        },
-        {
             "ID": "6799",
             "ENTITY_ID": "CRM_LEAD",
             "FIELD_NAME": "UF_CRM_1724077760",
@@ -530,7 +424,7 @@ HTTP Status: **200**
             "XML_ID": null,
             "SORT": "150",
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
+            "MANDATORY": "Y",
             "SHOW_FILTER": "E",
             "SHOW_IN_LIST": "Y",
             "EDIT_IN_LIST": "Y",
@@ -560,168 +454,11 @@ HTTP Status: **200**
                     "VALUE": "Shanson Radio",
                     "DEF": "N",
                     "XML_ID": "d3ffd89a825f218f5efd79dffd38fbbf"
-                },
-                {
-                    "ID": "3161",
-                    "SORT": "30",
-                    "VALUE": "Love Radio",
-                    "DEF": "N",
-                    "XML_ID": "dff769fa19d7d7ce8d0677341d221161"
-                },
-                {
-                    "ID": "3163",
-                    "SORT": "40",
-                    "VALUE": "Monte Carlo Radio",
-                    "DEF": "N",
-                    "XML_ID": "1f22e5c818ce336a42bd0ec94eb69b9e"
-                },
-                {
-                    "ID": "3181",
-                    "SORT": "130",
-                    "VALUE": "DFM Yuriev-Polsky",
-                    "DEF": "N",
-                    "XML_ID": "fc1c5e6b4a9fd20b4749240b8dbac41a"
                 }
             ]
-        },
-        {
-            "ID": "6791",
-            "ENTITY_ID": "CRM_LEAD",
-            "FIELD_NAME": "UF_CRM_1722578010",
-            "USER_TYPE_ID": "file",
-            "XML_ID": null,
-            "SORT": "150",
-            "MULTIPLE": "Y",
-            "MANDATORY": "N",
-            "SHOW_FILTER": "E",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "Y",
-            "IS_SEARCHABLE": "N",
-            "SETTINGS": {
-                "SIZE": 20,
-                "LIST_WIDTH": 0,
-                "LIST_HEIGHT": 0,
-                "MAX_SHOW_SIZE": 0,
-                "MAX_ALLOWED_SIZE": 0,
-                "EXTENSIONS": [],
-                "TARGET_BLANK": "Y"
-            },
-            "EDIT_FORM_LABEL": "Estimate (files)",
-            "LIST_COLUMN_LABEL": "Estimate (files)",
-            "LIST_FILTER_LABEL": "Estimate (files)",
-            "ERROR_MESSAGE": null,
-            "HELP_MESSAGE": null
-        },
-        {
-            "ID": "5567",
-            "ENTITY_ID": "CRM_LEAD",
-            "FIELD_NAME": "UF_CRM_1709565075",
-            "USER_TYPE_ID": "resourcebooking",
-            "XML_ID": null,
-            "SORT": "1",
-            "MULTIPLE": "Y",
-            "MANDATORY": "N",
-            "SHOW_FILTER": "N",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "Y",
-            "IS_SEARCHABLE": "N",
-            "SETTINGS": {
-                "USE_USERS": "N",
-                "USE_RESOURCES": "Y",
-                "RESOURCES": {
-                    "resource": {
-                        "XML_ID": "resource",
-                        "NAME": "resource",
-                        "SECTIONS": [
-                            {
-                                "ID": "7",
-                                "CAL_TYPE": "resource",
-                                "NAME": "Museum Hall"
-                            },
-                            {
-                                "ID": "49",
-                                "CAL_TYPE": "resource",
-                                "NAME": "resource 1"
-                            },
-                            {
-                                "ID": "51",
-                                "CAL_TYPE": "resource",
-                                "NAME": "resource 2"
-                            },
-                            {
-                                "ID": "53",
-                                "CAL_TYPE": "resource",
-                                "NAME": "1"
-                            },
-                            {
-                                "ID": "57",
-                                "CAL_TYPE": "resource",
-                                "NAME": "Resource"
-                            },
-                            {
-                                "ID": "59",
-                                "CAL_TYPE": "resource",
-                                "NAME": "Resource 2"
-                            }
-                        ]
-                    }
-                },
-                "SELECTED_RESOURCES": [
-                    {
-                        "type": "resource",
-                        "id": "7",
-                        "title": "Museum Hall"
-                    }
-                ],
-                "SELECTED_USERS": [],
-                "FULL_DAY": "N",
-                "ALLOW_OVERBOOKING": "Y",
-                "USE_SERVICES": "N",
-                "SERVICE_LIST": [
-                    {
-                        "name": "",
-                        "duration": "60"
-                    }
-                ],
-                "RESOURCE_LIMIT": -1,
-                "TIMEZONE": "Europe/Berlin",
-                "USE_USER_TIMEZONE": "N"
-            },
-            "EDIT_FORM_LABEL": "MEETING ROOM BOOKING",
-            "LIST_COLUMN_LABEL": "MEETING ROOM BOOKING",
-            "LIST_FILTER_LABEL": "MEETING ROOM BOOKING",
-            "ERROR_MESSAGE": null,
-            "HELP_MESSAGE": null
-        },
-        {
-            "ID": "6997",
-            "ENTITY_ID": "CRM_LEAD",
-            "FIELD_NAME": "UF_CRM_HELLO_WORLD",
-            "USER_TYPE_ID": "string",
-            "XML_ID": null,
-            "SORT": "2000",
-            "MULTIPLE": "Y",
-            "MANDATORY": "N",
-            "SHOW_FILTER": "N",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "N",
-            "IS_SEARCHABLE": "N",
-            "SETTINGS": {
-                "SIZE": 20,
-                "ROWS": 10,
-                "REGEXP": "",
-                "MIN_LENGTH": 0,
-                "MAX_LENGTH": 0,
-                "DEFAULT_VALUE": "Hello, world! Default value (modified)"
-            },
-            "EDIT_FORM_LABEL": "Hello, world! Edit (modified)",
-            "LIST_COLUMN_LABEL": "Hello, world! Column (modified)",
-            "LIST_FILTER_LABEL": "Hello, world! Filter (modified)",
-            "ERROR_MESSAGE": "Hello, world! Error (modified)",
-            "HELP_MESSAGE": "Hello, world! Help (modified)"
         }
     ],
-    "total": 5,
+    "total": 1,
     "time": {
         "start": 1753793143.219832,
         "finish": 1753793143.529472,
@@ -741,9 +478,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response, contains a list of custom fields.
-
-The structure of an individual custom field depends on its type. Fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned as `string` when `filter.LANG` is provided. ||
+[`object[]`](../../../data-types.md) | Array of field descriptions. The main characteristics are listed in the [crm.lead.userfield.get response table](./crm-lead-userfield-get.md#result). Without `filter.LANG`, language labels are missing; with `filter.LANG`, they are strings or `null`, not objects. For the `enumeration` type, `LIST` items additionally contain `XML_ID` — the external code of the option ||
 || **total**
 [`integer`](../../../data-types.md) | Number of found custom fields ||
 || **time**
@@ -766,10 +501,12 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | Parameter 'order' must be array | The provided `order` is not an object ||
-|| `400`     | Parameter 'filter' must be array | The provided `filter` is not an object ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array` | The provided `order` is not an object or an array ||
+|| `400` | Empty value | `Parameter 'filter' must be array` | The provided `filter` is not an object or an array ||
+|| `400` | Empty value | `Access denied` | No permission to read leads ||
 |#
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning

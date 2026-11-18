@@ -29,7 +29,7 @@ The method `crm.lead.userfield.get` returns a custom lead field by its identifie
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the lead.
+[`integer`](../../../data-types.md) | Positive identifier of the lead custom field.
 
 The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-lead-userfield-add.md) or [crm.lead.userfield.list](./crm-lead-userfield-list.md) ||
 |#
@@ -81,8 +81,8 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
       MULTIPLE: string
       MANDATORY: string
       SHOW_IN_LIST: string
-      EDIT_FORM_LABEL: Record<string, string>
-      LIST_COLUMN_LABEL: Record<string, string>
+      EDIT_FORM_LABEL?: Record<string, string | null>
+      LIST_COLUMN_LABEL?: Record<string, string | null>
     }
 
     try {
@@ -152,7 +152,7 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
 
     try:
         bitrix_response = client.crm.lead.userfield.get(
-            bitrix_id=410,
+            bitrix_id=399,
         ).response
         result = bitrix_response.result
         print(result)
@@ -260,7 +260,7 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "ID": "6997",
+        "ID": "399",
         "ENTITY_ID": "CRM_LEAD",
         "FIELD_NAME": "UF_CRM_HELLO_WORLD",
         "USER_TYPE_ID": "string",
@@ -281,119 +281,24 @@ HTTP Status: **200**
             "DEFAULT_VALUE": "Hello, World! Default value (changed)"
         },
         "EDIT_FORM_LABEL": {
-            "ar": "",
-            "br": "",
-            "de": "Hallo, Welt! Bearbeiten (geändert)",
             "en": "Hello, World! Edit (changed)",
-            "fr": "",
-            "hi": "",
-            "id": "",
-            "in": "",
-            "it": "",
-            "ja": "",
-            "kz": "",
-            "la": "",
-            "ms": "",
-            "pl": "",
-            "ru": "",
-            "sc": "",
-            "tc": "",
-            "th": "",
-            "tr": "",
-            "ua": "",
-            "vn": ""
+            "de": "Hallo, Welt! Bearbeiten (geändert)"
         },
         "LIST_COLUMN_LABEL": {
-            "ar": "",
-            "br": "",
-            "de": "Hallo, Welt! Spalte (geändert)",
             "en": "Hello, World! Column (changed)",
-            "fr": "",
-            "hi": "",
-            "id": "",
-            "in": "",
-            "it": "",
-            "ja": "",
-            "kz": "",
-            "la": "",
-            "ms": "",
-            "pl": "",
-            "ru": "",
-            "sc": "",
-            "tc": "",
-            "th": "",
-            "tr": "",
-            "ua": "",
-            "vn": ""
+            "de": "Hallo, Welt! Spalte (geändert)"
         },
         "LIST_FILTER_LABEL": {
-            "ar": "Hello, World! Column (changed)",
-            "br": "Hello, World! Column (changed)",
-            "de": "Hello, World! Column (changed)",
-            "en": "Hello, World! Column (changed)",
-            "fr": "Hello, World! Column (changed)",
-            "hi": "Hello, World! Column (changed)",
-            "id": "Hello, World! Column (changed)",
-            "in": "Hello, World! Column (changed)",
-            "it": "Hello, World! Column (changed)",
-            "ja": "Hello, World! Column (changed)",
-            "kz": "Hello, World! Column (changed)",
-            "la": "Hello, World! Column (changed)",
-            "ms": "Hello, World! Column (changed)",
-            "pl": "Hello, World! Column (changed)",
-            "ru": "Hello, World! Column (changed)",
-            "sc": "Hello, World! Column (changed)",
-            "tc": "Hello, World! Column (changed)",
-            "th": "Hello, World! Column (changed)",
-            "tr": "Hello, World! Column (changed)",
-            "ua": "Hello, World! Column (changed)",
-            "vn": "Hello, World! Column (changed)"
+            "en": "Hello, World! Filter (changed)",
+            "de": "Hello, World! Filter (changed)"
         },
         "ERROR_MESSAGE": {
-            "ar": "",
-            "br": "",
-            "de": "Hallo, Welt! Fehler (geändert)",
             "en": "Hello, World! Error (changed)",
-            "fr": "",
-            "hi": "",
-            "id": "",
-            "in": "",
-            "it": "",
-            "ja": "",
-            "kz": "",
-            "la": "",
-            "ms": "",
-            "pl": "",
-            "ru": "",
-            "sc": "",
-            "tc": "",
-            "th": "",
-            "tr": "",
-            "ua": "",
-            "vn": ""
+            "de": "Hallo, Welt! Fehler (geändert)"
         },
         "HELP_MESSAGE": {
-            "ar": "",
-            "br": "",
-            "de": "Hallo, Welt! Hilfe (geändert)",
             "en": "Hello, World! Help (changed)",
-            "fr": "",
-            "hi": "",
-            "id": "",
-            "in": "",
-            "it": "",
-            "ja": "",
-            "kz": "",
-            "la": "",
-            "ms": "",
-            "pl": "",
-            "ru": "",
-            "sc": "",
-            "tc": "",
-            "th": "",
-            "tr": "",
-            "ua": "",
-            "vn": ""
+            "de": "Hallo, Welt! Hilfe (geändert)"
         }
     },
     "time": {
@@ -415,9 +320,73 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, containing information about the custom field. The final list of fields depends on the field type; detailed descriptions of the fields can be found in the method [crm.lead.userfield.add](./crm-lead-userfield-add.md) ||
+[`object`](../../../data-types.md) | Custom field description [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Description {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+```integer | string``` | Field identifier ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | Field object: `CRM_LEAD` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Full field code with the `UF_CRM_` prefix ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Field type identifier. The available types are returned by [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) ||
+|| **XML_ID**
+```string | null``` | External code ||
+|| **SORT**
+```integer | string``` | Sort index ||
+|| **MULTIPLE**
+[`char`](../../../data-types.md) | Multiple values: `Y` — yes, `N` — no ||
+|| **MANDATORY**
+[`char`](../../../data-types.md) | Required: `Y` — yes, `N` — no ||
+|| **SHOW_FILTER**
+[`char`](../../../data-types.md) | Filter mode: `N` — do not show, `I` — exact match, `E` — mask, `S` — substring ||
+|| **SHOW_IN_LIST**
+[`char`](../../../data-types.md) | Show in the list: `Y` — yes, `N` — no ||
+|| **EDIT_IN_LIST**
+[`char`](../../../data-types.md) | Allow editing in the list: `Y` — yes, `N` — no ||
+|| **IS_SEARCHABLE**
+[`char`](../../../data-types.md) | Field values are included in search: `Y` — yes, `N` — no ||
+|| **SETTINGS**
+```object | array | null``` | Settings depend on the field type. If there are no settings, an empty array or `null` may be returned. The list of settings is returned by [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+|| **EDIT_FORM_LABEL**
+[`object`](../../../data-types.md) | Edit form labels by language ||
+|| **LIST_COLUMN_LABEL**
+[`object`](../../../data-types.md) | List column headers by language ||
+|| **LIST_FILTER_LABEL**
+[`object`](../../../data-types.md) | Filter labels by language ||
+|| **ERROR_MESSAGE**
+[`object`](../../../data-types.md) | Error messages by language ||
+|| **HELP_MESSAGE**
+[`object`](../../../data-types.md) | Help messages by language ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | Only for `enumeration`: list options [(detailed description)](#list) ||
+|| **USER_TYPE_OWNER**
+```string | null``` | Only for an application field type: identifier of the application that owns the type. If the application is not found, `null` is returned ||
+|#
+
+Language labels are objects with [language codes](../../data-types.md#lang-ids) as keys and strings or `null` as values. For example, `{"en": "Label", "de": "Bezeichnung"}`. If labels are not set, the corresponding properties may be missing.
+
+### LIST Item {#list}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+```integer | string``` | Option identifier ||
+|| **SORT**
+```integer | string``` | Sort index. Options are sorted by `SORT` in ascending order ||
+|| **VALUE**
+[`string`](../../../data-types.md) | Option text ||
+|| **DEF**
+[`char`](../../../data-types.md) | Default value: `Y` — yes, `N` — no ||
 |#
 
 ## Error Handling
@@ -436,13 +405,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `403` | Access denied | Occurs when:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied` | Occurs when:
 - the user does not have permission to read leads
 - the user attempts to retrieve a custom field not associated with leads ||
-|| `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or not provided at all ||
-|| `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` was not found ||
+|| `400` | Empty value | `ID is not defined or invalid` | The `id` parameter is not provided, or its value after conversion to an integer is less than or equal to zero ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning

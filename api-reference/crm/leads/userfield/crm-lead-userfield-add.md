@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator CRM
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
@@ -28,7 +28,7 @@ The method `crm.lead.userfield.add` creates a new custom field for leads.
 #|
 || **Name**
 `type` | **Description** ||
-|| **fields***
+|| **fields**
 [`object`](../../../data-types.md) | Object format:
 ```
 {
@@ -44,10 +44,14 @@ The method `crm.lead.userfield.add` creates a new custom field for leads.
 
 The list of available fields is described [below](#parameter-fields).
 
-An incorrect field in `fields` will be ignored ||
+An unknown key in `fields` will be ignored.
+
+If `fields` is not passed, the field parameters can be passed at the top level of the request ||
 |#
 
 ### Parameter fields {#parameter-fields}
+
+The `lang_map` type is an [object with labels by language](../../data-types.md#lang-ids).
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -77,48 +81,42 @@ An incorrect field in `fields` will be ignored ||
 || **FIELD_NAME***
 [`string`](../../../data-types.md) | Field code. Unique within leads.
 
-The prefix `UF_CRM_` is always added to the code, and the system builds the full field name itself:
+The system builds the full field name with the `UF_CRM_` prefix:
 - `MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE`
 - `UF_MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE` — the prefix `UF_` is replaced with `UF_CRM_`
 - `UF_CRM_MANAGER_NOTE` remains unchanged
 
-The length limit is `50` characters including the prefix, that is, up to `43` characters for the code. If a longer value is passed, the method returns the error `ERROR_CORE`.
+The full field name including the `UF_CRM_` prefix can contain up to `50` characters, and the part of the name after the prefix up to `43` characters; if the limit is exceeded, the method returns the error `ERROR_CORE`.
 
 Allowed characters: `A-Z`, `0-9`, and `_`. Lowercase letters are converted to uppercase, and any other characters cause the error `ERROR_CORE`||
 || **LABEL**
-[`string`](../../../data-types.md) | Default name of the custom field.
+[`string`](../../../data-types.md) | Default name of the custom field. If it is not passed or an empty string is passed, the full field name with the `UF_CRM_` prefix is used.
 
 The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **LIST_FILTER_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Filter label in the list.
+```string | lang_map``` | Filter label in the list.
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided.
-
-By default, the value passed in `LABEL` is set for all language identifiers ||
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Header in the list.
+```string | lang_map``` | Header in the list.
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided.
-
-By default, the value passed in `LABEL` is set for all language identifiers ||
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided ||
 || **EDIT_FORM_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Label in the edit form.
+```string | lang_map``` | Label in the edit form.
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided.
-
-By default, the value passed in `LABEL` is set for all language identifiers ||
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages that were not provided ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message||
+```string | lang_map``` | Error message||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help||
+```string | lang_map``` | Help||
 || **MULTIPLE**
 [`boolean`](../../../data-types.md) | Is the field multiple. Possible values:
 - `Y` — yes
@@ -138,6 +136,8 @@ By default, `N` ||
 - `Y` — yes
 - `N` — no
 
+For the `money`, `url`, `address`, `file` types and custom types, the `Y` value is ignored: the filter is disabled.
+
 By default, `N` ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional field parameters. Each `USER_TYPE_ID` field type has its own set of available settings, described [below](#settings) ||
@@ -146,9 +146,7 @@ By default, `N` ||
 
 By default `[]` ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than zero.
-
-By default `100` ||
+[`integer`](../../../data-types.md) | Sort index. By default and when the value is less than or equal to zero — `100` ||
 || **SHOW_IN_LIST**
 [`boolean`](../../../data-types.md) | Show the custom field in the list.
 
@@ -158,7 +156,7 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-By default `N` ||
+By default `Y` ||
 || **EDIT_IN_LIST**
 [`boolean`](../../../data-types.md) | Allow user editing. Possible values:
 - `Y` — yes
@@ -193,7 +191,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `''` ||
     || **ROWS**
-    [`integer`](../../../data-types.md) | Number of lines in the input field. Must be greater than 0.
+    [`integer`](../../../data-types.md) | Number of lines in the input field from `1` to `50`. Values outside the range are clamped to its bounds.
 
     Default `1` ||
     |#
@@ -215,9 +213,9 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DEFAULT_VALUE**
     [`double`](../../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../../data-types.md) | Number precision. Must be greater than or equal to 0.
+    [`integer`](../../../data-types.md) | Number of decimal places from `0` to `12`.
 
-    Default `2` ||
+    Default `0`. If a negative value is passed, `2` is used ||
     |#
 
 - boolean
@@ -229,8 +227,8 @@ Each type of custom fields has its own set of additional settings. This method o
     [`integer`](../../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
     Possible values:
-    - `>= 1` -> 1
-    - `<= 0` -> 0
+    - `> 0` → `1`
+    - `<= 0` → `0`
 
     Default `0` ||
     || **DISPLAY**
@@ -282,12 +280,11 @@ Each type of custom fields has its own set of additional settings. This method o
     - `LIST` — list
     - `UI` — editable list
     - `CHECKBOX` — checkboxes
-    - `DIALOG` — entity selection dialog
+    - `DIALOG` — item selection dialog
 
     Default `LIST` ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0.
-
-    Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | List height. Values less than `1` are replaced with `1`.
 
     Default `1` ||
     |#
@@ -302,13 +299,9 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `''` ||
     || **IBLOCK_ID**
-    [`string`](../../../data-types.md) | Information block identifier.
-
-    Default `0` ||
+    [`integer`](../../../data-types.md) | Information block identifier. If not passed, no information block binding is set ||
     || **DEFAULT_VALUE**
-    [`string`](../../../data-types.md) | Default value.
-
-    Default `''` ||
+    [`integer`](../../../data-types.md) | Identifier of the default element or section. If not passed, no default value is set ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
@@ -318,7 +311,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | List height. Must be greater than 0.
+    [`integer`](../../../data-types.md) | List height. Values less than `1` are replaced with `1`.
 
     Default `1` ||
     || **ACTIVE_FILTER**
@@ -344,7 +337,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
 - crm
 
-    If none of the following options are provided, the link to leads will be enabled by default `LEAD = Y`.
+    If none of the following options equals `Y`, the link to leads will be enabled by default `LEAD = Y`.
 
     #|
     || **Name**
@@ -354,7 +347,7 @@ Each type of custom fields has its own set of additional settings. This method o
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default is `N` if another binding is enabled. If no binding is enabled — `Y` ||
     || **CONTACT**
     [`boolean`](../../../data-types.md) | Whether binding to [Contacts](../../contacts/index.md) is enabled. Possible values:
     - `Y` — yes
@@ -387,15 +380,15 @@ Each type of custom fields has its own set of additional settings. This method o
 
 List items with an empty or missing `VALUE` will be ignored ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0.
+[`integer`](../../../data-types.md) | Sort index. Pass a positive integer.
 
-By default `0` ||
+By default `500` ||
 || **DEF**
 [`boolean`](../../../data-types.md) | Is the list item the default value. Possible values:
 - `Y` — yes
 - `N` — no
 
-For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, the first provided list item with `DEF = Y` will be considered default.
+For a multiple field, multiple `DEF = Y` are allowed. For a single-value field, the default value is the first provided list item with `DEF = Y`.
 
 By default `N` ||
 || **XML_ID**
@@ -417,7 +410,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
+    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.userfield.add
     ```
 
@@ -427,7 +420,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.userfield.add
     ```
 
@@ -592,22 +585,18 @@ By default `N` ||
                 "LIST_FILTER_LABEL": "Hello, world! Filter",
                 "LIST_COLUMN_LABEL": {
                     "en": "Hello, World! Column",
-                    "de": "Hello, world! Column",
                     "de": "Hallo, Welt! Spalte",
                 },
                 "EDIT_FORM_LABEL": {
                     "en": "Hello, World! Edit",
-                    "de": "Hello, world! Edit",
                     "de": "Hallo, Welt! Bearbeiten",
                 },
                 "ERROR_MESSAGE": {
                     "en": "Hello, World! Error",
-                    "de": "Hello, world! Error",
                     "de": "Hallo, Welt! Fehler",
                 },
                 "HELP_MESSAGE": {
                     "en": "Hello, World! Help",
-                    "de": "Hello, world! Help",
                     "de": "Hallo, Welt! Hilfe",
                 },
             },
@@ -634,6 +623,7 @@ By default `N` ||
         $userfieldItemFields = [
             'FIELD_NAME' => 'HELLO_WORLD',
             'USER_TYPE_ID' => 'string',
+            'LABEL' => 'Hello, world! Field',
             'SORT' => 1000,
             'MULTIPLE' => 'Y',
             'MANDATORY' => 'Y',
@@ -642,22 +632,18 @@ By default `N` ||
             'LIST_FILTER_LABEL' => 'Hello, world! Filter',
             'LIST_COLUMN_LABEL' => [
                 'en' => 'Hello, World! Column',
-                'de' => 'Hello, world! Column',
                 'de' => 'Hallo, Welt! Spalte',
             ],
             'EDIT_FORM_LABEL' => [
                 'en' => 'Hello, World! Edit',
-                'de' => 'Hello, world! Edit',
                 'de' => 'Hallo, Welt! Bearbeiten',
             ],
             'ERROR_MESSAGE' => [
                 'en' => 'Hello, World! Error',
-                'de' => 'Hello, world! Error',
                 'de' => 'Hallo, Welt! Fehler',
             ],
             'HELP_MESSAGE' => [
                 'en' => 'Hello, World! Help',
-                'de' => 'Hello, world! Help',
                 'de' => 'Hallo, Welt! Hilfe',
             ],
             'SETTINGS' => [
@@ -1176,14 +1162,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | The 'FIELD_NAME' field is not found. | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
-|| `ERROR_CORE` | Field name is too long (more than 50 characters). | The full field name including the prefix `UF_CRM_` contains more than 50 characters, that is, more than 43 characters were provided in `FIELD_NAME` ||
-|| `ERROR_CORE` | Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _. | The provided `FIELD_NAME` contains characters other than `A-Z`, `0-9`, and `_` ||
-|| Empty value | The 'USER_TYPE_ID' field is not found. | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
-|| `ERROR_CORE` | Invalid custom type specified. | The provided `USER_TYPE_ID` does not exist ||
-|| `ERROR_CORE` | List item with XML_ID=xml_id already exists. | The provided `XML_ID` in list items are not unique ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied` | No "Edit CRM preferences" permission in CRM ||
+|| `400` | Empty value | `The 'FIELD_NAME' field is not found` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
+|| `400` | `ERROR_CORE` | `The field name is too long (exceeds 50 symbols)` | The full field name after the prefix is added or replaced contains more than 50 characters ||
+|| `400` | `ERROR_CORE` | `The field name contains invalid symbols. Valid symbols are: A-Z, 0-9 and _` | The provided `FIELD_NAME` contains characters other than Latin letters, digits, and `_` ||
+|| `400` | Empty value | `The 'USER_TYPE_ID' field is not found` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
+|| `400` | `ERROR_CORE` | `The custom type is invalid` | The provided `USER_TYPE_ID` does not exist ||
+|| `400` | `ERROR_CORE` | `List element with XML_ID=xml_id already exists` | `XML_ID` values of list items match, including those generated automatically for identical `VALUE` values ||
+|| `400` | `ERROR_CORE` | `The field UF_CRM_EXAMPLE for entity CRM_LEAD already exists` | A lead field with this full name already exists. Specify a different `FIELD_NAME` ||
 |#
+
+If an error occurs while saving list items, the field may remain created without list items: before retrying, check it with the [crm.lead.userfield.list](./crm-lead-userfield-list.md) method and delete it with the [crm.lead.userfield.delete](./crm-lead-userfield-delete.md) method if necessary.
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -1193,6 +1183,3 @@ HTTP status: **400**
 - [{#T}](./crm-lead-userfield-get.md)
 - [{#T}](./crm-lead-userfield-list.md)
 - [{#T}](./crm-lead-userfield-delete.md)
-
-
-

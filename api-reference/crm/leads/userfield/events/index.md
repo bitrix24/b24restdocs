@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes in near real-time: receiving notifications about the creation, update, or deletion of custom lead fields.
+Events allow applications to receive notifications about changes to the settings of custom lead fields: when a field is added, changed, or deleted, and when values are set for a list-type field.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Handling](../../../../events/index.md).
 
@@ -43,6 +43,10 @@ The events pass the custom field identifier, the object it belongs to, and its c
 
 The composition of `FIELDS` is the same for all four events. The field type, its settings, and the list of values are not passed in the event — retrieve them with the [crm.lead.userfield.get](../crm-lead-userfield-get.md) method using the received `ID`. After the `onCrmLeadUserFieldDelete` event, this method returns the `ERROR_NOT_FOUND` error: the field no longer exists in Bitrix24.
 
+When a list-type field is created with the [crm.lead.userfield.add](../crm-lead-userfield-add.md) method, `onCrmLeadUserFieldAdd` is triggered first, followed by `onCrmLeadUserFieldSetEnumValues`. This also happens without the `LIST` parameter: the method sets an empty list.
+
+When [crm.lead.userfield.update](../crm-lead-userfield-update.md) is called successfully with the `LIST` parameter for a list-type field, `onCrmLeadUserFieldUpdate` is triggered first, followed by `onCrmLeadUserFieldSetEnumValues`. The second event is triggered even if the set of values has not changed.
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}
@@ -58,5 +62,5 @@ The composition of `FIELDS` is the same for all four events. The field type, its
 || [onCrmLeadUserFieldAdd](./on-crm-lead-user-field-add.md) | When a custom field is added manually or via the method [crm.lead.userfield.add](../crm-lead-userfield-add.md) ||
 || [onCrmLeadUserFieldUpdate](./on-crm-lead-user-field-update.md) | When a custom field is changed manually or via the method [crm.lead.userfield.update](../crm-lead-userfield-update.md) ||
 || [onCrmLeadUserFieldDelete](./on-crm-lead-user-field-delete.md) | When a custom field is deleted manually or via the method [crm.lead.userfield.delete](../crm-lead-userfield-delete.md) ||
-|| [onCrmLeadUserFieldSetEnumValues](./on-crm-lead-user-field-set-enum-values.md) | When the set of values for a list-type custom field is changed manually or via the method [crm.lead.userfield.update](../crm-lead-userfield-update.md) ||
+|| [onCrmLeadUserFieldSetEnumValues](./on-crm-lead-user-field-set-enum-values.md) | When values are set for a list-type custom field manually, when a list-type field is created via the method [crm.lead.userfield.add](../crm-lead-userfield-add.md), or when the method [crm.lead.userfield.update](../crm-lead-userfield-update.md) is called with the `LIST` parameter ||
 |#

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
@@ -32,7 +32,7 @@ The method `crm.lead.userfield.update` updates an existing custom field for lead
 [`integer`](../../../data-types.md) | Identifier of the custom field.
 
 The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-lead-userfield-add.md) and [crm.lead.userfield.list](./crm-lead-userfield-list.md) ||
-|| **fields***
+|| **fields**
 [`object`](../../../data-types.md) | Object in the format:
 ```
 {
@@ -48,12 +48,16 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
 
 The list of available fields is described [below](#parameter-fields).
 
-An incorrect field in `fields` will be ignored.
+An unknown key in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields` ||
+Only those fields that need to be changed should be passed in `fields`. If `fields` is not passed, on a successful call the method changes nothing and returns `true`.
+
+`USER_TYPE_ID`, `FIELD_NAME`, and `MULTIPLE` cannot be changed: the method ignores these keys without an error ||
 |#
 
 ### Parameter fields {#parameter-fields}
+
+The `lang_map` type is an [object with labels by language](../../data-types.md#lang-ids).
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -77,7 +81,7 @@ The field only overwrites the values that are passed ||
 || **LIST**
 [`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`, described [below](#uf_enum_element) ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than zero ||
+[`integer`](../../../data-types.md) | Sort index ||
 || **SHOW_IN_LIST**
 [`boolean`](../../../data-types.md) | Should the custom field be shown in the list?
 
@@ -100,7 +104,7 @@ Possible values:
 - `Y` — yes
 - `N` — no ||
 || **LIST_FILTER_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Filter label in the list.
+```string | lang_map``` | Filter label in the list.
 
 When passing a string, it is set for each language.
 
@@ -108,7 +112,7 @@ For languages where no value is explicitly specified, it will be recorded as `''
 
 The field completely overwrites the previous value ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Header in the list.
+```string | lang_map``` | Header in the list.
 
 When passing a string, it is set for each language.
 
@@ -116,7 +120,7 @@ For languages where no value is explicitly specified, it will be recorded as `''
 
 The field completely overwrites the previous value ||
 || **EDIT_FORM_LABEL**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Label in the edit form.
+```string | lang_map``` | Label in the edit form.
 
 When passing a string, it is set for each language.
 
@@ -124,14 +128,14 @@ For languages where no value is explicitly specified, it will be recorded as `''
 
 The field completely overwrites the previous value ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message ||
+```string | lang_map``` | Error message ||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help ||
+```string | lang_map``` | Help ||
 |#
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom field has its own set of additional settings. This method only supports those described below.
+Each type of custom field has its own set of additional settings. The method supports only the settings described below. Settings of a `date` field are not changed by this method.
 
 {% list tabs %}
 
@@ -143,7 +147,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value ||
     || **ROWS**
-    [`integer`](../../../data-types.md) | Number of rows in the input field. Must be greater than 0 ||
+    [`integer`](../../../data-types.md) | Number of rows in the input field from `1` to `50`. Values outside the range are clamped to its bounds ||
     |#
 
 - integer
@@ -163,7 +167,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **DEFAULT_VALUE**
     [`double`](../../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../../data-types.md) | Number precision. Must be greater than or equal to 0 ||
+    [`integer`](../../../data-types.md) | Number of decimal places from `0` to `12`; a negative value is replaced with `2` ||
     |#
 
 - boolean
@@ -175,8 +179,8 @@ Each type of custom field has its own set of additional settings. This method on
     [`integer`](../../../data-types.md) | Default value, where `1` — yes, `0` — no.
 
     Possible values:
-    - `>= 1` -> 1
-    - `<= 0` -> 0 ||
+    - `> 0` → `1`
+    - `<= 0` → `0` ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
@@ -184,7 +188,7 @@ Each type of custom field has its own set of additional settings. This method on
     - `DROPDOWN` — dropdown list ||
     |#
 
-- date|datetime
+- datetime
 
     #|
     || **Name**
@@ -194,12 +198,12 @@ Each type of custom field has its own set of additional settings. This method on
     Object format:
     ```
     {
-        VALUE: datetime|date,
+        VALUE: datetime,
         TYPE: 'NONE'|'NOW'|'FIXED',
     }
     ```
     where:
-    - `VALUE` — default value of type `datetime` or `date`
+    - `VALUE` — default value of type `datetime`
     - `TYPE` — type of default value:
       - `NONE` — do not set a default value
       - `NOW` — use the current time/date
@@ -216,10 +220,9 @@ Each type of custom field has its own set of additional settings. This method on
     - `LIST` — list
     - `UI` — input list
     - `CHECKBOX` — checkboxes
-    - `DIALOG` — entity selection dialog ||
-    || **LIST_HEIGHT** | Height of the list. Must be greater than 0.
-
-    Available only when `DISPLAY = LIST` or `DISPLAY = UI` ||
+    - `DIALOG` — item selection dialog ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the list. Values less than `1` are replaced with `1` ||
     |#
 
 - iblock_section|iblock_element
@@ -230,9 +233,9 @@ Each type of custom field has its own set of additional settings. This method on
     || **IBLOCK_TYPE_ID**
     [`string`](../../../data-types.md) | Identifier of the information block type ||
     || **IBLOCK_ID**
-    [`string`](../../../data-types.md) | Identifier of the information block ||
+    [`integer`](../../../data-types.md) | Identifier of the information block ||
     || **DEFAULT_VALUE**
-    [`string`](../../../data-types.md) | Default value ||
+    [`integer`](../../../data-types.md) | Identifier of the default element or section ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
@@ -240,7 +243,7 @@ Each type of custom field has its own set of additional settings. This method on
     - `LIST` — list
     - `CHECKBOX` — checkboxes ||
     || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | Height of the list. Must be greater than 0 ||
+    [`integer`](../../../data-types.md) | Height of the list. Values less than `1` are replaced with `1` ||
     || **ACTIVE_FILTER**
     [`boolean`](../../../data-types.md) | Should elements with the active flag be shown? Possible values:
     - `Y` — yes
@@ -288,18 +291,22 @@ Each type of custom field has its own set of additional settings. This method on
 #|
 || **Name**
 `type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Identifier of an existing list element. If not passed, a new element is created ||
+|| **DEL**
+[`boolean`](../../../data-types.md) | Pass `Y` together with `ID` to delete the list element ||
 || **VALUE**
 [`string`](../../../data-types.md) | Value of the list element.
 
-List elements with an empty or missing `VALUE` will be ignored ||
+`VALUE` is required for a new element. For an existing element, an empty or missing `VALUE` deletes it ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0 ||
+[`integer`](../../../data-types.md) | Sort index. Pass a positive integer ||
 || **DEF**
 [`boolean`](../../../data-types.md) | Is the list element the default value? Possible values:
 - `Y` — yes
 - `N` — no
 
-For multiple fields, multiple `DEF = Y` are allowed. For non-multiple fields, the first passed list element with `DEF = Y` will be considered default ||
+For multiple fields, multiple `DEF = Y` are allowed. For a single-value field, the default value is the first passed list element with `DEF = Y` ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code of the value. Must be unique within the elements of the custom field ||
 |#
@@ -685,15 +692,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | Parameter 'fields' must be array | The passed `fields` is not an object ||
-|| `400`     | ID is not defined or invalid     | The passed `id` is less than zero or not passed at all ||
-|| `403` | Access denied | Occurs when:
-- the user does not have administrative rights
-- the user attempts to modify a custom field not linked to leads ||
-|| `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | List item with value XML_ID='XML_ID' already exists | The passed `XML_ID` for the list item must be unique within the elements of the custom field ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'fields' must be array` | The passed `fields` is not an object ||
+|| `400` | Empty value | `ID is not defined or invalid` | `id` is not passed, or after conversion to an integer it is less than or equal to zero ||
+|| `400` | Empty value | `Access denied` | No "Edit CRM preferences" permission in CRM, or the field belongs to another object, not to leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the passed `id` does not exist ||
+|| `400` | `ERROR_CORE` | `List element with XML_ID=xml_id already exists` | The `XML_ID` of a list element is not unique within the field ||
+|| `400` | `ERROR_CORE` | `Fail to update user field` / `Fail to save enumeration field values` | Error saving the field or its list. A core message may be returned instead of this text ||
 |#
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning

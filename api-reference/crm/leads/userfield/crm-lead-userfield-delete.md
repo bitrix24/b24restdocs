@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
 {% note warning "DEPRECATED" %}
 
@@ -21,6 +21,8 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.lead.userfield.delete` removes a custom field for leads.
 
+When a field is deleted, its values in leads are deleted as well.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -29,7 +31,7 @@ The method `crm.lead.userfield.delete` removes a custom field for leads.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the lead.
+[`integer`](../../../data-types.md) | Identifier of the lead custom field, not the lead identifier.
 
 The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-lead-userfield-add.md) or [crm.lead.userfield.list](./crm-lead-userfield-list.md) ||
 |#
@@ -137,7 +139,7 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
 
     try:
         bitrix_response = client.crm.lead.userfield.delete(
-            bitrix_id=410,
+            bitrix_id=432,
         ).response
         result = bitrix_response.result
         print(result)
@@ -158,7 +160,7 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
 
     ```php
     try {
-        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $userfieldId = 432; // Replace with the actual userfield ID you want to delete
         $result = $serviceBuilder
             ->getCRMScope()
             ->leadUserfield()
@@ -274,19 +276,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | ID is not defined or invalid | The provided `id` is either less than or equal to zero, or not provided at all ||
-|| `403` | Access denied | Occurs when:
-- the user lacks administrative rights
-- the user attempts to delete a custom field not associated with leads ||
-|| `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` does not exist ||
-|| `400` | Error deleting FIELD_NAME for object ENTITY_ID | Unknown error during deletion ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid` | `id` is not provided, or after conversion to an integer it is less than or equal to zero ||
+|| `400` | Empty value | `Access denied` | No "Edit CRM preferences" permission in CRM, or the field belongs to another object, not to leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` does not exist ||
+|| `400` | `ERROR_CORE` | `Fail to delete user field` | Field deletion error. A core message may be returned instead of this text ||
 |#
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-lead-userfield-add.md)
+- [{#T}](./crm-lead-userfield-update.md)
 - [{#T}](./crm-lead-userfield-get.md)
 - [{#T}](./crm-lead-userfield-list.md)
-- [{#T}](./crm-lead-userfield-update.md)

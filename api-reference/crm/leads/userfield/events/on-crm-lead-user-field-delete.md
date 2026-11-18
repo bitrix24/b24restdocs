@@ -81,7 +81,7 @@ The structure is described [below](#auth) ||
 || **ENTITY_ID**
 [`string`](../../../../data-types.md) | Identifier of the object to which the custom field belonged. In this case — `CRM_LEAD` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the deleted custom field ||
+[`string`](../../../../data-types.md) | Code of the deleted custom field ||
 |#
 
 ### Parameter auth {#auth}
@@ -94,3 +94,4 @@ The structure is described [below](#auth) ||
 - [{#T}](../../../../events/event-bind.md)
 - [{#T}](./on-crm-lead-user-field-add.md)
 - [{#T}](./on-crm-lead-user-field-update.md)
+- [{#T}](./on-crm-lead-user-field-set-enum-values.md)
