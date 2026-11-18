@@ -11,17 +11,21 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions
 
-This method retrieves information about the custom fields of the smart process settings.
+The method `crm.type.fields` retrieves information about the custom fields of the SPA settings.
+
+To retrieve the field descriptions of SPA items, use [crm.item.fields](../crm-item-fields.md).
+
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-Get information about the smart process fields
+Get information about the SPA fields
 
 {% list tabs %}
 
@@ -227,6 +231,8 @@ Get information about the smart process fields
 ## Response Handling
 
 HTTP status: **200**
+
+A fragment of the response. The set of fields may vary depending on the Bitrix24 version and settings. The method call returns the current list.
 
 ```json
 {
@@ -482,11 +488,18 @@ HTTP status: **200**
 || **Title**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains an object with a single key `fields` ||
-|| **fields**
-[`object`](../../../data-types.md) | Object in the format: `{ field_1: value_1, field_2: value_2, ... , field_n: value_n }`, where `field_n` — fields of the smart process settings, and `value_n` — object of type [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | An object with field descriptions [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md) | Object containing information about the request execution time  ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Title**
+`type` | **Description** ||
+|| **fields**
+[`object`](../../../data-types.md) | An object where the key is the code of an SPA settings field and the value is the field description of the [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) type ||
 |#
 
 ## Error Handling
@@ -496,7 +509,7 @@ HTTP status: **400**, **403**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access Denied"
+    "error_description": "Access denied"
 }
 ```
 
@@ -506,18 +519,18 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users  | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access Denied | Occurs if the user does not have administrative rights in CRM ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed in the "Who can execute the method" block ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
+- [{#T}](./index.md)

@@ -371,9 +371,11 @@ SPA in the [crm.type.*](./universal/user-defined-object-types/index.md) methods.
 || **isSetOpenPermissions**
 [`boolean`](../data-types.md#standart-types)  | Whether new pipelines are made available to everyone ||
 || **isRecurringEnabled**
-[`boolean`](../data-types.md#standart-types) | Whether the **Recurrence** field is enabled ||
+[`boolean`](../data-types.md#standart-types) | Whether the **Recurring** field is enabled ||
 || **isMultifieldsEnabled**
 [`boolean`](../data-types.md#standart-types) | Whether communication fields are enabled: phone, email, and others ||
+|| **isPersonEnabled**
+[`boolean`](../data-types.md#standart-types) | Whether person tracking is enabled. It can be enabled only for SPAs with a predefined data schema ||
 || **isStartCatalogEnabled**
 [`boolean`](../data-types.md#standart-types) | Whether the process launch catalog is enabled ||
 || **isCreateByFormEnabled**
@@ -383,9 +385,9 @@ SPA in the [crm.type.*](./universal/user-defined-object-types/index.md) methods.
 || **daysBeforeClose**
 [`integer`](../data-types.md#standart-types) | Number of days from creation allotted to an item before completion. If no deadline is set — `null` ||
 || **isPaymentsEnabled**
-[`boolean`](../data-types.md#standart-types)  | Whether payments are enabled. Read-only ||
+[`boolean`](../data-types.md#standart-types)  | Whether accepting payments is enabled ||
 || **isCountersEnabled**
-[`boolean`](../data-types.md#standart-types)  | Whether counters are enabled. Read-only ||
+[`boolean`](../data-types.md#standart-types)  | Whether the Activities view mode and counters are enabled ||
 || **isInitialized**
 [`boolean`](../data-types.md#standart-types) | Whether the SPA creation is complete. The value `N` occurs only during the first seconds after creation and during deletion. Read-only ||
 || **createdTime**

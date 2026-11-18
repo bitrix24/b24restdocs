@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it
 
-This method creates a new SPA.
+The `crm.type.add` method creates a new SPA.
 
 ## Method Parameters
 
@@ -35,21 +35,23 @@ This method creates a new SPA.
 `type` | **Description** | **Default** ||
 || **title***
 [`string`](../../../data-types.md)  | Title of the SPA | ||
+|| **code**
+[`string`](../../../data-types.md) | Symbolic code of the SPA. Maximum length is 255 characters | ||
 || **entityTypeId**
 [`integer`](../../../data-types.md) | Identifier of the created SPA. If this field is not provided, it will be generated automatically.
 
 It should be noted that:
-1. This parameter is unique. It is not possible to create two SPAs with the same `entityTypeId`
+1. The parameter is unique
 2. The value of `entityTypeId` must be within one of two ranges:
    - an even integer that is greater than or equal to 1030
-   - in the range from 128 to 192
+   - an integer from 128 to 191 inclusive
 | ||
 || **relations**
-[`object`](../../../data-types.md)  | An object containing links to other CRM entities. The structure is described [below](#relations) | ||
+[`object`](../../../data-types.md)  | An object containing links to other CRM objects. The structure is described [below](#relations) | ||
 || **isUseInUserfieldEnabled** 
 [`boolean`](../../../data-types.md) | Is the use of the SPA in the user field enabled | `N` ||
 || **linkedUserFields** 
-[`object`](../../../data-types.md)  | A set of user fields in which this SPA should be displayed. The structure is described [below](#linkedUserFields) | `{}` ||
+[`object`](../../../data-types.md)  | A set of user fields in which the SPA should be displayed. The structure is described [below](#linkedUserFields) | `{}` ||
 || **isAutomationEnabled**
 [`boolean`](../../../data-types.md) | Are Automation rules and triggers enabled | `N` ||
 || **isBeginCloseDatesEnabled**
@@ -76,18 +78,30 @@ It should be noted that:
 [`boolean`](../../../data-types.md) | Are the **Source** and **Additional Information about Source** fields enabled | `N` ||
 || **isStagesEnabled**
 [`boolean`](../../../data-types.md) | Is the use of custom stages and kanban enabled | `N` ||
+|| **daysBeforeClose**
+[`integer`](../../../data-types.md) | The number of days from creation allotted to an item until completion: from `0` to `365`. To remove the deadline, pass `null` | `null` ||
+|| **isRecurringEnabled**
+[`boolean`](../../../data-types.md) | Is the **Recurring** field enabled | `N` ||
+|| **isMultifieldsEnabled**
+[`boolean`](../../../data-types.md) | Are communication fields enabled: phone, email, and others | `N` ||
+|| **isPaymentsEnabled**
+[`boolean`](../../../data-types.md) | Is accepting payments enabled | `N` ||
+|| **isCountersEnabled**
+[`boolean`](../../../data-types.md) | Are the Activities view mode and counters enabled | `N` ||
+|| **isPersonEnabled**
+[`boolean`](../../../data-types.md) | Is person tracking enabled. It can be enabled only for SPAs with a predefined data schema; otherwise, the method returns the `BX_ERROR` error | `N` ||
 || **isExternal**
-[`boolean`](../../../data-types.md) | Is the SPA external to the CRM (linked to a digital workplace)
+[`string`](../../../data-types.md) | Is the SPA external to the CRM (linked to an automated solution). To enable it, pass the string `"true"`
 
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
+This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 || **customSectionId**
-[`integer`](../../../data-types.md) | Identifier of the digital workplace
+[`integer`](../../../data-types.md) | Identifier of the automated solution
 
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
+This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 || **customSections**
-[`array`](../../../data-types.md) | Array of digital workplaces
+[`array`](../../../data-types.md) | Array of automated solutions
 
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
+This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 |#
 
 ### Relations relations {#relations}
@@ -96,9 +110,9 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **Name**
 `type` | **Description** ||
 || **parent**
-[`relation[]`](#relation) | CRM elements that will be linked to this SPA ||
+[`relation[]`](#relation) | Parent CRM types to which SPA items are linked ||
 || **child**
-[`relation[]`](#relation) | CRM elements to which this SPA will be linked ||
+[`relation[]`](#relation) | Child CRM types whose items are linked to the SPA ||
 |#
 
 #### One relation relation {#relation}
@@ -111,38 +125,35 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **entityTypeId***
 [`integer`](../../../data-types.md) | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM object | `-` ||
 || **isChildrenListEnabled**
-[`boolean`](../../../data-types.md) | Should the linked element be added to the card. 
-
-Values `Y` and `N` do not work. You must pass `"true"` or `"false"` | `"false"` ||
+[`string`](../../../data-types.md) | Should the list of child items be shown in the parent item card. It is enabled only by the string `"true"`; any other value, including `Y`, disables it. The response returns `Y` or `N` | `"false"` ||
 |#
 
 ### Binding to user fields {#linkedUserFields}
 
-`linkedUserFields` — a set of fields in which this SPA should be displayed.
-This setting will only be considered if `isUseInUserfieldEnabled = 'Y'` is passed.
+The setting is applied only when `isUseInUserfieldEnabled = 'Y'`.
 
 #|
 || **Name**
 `type` | **Description** | **Default Value** ||
-|| **CALENDAR_EVENT**\|**UF_CRM_CAL_EVENT**
-[`boolean`](../../../data-types.md) | Calendar event | `"false"` ||
-|| **TASKS_TASK**\|**UF_CRM_TASK**
-[`boolean`](../../../data-types.md) | Tasks | `"false"` ||
-|| **TASKS_TASK_TEMPLATE**\|**UF_CRM_TASK**
-[`boolean`](../../../data-types.md) | Task templates | `"false"` ||
+|| ```CALENDAR_EVENT|UF_CRM_CAL_EVENT```
+[`string`](../../../data-types.md) | Calendar event | `"false"` ||
+|| ```TASKS_TASK|UF_CRM_TASK```
+[`string`](../../../data-types.md) | Tasks | `"false"` ||
+|| ```TASKS_TASK_TEMPLATE|UF_CRM_TASK```
+[`string`](../../../data-types.md) | Task templates | `"false"` ||
 |#
 
-These parameters do not support passing values `Y` and `N`. Use `"true"` or `"false"`.
+Pass `"true"` to enable and `"false"` to disable; any value other than the string `"true"` disables the binding. The response returns `Y` or `N`.
 
 ## Code Examples
 
 {% include [Example Note](../../../../_includes/examples.md) %}
 
-Let's create an SPA with the following conditions:
-* The most complete set of enabled settings
-* Link `Leads`, `Deals`, `Invoices` to the created SPA. Each link is added to the card of the elements of this SPA
-* Link the created SPA to `Contacts` and `Companies`. The link to `Contacts` is added to the card
-* The SPA should be displayed in the following fields: `Calendar Event`, `Tasks`
+Let's create an SPA and configure it:
+* enable most of the settings
+* link leads, deals, and invoices to the SPA and add each link to the card of its items
+* link the SPA to contacts and companies and add the link to contacts to the card
+* display the SPA in the "Calendar event" and "Tasks" fields
 
 {% list tabs %}
 
@@ -217,7 +228,7 @@ Let's create an SPA with the following conditions:
         method: 'crm.type.add',
         params: {
           fields: {
-            title: "Smart Process",
+            title: "SPA",
             entityTypeId: 2024,
             isAutomationEnabled: "Y",
             isBeginCloseDatesEnabled: "Y",
@@ -295,7 +306,7 @@ Let's create an SPA with the following conditions:
             method: 'crm.type.add',
             params: {
               fields: {
-                title: "Smart Process",
+                title: "SPA",
                 entityTypeId: 2024,
                 isAutomationEnabled: "Y",
                 isBeginCloseDatesEnabled: "Y",
@@ -369,8 +380,7 @@ Let's create an SPA with the following conditions:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
     try:
         bitrix_response = client.crm.type.add(fields={
-            "title": "Documents",
-            "code": "documents",
+            "title": "SPA",
             "isCategoriesEnabled": "Y",
             "isStagesEnabled": "Y",
             "isClientEnabled": "Y",
@@ -780,8 +790,8 @@ HTTP status: **200**
                 ]
             },
             "linkedUserFields": {
-                "CALENDAR_EVENT|UF_CRM_CAL_EVENT": "Y",
-                "TASKS_TASK|UF_CRM_TASK": "Y",
+                "CALENDAR_EVENT|UF_CRM_CAL_EVENT": "N",
+                "TASKS_TASK|UF_CRM_TASK": "N",
                 "TASKS_TASK_TEMPLATE|UF_CRM_TASK": "N"
             },
             "customSections": [],
@@ -800,6 +810,8 @@ HTTP status: **200**
 }
 ```
 
+In the response, `linkedUserFields` may contain values from before the bindings are saved. To retrieve the saved values, call [crm.type.get](./crm-type-get.md).
+
 ### Returned Data
 
 #|
@@ -807,10 +819,17 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response. Contains a single key `type` ||
-|| **type**
-[`type`](../../data-types.md#type) | Information about the created SPA ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`type`](../../data-types.md#type) | Information about the created SPA ||
 |#
 
 ## Error Handling
@@ -830,22 +849,27 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `INVALID_ARG_VALUE` | entityTypeId is out of allowed range | Occurs when an invalid `entityTypeId` is passed ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `100` | Could not find value for parameter {fields} | Occurs if the required parameter `fields` is not passed ||
-|| `400` | `0` | Select a workplace where the SPA will be located | Occurs when `isExternal = 'true'`, but `customSectionId` is empty ||
-|| `400` | `CREATE_DYNAMIC_TYPE_RESTRICTED` | Maximum number of SPAs exceeded | Creating an SPA is restricted due to the plan ||
+|| `400` | `INVALID_ARG_VALUE` | entityTypeId is out of allowed range | The passed `entityTypeId` is reserved for a system type based on SPAs ||
+|| `400` | `BX_INVALID_VALUE` | EntityTypeId should be more or equal than 128 and less than 192 | An invalid `entityTypeId` is passed ||
+|| `400` | `BX_INVALID_VALUE` | Planned SPA item cycle length must be in range 0 to 365 days inclusive | The `daysBeforeClose` value is outside the range from `0` to `365` ||
+|| `400` | `BX_ERROR` | — | `isPersonEnabled = 'Y'` is passed for an SPA without a predefined data schema ||
+|| `400` | `BX_EMPTY_REQUIRED` | The field Name is required | The SPA title is not passed or is empty ||
+|| `400` | `INVALID_ARG_VALUE` | customSectionId is invalid | No automated solution with the specified `customSectionId` is found ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed in the "Who can execute the method" block ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | Occurs if the required parameter `fields` is not passed ||
+|| `400` | `0` | Select an automated solution to contain the SPA | Occurs when `isExternal = 'true'`, but `customSectionId` is empty ||
+|| `400` | `CREATE_DYNAMIC_TYPE_RESTRICTED` | Maximum number of SPA exceeded | Creating an SPA is restricted due to the plan ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](./index.md)

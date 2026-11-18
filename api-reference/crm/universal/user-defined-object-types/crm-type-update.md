@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it
 
-This method updates an existing SPA by its identifier `id`.
+The `crm.type.update` method updates an existing SPA by its identifier `id`.
 
 ## Method Parameters
 
@@ -34,13 +34,15 @@ This method updates an existing SPA by its identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **title** 
-[`string`](../../../data-types.md)  | Title of the SPA ||
+[`string`](../../../data-types.md)  | Title of the SPA. An empty title is not allowed ||
+|| **code**
+[`string`](../../../data-types.md) | Symbolic code of the SPA. Maximum length is 255 characters ||
 || **relations**
-[`object`](../../../data-types.md)  | An object containing links to other CRM entities. The structure is described by the object [`type.relations`](../../data-types.md#typerelations)  ||
+[`object`](../../../data-types.md)  | An object containing links to other CRM objects. The structure is described by the object [`type.relations`](../../data-types.md#typerelations). For `isChildrenListEnabled`, pass the string `"true"` or `"false"`: only `"true"` enables the list, any other value disables it. The response contains `Y` or `N` ||
 || **isUseInUserfieldEnabled**
 [`boolean`](../../../data-types.md) | Is the use of the SPA in the user field enabled ||
 || **linkedUserFields**       
-[`object`](../../../data-types.md)  | A set of user fields in which this SPA should be displayed. The structure is described by the object [`type.linkedUserFields`](../../data-types.md#typelinkeduserfields) ||
+[`object`](../../../data-types.md)  | A set of user fields in which the SPA should be displayed when `isUseInUserfieldEnabled` is enabled. The structure is described by the object [`type.linkedUserFields`](../../data-types.md#typelinkeduserfields). Pass the values as the strings `"true"` or `"false"`: only `"true"` enables the display, any other value disables it. The response contains `Y` or `N` ||
 || **isAutomationEnabled**    
 [`boolean`](../../../data-types.md) | Are automation rules and triggers enabled ||
 || **isBeginCloseDatesEnabled**
@@ -48,7 +50,7 @@ This method updates an existing SPA by its identifier `id`.
 || **isBizProcEnabled**       
 [`boolean`](../../../data-types.md) | Is the use of the business process designer enabled ||
 || **isCategoriesEnabled**    
-[`boolean`](../../../data-types.md) | Are custom Sales Funnels and sales tunnels enabled ||
+[`boolean`](../../../data-types.md) | Are custom Sales Funnels and sales tunnels enabled. They can be disabled only if the SPA has fewer than two pipelines ||
 || **isClientEnabled**        
 [`boolean`](../../../data-types.md) | Is the **Client** field enabled. When this option is enabled, the SPA has a preset link to **Contacts** and **Companies** ||
 || **isDocumentsEnabled**     
@@ -60,30 +62,36 @@ This method updates an existing SPA by its identifier `id`.
 || **isObserversEnabled**     
 [`boolean`](../../../data-types.md) | Is the **Observers** field enabled ||
 || **isRecyclebinEnabled**    
-[`boolean`](../../../data-types.md) | Is the use of the recycle bin enabled ||
+[`boolean`](../../../data-types.md) | Is the use of the recycle bin enabled. Before disabling it, remove all items of this SPA from the recycle bin ||
 || **isSetOpenPermissions**   
 [`boolean`](../../../data-types.md) | Should new funnels be made available to everyone ||
 || **isSourceEnabled**        
 [`boolean`](../../../data-types.md) | Are the **Source** and **Additional Information about Source** fields enabled ||
 || **isStagesEnabled**        
 [`boolean`](../../../data-types.md) | Is the use of custom stages and Kanban enabled ||
+|| **daysBeforeClose**
+[`integer`](../../../data-types.md) | The number of days from creation allotted to an item until completion: from `0` to `365`. To remove the deadline, pass `null` ||
+|| **isRecurringEnabled**
+[`boolean`](../../../data-types.md) | Is the **Recurring** field enabled ||
+|| **isMultifieldsEnabled**
+[`boolean`](../../../data-types.md) | Are communication fields enabled: phone, email, and others ||
+|| **isPaymentsEnabled**
+[`boolean`](../../../data-types.md) | Is accepting payments enabled ||
+|| **isCountersEnabled**
+[`boolean`](../../../data-types.md) | Are the Activities view mode and counters enabled ||
+|| **isPersonEnabled**
+[`boolean`](../../../data-types.md) | Is person tracking enabled. It can be enabled only for SPAs with a predefined data schema; otherwise, the method returns the `BX_ERROR` error ||
 || **isExternal**
-[`boolean`](../../../data-types.md) | Is the SPA external to the CRM (linked to a digital workplace)
-
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
+[`boolean`](../../../data-types.md) | Ignored on update. This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 || **customSectionId**
-[`integer`](../../../data-types.md) | Identifier of the digital workplace
-
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
+[`integer`](../../../data-types.md) | Identifier of the automated solution. This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 || **customSections**
-[`array`](../../../data-types.md)   | Array of digital workplaces
-
-This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
+[`array`](../../../data-types.md)   | Array of automated solutions. This parameter is deprecated. For working with automated solutions, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 |#
 
 {% note info %}
 
-Changes to the SPA settings fields occur only when the modifiable field values are passed.
+SPA settings fields that are not passed retain their values.
 
 For example, if you need to disable document printing functionality for the SPA with `id = 128`, you would pass the following parameters:
 
@@ -100,11 +108,13 @@ For example, if you need to disable document printing functionality for the SPA 
 
 ### Relations
 
-- Settings must be passed in full; they are completely overwritten.
-- You cannot change the settings of predefined links (`iPredefined: true`). These settings can be omitted in the request.
-- If an error occurs while trying to save the passed link settings, it will not be displayed. The settings will simply not be saved.
+- Pass the full list of links for each `parent` or `child` group you change: the passed list replaces the existing links of that group. If a group is not passed, its links remain unchanged.
+- You cannot change the settings of predefined links (`isPredefined: "Y"`). These settings can be omitted in the request.
+- If an error occurs while saving the links, the method returns an error. The SPA fields are saved before the links are processed.
 
 ## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. For the SPA with `id = 20`:
     * Disable the following settings:
@@ -252,18 +262,15 @@ For example, if you need to disable document printing functionality for the SPA 
             bitrix_response = client.crm.type.update(
                 bitrix_id=20,
                 fields={
-                    "relations": {
-                        "parent": [],
-                        "child": [
-                            {
-                                "entityTypeId": 1,
-                                "isChildrenListEnabled": "true",
-                            },
-                            {
-                                "entityTypeId": 2,
-                                "isChildrenListEnabled": "false",
-                            },
-                        ],
+                    "isAutomationEnabled": "N",
+                    "isBeginCloseDatesEnabled": "N",
+                    "isClientEnabled": "N",
+                    "isObserversEnabled": "N",
+                    "isSourceEnabled": "Y",
+                    "isStagesEnabled": "Y",
+                    "isUseInUserfieldEnabled": "Y",
+                    "linkedUserFields": {
+                        "TASKS_TASK|UF_CRM_TASK": "true",
                     },
                 },
             ).response
@@ -342,7 +349,7 @@ For example, if you need to disable document printing functionality for the SPA 
     {% endlist %}
 
 2. Suppose for the SPA with `id = 20` you need to:
-    * Remove all entities linked to the SPA (`relations.parent`)
+    * Remove all objects linked to the SPA (`relations.parent`)
     * Enable "show in detail form" for `Leads` linked to the SPA
 
     Initial **relations** in the SPA:
@@ -669,7 +676,7 @@ HTTP Status: **200**
                     },
                     {
                         "entityTypeId": 2,
-                        "isChildrenListEnabled": "Y",
+                        "isChildrenListEnabled": "N",
                         "isPredefined": "N"
                     }
                 ]
@@ -694,17 +701,26 @@ HTTP Status: **200**
 }
 ```
 
+After `linkedUserFields` is changed, the response may contain the previous values of this field. To retrieve the saved values, call [`crm.type.get`](./crm-type-get.md).
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains a single key `type` ||
-|| **type**
-[`type`](../../data-types.md#type) | Information about the updated SPA ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the `type` object ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`type`](../../data-types.md#type) | Information about the updated SPA ||
 |#
 
 ## Error Handling
@@ -713,30 +729,37 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "SPA not found"
+    "error": "0",
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `UPDATE_DYNAMIC_TYPE_RESTRICTED` | You cannot change the SPA settings due to your plan's restrictions | SPAs are not available on your plan ||
-|| `400` | `0` | Select a workplace where the SPA will be located | When passing `isExternal = 'true'`, but with an empty `customSectionId` ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed in the "Who can execute the method" block ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | The user is not an intranet user and does not have Bitrix24 administrator permissions ||
+|| `400` | `UPDATE_DYNAMIC_TYPE_RESTRICTED` | You cannot edit Smart Process Automation settings due to your current plan's restrictions | SPAs are not available on your plan ||
+|| `400` | `0` | Smart Process Automation was not found | An SPA with the specified `id` does not exist ||
+|| `400` | `0` | SPA from an automated solution installed from Automated solution gallery cannot be used with another automated solution | The SPA is linked to an automated solution from the Automated solution gallery, and the passed `customSectionId` differs from the current one or is not passed ||
+|| `400` | `BX_EMPTY_REQUIRED` | The field Name is required | An empty SPA title is passed ||
+|| `400` | `BX_INVALID_VALUE` | Planned SPA item cycle length must be in range 0 to 365 days inclusive | The `daysBeforeClose` value is outside the range from `0` to `365` ||
+|| `400` | `BX_ERROR` | — | `isPersonEnabled = 'Y'` is passed for an SPA without a predefined data schema ||
+|| `400` | `BX_ERROR` | You cannot disable pipelines if there more than one of them | An attempt to disable pipelines when the SPA has more than one ||
+|| `400` | `BX_ERROR` | Remove all items of this type from the Recycle Bin before disabling it | An attempt to disable the Recycle Bin when it contains SPA items ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](./index.md)

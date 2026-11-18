@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the SPA, or a user with read access to the SPA
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it. The method is also available to users with permission to read items of this SPA
 
-The method retrieves information about the SPA with the identifier `id`.
+The `crm.type.get` method retrieves information about an SPA by its identifier `id`.
 
 ## Method Parameters
 
@@ -97,7 +97,7 @@ Get information about the SPA with `id = 16`.
           child: { entityTypeId: number; isChildrenListEnabled: 'Y' | 'N'; isPredefined: 'Y' | 'N' }[]
         }
         linkedUserFields: Record<string, 'Y' | 'N'>
-        customSections: unknown[]
+        customSections?: unknown[]
       }
     }
 
@@ -167,7 +167,7 @@ Get information about the SPA with `id = 16`.
 
     try:
         bitrix_response = client.crm.type.get(
-            bitrix_id=20,
+            bitrix_id=16,
         ).response
         result = bitrix_response.result
         print(result)
@@ -308,6 +308,15 @@ HTTP status: **200**
             "isSetOpenPermissions": "Y",
             "isPaymentsEnabled": "N",
             "isCountersEnabled": "N",
+            "isRecurringEnabled": "N",
+            "isMultifieldsEnabled": "N",
+            "isInitialized": "Y",
+            "daysBeforeClose": null,
+            "isStartCatalogEnabled": "N",
+            "startCatalogFormId": null,
+            "isCreateByFormEnabled": "N",
+            "isPersonEnabled": "N",
+            "additionalCustomSectionIds": [],
             "createdTime": "2024-07-08T14:46:54+02:00",
             "updatedTime": "2024-07-08T14:46:54+02:00",
             "updatedBy": 1,
@@ -340,6 +349,11 @@ HTTP status: **200**
                     }
                 ],
                 "child": [
+                    {
+                        "entityTypeId": 39,
+                        "isChildrenListEnabled": "Y",
+                        "isPredefined": "Y"
+                    },
                     {
                         "entityTypeId": 3,
                         "isChildrenListEnabled": "Y",
@@ -378,9 +392,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing the object [`type`](../../data-types.md#type) with information about the SPA ||
+[`object`](../../../data-types.md) | An object with information about the SPA. Its structure is described [below](#result) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`object`](../../../data-types.md) | Information about the SPA. Object structure: [`type`](../../data-types.md#type); field descriptions: [`crm.type.fields`](./crm-type-fields.md) ||
 |#
 
 ## Error Handling
@@ -389,29 +412,31 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "SPA not found"
+    "error": "0",
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM or does not have read access to the SPA ||
-|| `400` | `0` | SPA not found | SPA with the provided `id` not found ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required parameter `id` was not passed ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | The `intranet` module is installed, and the user is neither an intranet user nor a Bitrix24 administrator ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed under "Who can execute the method" ||
+|| `400` | `0` | Smart Process Automation was not found | An SPA with the provided `id` was not found or is one of the system types based on SPAs ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](./index.md)

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the SPA, or a user with read access to the SPA
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it. The method is also available to users with permission to read items of this SPA
 
-The method retrieves information about the SPA with the smart process type identifier `entityTypeId`.
+The `crm.type.getByEntityTypeId` method retrieves information about an SPA by its type identifier `entityTypeId`.
+
+`entityTypeId` is the CRM object type identifier, while `id` is the identifier of the SPA settings record: if you know `id`, use [`crm.type.get`](./crm-type-get.md). Both identifiers can be retrieved with the [`crm.type.list`](./crm-type-list.md) method.
 
 ## Method Parameters
 
@@ -23,12 +25,12 @@ The method retrieves information about the SPA with the smart process type ident
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the smart process type. ||
+[`integer`](../../../data-types.md) | Identifier of the SPA type ||
 |#
 
 ## Code Examples
 
-Retrieve information about the smart process with `entityTypeId = 2024`.
+Retrieve information about the SPA with `entityTypeId = 2024`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -105,7 +107,7 @@ Retrieve information about the smart process with `entityTypeId = 2024`.
           }>
         }
         linkedUserFields: Record<string, string>
-        customSections: unknown[]
+        customSections?: unknown[]
       }
     }
 
@@ -175,7 +177,7 @@ Retrieve information about the smart process with `entityTypeId = 2024`.
 
     try:
         bitrix_response = client.crm.type.get_by_entity_type_id(
-            entity_type_id=1222,
+            entity_type_id=2024,
         ).response
         result = bitrix_response.result
         print(result)
@@ -310,15 +312,23 @@ HTTP Status: **200**
             "isDocumentsEnabled": "Y",
             "isSourceEnabled": "Y",
             "isObserversEnabled": "Y",
+            "isRecurringEnabled": "N",
             "isRecyclebinEnabled": "Y",
             "isAutomationEnabled": "Y",
             "isBizProcEnabled": "Y",
             "isSetOpenPermissions": "Y",
             "isPaymentsEnabled": "N",
             "isCountersEnabled": "N",
+            "isMultifieldsEnabled": "N",
+            "isPersonEnabled": "N",
             "createdTime": "2024-07-08T14:46:54+02:00",
             "updatedTime": "2024-07-08T14:46:54+02:00",
             "updatedBy": 1,
+            "isInitialized": "Y",
+            "daysBeforeClose": null,
+            "isStartCatalogEnabled": "N",
+            "startCatalogFormId": null,
+            "isCreateByFormEnabled": "N",
             "relations": {
                 "parent": [
                     {
@@ -365,7 +375,8 @@ HTTP Status: **200**
                 "TASKS_TASK|UF_CRM_TASK": "Y",
                 "TASKS_TASK_TEMPLATE|UF_CRM_TASK": "N"
             },
-            "customSections": []
+            "customSections": [],
+            "additionalCustomSectionIds": []
         }
     },
     "time": {
@@ -386,9 +397,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing the [`type`](../../data-types.md#type) object with information about the smart process ||
+[`object`](../../../data-types.md) | An object with information about the SPA. Its structure is described [below](#result) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`object`](../../../data-types.md) | Information about the SPA. Object structure: [`type`](../../data-types.md#type); field descriptions: [`crm.type.fields`](./crm-type-fields.md) ||
 |#
 
 ## Error Handling
@@ -397,29 +417,31 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Smart process not found"
+    "error": "0",
+    "error_description": "Smart Process Automation was not found"
 }
 ```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM or does not have read access to the SPA ||
-|| `400` | `0` | Smart process not found | Smart process with the provided `entityTypeId` not found ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed under "Who can execute the method" ||
+|| `400` | `100` | `Could not find value for parameter {entityTypeId}` | The required parameter `entityTypeId` was not passed ||
+|| `400` | `0` | Smart Process Automation was not found | An SPA with the provided `entityTypeId` was not found ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](./index.md)

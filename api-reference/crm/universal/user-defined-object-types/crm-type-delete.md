@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it
 
-This method deletes an existing smart process by the identifier `id`.
+The `crm.type.delete` method deletes an existing SPA by its identifier `id`.
 
-You can only delete a smart process if there are no associated elements. If such elements exist, they must be deleted first before deleting the smart process.
+You can delete an SPA only if it has no items. To find the items, use the [crm.item.list](../crm-item-list.md) method; to delete them, use [crm.item.delete](../crm-item-delete.md).
 
 ## Method Parameters
 
@@ -25,12 +25,12 @@ You can only delete a smart process if there are no associated elements. If such
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the smart process. It can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
+[`integer`](../../../data-types.md) | Identifier of the SPA. It can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
 |#
 
 ## Code Examples
 
-Delete the smart process with `id = 16`
+Delete the SPA with `id = 16`
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -132,7 +132,7 @@ Delete the smart process with `id = 16`
 
     try:
         bitrix_response = client.crm.type.delete(
-            bitrix_id=20,
+            bitrix_id=16,
         ).response
         result = bitrix_response.result
         print(result)
@@ -252,9 +252,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | Root element of the response. In case of success, `result = []`.
-
-If `result` returns `null`, it is likely that the required parameter `id` was not provided. In this case, the object will not be deleted ||
+[`array`](../../../data-types.md), `null` | Root element of the response. On successful deletion, `result = []`. If `id` is not passed, the method returns HTTP status `200` and `result: null`. The SPA is not deleted in this case ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -266,7 +264,7 @@ HTTP status: **400**
 ```json
 {
     "error": "BX_ERROR",
-    "error_description": "You cannot delete an entity type that has elements"
+    "error_description": "Cannot delete entity type because there are still items of this type."
 }
 ```
 
@@ -276,21 +274,20 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
-
-|| `400` | `BX_ERROR` | You cannot delete an entity type that has elements | Occurs when trying to delete a smart process with associated elements ||
-|| `400` | `0` | Smart process not found | Smart process with the provided `id` not found ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed in the "Who can execute the method" block ||
+|| `400` | `BX_ERROR` | Cannot delete entity type because there are still items of this type | Occurs when trying to delete an SPA that has linked items ||
+|| `400` | `0` | Smart Process Automation was not found | An SPA with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](./index.md)

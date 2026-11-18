@@ -1,4 +1,4 @@
-# Smart Processes: Overview of Methods and Events
+# SPAs: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -9,46 +9,51 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-A Smart Process is a versatile CRM object that can be customized to meet the needs of a company. For each Smart Process, Bitrix24 creates a separate section in the CRM. In this section, you can configure Sales Funnels and stages, Automation rules, fields, and connections to other Bitrix24 entities.
+An SPA is a versatile CRM object that can be customized to meet the needs of a company. For each SPA, Bitrix24 creates a separate section in the CRM. In this section, you can configure Sales Funnels and stages, Automation rules, fields, and connections to other Bitrix24 entities.
 
 > Quick Navigation: [All Methods and Events](#all-methods)
 >
 > User Documentation: [Smart Process Automation in CRM](https://helpdesk.bitrix24.com/open/19141012/)
 
-## Working with a Smart Process
+## Working with an SPA
 
-1. Create and configure the Smart Process — methods [crm.type.*](#all-methods).
+1. Create and configure the SPA — methods [crm.type.*](#all-methods).
 2. Set up Sales Funnels and stages — [crm.category.*](../category/index.md) for funnels and [crm.status.*](../../status/index.md) for stages.
 3. Add custom fields — [userfieldconfig.*](../userfieldconfig/index.md).
 4. Configure the item detail form — [crm.item.details.configuration.*](../item-details-configuration/index.md).
-5. Create the first items within the Smart Process — [crm.item.*](../index.md).
+5. Create the first items within the SPA — [crm.item.*](../index.md).
 
-The Smart Process can be transferred from the CRM section to the Automation section via [digital workplaces](../../automated-solution/index.md).
+The SPA can be transferred from the CRM section to the Automation section via [automated solutions](../../automated-solution/index.md).
 
 ## Connections with Other Entities
 
-**CRM Entities.** A Smart Process can be [linked](./crm-type-add.md#relations) to leads, deals, and other CRM entities. The linked entity will be accessible through the field `parentId{ID}`, where `{ID}` is the numeric identifier of the CRM object.
+**CRM Entities.** An SPA can be [linked](./crm-type-add.md#relations) to leads, deals, and other CRM entities. Manage links between items with the [crm.item.*](../index.md) methods.
 
-**Client.** This field in the Smart Process detail form consists of the associated company and contacts. There is one company in the field; change the linked company through the `companyId` field. There can be multiple contacts in the "Client" field. Interaction with contacts is managed through the `contactIds` field — pass an array of contact IDs in this field. Enable the field with the `isClientEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Client.** An SPA item can be linked to one company and multiple contacts. Manage the client with the [crm.item.*](../index.md) methods.
 
-**Your Company Details.** Specify your company ID in the `mycompanyId` field so that its details are automatically used in documents. You can obtain your company ID using the [crm.item.list](../crm-item-list.md) method for the company object with a filter on the `isMyCompany` field. Enable the field with the `isMycompanyEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Your Company Details.** Link an item to your company to use its details in documents. You can find your company using the [crm.item.list](../crm-item-list.md) method for companies with a filter on the `isMyCompany` field.
 
-**Products.** To add, modify, or delete product items in the Smart Process, use the [crm.item.productrow.*](../product-rows/index.md) methods. Enable the products tab and the "Amount and Currency" field with the `isLinkWithProductsEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Products.** To add, modify, or delete product items in the SPA, use the [crm.item.productrow.*](../product-rows/index.md) methods.
 
-**Users.** The Smart Process is linked to users by numeric identifiers in the fields:
-- `createdBy` — created by,
-- `updatedBy` — updated by,
-- `movedBy` — who changed the stage,
-- `assignedById` — responsible for the item,
-- `observers` — observers. Enable the field with the `isObserversEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Users.** An item stores references to its creator, the user who last modified it, the responsible person, and observers. The fields are described in [crm.item.fields](../crm-item-fields.md); you can retrieve user IDs and data using the [user.get](../../../user/user-get.md) method.
 
-You can obtain the user ID and data using the [user.get](../../../user/user-get.md) method.
+**Documents.** To create a document from a template, upload a new template for the SPA, or configure the document numbering, use the [crm.documentgenerator.*](../../document-generator/index.md) methods.
 
-**Documents.** To create a document from a template, upload a new template for the Smart Process, or configure the document numbering, use the [crm.documentgenerator.*](../../document-generator/index.md) methods. Enable document handling in the Smart Process with the `isDocumentsEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Tasks.** SPA items can be linked to tasks. Use the [tasks.task.*](../../../tasks/index.md) methods to work with tasks.
 
-**Tasks.** Smart Process items can be linked to tasks. Use the [tasks.task.*](../../../tasks/index.md) methods to work with tasks. To make the linking option available, enable and configure the `isUseInUserfieldEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Calendar Events.** SPA items can be linked to calendar events. Use the [calendar.event.*](../../../calendar/calendar-event/index.md) methods to work with the calendar.
 
-**Calendar Events.** Smart Process items can be linked to calendar events. Use the [calendar.event.*](../../../calendar/calendar-event/index.md) methods to work with the calendar. To make the linking option available, enable and configure the `isUseInUserfieldEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+These features are enabled by options in the [crm.type.add](./crm-type-add.md) and [crm.type.update](./crm-type-update.md) methods.
+
+#|
+|| **Feature** | **Option in crm.type.add / crm.type.update** | **Methods** ||
+|| Client: company and contacts | `isClientEnabled` | [crm.item.*](../index.md) ||
+|| Your company details | `isMycompanyEnabled` | [crm.item.*](../index.md) ||
+|| Products, amount, and currency | `isLinkWithProductsEnabled` | [crm.item.productrow.*](../product-rows/index.md), [crm.item.*](../index.md) ||
+|| Observers | `isObserversEnabled` | [crm.item.*](../index.md) ||
+|| Documents | `isDocumentsEnabled` | [crm.documentgenerator.*](../../document-generator/index.md) ||
+|| Linking to tasks and calendar events | `isUseInUserfieldEnabled` and the [linkedUserFields](./crm-type-add.md#linkedUserFields) setting | [tasks.task.*](../../../tasks/index.md), [calendar.event.*](../../../calendar/calendar-event/index.md) ||
+|#
 
 {% note tip "User Documentation" %}
 
@@ -59,15 +64,15 @@ You can obtain the user ID and data using the [user.get](../../../user/user-get.
 
 {% endnote %}
 
-## Smart Process Item Detail Form
+## SPA Item Detail Form
 
-The main workspace in a Smart Process is the "General" tab of the detail form. It consists of two parts:
+The main workspace in an SPA is the "General" tab of the detail form. It consists of two parts:
 
-- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. Fields allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields in the Smart Process, use the group of methods [userfieldconfig.*](../userfieldconfig/index.md).
+- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. Fields allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields in the SPA, use the group of methods [userfieldconfig.*](../userfieldconfig/index.md).
 
-- The right part contains the Smart Process timeline. Here, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index.md), and timeline records — a group of methods [crm.timeline.*](../../timeline/index.md).
+- The right part contains the SPA timeline. Here, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index.md), and timeline records — a group of methods [crm.timeline.*](../../timeline/index.md).
 
-You can manage the parameters of the Smart Process detail form through the group of methods [crm.item.details.configuration.*](../item-details-configuration/index.md).
+You can manage the parameters of the SPA detail form through the group of methods [crm.item.details.configuration.*](../item-details-configuration/index.md).
 
 {% note tip "User Documentation" %}
 
@@ -80,7 +85,7 @@ You can manage the parameters of the Smart Process detail form through the group
 
 ## Widgets
 
-You can embed an application into the Smart Process detail form. This allows you to use the application without leaving the item detail form.
+You can embed an application into the SPA detail form. This allows you to use the application without leaving the item detail form.
 
 There are two embedding scenarios:
 
@@ -88,9 +93,9 @@ There are two embedding scenarios:
 
 - Create a [custom field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the interface of your application will be loaded.
 
-### Embedding Locations for Smart Processes
+### Embedding Locations for SPAs
 
-Replace `XXX` with the numeric identifier of the specific Smart Process, for example, `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON`.
+Replace `XXX` with the `entityTypeId` of the SPA, for example, `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON`.
 
 - [`CRM_DYNAMIC_XXX_DETAIL_TAB`](../../../widgets/crm/detail-tab.md) — tab in the detail form of the CRM item
 
@@ -115,11 +120,11 @@ Replace `XXX` with the numeric identifier of the specific Smart Process, for exa
 
 {% endnote %}
 
-## Smart Process Identifiers {#id}
+## SPA Identifiers {#id}
 
-Each Smart Process has four types of identifiers. Use these identifiers to apply a method to a specific Smart Process.
+Each SPA has four types of identifiers. Use these identifiers to apply a method to a specific SPA.
 
-In the table, all examples refer to the same Smart Process: it has `id = 13` and `entityTypeId = 156`.
+In the table, all examples refer to the same SPA: it has `id = 13` and `entityTypeId = 156`.
 
 #|
 || **Identifier** | **Example** | **Where It Is Used** | **How to Obtain It** ||
@@ -131,17 +136,17 @@ In the table, all examples refer to the same Smart Process: it has `id = 13` and
 
 {% note warning "" %}
 
-`id` and `entityTypeId` are different values, and one is not calculated from the other. In the formula `CRM_{id}` for custom fields, use `id`, and in the `entityTypeId` parameter, use `entityTypeId`. Both values are returned by the [crm.type.list](./crm-type-list.md) method.
+`id` and `entityTypeId` are different values, and one is not calculated from the other.
 
 {% endnote %}
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`crm`](../../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md); for the `userfieldconfig.*` methods — [`userfieldconfig`](../../../scopes/permissions.md)
 >
 > Who can execute the method: depending on the method
 
-### Smart Processes
+### SPAs
 
 {% list tabs %}
 
@@ -149,22 +154,22 @@ In the table, all examples refer to the same Smart Process: it has `id = 13` and
 
     #|
     || **Method** | **Description** ||
-    || [crm.type.add](./crm-type-add.md) | Creates a new Smart Process ||
-    || [crm.type.update](./crm-type-update.md) | Updates the Smart Process ||
-    || [crm.type.get](./crm-type-get.md) | Returns the Smart Process by id ||
-    || [crm.type.getByEntityTypeId](./crm-type-get-by-entity-type-id.md) | Returns the Smart Process by entityTypeId ||
-    || [crm.type.list](./crm-type-list.md) | Returns a list of Smart Processes ||
-    || [crm.type.delete](./crm-type-delete.md) | Deletes the Smart Process ||
-    || [crm.type.fields](./crm-type-fields.md) | Returns the fields of the Smart Process ||
+    || [crm.type.add](./crm-type-add.md) | Creates a new SPA ||
+    || [crm.type.update](./crm-type-update.md) | Updates the SPA ||
+    || [crm.type.get](./crm-type-get.md) | Returns the SPA by id ||
+    || [crm.type.getByEntityTypeId](./crm-type-get-by-entity-type-id.md) | Returns the SPA by entityTypeId ||
+    || [crm.type.list](./crm-type-list.md) | Returns a list of SPAs ||
+    || [crm.type.delete](./crm-type-delete.md) | Deletes the SPA ||
+    || [crm.type.fields](./crm-type-fields.md) | Returns the fields of the SPA ||
     |#
 
 - Events
 
     #|
     || **Event** | **Triggered** ||
-    || [onCrmTypeAdd](../events/type/on-crm-type-add.md) | When a Smart Process is created ||
-    || [onCrmTypeUpdate](../events/type/on-crm-type-update.md) | When a Smart Process is updated ||
-    || [onCrmTypeDelete](../events/type/on-crm-type-delete.md) | When a Smart Process is deleted ||
+    || [onCrmTypeAdd](../events/type/on-crm-type-add.md) | When an SPA is created ||
+    || [onCrmTypeUpdate](../events/type/on-crm-type-update.md) | When an SPA is updated ||
+    || [onCrmTypeDelete](../events/type/on-crm-type-delete.md) | When an SPA is deleted ||
     |#
 
 {% endlist %}
@@ -191,9 +196,9 @@ The CRM object identifier **entityTypeId** — [numeric identifier type](#id), f
 
     #|
     || **Event** | **Triggered** ||
-    || [onCrmDynamicItemAdd](../events/on-crm-dynamic-item-add.md) | When a Smart Process item is created ||
-    || [onCrmDynamicItemDelete](../events/on-crm-dynamic-item-delete.md) | When a Smart Process item is deleted ||
-    || [onCrmDynamicItemUpdate](../events/on-crm-dynamic-item-update.md) | When a Smart Process item is updated ||
+    || [onCrmDynamicItemAdd](../events/on-crm-dynamic-item-add.md) | When an SPA item is created ||
+    || [onCrmDynamicItemDelete](../events/on-crm-dynamic-item-delete.md) | When an SPA item is deleted ||
+    || [onCrmDynamicItemUpdate](../events/on-crm-dynamic-item-update.md) | When an SPA item is updated ||
     |#
 
 {% endlist %}
@@ -234,9 +239,9 @@ The CRM object identifier **entityId** — [custom field object type](#id), for 
 
     #|
     || **Event** | **Triggered** ||
-    || [onCrmTypeUserFieldAdd](../userfieldconfig/events/on-crm-type-user-field-add.md) | When a custom field of a smart process is added ||
-    || [onCrmTypeUserFieldUpdate](../userfieldconfig/events/on-crm-type-user-field-update.md) | When the settings of a custom field of a smart process are changed ||
-    || [onCrmTypeUserFieldDelete](../userfieldconfig/events/on-crm-type-user-field-delete.md) | When a custom field of a smart process is deleted ||
+    || [onCrmTypeUserFieldAdd](../userfieldconfig/events/on-crm-type-user-field-add.md) | When a custom field of an SPA is added ||
+    || [onCrmTypeUserFieldUpdate](../userfieldconfig/events/on-crm-type-user-field-update.md) | When the settings of a custom field of an SPA are changed ||
+    || [onCrmTypeUserFieldDelete](../userfieldconfig/events/on-crm-type-user-field-delete.md) | When a custom field of an SPA is deleted ||
     || [onCrmTypeUserFieldSetEnumValues](../userfieldconfig/events/on-crm-type-user-field-set-enum-values.md) | When the set of values of a list-type custom field is changed ||
     |#
 

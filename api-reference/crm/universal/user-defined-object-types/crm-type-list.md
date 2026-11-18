@@ -11,32 +11,36 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the CRM section
+> Who can execute the method: a CRM administrator or a user with the "Manage Smart Process Automation" permission in the CRM access permissions. For SPAs in an automated solution — the administrator of that automated solution or a user with the same permission in it
 
-This method retrieves a list of smart process settings.
+The method `crm.type.list` retrieves a list of SPA settings.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order**
 [`object`](../../../data-types.md)  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
-* `field_n`: the name of the field by which the smart processes will be sorted
+* `field_n`: the name of the field by which the SPAs will be sorted
 * `value_n`: a `string` value, equal to: 
   * `ASC` — ascending order
   * `DESC` — descending order
 
-Possible values for `field` correspond to the fields of the [type](../../data-types.md#type) object
+You can retrieve the available fields with the [crm.type.fields](./crm-type-fields.md) method. The fields are described in the [type](../../data-types.md#type) section
  ||
 || **filter**
 [`object`](../../../data-types.md)  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
-* `field_n`: the name of the field by which the smart processes will be filtered
+* `field_n`: the name of the field by which the SPAs will be filtered
 * `value_n`: the filter value
 
-Possible values for `field` correspond to the fields of the [type](../../data-types.md#type) object
+You can retrieve the available fields with the [crm.type.fields](./crm-type-fields.md) method. The fields are described in the [type](../../data-types.md#type) section
 
-The filter can have unlimited nesting and number of conditions.
+To select SPAs from an automated solution, pass its positive ID without a prefix in `filter.customSectionId` and do not set `logic` at the root of the filter.
+
+The filter supports nested condition groups.
 By default, all conditions are combined with each other as `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
 You can add a prefix to the `field_n` keys to clarify the filter's operation.
@@ -67,22 +71,18 @@ Possible prefix values:
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
-The page size of results is always static — 50 records.
-
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+The page size of results is always static — 50 records. The default is `start = 0`.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page ||
+`start = (N-1) * 50`, where `N` — the number of the desired page. You can also pass the `next` value from the previous response ||
 |#
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
-## Examples
+## Code Examples
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-1. Get a list of all smart processes where `title` contains either `5` or `0`. Sort the resulting list in descending order by `id`.
+1. Get a page of the SPA list where `title` contains `5` or `0`, and sort the result in descending order by `id`
 
     {% list tabs %}
 
@@ -92,7 +92,7 @@ The formula for calculating the `start` parameter value:
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"filter":[{"logic":"OR",{"%title":"5"},{"%title":"0"}]},"order":{"id":"DESC"}}' \
+        -d '{"filter":[{"logic":"OR","0":{"%title":"5"},"1":{"%title":"0"}}],"order":{"id":"DESC"}}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.type.list
         ```
 
@@ -102,7 +102,7 @@ The formula for calculating the `start` parameter value:
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"filter":[{"logic":"OR",{"%title":"5"},{"%title":"0"}]},"order":{"id":"DESC"},"auth":"**put_access_token_here**"}' \
+        -d '{"filter":[{"logic":"OR","0":{"%title":"5"},"1":{"%title":"0"}}],"order":{"id":"DESC"},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.type.list
         ```
 
@@ -253,12 +253,8 @@ The formula for calculating the `start` parameter value:
 
         try:
             bitrix_response = client.crm.type.list(
-                filter={
-                    "isAutomationEnabled": "Y",
-                    "isBizProcEnabled": "Y",
-                    "isCategoriesEnabled": "Y",
-                    "isClientEnabled": "Y",
-                },
+                filter={"0": {"logic": "OR", "0": {"%title": "5"}, "1": {"%title": "0"}}},
+                order={"id": "DESC"},
             ).response
             result = bitrix_response.result
             print(result)
@@ -282,15 +278,8 @@ The formula for calculating the `start` parameter value:
 
         try:
             bitrix_response = client.crm.type.list(
-                filter={
-                    "isAutomationEnabled": "Y",
-                    "isBizProcEnabled": "Y",
-                    "isCategoriesEnabled": "Y",
-                    "isClientEnabled": "Y",
-                },
-                order={
-                    "id": "ASC",
-                },
+                filter={"0": {"logic": "OR", "0": {"%title": "5"}, "1": {"%title": "0"}}},
+                order={"id": "DESC"},
             ).as_list().response
             result = bitrix_response.result
             for item in result:
@@ -315,15 +304,7 @@ The formula for calculating the `start` parameter value:
 
         try:
             bitrix_response = client.crm.type.list(
-                filter={
-                    "isAutomationEnabled": "Y",
-                    "isBizProcEnabled": "Y",
-                    "isCategoriesEnabled": "Y",
-                    "isClientEnabled": "Y",
-                },
-                order={
-                    "id": "ASC",
-                },
+                filter={"0": {"logic": "OR", "0": {"%title": "5"}, "1": {"%title": "0"}}},
             ).as_list_fast(descending=True).response
             result = bitrix_response.result
             for item in result:
@@ -373,11 +354,11 @@ The formula for calculating the `start` parameter value:
 
     {% endlist %}
 
-2. Get a list of smart processes where:
+2. Get a list of SPAs where:
    - Automation rules and triggers are enabled (`isAutomationEnabled`)
    - Business process designer is enabled (`isBizProcEnabled`)
    - Custom sales funnels and tunnels are enabled (`isCategoriesEnabled`)
-   - Custom stages and Kanban are enabled (`isClientEnabled`)
+   - Client linking is enabled (`isClientEnabled`)
 
     {% list tabs %}
 
@@ -814,12 +795,14 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | The root element of the response. Contains a single key `types` ||
-|| **types**
-[`type[]`](../../data-types.md#type) | A list of smart processes, each corresponding to the structure of the [type](../../data-types.md#type) object ||
+|| **result.types**
+[`type[]`](../../data-types.md#type) | A list of SPA settings without the `relations` and `linkedUserFields` fields. To retrieve the settings of a single SPA, use [crm.type.get](./crm-type-get.md) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|| **next**
+[`integer`](../../../data-types.md) | The offset of the next page. Returned if there is a next page and `start` is not `-1`; pass it in `start` ||
 || **total**
-[`integer`](../../../data-types.md)| The total number of records found || 
+[`integer`](../../../data-types.md)| The total number of records found. Not returned when `start = -1` ||
 |#
 
 ## Error Handling
@@ -836,21 +819,21 @@ HTTP status: **400**
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field `'field_n'` is not allowed in filter | Occurs when passing a field `field_n` not present in the smart process to the `filter` parameter ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field `'field_n'` has invalid value | Occurs when passing an incorrect `value_n` for the field `field_n` in the `filter` parameter ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid order: field `'field_n'` is not allowed in order | Occurs when passing a field `field_n` not present in the smart process to the `order` parameter ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid order: allowed sort directions are `ASC, DESC`. But got `'invalid_value'` for field `'field_n'` | Occurs when passing an incorrect `value_n` for the field `field_n` in the `order` parameter ||
+|| `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have the permissions listed in the "Who can execute the method" block ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field 'field_n' is not allowed in filter | Occurs when passing a disallowed field `field_n` to the `filter` parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field 'field_n' has invalid value | Occurs when passing an incorrect `value_n` for the field `field_n` in the `filter` parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid order: field 'field_n' is not allowed in order | Occurs when passing a disallowed field `field_n` to the `order` parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid order: allowed sort directions are ASC, DESC. But got 'invalid_value' for field 'field_n' | Occurs when passing an incorrect `value_n` for the field `field_n` in the `order` parameter ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
@@ -859,3 +842,4 @@ HTTP status: **400**
 - [{#T}](./crm-type-fields.md)
 - [{#T}](../../../../tutorials/field-types/how-to-add-user-field-to-spa.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
+- [{#T}](./index.md)
