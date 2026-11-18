@@ -413,6 +413,7 @@ Template fields are described in the [Task Template Fields](./template/fields.md
 || [tasks.template.add](./template/tasks-template-add.md) | Adds a task template ||
 || [tasks.template.update](./template/tasks-template-update.md) | Modifies a task template ||
 || [tasks.template.get](./template/tasks-template-get.md) | Retrieves a task template by `id` ||
+|| [tasks.template.list](./template/tasks-template-list.md) | Retrieves a list of task templates ||
 || [tasks.template.delete](./template/tasks-template-delete.md) | Deletes a task template ||
 || [tasks.template.fields](./template/tasks-template-fields.md) | Retrieves the description of task template fields ||
 |#

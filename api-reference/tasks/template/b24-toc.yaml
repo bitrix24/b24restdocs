@@ -11,6 +11,8 @@ items:
     href: tasks-template-update.md  
   - name: Get Task Template  
     href: tasks-template-get.md  
+  - name: Get Task Template List  
+    href: tasks-template-list.md  
   - name: Delete Task Template  
     href: tasks-template-delete.md  
   - name: Get Task Template Fields  

@@ -21,7 +21,7 @@ Task templates help to describe a typical workflow in advance and use a unified 
 2. If the template is to create recurring tasks, configure the `REPLICATE` and `REPLICATE_PARAMS` fields.
 3. Obtain the identifiers of users, groups, and CRM entities if references to these objects are needed in the template.
 4. Create the template using the [tasks.template.add](./tasks-template-add.md) method.
-5. Retrieve the template using the [tasks.template.get](./tasks-template-get.md) method if you need to check the saved values.
+5. Retrieve the template using the [tasks.template.get](./tasks-template-get.md) method if you need to check the saved values. The [tasks.template.list](./tasks-template-list.md) method returns the list of available templates.
 6. Modify the template using the [tasks.template.update](./tasks-template-update.md) method if you need to adjust the parameters.
 7. Add checklist items using [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md), [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md), and [tasks.template.checklist.list](./checklist/tasks-template-checklist-list.md) if the task consists of recurring steps.
 8. Delete the template using the [tasks.template.delete](./tasks-template-delete.md) method if it is no longer needed.
@@ -61,6 +61,7 @@ Permissions for working with task templates depend on the access settings in tas
 || [tasks.template.add](./tasks-template-add.md) | Adds a task template ||
 || [tasks.template.update](./tasks-template-update.md) | Modifies a task template ||
 || [tasks.template.get](./tasks-template-get.md) | Retrieves a task template by `id` ||
+|| [tasks.template.list](./tasks-template-list.md) | Retrieves a list of task templates ||
 || [tasks.template.delete](./tasks-template-delete.md) | Deletes a task template ||
 || [tasks.template.fields](./tasks-template-fields.md) | Retrieves the description of task template fields ||
 |#

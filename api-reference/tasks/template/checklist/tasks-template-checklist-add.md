@@ -25,7 +25,7 @@ The method `tasks.template.checklist.add` adds a checklist item to the task temp
 || **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
+The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) or by using the [template list method](../tasks-template-list.md) ||
 || **fields*** 
 [`object`](../../../data-types.md) | Fields of the created checklist item [(detailed description)](#fields) ||
 |#

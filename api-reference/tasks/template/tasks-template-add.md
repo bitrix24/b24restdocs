@@ -461,5 +461,6 @@ HTTP Status: **400**
 
 - [{#T}](./tasks-template-fields.md)
 - [{#T}](./tasks-template-get.md)
+- [{#T}](./tasks-template-list.md)
 - [{#T}](./tasks-template-update.md)
 - [{#T}](./tasks-template-delete.md)

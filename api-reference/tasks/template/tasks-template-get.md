@@ -25,7 +25,7 @@ The method `tasks.template.get` returns the task template data by its ID.
 || **templateId*** 
 [`integer`](../../data-types.md) | The ID of the task template.
 
-The task template ID can be obtained when [creating a new template](./tasks-template-add.md) ||
+The task template ID can be obtained when [creating a new template](./tasks-template-add.md) or by using the [template list method](./tasks-template-list.md) ||
 || **params** 
 [`object`](../../data-types.md) | Additional selection parameters [(detailed description)](#params) ||
 |#
@@ -487,5 +487,6 @@ HTTP Status: **400**
 
 - [{#T}](./tasks-template-add.md)
 - [{#T}](./tasks-template-update.md)
+- [{#T}](./tasks-template-list.md)
 - [{#T}](./tasks-template-delete.md)
 - [{#T}](./tasks-template-fields.md)

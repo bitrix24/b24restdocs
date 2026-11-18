@@ -25,7 +25,7 @@ The method `tasks.template.delete` removes a task template.
 || **templateId*** 
 [`integer`](../../data-types.md) | Identifier of the task template.
 
-The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) ||
+The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) or by using the [template list method](./tasks-template-list.md) ||
 |#
 
 ## Code Examples
@@ -295,4 +295,5 @@ HTTP Status: **400**
 - [{#T}](./tasks-template-add.md)
 - [{#T}](./tasks-template-update.md)
 - [{#T}](./tasks-template-get.md)
+- [{#T}](./tasks-template-list.md)
 - [{#T}](./tasks-template-fields.md)

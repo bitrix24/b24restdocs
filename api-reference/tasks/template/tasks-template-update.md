@@ -25,7 +25,7 @@ The method `tasks.template.update` updates an existing task template.
 || **templateId*** 
 [`integer`](../../data-types.md) | The identifier of the task template.
 
-The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) ||
+The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) or by using the [template list method](./tasks-template-list.md) ||
 || **fields*** 
 [`object`](../../data-types.md) | The fields of the template that need to be changed.
 
@@ -380,5 +380,6 @@ HTTP Status: **400**
 
 - [{#T}](./tasks-template-add.md)
 - [{#T}](./tasks-template-get.md)
+- [{#T}](./tasks-template-list.md)
 - [{#T}](./tasks-template-delete.md)
 - [{#T}](./tasks-template-fields.md)

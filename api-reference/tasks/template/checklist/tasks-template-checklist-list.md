@@ -25,7 +25,7 @@ The method `tasks.template.checklist.list` returns a list of checklist items for
 || **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
+The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) or by using the [template list method](../tasks-template-list.md) ||
 || **filter** 
 [`object`](../../../data-types.md) | Filter for selecting checklist items in the form `{ "field": "value", ... }`.
 

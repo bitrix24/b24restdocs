@@ -25,7 +25,7 @@ The method `tasks.template.checklist.get` returns a single checklist item from t
 || **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The task template identifier can be obtained when [creating a new template](../tasks-template-add.md) ||
+The task template identifier can be obtained when [creating a new template](../tasks-template-add.md) or by using the [template list method](../tasks-template-list.md) ||
 || **checkListItemId*** 
 [`integer`](../../../data-types.md) | Identifier of the checklist item in the template.
 

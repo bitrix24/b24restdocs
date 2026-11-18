@@ -2,6 +2,10 @@
 
 ## 2026
 
+### November 18, 2026
+
+- Added the [tasks.template.list](./api-reference/tasks/template/tasks-template-list.md) method: retrieves the task templates available to the user, with filtering, sorting, and field selection
+
 ### November 17, 2026
 
 - Added Trade Catalog warehouse and inventory balance methods in REST 3.0: [catalog.store.*](./api-reference/catalog/store/index.md) and [catalog.store.product.*](./api-reference/catalog/store-product/index.md), including the `field.list` and `field.get` methods for retrieving the field schema

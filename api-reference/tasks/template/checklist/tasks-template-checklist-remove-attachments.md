@@ -25,7 +25,7 @@ The method `tasks.template.checklist.removeAttachments` removes attachments from
 || **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
+The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) or by using the [template list method](../tasks-template-list.md) ||
 || **checkListItemId*** 
 [`integer`](../../../data-types.md) | Identifier of the checklist item.
 
