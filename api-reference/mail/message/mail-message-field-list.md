@@ -21,6 +21,8 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `mail.message.field.list` method returns a list of available email fields.
 
+All e-mail fields are read-only: each field has `filterable`, `sortable`, and `editable` set to `false`. That is why [mail.message.list](./mail-message-list.md) selects e-mails with separate search parameters rather than `filter`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -42,8 +44,11 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — editability groups
 - `multiple` — multiple value flag
-- `elementType` — item type for composite fields ||
+- `elementType` — item type for composite fields
+
+If the parameter is not passed, the method returns all description keys ||
 |#
 
 ## Code Examples
@@ -426,8 +431,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T11:21:18+03:00",
-        "date_finish": "2026-05-26T11:21:18+03:00",
+        "date_start": "2026-05-26T11:21:18+01:00",
+        "date_finish": "2026-05-26T11:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -442,7 +447,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Response data object ||
 || **items**
-[`array`](../../data-types.md) | Array of objects with field descriptions. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Array of objects with e-mail field descriptions. The method returns 13 fields: `id`, `mailboxId`, `mailboxEmail`, `subject`, `from`, `to`, `cc`, `date`, `isSeen`, `hasAttachments`, `url`, `bindings`, `body` ||
+|| **items[]**
+[`object`](../../data-types.md) | Field description. The set of keys depends on `select`; their values are described on the page of the [mail.message.field.get](./mail-message-field-get.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -455,7 +462,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION",
-        "message": "Unknown field `unknownField` for entity `DtoFieldDto`"
+        "message": "Unknown field \"foo\" found in entity \"DtoFieldDto\"."
     }
 }
 ```
@@ -469,7 +476,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and scope `mail` ||
+|| `-` | Access denied | Make sure the application or webhook has the `mail` scope ||
 |#
 
 #### Errors in the `select` parameter
@@ -478,14 +485,14 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Pass only fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `foo` found in entity `DtoFieldDto` | Pass only keys from the list of the `select` parameter ||
 |#
 
 Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

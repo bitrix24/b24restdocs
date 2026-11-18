@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user. The method searches for e-mails only in mailboxes the user has access to
 
 {% note info "" %}
 
@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.list` method returns a list of e-mails based on specified conditions.
+The `mail.message.list` method returns a list of e-mails based on specified conditions. E-mails are sorted from newest to oldest.
+
+Search conditions are passed as separate parameters at the root of the request. The method does not support the standard REST 3.0 parameters `filter` and `order`.
 
 ## Method Parameters
 
@@ -29,15 +31,21 @@ The `mail.message.list` method returns a list of e-mails based on specified cond
 || **Name**
 `type` | **Description** ||
 || **mailboxId**
-[`integer`](../../data-types.md) | Mailbox identifier.
+[`integer`](../../data-types.md) | Mailbox identifier. A positive integer.
+
+If the parameter is not passed, the method searches for e-mails in all of the user's mailboxes.
 
 The identifier can be obtained using the [mail.mailbox.list](../mailbox/mail-mailbox-list.md) ||
 || **searchQuery**
-[`string`](../../data-types.md) | A string for searching e-mails by content and e-mail metadata ||
+[`string`](../../data-types.md) | A string for searching e-mails by content and e-mail metadata. An empty string is ignored ||
 || **dateFrom**
-[`string`](../../data-types.md) | The start of the e-mail selection period in ISO 8601 format, for example `2026-01-01T00:00:00+03:00` ||
+[`string`](../../data-types.md) | The start of the e-mail selection period. Possible formats:
+- a date `YYYY-MM-DD`, for example, `2026-01-01`. The method uses the start of the day, `00:00:00`
+- a date and time with a time zone, for example, `2026-01-01T10:00:00+01:00`, `2026-01-01T10:00:00Z`, or `2026-01-01T10:00:00.123+01:00`
+
+A date and time without a time zone, for example, `2026-01-01T10:00:00`, causes an error. The `dateFrom` value must not be later than `dateTo` ||
 || **dateTo**
-[`string`](../../data-types.md) | The end of the e-mail selection period in ISO 8601 format, for example `2026-01-31T23:59:59+03:00` ||
+[`string`](../../data-types.md) | The end of the e-mail selection period. The formats are the same as for `dateFrom`. If only a date is passed, for example, `2026-01-31`, the method uses the end of the day, `23:59:59` ||
 || **isSeen**
 [`boolean`](../../data-types.md) | Filter by e-mail read status.
 
@@ -53,12 +61,16 @@ Possible values:
 - `true` — e-mails with attachments only
 - `false` — e-mails without attachments only ||
 || **folder**
-[`string`](../../data-types.md) | Mail folder name or path ||
+[`string`](../../data-types.md) | Mail folder name or path, for example, `INBOX` ||
+|| **select**
+[`array`](../../data-types.md) | List of e-mail fields. The method checks the field names and returns an error for an unknown field, but currently the response always contains all e-mail fields.
+
+Available fields: `id`, `mailboxId`, `mailboxEmail`, `subject`, `from`, `to`, `cc`, `date`, `isSeen`, `hasAttachments`, `url`, `bindings`, `body`. The fields are described in the [Returned Data](#returned-data) section ||
 || **pagination**
 [`object`](../../data-types.md) | Pagination parameters:
 - `page` — page number
-- `limit` — number of records per page, default `25`, maximum `200`
-- `offset` — record offset. If `page` and `limit` are provided, the offset is calculated automatically ||
+- `limit` — number of records per page, default `25`. The method reduces a value greater than `200` to `200`; the value `0` causes an error
+- `offset` — record offset, a non-negative number. If `page` and `limit` are provided, the offset is calculated automatically ||
 |#
 
 ## Code Examples
@@ -101,13 +113,19 @@ The new API call differs by adding the `/api/` segment to the request URL:
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type MailMessageListResult = {
       items: MailMessageItem[]
+    }
+
+    type MailMessageBinding = {
+      type: 'crm' | 'task' | 'chat' | 'calendarEvent' | 'blogPost'
+      entityTypeId?: number
+      entityId: number
     }
 
     type MailMessageItem = {
@@ -117,13 +135,13 @@ The new API call differs by adding the `/api/` segment to the request URL:
       subject: string
       from: string
       to: string
-      cc: string
-      date: ISODate | null
+      cc: string | null
+      date: string
       isSeen: boolean
       hasAttachments: boolean
       url: string
-      bindings: unknown[]
-      body: string
+      bindings: MailMessageBinding[]
+      body: string | null
     }
 
     try {
@@ -382,13 +400,19 @@ HTTP status: **200**
                 "subject": "Contract",
                 "from": "client@example.com",
                 "to": "user@example.com",
-                "cc": "",
-                "date": "2026-05-25T10:00:00+03:00",
+                "cc": null,
+                "date": "2026-05-25 10:00:00",
                 "isSeen": true,
                 "hasAttachments": true,
-                "url": "https://example.bitrix24.com/mail/message/15/",
-                "bindings": [],
-                "body": "Letter text"
+                "url": "https://example.bitrix24.com/mail/message/15",
+                "bindings": [
+                    {
+                        "type": "crm",
+                        "entityTypeId": 3,
+                        "entityId": 27
+                    }
+                ],
+                "body": null
             }
         ]
     },
@@ -397,15 +421,15 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
 }
 ```
 
-### Returned Data
+### Returned Data {#returned-data}
 
 #|
 || **Name**
@@ -413,15 +437,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Response data object ||
 || **items**
-[`array`](../../data-types.md) | Array of e-mail objects ||
+[`array`](../../data-types.md) | Array of e-mail objects. If there are no e-mails, an empty array `[]` is returned ||
 || **items[]**
-[`object`](../../data-types.md) | E-mail object ||
+[`object`](../../data-types.md) | E-mail object. All fields are returned regardless of `select` ||
 || **id**
 [`integer`](../../data-types.md) | E-mail identifier ||
 || **mailboxId**
 [`integer`](../../data-types.md) | Mailbox identifier ||
 || **mailboxEmail**
-[`string`](../../data-types.md) | Mailbox e-mail address ||
+[`string`](../../data-types.md) | Mailbox address ||
 || **subject**
 [`string`](../../data-types.md) | E-mail subject ||
 || **from**
@@ -429,19 +453,22 @@ HTTP status: **200**
 || **to**
 [`string`](../../data-types.md) | E-mail recipients ||
 || **cc**
-[`string`](../../data-types.md) | E-mail CC ||
+[`string`](../../data-types.md) | CC recipients. Not filled in the list and returned as `null`; retrieve it using the [mail.message.get](./mail-message-get.md) method ||
 || **date**
-[`string`](../../data-types.md) | E-mail date and time ||
+[`string`](../../data-types.md) | Date and time the e-mail was received in the `YYYY-MM-DD HH:MM:SS` format, without a time zone ||
 || **isSeen**
-[`boolean`](../../data-types.md) | E-mail read status ||
+[`boolean`](../../data-types.md) | Read flag: `true` — read, `false` — unread ||
 || **hasAttachments**
 [`boolean`](../../data-types.md) | Attachment presence indicator ||
 || **url**
-[`string`](../../data-types.md) | Link to the e-mail ||
+[`string`](../../data-types.md) | Full link to the e-mail in Bitrix24 ||
 || **bindings**
-[`array`](../../data-types.md) | E-mail relations to objects ||
+[`array`](../../data-types.md) | Links of the e-mail to Bitrix24 objects. If there are none, an empty array `[]` is returned. Each item contains:
+- `type` — object type: `crm` — CRM activity, `task` — task, `chat` — chat, `calendarEvent` — calendar event, `blogPost` — Feed post
+- `entityTypeId` — [CRM object type identifier](../../crm/data-types.md#object_type) of the object the activity is linked to. Present only in a `crm` link
+- `entityId` — object identifier. For a `crm` link, the identifier of the CRM object the activity is linked to ||
 || **body**
-[`string`](../../data-types.md) | E-mail body ||
+[`string`](../../data-types.md) | E-mail text. Not filled in the list and returned as `null`; retrieve it using the [mail.message.get](./mail-message-get.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -453,8 +480,14 @@ HTTP status: **400**
 ```json
 {
     "error": {
-        "code": "BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION",
-        "message": "Unable to recognize pagination parameter `{\"limit\":\"abc\"}`"
+        "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
+        "message": "Error validating request object.",
+        "validation": [
+            {
+                "message": "The selected mailbox is not available to the current user.",
+                "field": "MESSAGE_LIST_FAILED"
+            }
+        ]
     }
 }
 ```
@@ -463,12 +496,43 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+#### Request Validation Errors
+Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
+Errors in the search parameters are returned in the `validation` array with the `field` value `MESSAGE_LIST_FAILED`. The error text shows which parameter is invalid.
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and scope `mail` ||
+|| `MESSAGE_LIST_FAILED` | mailboxId must be a positive integer. | Pass a positive integer in `mailboxId` ||
+|| `MESSAGE_LIST_FAILED` | The selected mailbox is not available to the current user. | The mailbox was not found, or the user has no access to it. Retrieve the available mailboxes using the [mail.mailbox.list](../mailbox/mail-mailbox-list.md) method ||
+|| `MESSAGE_LIST_FAILED` | Invalid dateFrom. Use an ISO 8601 date like 'YYYY-MM-DD' or a full date-time. | Pass a `YYYY-MM-DD` date or a date and time with a time zone in `dateFrom` ||
+|| `MESSAGE_LIST_FAILED` | Invalid dateTo. Use an ISO 8601 date like 'YYYY-MM-DD' or a full date-time. | Pass a `YYYY-MM-DD` date or a date and time with a time zone in `dateTo` ||
+|| `MESSAGE_LIST_FAILED` | dateFrom must be earlier than or equal to dateTo. | Pass a `dateFrom` value that is not later than `dateTo` ||
+|| `id` | DTO `MessageDto` in field `id` requires attribute `Filterable` to perform this request | The method does not support the `filter` parameter. Pass the search conditions as separate parameters: `mailboxId`, `searchQuery`, `dateFrom`, and others ||
+|| `id` | DTO `MessageDto` in field `id` requires attribute `Sortable` to perform this request | The method does not support the `order` parameter. Remove it from the request: e-mails are always sorted from newest to oldest ||
+|#
+
+#### Errors in the filter Parameter
+Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support the `filter` parameter. Pass the search conditions as separate parameters at the root of the request ||
+|#
+
+#### Errors in the select Parameter
+Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `select` | Unknown field `foo` found in entity `MessageDto` | Pass only fields from the list of the `select` parameter ||
+|#
+
+Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `select` | Invalid field in `select`: `["id"]` | Pass `select` as an array of strings, for example, `["id","subject"]` ||
 |#
 
 #### Pagination Errors
@@ -476,18 +540,17 @@ Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `limit`
-`offset`
-`page` | Unable to recognize pagination parameter `#PAGE#` | Provide numeric values. `limit` must not be equal to `0` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":"abc"}` | Pass numbers in `limit`, `page`, and `offset` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a `limit` greater than `0` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"offset":-5}` | Pass an `offset` greater than or equal to `0` ||
 |#
 
-#### Request Validation Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+#### Access Errors
+Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `dateFrom` | Parameter `dateFrom` must be in ISO 8601 format (DATE_ATOM), for example `2026-01-01T00:00:00+00:00` | Provide the date in ISO 8601 format ||
-|| `dateTo` | Parameter `dateTo` must be in ISO 8601 format (DATE_ATOM), for example `2026-01-01T00:00:00+00:00` | Provide the date in ISO 8601 format ||
+|| `-` | Access denied | Make sure the application or webhook has the `mail` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

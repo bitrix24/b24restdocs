@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with access to the e-mail
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.createchat` method creates a chat from an e-mail.
+The `mail.message.createchat` method creates a group chat to discuss an e-mail, or returns the chat already created for this e-mail.
 
 ## Method Parameters
 
@@ -33,6 +33,8 @@ The `mail.message.createchat` method creates a chat from an e-mail.
 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method. ||
 |#
+
+If a chat for the e-mail already exists, the method does not create a new one: it adds the user to the existing chat and returns `existing: true`. In a new chat, the only member is the user who calls the method.
 
 ## Code Examples
 
@@ -170,7 +172,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -197,7 +199,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -214,7 +216,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -273,8 +275,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -289,13 +291,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the operation result ||
 || **success**
-[`boolean`](../../data-types.md) | Indicator of successful operation execution ||
+[`boolean`](../../data-types.md) | Success flag. Always `true` in a successful response ||
 || **chatId**
-[`integer`](../../data-types.md) | Created chat identifier ||
+[`integer`](../../data-types.md) | Chat identifier ||
 || **messageId**
 [`integer`](../../data-types.md) | Original e-mail identifier ||
 || **existing**
-[`boolean`](../../data-types.md) | Indicator that the chat already existed ||
+[`boolean`](../../data-types.md) | Whether the chat was created earlier. Possible values:
+- `true` — a chat for the e-mail already existed, and the method added the user to it
+- `false` — the method created a new chat ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -311,8 +315,8 @@ HTTP status: **400**
         "message": "Error validating request object",
         "validation": [
             {
-                "message": "Required field `messageId` is missing",
-                "field": "messageId"
+                "message": "Parameter \"messageId\" is required.",
+                "field": "MISSING_MESSAGE_ID"
             }
         ]
     }
@@ -326,21 +330,15 @@ HTTP status: **400**
 #### Request Validation Errors
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `messageId` | Mandatory field `messageId` is not specified or an incorrect value was passed | Pass `messageId` as a positive integer greater than `0` ||
-|| `-` | Modules im/intranet are not installed | Install and configure the im and intranet modules ||
-|| `messageId` | Message was deleted or moved to another folder | Check that the e-mail exists and is accessible to the current user ||
-|| `-` | Failed to acquire lock for chat creation | Retry the request later ||
-|| `-` | Failed to create chat | Check permissions and retry the request ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+The "Field" column shows the `field` value from the `validation` element. The method passes a reason code in it, not a parameter name. Errors without a code have no `field` in the response.
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and `mail` scope ||
+|| `MISSING_MESSAGE_ID` | Parameter "messageId" is required. | `messageId` is not provided, is not a number, or is less than `1`. Pass the e-mail ID as a positive integer ||
+|| `-` | Message was deleted or moved to another folder. | There is no e-mail with this `messageId`, or the user has no access to it. Check the ID using [mail.message.list](./mail-message-list.md) ||
+|| `-` | Modules im/intranet are not installed. | The chat module or the intranet module is not installed in Bitrix24 ||
+|| `-` | Failed to acquire lock for chat creation. | Another request is creating a chat for this e-mail at the moment. Retry the request later ||
+|| `-` | Chat module error text | The chat was not created. Check the user's permissions and retry the request ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

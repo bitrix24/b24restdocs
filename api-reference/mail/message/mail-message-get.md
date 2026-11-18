@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.get` method retrieves an e-mail by its identifier.
+The `mail.message.get` method retrieves an e-mail by its identifier. Unlike [mail.message.list](./mail-message-list.md), the method returns the CC recipients `cc` and the e-mail text `body`.
 
 ## Method Parameters
 
@@ -33,7 +33,7 @@ The `mail.message.get` method retrieves an e-mail by its identifier.
 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method. ||
 || **select**
-[`array`](../../data-types.md) | List of e-mail fields to be returned.
+[`array`](../../data-types.md) | List of e-mail fields. The method checks the field names and returns an error for an unknown field, but currently the response always contains all e-mail fields.
 
 Available fields:
 - `id` — e-mail identifier
@@ -91,7 +91,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
@@ -104,12 +104,16 @@ The new API call differs by adding the `/api/` segment to the request URL:
         subject: string
         from: string
         to: string
-        cc: string | null
-        date: ISODate | null
+        cc: string
+        date: string
         isSeen: boolean
         hasAttachments: boolean
         url: string
-        bindings: unknown[]
+        bindings: Array<{
+          type: 'crm' | 'task' | 'chat' | 'calendarEvent' | 'blogPost'
+          entityTypeId?: number
+          entityId: number
+        }>
         body: string
       }
     }
@@ -143,7 +147,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Message:', result.item.id, result.item.subject, result.item.from)
+        console.info('E-mail:', result.item.id, result.item.subject, result.item.from)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -192,7 +196,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Message:', result.item.id, result.item.subject, result.item.from)
+          console.info('E-mail:', result.item.id, result.item.subject, result.item.from)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -399,13 +403,13 @@ HTTP status: **200**
             "subject": "Email subject",
             "from": "client@example.com",
             "to": "user@example.com",
-            "cc": null,
-            "date": "2026-05-25T10:00:00+03:00",
+            "cc": "",
+            "date": "2026-05-25 10:00:00",
             "isSeen": true,
             "hasAttachments": false,
-            "url": "/mail/message/15",
+            "url": "https://example.bitrix24.com/mail/message/15",
             "bindings": [],
-            "body": "Email body"
+            "body": "Good afternoon! I am sending the draft agreement."
         }
     },
     "time": {
@@ -413,8 +417,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -429,7 +433,33 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Response data object ||
 || **item**
-[`object`](../../data-types.md) | E-mail object. The response structure depends on `select` ||
+[`object`](../../data-types.md) | E-mail object. All fields are returned regardless of `select` ||
+|| **id**
+[`integer`](../../data-types.md) | E-mail identifier ||
+|| **mailboxId**
+[`integer`](../../data-types.md) | Mailbox identifier ||
+|| **mailboxEmail**
+[`string`](../../data-types.md) | Mailbox address ||
+|| **subject**
+[`string`](../../data-types.md) | E-mail subject ||
+|| **from**
+[`string`](../../data-types.md) | E-mail sender ||
+|| **to**
+[`string`](../../data-types.md) | E-mail recipients ||
+|| **cc**
+[`string`](../../data-types.md) | CC recipients. If there are none, an empty string is returned ||
+|| **date**
+[`string`](../../data-types.md) | Date and time the e-mail was received in the `YYYY-MM-DD HH:MM:SS` format, without a time zone ||
+|| **isSeen**
+[`boolean`](../../data-types.md) | Read flag: `true` — read, `false` — unread ||
+|| **hasAttachments**
+[`boolean`](../../data-types.md) | Attachments flag ||
+|| **url**
+[`string`](../../data-types.md) | Full link to the e-mail in Bitrix24 ||
+|| **bindings**
+[`array`](../../data-types.md) | Links of the e-mail to Bitrix24 objects. If there are none, an empty array `[]` is returned. The item format is described on the page of the [mail.message.list](./mail-message-list.md#returned-data) method ||
+|| **body**
+[`string`](../../data-types.md) | E-mail text without HTML markup. Lines are separated by `\r\n`. Special characters are returned as HTML entities, for example, `&lt;` instead of `<`. In replies and forwards sent from Bitrix24, the text includes the quote of the original e-mail ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -442,7 +472,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION",
-        "message": "Record with ID = `15` not found"
+        "message": "Entity with ID `15` was not found"
     }
 }
 ```
@@ -456,15 +486,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `id` | Mandatory field `id` is not specified | Add `id` to the request body ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
-
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and `mail` scope ||
+|| `id` | Required field `id` is missing | Add `id` to the request body ||
 |#
 
 #### Data Not Found Errors
@@ -472,7 +494,30 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `id` | Record with the specified identifier not found | Specify the identifier of an existing object ||
+|| `id` | Entity with ID `15` was not found | The e-mail does not exist, the user has no access to the e-mail's mailbox, or the mailbox is disabled. The method treats a non-numeric `id` value, such as `abc`, as `0` and returns the same error with ID `0`. Retrieve the identifier using the [mail.message.list](./mail-message-list.md) method ||
+|#
+
+#### Errors in the select Parameter
+Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `select` | Unknown field `foo` found in entity `MessageDto` | Pass only fields from the list of the `select` parameter ||
+|#
+
+Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `select` | Invalid field in `select`: `["id"]` | Pass `select` as an array of strings, for example, `["id","subject"]` ||
+|#
+
+#### Access Errors
+Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to fix** ||
+|| `-` | Access denied | Make sure the application or webhook has the `mail` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

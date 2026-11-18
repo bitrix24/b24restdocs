@@ -33,7 +33,7 @@ Allowed characters: `a-z`, `A-Z`, `0-9`, `.`, `-`, `_` ||
 
 Supported value: `SMS` ||
 || **HANDLER***
-[`string`](../data-types.md) | Application handler URL that is called when sending a message.
+[`string`](../data-types.md) | Application handler URL that is called when sending a message. The address must start with `http://` or `https://`, and the domain must contain a dot.
 
 The data that comes to the handler is described [below](#handler) ||
 || **NAME***
@@ -64,7 +64,11 @@ Can be a string or an associative array of localized strings like:
 ||
 |#
 
+A provider belongs to the application that registered it. When the application is deleted or updated to a new version, Bitrix24 deletes all its providers. After an update, register the providers again, for example, in the [ONAPPUPDATE](../common/events/on-app-update.md) event handler.
+
 ## What Comes to the Handler {#handler}
+
+Bitrix24 sends the data in a POST request to the address from `HANDLER`. In PHP, the values are available in `$_POST`. Bitrix24 does not read the handler's response: the message immediately receives the `sent` status, and you pass further statuses using the [messageservice.message.status.update](./messageservice-message-status-update.md) method.
 
 #|
 || **Name**
@@ -110,7 +114,9 @@ Use it in the [messageservice.message.status.update](./messageservice-message-st
 || **ts**
 [`integer`](../data-types.md) | Time of the request in Unix Timestamp format ||
 || **auth**
-[`object`](../data-types.md) | Application authorization data ||
+[`object`](../data-types.md) | Application authorization data.
+
+The parameter is passed if the message has an author, a Bitrix24 employee ||
 |#
 
 ### Properties Object {#properties}
@@ -391,17 +397,19 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty data!` | Empty parameter set ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` not provided ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender NAME!` | Required parameter `NAME` not provided ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender message TYPE!` | Required parameter `TYPE` not provided ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Unknown sender message TYPE!` | Unsupported `TYPE` provided (only `SMS` is allowed) ||
-|| `ERROR_SENDER_ALREADY_INSTALLED` | `Sender already installed!` | A provider with this `CODE` is already registered for the current application ||
-|| `ERROR_SENDER_ADD_FAILURE` | `Sender save error!` | Error saving the provider ||
-|| `ACCESS_DENIED` | `Access denied!` | Method was invoked by a non-administrator ||
-|| `ACCESS_DENIED` | `Application context required` | Method called outside of application context ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty data!` | Empty parameter set ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` not provided ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender NAME!` | Required parameter `NAME` not provided ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender message TYPE!` | Required parameter `TYPE` not provided ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Unknown sender message TYPE!` | Unsupported `TYPE` provided (only `SMS` is allowed) ||
+|| `400` | `ERROR_WRONG_HANDLER_URL` | `Wrong handler URL` | `HANDLER` is not an address or the domain has no dot, for example, `http://localhost/handler` ||
+|| `400` | `ERROR_UNSUPPORTED_PROTOCOL` | `Unsupported handler protocol` | The `HANDLER` address does not start with `http://` or `https://` ||
+|| `400` | `ERROR_SENDER_ALREADY_INSTALLED` | `Sender already installed!` | A provider with this `CODE` is already registered for the current application ||
+|| `400` | `ERROR_SENDER_ADD_FAILURE` | `Sender save error!` | Error saving the provider ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Method was invoked by a non-administrator ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | Method called outside of application context ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

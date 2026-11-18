@@ -38,7 +38,9 @@ Supported values:
 - `sent` — message has been sent by the provider
 - `delivered` — message has been successfully delivered to the recipient
 - `undelivered` — message was not delivered to the recipient
-- `failed` — error occurred while sending or processing the message by the provider ||
+- `failed` — error occurred while sending or processing the message by the provider
+
+The method does not check the order of statuses and sets any of them ||
 |#
 
 ## Code Examples
@@ -273,7 +275,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | `true` if the message status was successfully updated. ||
+[`boolean`](../data-types.md) | `true` if the request was processed. If the passed status matches the current one, the method also returns `true` ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -294,13 +296,13 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` is missing. ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters. ||
-|| `ERROR_MESSAGE_NOT_FOUND` | `Message not found!` | Message with the specified `MESSAGE_ID` was not found. ||
-|| `ERROR_MESSAGE_STATUS_INCORRECT` | `Message status incorrect!` | An unsupported `STATUS` was provided. ||
-|| `ACCESS_DENIED` | `Application context required` | Method was called outside the application context. ||
-|| `ACCESS_DENIED` | `Access denied!` | Method was invoked by a non-administrator. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` is missing. ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters. ||
+|| `400` | `ERROR_MESSAGE_NOT_FOUND` | `Message not found!` | `MESSAGE_ID` was not provided, or the message was not found among the messages of the `CODE` provider of the current application. ||
+|| `400` | `ERROR_MESSAGE_STATUS_INCORRECT` | `Message status incorrect!` | An unsupported `STATUS` was provided. ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | Method was called outside the application context. ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | The message was sent by another employee, and the method was invoked by a non-administrator. ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

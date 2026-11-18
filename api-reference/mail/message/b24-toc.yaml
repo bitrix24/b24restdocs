@@ -19,7 +19,7 @@ items:
     href: mail-message-movetofolder.md
   - name: Create CRM Activity from E-mail
     href: mail-message-createcrmactivity.md
-  - name: Remove E-mail Link to CRM Activity
+  - name: Delete CRM Activities of an E-mail
     href: mail-message-removecrmactivity.md
   - name: Create Task from E-mail
     href: mail-message-createtask.md

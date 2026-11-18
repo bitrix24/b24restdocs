@@ -29,7 +29,9 @@ This method works only in the context of an [application](../../settings/app-ins
 
 The provider code can be obtained using the [messageservice.sender.list](./messageservice-sender-list.md) method. ||
 || **HANDLER**
-[`string`](../data-types.md) | New application handler URL. ||
+[`string`](../data-types.md) | New application handler URL.
+
+The address must start with `http://` or `https://`, and the domain must contain a dot ||
 || **NAME**
 [`string` \| `object`](../data-types.md) | New name of the provider.
 
@@ -60,7 +62,7 @@ It can be a string or an associative array of localized strings in the following
 
 {% note info "" %}
 
-The request must include `CODE` and at least one of the parameters `HANDLER`, `NAME`, or `DESCRIPTION`.
+The request must include `CODE` and at least one of the parameters `HANDLER`, `NAME`, or `DESCRIPTION`. The provider type `TYPE` cannot be changed: the method ignores it.
 
 {% endnote %}
 
@@ -324,13 +326,15 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_SENDER_CODE_REQUIRED` | `CODE is required!` | The required parameter `CODE` is missing. ||
-|| `ERROR_SENDER_OTHER_PARAMS_REQUIRED` | `At least one other parameter is required!` | No parameters for updating (`HANDLER`, `NAME`, `DESCRIPTION`) were provided. ||
-|| `ERROR_SENDER_NOT_FOUND` | `Sender not found!` | The provider with the given `CODE` was not found. ||
-|| `ERROR_SENDER_UPDATE_FAILURE` | `Sender update error!` | An error occurred while updating the provider. ||
-|| `ACCESS_DENIED` | `Application context required` | The method was called outside the application context. ||
-|| `ACCESS_DENIED` | `Access denied!` | The method was executed by a non-administrator. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_SENDER_CODE_REQUIRED` | `CODE is required!` | The required parameter `CODE` is missing. ||
+|| `400` | `ERROR_SENDER_OTHER_PARAMS_REQUIRED` | `At least one other parameter is required!` | No parameters for updating (`HANDLER`, `NAME`, `DESCRIPTION`) were provided. ||
+|| `400` | `ERROR_WRONG_HANDLER_URL` | `Wrong handler URL` | `HANDLER` is not an address or the domain has no dot, for example, `http://localhost/handler`. ||
+|| `400` | `ERROR_UNSUPPORTED_PROTOCOL` | `Unsupported handler protocol` | The `HANDLER` address does not start with `http://` or `https://`. ||
+|| `400` | `ERROR_SENDER_NOT_FOUND` | `Sender not found!` | The provider with the given `CODE` was not found among the providers of the current application. ||
+|| `400` | `ERROR_SENDER_UPDATE_FAILURE` | `Sender update error!` | An error occurred while updating the provider. ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | The method was called outside the application context. ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | The method was executed by a non-administrator. ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

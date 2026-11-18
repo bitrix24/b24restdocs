@@ -57,7 +57,7 @@ To manage mail services, use the methods in the [mailservice.*](../mailservice/i
 
 **Recipient.** The [mail.recipient.*](./recipient/index.md) methods help select e-mail recipients. Contacts can be found using the [mail.recipient.listcontacts](./recipient/mail-recipient-listcontacts.md) method, and employees via the [mail.recipient.listemployees](./recipient/mail-recipient-listemployees.md) method.
 
-**CRM.** An e-mail can be linked to a CRM activity using the [mail.message.createcrmactivity](./message/mail-message-createcrmactivity.md) method. The link can be removed using the [mail.message.removecrmactivity](./message/mail-message-removecrmactivity.md) method.
+**CRM.** An e-mail can be linked to a CRM activity using the [mail.message.createcrmactivity](./message/mail-message-createcrmactivity.md) method. CRM activities created from an e-mail are deleted using the [mail.message.removecrmactivity](./message/mail-message-removecrmactivity.md) method.
 
 **Task.** An e-mail can be converted into a task using the [mail.message.createtask](./message/mail-message-createtask.md) method
 
@@ -97,7 +97,7 @@ To manage mail services, use the methods in the [mailservice.*](../mailservice/i
 || [mail.message.forward](./message/mail-message-forward.md) | Forwards an e-mail ||
 || [mail.message.movetofolder](./message/mail-message-movetofolder.md) | Moves e-mails to a folder, spam, or trash ||
 || [mail.message.createcrmactivity](./message/mail-message-createcrmactivity.md) | Creates a CRM activity from an e-mail ||
-|| [mail.message.removecrmactivity](./message/mail-message-removecrmactivity.md) | Removes the link between an e-mail and a CRM activity ||
+|| [mail.message.removecrmactivity](./message/mail-message-removecrmactivity.md) | Deletes CRM activities created from an e-mail ||
 || [mail.message.createtask](./message/mail-message-createtask.md) | Creates a task from an e-mail ||
 || [mail.message.createcalendarevent](./message/mail-message-createcalendarevent.md) | Creates a calendar event from an e-mail ||
 || [mail.message.createchat](./message/mail-message-createchat.md) | Creates a chat from an e-mail ||

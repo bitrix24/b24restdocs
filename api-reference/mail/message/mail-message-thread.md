@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.thread` method returns an e-mail thread by the identifier of a single e-mail.
+The `mail.message.thread` method returns the conversation branch that contains the e-mail. Parallel branches, such as other replies to the same e-mail, are not included in the result.
+
+E-mails are returned in pages, starting with the newest ones. Within a page, e-mails go from oldest to newest.
 
 ## Method Parameters
 
@@ -33,9 +35,21 @@ The `mail.message.thread` method returns an e-mail thread by the identifier of a
 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method. ||
 || **limit**
-[`integer`](../../data-types.md) | Maximum number of e-mails in the response.
+[`integer`](../../data-types.md) | Number of e-mails per page.
 
-Default — `20`, maximum — `50` ||
+Default is `20`. The maximum is `50` if `withBodies` is `true`, and `100` if it is `false`. The method reduces a larger value to the maximum and replaces `0` or a smaller value with `20` ||
+|| **offset**
+[`integer`](../../data-types.md) | How many e-mails to skip, counting from the newest one. Default is `0`.
+
+To retrieve the next page, increase `offset` by `limit` while `hasMore` is `true` in the response ||
+|| **withBodies**
+[`boolean`](../../data-types.md) | Whether to return the e-mail text.
+
+Possible values:
+- `true` — return the `body`, `truncated`, and `bodyLength` fields
+- `false` — return only the e-mail headers
+
+Default is `true` ||
 |#
 
 ## Code Examples
@@ -90,7 +104,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
       to: string
       cc: string
       date: string
-      body: string
+      body?: string
+      truncated?: boolean
+      bodyLength?: number
     }
 
     try {
@@ -108,7 +124,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Thread messages count:', result.length)
+        console.info('E-mails on the page:', result.length)
         console.info('First message subject:', result[0]?.subject)
       }
     } catch (error) {
@@ -144,7 +160,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Thread messages count:', result.length)
+          console.info('E-mails on the page:', result.length)
           console.info('First message subject:', result[0]?.subject)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -289,7 +305,9 @@ HTTP status: **200**
             "to": "manager@example.com",
             "cc": "",
             "date": "2026-05-26 12:17:35",
-            "body": "Good afternoon! I am sending the draft agreement."
+            "body": "Good afternoon! I am sending the draft agreement.",
+            "truncated": false,
+            "bodyLength": 49
         },
         {
             "id": 16,
@@ -298,22 +316,25 @@ HTTP status: **200**
             "to": "John Smith <john.smith@example.com>",
             "cc": "",
             "date": "2026-05-27 12:17:35",
-            "body": "Hello! Thank you, we have received it; we will review it and get back to you with comments."
+            "body": "Hello! Thank you, we have received it; we will review it and get back to you with comments.",
+            "truncated": false,
+            "bodyLength": 91
         }
     ],
+    "total": 2,
+    "hasMore": false,
     "time": {
         "start": 1779819678,
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
 }
 ```
-
 
 ### Returned Data
 
@@ -321,9 +342,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of e-mails from the thread ||
+[`array`](../../data-types.md) | E-mails of the branch on the current page, from oldest to newest. If the branch has no available e-mails, an empty array `[]` is returned ||
 || **result[]**
-[`object`](../../data-types.md) | E-mail object from the thread ||
+[`object`](../../data-types.md) | E-mail object from the branch ||
 || **id**
 [`integer`](../../data-types.md) | E-mail identifier ||
 || **subject**
@@ -335,9 +356,19 @@ HTTP status: **200**
 || **cc**
 [`string`](../../data-types.md) | CC recipients ||
 || **date**
-[`string`](../../data-types.md) | E-mail date and time ||
+[`string`](../../data-types.md) | Date and time the e-mail was received in the `YYYY-MM-DD HH:MM:SS` format, without a time zone ||
 || **body**
-[`string`](../../data-types.md) | E-mail text ||
+[`string`](../../data-types.md) | E-mail text without HTML markup and without the quote of the previous e-mail. Returned if `withBodies` is `true`.
+
+The method takes the first 10,000 characters of the text. If the text is longer, a note is appended at the end, for example, `[truncated: showing first 10000 of 15000 characters]` ||
+|| **truncated**
+[`boolean`](../../data-types.md) | Indicates that the e-mail text is truncated. Returned if `withBodies` is `true` ||
+|| **bodyLength**
+[`integer`](../../data-types.md) | Length of the original e-mail text in characters. Returned if `withBodies` is `true` ||
+|| **total**
+[`integer`](../../data-types.md) | Number of e-mails in the branch available to the user ||
+|| **hasMore**
+[`boolean`](../../data-types.md) | Whether there are older e-mails: `true` means there are; request the next page with an increased `offset` ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -350,7 +381,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION",
-        "message": "Entry with ID = `15` not found"
+        "message": "Entity with ID `15` was not found"
     }
 }
 ```
@@ -364,7 +395,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
+|| `id` | Required field `id` is missing | Add `id` to the request body ||
 |#
 
 #### Data Not Found Errors
@@ -372,7 +403,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `id` | Record with the specified identifier not found | Specify the identifier of an existing object ||
+|| `id` | Entity with ID `15` was not found | The e-mail does not exist, the user has no access to the e-mail's mailbox, or the mailbox is disabled. The method treats a non-numeric `id` value, such as `abc`, as `0` and returns the same error with ID `0`. Retrieve the identifier using the [mail.message.list](./mail-message-list.md) method ||
 |#
 
 #### Access Errors
@@ -380,7 +411,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `id` | Access denied | Check user permissions and `mail` scope ||
+|| `-` | Access denied | Make sure the application or webhook has the `mail` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

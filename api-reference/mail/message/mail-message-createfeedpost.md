@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with access to the e-mail
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.createfeedpost` method creates a News Feed message from an e-mail.
+The `mail.message.createfeedpost` method publishes a Feed post with a link to an e-mail.
 
 ## Method Parameters
 
@@ -35,8 +35,14 @@ The identifier can be obtained using the [mail.message.list](./mail-message-list
 || **title**
 [`string`](../../data-types.md) | Message subject.
 
-If not provided, the e-mail subject is used ||
+If not provided, the e-mail subject is used. If the e-mail has no subject, `Post from email #<e-mail ID>` is used ||
 |#
+
+{% note warning "" %}
+
+The post is visible to all employees. The post text is a link to the e-mail as `Email: <link>`; the e-mail content is not copied to the Feed.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -104,7 +110,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Feed post created:', result.postId, '| success:', result.success)
+        console.info('Feed post created:', result.postId)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -139,7 +145,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Feed post created:', result.postId, '| success:', result.success)
+          console.info('Feed post created:', result.postId)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -176,7 +182,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -204,7 +210,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -222,7 +228,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -281,8 +287,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -297,7 +303,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the operation result ||
 || **success**
-[`boolean`](../../data-types.md) | Flag of successful operation execution ||
+[`boolean`](../../data-types.md) | Success flag. Always `true` in a successful response ||
 || **postId**
 [`integer`](../../data-types.md) | Identifier of the created News Feed message ||
 || **messageId**
@@ -317,8 +323,8 @@ HTTP status: **400**
         "message": "Error during request object validation",
         "validation": [
             {
-                "message": "Mandatory field `messageId` is missing",
-                "field": "messageId"
+                "message": "Parameter \"messageId\" is required.",
+                "field": "MISSING_MESSAGE_ID"
             }
         ]
     }
@@ -332,21 +338,15 @@ HTTP status: **400**
 #### Request Validation Errors
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `messageId` | Mandatory field `messageId` is not specified or an incorrect value is passed | Pass `messageId` as a positive integer greater than `0` ||
-|| `-` | Modules blog/socialnetwork are not installed | Install and configure the blog and socialnetwork modules ||
-|| `messageId` | Message deleted or moved to another folder | Check that the e-mail exists and is accessible to the current user ||
-|| `-` | User blog not found | Check the user's profile and blog settings ||
-|| `-` | Failed to create blog post | Check access permissions and parameter correctness ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+The "Field" column shows the `field` value from the `validation` element. The method passes a reason code in it, not a parameter name. Errors without a code have no `field` in the response.
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and scope `mail` ||
+|| `MISSING_MESSAGE_ID` | Parameter "messageId" is required. | `messageId` is not provided, is not a number, or is less than `1`. Pass the e-mail ID as a positive integer ||
+|| `-` | Message was deleted or moved to another folder. | There is no e-mail with this `messageId`, or the user has no access to it. Check the ID using [mail.message.list](./mail-message-list.md) ||
+|| `-` | Modules blog/socialnetwork are not installed. | The blog module or the social network module is not installed in Bitrix24 ||
+|| `-` | User blog not found. | The user has no blog where their Feed posts are published ||
+|| `-` | Failed to create blog post. | The post was not published. Check the user's permissions to post in the Feed ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

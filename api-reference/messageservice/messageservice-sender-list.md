@@ -48,16 +48,9 @@ No parameters.
     declare const $b24: B24Frame
 
     try {
-      // messageservice.sender.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<string[]>({
         method: 'messageservice.sender.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -85,16 +78,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // messageservice.sender.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'messageservice.sender.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -243,7 +229,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../data-types.md) | An array of provider codes registered with the current application.
 
-An empty array indicates that the current application has no registered providers ||
+The method returns all codes in a single array, without pagination. An empty array indicates that the current application has no registered providers ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -264,9 +250,9 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Application context required` | Method called outside the application context ||
-|| `ACCESS_DENIED` | `Access denied!` | Method was not executed by an administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | Method called outside the application context ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Method was not executed by an administrator ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

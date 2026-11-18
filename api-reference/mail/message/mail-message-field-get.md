@@ -21,6 +21,8 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `mail.message.field.get` method returns a description of an e-mail field by name.
 
+All e-mail fields are read-only: each field has `filterable`, `sortable`, and `editable` set to `false`. That is why [mail.message.list](./mail-message-list.md) selects e-mails with separate search parameters rather than `filter`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -29,7 +31,7 @@ The `mail.message.field.get` method returns a description of an e-mail field by 
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Name of the field whose description needs to be obtained.
+[`string`](../../data-types.md) | Name of the field whose description needs to be obtained. The name is case-sensitive: `subject`, not `SUBJECT`.
 
 Available fields:
 
@@ -60,8 +62,11 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — editability groups
 - `multiple` — multi-value flag
-- `elementType` — item type for composite fields ||
+- `elementType` — item type for composite fields
+
+If the parameter is not passed, the method returns all description keys ||
 |#
 
 ## Code Examples
@@ -343,8 +348,8 @@ HTTP status: **200**
         "finish": 1769780771.081992,
         "duration": 0.08199191093444824,
         "processing": 0,
-        "date_start": "2026-05-25T16:46:11+03:00",
-        "date_finish": "2026-05-25T16:46:11+03:00",
+        "date_start": "2026-05-25T16:46:11+01:00",
+        "date_finish": "2026-05-25T16:46:11+01:00",
         "operating_reset_at": 1769781371,
         "operating": 0
     }
@@ -359,7 +364,31 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+[`object`](../../data-types.md) | Object with field description. The set of keys depends on `select` ||
+|| **name**
+[`string`](../../data-types.md) | Field name ||
+|| **type**
+[`string`](../../data-types.md) | Data type: `int`, `string`, `bool`, or `array` ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches the field name ||
+|| **description**
+[`string`](../../data-types.md) | Field description. For e-mail fields, `null` is returned ||
+|| **validationRules**
+[`array`](../../data-types.md) | Validation rules. For e-mail fields, an empty array `[]` ||
+|| **requiredGroups**
+[`array`](../../data-types.md) | Required groups. For e-mail fields, `null` is returned ||
+|| **filterable**
+[`boolean`](../../data-types.md) | Whether the field can be used in a filter. For e-mail fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | Whether the field can be used for sorting. For e-mail fields, `false` ||
+|| **editable**
+[`boolean`](../../data-types.md) | Whether the field can be modified. For e-mail fields, `false` ||
+|| **editableGroups**
+[`array`](../../data-types.md) | Editability groups. For e-mail fields, `null` is returned ||
+|| **multiple**
+[`boolean`](../../data-types.md) | Whether the field is multiple. For e-mail fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) | Item type for composite fields. For e-mail fields, `null` is returned ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -375,7 +404,7 @@ HTTP status: **400**
         "message": "Error during request object validation",
         "validation": [
             {
-                "message": "Mandatory field `name` is missing",
+                "message": "Required field `name` is missing",
                 "field": "name"
             }
         ]
@@ -392,15 +421,15 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and scope `mail` ||
+|| `-` | Access denied | Make sure the application or webhook has the `mail` scope ||
 |#
 
 #### Data Not Found Errors
-Error code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
+Error code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`, HTTP status: **404**
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `name` | Field `#FIELD#` not found | Specify an existing field name ||
+|| `name` | Field `foo` was not found | Pass a field name from the list of the `name` parameter, respecting the case. You can retrieve the list of fields using the [mail.message.field.list](./mail-message-field-list.md) method ||
 |#
 
 #### Request Validation Errors
@@ -408,7 +437,8 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `name` | Mandatory field `name` is not specified | Pass the parameter `name` with an existing field name ||
+|| `name` | Required field `name` is missing | Pass the parameter `name` with an existing field name ||
+|| `name` | This request requires data type `string` in field `name` | Pass the field name as a string, for example, `"subject"`, not as an array ||
 |#
 
 #### Errors in the `select` Parameter
@@ -417,14 +447,14 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Pass only fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `foo` found in entity `DtoFieldDto` | Pass only keys from the list of the `select` parameter ||
 |#
 
 Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as a string array, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | Pass `select` as a string array, for example `["name","type"]` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

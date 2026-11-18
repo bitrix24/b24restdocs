@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with access to the e-mail
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.createtask` method creates a task from an e-mail.
+The `mail.message.createtask` method creates a task based on an e-mail and links the e-mail to it.
 
 ## Method Parameters
 
@@ -35,14 +35,18 @@ The identifier can be obtained using the [mail.message.list](./mail-message-list
 || **title**
 [`string`](../../data-types.md) | Task name.
 
-If not provided, the e-mail subject is used ||
+If not provided, the e-mail subject is used. If the e-mail has no subject, `Task from email #<e-mail ID>` is used ||
 || **responsibleId**
 [`integer`](../../data-types.md) | Responsible person identifier.
 
-If not provided, the current user is used ||
+The identifier can be obtained using the [user.get](../../user/user-get.md) method.
+
+If not provided, the user who calls the method becomes the responsible person ||
 || **description**
 [`string`](../../data-types.md) | Task description ||
 |#
+
+The user who calls the method becomes the task creator. Task participants get access to the linked e-mail.
 
 ## Code Examples
 
@@ -185,7 +189,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -214,7 +218,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -233,7 +237,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -294,8 +298,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -310,7 +314,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the operation result ||
 || **success**
-[`boolean`](../../data-types.md) | Success flag of the operation ||
+[`boolean`](../../data-types.md) | Success flag. Always `true` in a successful response ||
 || **taskId**
 [`integer`](../../data-types.md) | Created task identifier ||
 || **messageId**
@@ -330,8 +334,8 @@ HTTP status: **400**
         "message": "Error validating the request object",
         "validation": [
             {
-                "message": "Mandatory field `messageId` is missing",
-                "field": "messageId"
+                "message": "Parameter \"messageId\" is required.",
+                "field": "MISSING_MESSAGE_ID"
             }
         ]
     }
@@ -345,20 +349,14 @@ HTTP status: **400**
 #### Request Validation Errors
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `messageId` | Required field `messageId` is not specified or an incorrect value was passed | Pass `messageId` as a positive integer greater than `0` ||
-|| `-` | Module tasks is not installed. | Install and configure the tasks module ||
-|| `messageId` | Message was deleted or moved to another folder | Verify that the e-mail exists and is accessible to the current user ||
-|| `-` | Failed to create task | Check task access permissions and the correctness of parameters ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+The "Field" column shows the `field` value from the `validation` element. The method passes a reason code in it, not a parameter name. Errors without a code have no `field` in the response.
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and `mail` scope ||
+|| `MISSING_MESSAGE_ID` | Parameter "messageId" is required. | `messageId` is not provided, is not a number, or is less than `1`. Pass the e-mail ID as a positive integer ||
+|| `-` | Message was deleted or moved to another folder. | There is no e-mail with this `messageId`, or the user has no access to it. Check the ID using [mail.message.list](./mail-message-list.md) ||
+|| `-` | Module tasks is not installed. | The tasks module is not installed in Bitrix24 ||
+|| `-` | Tasks module error text | The task was not created, for example, the responsible person was not found or the user has no permission to create tasks. Check `responsibleId` and the user's permissions ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

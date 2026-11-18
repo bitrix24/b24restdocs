@@ -483,7 +483,7 @@ Consider the tutorial limitations:
 - `mail.message.createcrmactivity` does not return `messageId` or the created CRM activity identifier. Retain `messageId` in your system if you need to retrieve the original e-mail later
 - the target CRM object cannot be passed as a parameter: `mail.message.createcrmactivity` has no fields for a lead, deal, contact, or company identifier
 - calling `mail.message.createcrmactivity` again for the same e-mail may return an error or leave the existing link unchanged; check `bindings` before retrying
-- the link can be deleted using [mail.message.removecrmactivity](../../api-reference/mail/message/mail-message-removecrmactivity.md)
+- CRM activities created from an e-mail are deleted using [mail.message.removecrmactivity](../../api-reference/mail/message/mail-message-removecrmactivity.md)
 
 ## Code Example
 
@@ -667,4 +667,4 @@ The code combines all steps: retrieves a mailbox, searches for an e-mail, create
 - [Retrieve a List of E-mails mail.message.list](../../api-reference/mail/message/mail-message-list.md)
 - [Create a CRM Activity from an E-mail mail.message.createcrmactivity](../../api-reference/mail/message/mail-message-createcrmactivity.md)
 - [Retrieve an E-mail mail.message.get](../../api-reference/mail/message/mail-message-get.md)
-- [Delete the Link Between an E-mail and a CRM Activity mail.message.removecrmactivity](../../api-reference/mail/message/mail-message-removecrmactivity.md)
+- [Delete CRM Activities of an E-mail mail.message.removecrmactivity](../../api-reference/mail/message/mail-message-removecrmactivity.md)

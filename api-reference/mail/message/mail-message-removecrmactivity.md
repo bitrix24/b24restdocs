@@ -1,4 +1,4 @@
-# Remove the link between an e-mail and a CRM deal mail.message.removecrmactivity
+# Delete CRM Activities of an E-mail mail.message.removecrmactivity
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with the "Manage CRM related mailbox options" permission, full access to the e-mail, and the permission to delete CRM activities
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.removecrmactivity` method removes the link between an e-mail and a CRM deal.
+The `mail.message.removecrmactivity` method deletes CRM activities created from an e-mail.
 
 ## Method Parameters
 
@@ -29,10 +29,16 @@ The `mail.message.removecrmactivity` method removes the link between an e-mail a
 || **Name**
 `type` | **Description** ||
 || **messageId***
-[`integer`](../../data-types.md) | E-mail identifier. 
+[`integer`](../../data-types.md) | E-mail identifier.
 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method ||
 |#
+
+The method deletes only the activities the user is allowed to delete under CRM permissions. The other activities remain in CRM together with their link to the e-mail, and the response contains `complete: false`.
+
+If all activities are deleted, the method adds the sender address of an incoming e-mail to the CRM exclusion list so that new e-mails from this sender do not get into CRM. The address is added only if the user has the permission to edit the exclusion list.
+
+Users with access to the mailbox have full access to the e-mail. If the e-mail is available to the user only through a linked task, chat, event, or Feed post, the method returns an error.
 
 ## Code Examples
 
@@ -78,8 +84,15 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     declare const $b24: B24Frame
 
+    type RemoveCrmActivityResult = {
+      result: boolean
+      deletedCount: number
+      totalCount: number
+      complete: boolean
+    }
+
     try {
-      const response = await $b24.actions.v3.call.make<boolean>({
+      const response = await $b24.actions.v3.call.make<RemoveCrmActivityResult>({
         method: 'mail.message.removecrmactivity',
         params: {
           messageId: 15,
@@ -92,7 +105,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('CRM activity unlinked:', result)
+        console.info('Deleted activities:', result.deletedCount, 'of', result.totalCount, 'all deleted:', result.complete)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -126,7 +139,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('CRM activity unlinked:', result)
+          console.info('Deleted activities:', result.deletedCount, 'of', result.totalCount, 'all deleted:', result.complete)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -162,7 +175,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -188,7 +201,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -205,7 +218,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -233,11 +246,16 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	return fmt.Errorf("mail.message.removecrmactivity: %w", err)
     }
 
-    var ok bool
-    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    var item struct {
+    	Result       bool `json:"result"`
+    	DeletedCount int  `json:"deletedCount"`
+    	TotalCount   int  `json:"totalCount"`
+    	Complete     bool `json:"complete"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println(item.DeletedCount, item.TotalCount, item.Complete)
     ```
 
 {% endlist %}
@@ -248,14 +266,19 @@ HTTP status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true,
+        "deletedCount": 1,
+        "totalCount": 1,
+        "complete": true
+    },
     "time": {
         "start": 1779819678,
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -268,10 +291,26 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true`, if the link between the e-mail and the CRM task is deleted ||
+[`object`](../../data-types.md) | Object with the deletion result ||
+|| **result.result**
+[`boolean`](../../data-types.md) | Always `true` in a successful response ||
+|| **result.deletedCount**
+[`integer`](../../data-types.md) | Number of deleted activities ||
+|| **result.totalCount**
+[`integer`](../../data-types.md) | Number of CRM activities created from the e-mail ||
+|| **result.complete**
+[`boolean`](../../data-types.md) | Whether all activities were deleted. Possible values:
+- `true` — all activities of the e-mail were deleted
+- `false` — some activities remain in CRM because the user has no permission to delete them ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
+
+{% note warning "" %}
+
+Currently, Bitrix24 returns only `result.result`, without the `deletedCount`, `totalCount`, and `complete` counters. The method responds this way even if the e-mail has no CRM activities. To check the result, retrieve the e-mail using [mail.message.get](./mail-message-get.md) and look for links of the `crm` type in the `bindings` field.
+
+{% endnote %}
 
 ## Error Handling
 
@@ -284,8 +323,8 @@ HTTP status: **400**
         "message": "Request object validation error",
         "validation": [
             {
-                "message": "Required field is missing",
-                "field": "messageId"
+                "message": "Parameter \"messageId\" is required.",
+                "field": "MISSING_MESSAGE_ID"
             }
         ]
     }
@@ -299,20 +338,16 @@ HTTP status: **400**
 #### Request Validation Errors
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `messageId` | Required field is not specified | Pass `messageId` in the request body ||
-|| `messageId` | Access denied: no access to CRM | Check the CRM access permissions for the current user ||
-|| `messageId` | Access denied: cannot delete CRM activity | Check the permissions to delete CRM tasks ||
-|| `messageId` | Message is deleted or moved to another folder | Verify that the e-mail exists and is accessible to the current user ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+The "Field" column shows the `field` value from the `validation` element. The method passes a reason code in it, not a parameter name. Errors without a code have no `field` in the response.
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and the `mail` scope ||
+|| `MISSING_MESSAGE_ID` | Parameter "messageId" is required. | `messageId` is not provided, is not a number, or is less than `1`. Pass the e-mail ID as a positive integer ||
+|| `-` | The CRM module was not found. Please install this module. | The CRM module is not installed in Bitrix24 ||
+|| `MAIL_MESSAGE_CRM_ACCESS_DENIED` | Access to CRM denied. | The user does not have the "Manage CRM related mailbox options" permission in the mail access permissions. Grant the permission or call the method on behalf of another user ||
+|| `-` | Message was deleted or moved to another folder. | There is no e-mail with this `messageId`, or the user has no access to it. Check the ID using [mail.message.list](./mail-message-list.md) ||
+|| `MAIL_MESSAGE_CRM_ACCESS_DENIED` | Access denied: full access to the message is required | The e-mail is available to the user only through a linked object. Call the method on behalf of a user with access to the mailbox ||
+|| `MAIL_MESSAGE_CRM_ACCESS_DENIED` | Access denied: cannot delete CRM activity | The user has no permission to delete any of the e-mail's activities. Check the user's permissions to delete activities in CRM ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

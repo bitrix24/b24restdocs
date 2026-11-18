@@ -1,4 +1,4 @@
-# Move emails to folder mail.message.movetofolder
+# Move e-mails to folder mail.message.movetofolder
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the emails are located
+> Who can execute the method: a user with access to the mailbox where the e-mails are located. For `action: "delete"`, the user also needs the permission to delete e-mails
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.movetofolder` method moves emails to a folder, spam, or the trash.
+The `mail.message.movetofolder` method moves e-mails to a folder, spam, or the trash of the mailbox.
 
 ## Method Parameters
 
@@ -29,21 +29,25 @@ The `mail.message.movetofolder` method moves emails to a folder, spam, or the tr
 || **Name**
 `type` | **Description** ||
 || **messageIds***
-[`array`](../../data-types.md) | An array of email IDs.
+[`array`](../../data-types.md) | A non-empty array of e-mail IDs, up to 100 elements.
 
-IDs can be obtained using the [mail.message.list](./mail-message-list.md) method.
+All e-mails in the request must be in the same folder. For `action: "move"`, the e-mails must also belong to the same mailbox.
 
-In a single request, pass emails from only one folder and one mailbox only. ||
+IDs can be obtained using the [mail.message.list](./mail-message-list.md) method ||
 || **action***
-[`string`](../../data-types.md) | Action for emails:
+[`string`](../../data-types.md) | Action for e-mails. The value is case-sensitive.
 
-- `move` — move to the folder specified in `folder`
-- `spam` — move to spam
-- `delete` — move to trash ||
+Possible values:
+
+- `move` — move to the folder from `folder`
+- `spam` — move to the spam folder of the mailbox
+- `delete` — move to the trash of the mailbox. If the e-mails are already in the trash, the method deletes them permanently ||
 || **folder**
-[`string`](../../data-types.md) | The name or path of an existing folder in this mailbox.
+[`string`](../../data-types.md) | Folder to move the e-mails to. Required if `action` is `move`.
 
-Required for the `move` action. ||
+Pass the folder name or its full path on the mail server, for example `INBOX/Archive`. The value is case-insensitive.
+
+If you specify the spam or trash folder, the method works as `action: "spam"` or `action: "delete"`. If you specify the inbox folder, the method returns e-mails from spam to the inbox ||
 |#
 
 ## Code Examples
@@ -112,7 +116,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Moved count:', result.movedCount, 'Action:', result.action, 'Success:', result.success)
+        console.info('E-mails processed:', result.movedCount, 'Action:', result.action)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -147,7 +151,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Moved count:', result.movedCount, 'Action:', result.action, 'Success:', result.success)
+          console.info('E-mails processed:', result.movedCount, 'Action:', result.action)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -185,9 +189,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -205,16 +210,15 @@ The new API call differs by adding the `/api/` segment to the request URL:
             ->getResponseData()
             ->getResult();
 
-        echo 'Success: ' . print_r($result, true);
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -223,16 +227,18 @@ The new API call differs by adding the `/api/` segment to the request URL:
             messageIds: [15, 16],
             action: 'spam'
         },
-        function(result){
-            console.info(result.data());
-            console.log(result);
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
         }
     );
     ```
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -291,8 +297,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -305,20 +311,20 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with the move result ||
+[`object`](../../data-types.md) | Object with the operation result ||
 || **success**
-[`boolean`](../../data-types.md) | Sign of successful operation execution ||
+[`boolean`](../../data-types.md) | Operation result. Always `true` in a successful response: if the e-mails are not moved, the method returns an error ||
 || **movedCount**
-[`integer`](../../data-types.md) | Number of processed emails ||
+[`integer`](../../data-types.md) | Number of processed e-mails. Only e-mails the user has access to are counted: the method skips inaccessible and non-existent IDs ||
 || **action**
-[`string`](../../data-types.md) | Performed action ||
+[`string`](../../data-types.md) | Performed action: `move`, `spam`, or `delete` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -327,8 +333,8 @@ HTTP status: **400**
         "message": "Error during request object validation",
         "validation": [
             {
-                "message": "Mandatory field is missing",
-                "field": "messageIds"
+                "message": "Parameter \"action\" must be \"move\", \"spam\", or \"delete\".",
+                "field": "INVALID_ACTION"
             }
         ]
     }
@@ -340,24 +346,44 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #### Request Validation Errors
+
+HTTP status: **400**
+
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+In a response with this code, the `field` field contains the error reason code rather than the parameter name. Some errors have no `field` field. Error texts returned by the mail module are in the Bitrix24 language.
+
 #|
-|| **Field** | **Error description** | **How to fix** ||
-|| `messageIds` | Required field is not specified | Pass `messageIds` in the request body ||
-|| `messageIds` | Select emails from a single folder | Pass emails from only one folder in a single request ||
-|| `folder` | The `folder` parameter is required when `action=move` | Pass `folder` or use `action=spam` / `action=delete` ||
-|| `action` | The `action` parameter must be `move`, `spam`, or `delete` | Pass one of the allowed values ||
-|| `messageIds` | No accessible messages found | Pass existing email IDs that the user has permissions for ||
-|| `messageIds` | All messages must belong to the same mailbox | Pass emails from only one mailbox in the request ||
+|| **field value** | **Error description** | **How to fix** ||
+|| `MISSING_MESSAGEIDS` | Parameter "messageIds" is required and must be a non-empty array. | Pass `messageIds` as a non-empty array. A number or a string instead of an array also causes this error ||
+|| `MISSING_ACTION` | Parameter "action" is required. | Pass `action` ||
+|| `INVALID_ACTION` | Parameter "action" must be "move", "spam", or "delete". | Pass `move`, `spam`, or `delete` in lowercase ||
+|| `MISSING_FOLDER` | Parameter "folder" is required when action is "move". | Pass `folder` or use `action: "spam"`, `action: "delete"` ||
+|| none | No accessible messages found. | None of the e-mails from `messageIds` were found, or the user has no access to their mailboxes. Check the IDs using the [mail.message.list](./mail-message-list.md) method ||
+|| none | All messages must belong to the same mailbox. | For `action: "move"`, e-mails from different mailboxes were passed. Split the request by mailbox ||
+|| `MAIL_CLIENT_MESSAGES_MULTIPLE_FOLDERS` | Select messages from only one folder | The e-mails are in different folders. Split the request by folder ||
+|| `MAIL_CLIENT_MOVE_TO_SELF_FOLDER` | Message is already in selected folder | The e-mails are already in the `folder` folder. Exclude them from the request ||
+|| `MAIL_CLIENT_MAILBOX_NOT_FOUND` | Mailbox was not found | The `folder` folder was not found in the mailbox. Check the folder name or path ||
+|| `MAIL_CLIENT_FOLDER_IS_DISABLED` | Archive is not a folder | The `folder` folder is disabled for synchronization. Choose another folder ||
+|| `MAIL_CLIENT_SPAM_FOLDER_NOT_SELECTED_ERROR` | Destination folder for spam is not selected | The spam folder is not selected in the mailbox settings. Select it in the mailbox settings ||
+|| `MAIL_CLIENT_TRASH_FOLDER_NOT_SELECTED_ERROR` | Destination folder for deleted messages is not selected | The trash folder is not selected in the mailbox settings. Select it in the mailbox settings ||
+|| `MAIL_CLIENT_MESSAGES_NOT_FOUND` | Messages are now being synchronized. Please try again later. | The e-mails are still being synchronized with the mail server. This happens with e-mails that have just been sent using the `mail.message.send`, `mail.message.reply`, and `mail.message.forward` methods. Retry the request later ||
+|| `MAIL_CLIENT_SYNC_ERROR` | Data sync error | The mail server did not perform the operation. Retry the request later ||
+|| `MAILBOX_MIGRATION_ACTION_BLOCKED` | The mailbox action is unavailable while its migration is active | The mailbox is being migrated. Retry the request after the migration is complete ||
+|| `MAILBOX_MIGRATION_STATUS_UNAVAILABLE` | The mailbox migration status is temporarily unavailable | The mailbox migration status is temporarily unavailable. Retry the request later ||
 |#
 
-#### Access Errors
+If `messageIds` contains more than 100 elements, Bitrix24 returns HTTP status **500** and the `INTERNAL_SERVER_ERROR` error. Split the e-mails into several requests.
+
+#### Access Error
+
+HTTP status: **403**
+
 Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and `mail` scope ||
+|| `-` | Access denied | For `action: "delete"` or moving to the trash folder, the user does not have the permission to delete e-mails. Ask the administrator to grant the permission in the mail permission settings ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

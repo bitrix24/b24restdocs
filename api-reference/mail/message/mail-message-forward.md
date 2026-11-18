@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with access to the mailbox where the e-mail is located, if the sender address passed in `from` is available to the user
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `mail.message.forward` method forwards an e-mail.
+The `mail.message.forward` method forwards an e-mail to new recipients.
 
 ## Method Parameters
 
@@ -33,20 +33,60 @@ The `mail.message.forward` method forwards an e-mail.
 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method. ||
 || **from***
-[`string`](../../data-types.md) | Sender's e-mail.
+[`string`](../../data-types.md) | Sender address. The address must be in the list of senders available to the user.
 
-Available addresses can be obtained using the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) method. ||
+You can pass the address as `Name <email>`: the method uses only the address.
+
+You can retrieve available addresses using the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) method, field `email` ||
 || **to***
-[`array`](../../data-types.md) | An array of recipient e-mail addresses ||
+[`array`](../../data-types.md) | A non-empty array of recipients. Each element is an e-mail address or a recipient name.
+
+The method looks up a name first in the user's mail address book and then among employees. If several matches or no matches are found, the method returns the `RESOLVE_RECIPIENTS_ERROR` error. To avoid depending on the lookup, pass e-mail addresses.
+
+You can retrieve address book addresses using the [mail.recipient.listContacts](../recipient/mail-recipient-listcontacts.md) method, and employee addresses using the [mail.recipient.listEmployees](../recipient/mail-recipient-listemployees.md) method ||
 || **subject***
-[`string`](../../data-types.md) | E-mail subject ||
+[`string`](../../data-types.md) | E-mail subject. An empty string is not allowed ||
 || **body***
-[`string`](../../data-types.md) | E-mail text: plain text or basic HTML ||
+[`string`](../../data-types.md) | E-mail body. An empty string is not allowed.
+
+You can pass plain text or HTML. The e-mail is sent in HTML format ||
 || **cc**
-[`array`](../../data-types.md) | An array of CC recipient e-mail addresses ||
+[`array`](../../data-types.md) | Array of CC recipients. Elements have the same format as in `to`.
+
+Pass an array, even for a single address ||
 || **bcc**
-[`array`](../../data-types.md) | An array of BCC recipient e-mail addresses ||
+[`array`](../../data-types.md) | Array of BCC recipients. Elements have the same format as in `to`.
+
+Pass an array, even for a single address ||
+|| **mailboxId**
+[`integer`](../../data-types.md) | ID of the mailbox to send the e-mail through. Required if the `from` address is available to the user through several mailboxes or senders. If both `mailboxId` and `senderId` are passed, the method uses `mailboxId`.
+
+The value must be a positive number and match the `from` address.
+
+You can retrieve the ID using the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) method, field `mailboxId` ||
+|| **senderId**
+[`integer`](../../data-types.md) | Sender ID. Use it if the `from` address is available to the user through several senders.
+
+The value must be a positive number and match the `from` address.
+
+You can retrieve the ID using the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) method, field `senderId` ||
 |#
+
+Below the text from `body`, the method quotes the original e-mail and attaches all its attachments. The method does not add the `Fwd:` prefix to the subject.
+
+If the `from` address belongs to a mailbox connected by the user, the e-mail is sent through that mailbox and saved to its Sent folder. If the address belongs to a standalone sender without a mailbox, the e-mail is sent through the Bitrix24 mail service.
+
+{% note warning "" %}
+
+Before sending, the method checks the Bitrix24 limits:
+
+- the total number of recipients in `to`, `cc`, and `bcc` is limited by the plan. If no limit is set, up to 10 recipients are allowed
+- on the trial plan and on plans without mail synchronization, each of the `to`, `cc`, and `bcc` arrays can contain only one recipient
+- the daily sender limit and the daily and monthly Bitrix24 e-mail limits apply
+
+If a limit is exceeded, the e-mail is not sent and the method returns an error describing the limit.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -68,7 +108,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"forwardMessageId":15,"from":"user@example.com","to":["manager@example.com"],"subject":"Fwd: Contract","body":"Forwarding the email."}' \
+    -d '{"forwardMessageId":15,"from":"user@example.com","to":["manager@example.com"],"subject":"Fwd: Contract","body":"Forwarding the e-mail."}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/mail.message.forward
     ```
 
@@ -78,7 +118,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"forwardMessageId":15,"from":"user@example.com","to":["manager@example.com"],"subject":"Fwd: Contract","body":"Forwarding the email.","auth":"**put_access_token_here**"}' \
+    -d '{"forwardMessageId":15,"from":"user@example.com","to":["manager@example.com"],"subject":"Fwd: Contract","body":"Forwarding the e-mail.","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/mail.message.forward
     ```
 
@@ -106,7 +146,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           from: 'user@example.com',
           to: ['manager@example.com'],
           subject: 'Fwd: Contract',
-          body: 'Forwarding the message.',
+          body: 'Forwarding the e-mail.',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -116,7 +156,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Forwarded successfully:', result.success, 'To:', result.to)
+        console.info('E-mail forwarded:', result.success, 'Recipients:', result.to)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -142,7 +182,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
               from: 'user@example.com',
               to: ['manager@example.com'],
               subject: 'Fwd: Contract',
-              body: 'Forwarding the message.',
+              body: 'Forwarding the e-mail.',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -154,7 +194,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Forwarded successfully:', result.success, 'To:', result.to)
+          console.info('E-mail forwarded:', result.success, 'Recipients:', result.to)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -180,7 +220,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             from_='user@example.com',
             to=to,
             subject='Fwd: Contract',
-            body='Forwarding the email.',
+            body='Forwarding the e-mail.',
         ).response
         result = bitrix_response.result
         print(result)
@@ -196,9 +236,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -211,7 +252,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                     'from' => 'user@example.com',
                     'to' => ['manager@example.com'],
                     'subject' => 'Fwd: Contract',
-                    'body' => 'Forwarding the email.'
+                    'body' => 'Forwarding the e-mail.'
                 ]
             );
 
@@ -219,17 +260,16 @@ The new API call differs by adding the `/api/` segment to the request URL:
             ->getResponseData()
             ->getResult();
 
-        echo 'Success: ' . print_r($result, true);
+        print_r($result);
 
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -239,18 +279,20 @@ The new API call differs by adding the `/api/` segment to the request URL:
             from: 'user@example.com',
             to: ['manager@example.com'],
             subject: 'Fwd: Contract',
-            body: 'Forwarding the email.'
+            body: 'Forwarding the e-mail.'
         },
-        function(result){
-            console.info(result.data());
-            console.log(result);
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
         }
     );
     ```
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -262,7 +304,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             'from' => 'user@example.com',
             'to' => ['manager@example.com'],
             'subject' => 'Fwd: Contract',
-            'body' => 'Forwarding the email.'
+            'body' => 'Forwarding the e-mail.'
         ]
     );
 
@@ -280,19 +322,20 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	"from":             "user@example.com",
     	"to":               []string{"manager@example.com"},
     	"subject":          "Fwd: Contract",
-    	"body":             "Forwarding the email.",
+    	"body":             "Forwarding the e-mail.",
     })
     if err != nil {
     	return fmt.Errorf("mail.message.forward: %w", err)
     }
 
     var item struct {
-    	Success bool `json:"success"`
+    	Success bool     `json:"success"`
+    	To      []string `json:"to"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Success)
+    fmt.Println(item.Success, item.To)
     ```
 
 {% endlist %}
@@ -314,8 +357,8 @@ HTTP status: **200**
         "finish": 1779819678.84803,
         "duration": 0.8480300903320312,
         "processing": 0,
-        "date_start": "2026-05-26T21:21:18+03:00",
-        "date_finish": "2026-05-26T21:21:18+03:00",
+        "date_start": "2026-05-26T21:21:18+01:00",
+        "date_finish": "2026-05-26T21:21:18+01:00",
         "operating_reset_at": 1779820278,
         "operating": 0
     }
@@ -330,9 +373,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the sending result ||
 || **success**
-[`boolean`](../../data-types.md) | Successful sending flag ||
+[`boolean`](../../data-types.md) | Sending result. Always `true` in a successful response: if the e-mail is not sent, the method returns an error ||
 || **to**
-[`array`](../../data-types.md) | Recipients to whom the e-mail was sent ||
+[`array`](../../data-types.md) | Addresses from `to` to which the e-mail was sent. Recipient names in this array are replaced with the e-mail addresses found. CC and BCC recipients are not included ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -348,8 +391,8 @@ HTTP status: **400**
         "message": "Error during request object validation",
         "validation": [
             {
-                "message": "Mandatory field `forwardMessageId` is missing",
-                "field": "forwardMessageId"
+                "message": "Original message not found or access denied.",
+                "field": "MESSAGE_FORWARD_FAILED"
             }
         ]
     }
@@ -363,25 +406,33 @@ HTTP status: **400**
 #### Request Validation Errors
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
-#|
-|| **Field** | **Error description** | **How to fix** ||
-|| `forwardMessageId` | Mandatory field `forwardMessageId` is not specified | Pass `forwardMessageId` in the request body ||
-|| `from` | Mandatory field `from` is not specified | Pass `from` in the request body ||
-|| `to` | Mandatory field `to` is not specified | Pass `to` in the request body ||
-|| `subject` | Mandatory field `subject` is not specified | Pass `subject` in the request body ||
-|| `body` | Mandatory field `body` is not specified | Pass `body` in the request body ||
-|| `forwardMessageId` | MESSAGE_FORWARD_FAILED | Check the existence of the e-mail and access to it, then retry the request ||
-|| `to` | NO_RECIPIENTS | Check that the `to` array contains correct recipient addresses ||
-|| `to`, `cc`, `bcc` | RESOLVE_RECIPIENTS_ERROR | Check the value format and recipient availability in `to`, `cc`, `bcc` ||
-|#
-
-#### Access Errors
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+In a response with this code, the `field` field contains the error reason code rather than the parameter name. The method checks parameters one by one and returns the first error found.
 
 #|
-|| **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and scope `mail` ||
+|| **field value** | **Error description** | **How to fix** ||
+|| `MISSING_FORWARDMESSAGEID` | Parameter "forwardMessageId" is required. | Pass `forwardMessageId` in the request body ||
+|| `MISSING_FROM` | Parameter "from" is required. | Pass `from` as a non-empty string ||
+|| `MISSING_SUBJECT` | Parameter "subject" is required. | Pass `subject` as a non-empty string ||
+|| `MISSING_BODY` | Parameter "body" is required. | Pass `body` as a non-empty string ||
+|| `MISSING_TO` | Parameter "to" is required and must be a non-empty array. | Pass `to` as a non-empty array. A string instead of an array also causes this error ||
+|| `RESOLVE_RECIPIENTS_ERROR` | Recipient "zzqxnotexist987" not found in address book or among employees. | A recipient from `to`, `cc`, or `bcc` was not found by name. Pass an e-mail address. The method treats a value without `@` and a malformed e-mail address as a name ||
+|| `RESOLVE_RECIPIENTS_ERROR` | Ambiguous recipient "Klaus". Found multiple matches: Klaus Weber &lt;klaus@example.com&gt;, Klaus Schmidt &lt;schmidt@example.com&gt;. Please specify the exact email address. | Several recipients were found by name. Pass an e-mail address from the list in the error text ||
+|| `NO_RECIPIENTS` | No valid recipients provided. | `to` contains only empty strings or spaces. Pass at least one address ||
+|| `MESSAGE_FORWARD_FAILED` | Original message not found or access denied. | The `forwardMessageId` e-mail was not found, the user has no access to its mailbox, or the e-mail attachments could not be read. Check the ID using the [mail.message.get](./mail-message-get.md) method and retry the request later if the e-mail has just arrived ||
+|| `MAILBOX_MIGRATION_ACTION_BLOCKED`, `MAILBOX_MIGRATION_STATUS_UNAVAILABLE` | The mailbox action is unavailable while its migration status is active or unavailable. | The mailbox is being migrated or its migration status is unavailable. Retry the request after the migration is complete ||
+|| `MESSAGE_FORWARD_FAILED` | Sender identifiers must be positive integers. | `mailboxId` or `senderId` is less than 1. Pass values from the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) response ||
+|| `MESSAGE_FORWARD_FAILED` | Sender email is not available for this user. | The `from` address is not among the senders available to the user. Check the address using the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) method ||
+|| `MESSAGE_FORWARD_FAILED` | Sender is not available for this user. | The passed `mailboxId` or `senderId` does not match the `from` address. Take related values from the same record of the [mail.mailbox.senders](../mailbox/mail-mailbox-senders.md) response ||
+|| `MESSAGE_FORWARD_FAILED` | Total number of recipients (to + cc + bcc) is 12, must not exceed 10. | The number of recipients exceeds the plan limit. Split the sending into several e-mails ||
+|| `MESSAGE_FORWARD_FAILED` | Tariff restriction: each of to, cc, bcc must contain at most 1 recipient(s). | On the Bitrix24 plan, each array can contain only one recipient ||
+|| `MESSAGE_FORWARD_FAILED` | Daily sender email limit reached. | The daily sender limit is exhausted. Retry the next day or use a different address ||
+|| `MESSAGE_FORWARD_FAILED` | Daily portal mail limit reached. | The daily Bitrix24 e-mail limit is exhausted. Retry the next day ||
+|| `MESSAGE_FORWARD_FAILED` | Monthly portal mail limit reached. | The monthly Bitrix24 e-mail limit is exhausted ||
+|| `MESSAGE_FORWARD_FAILED` | Mailbox authentication failed. | The sender's mailbox failed authentication on the mail server. Check the mailbox connection settings ||
+|| `MESSAGE_FORWARD_FAILED` | Failed to send email. | The e-mail could not be sent. Retry the request later ||
 |#
+
+If you pass a string instead of an array in `cc` or `bcc`, Bitrix24 returns HTTP status **500** and the `INTERNAL_SERVER_ERROR` error. Pass these parameters as arrays.
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 

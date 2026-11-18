@@ -269,12 +269,12 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` not provided ||
-|| `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters ||
-|| `ERROR_SENDER_NOT_FOUND` | `Sender not found!` | Provider with the given `CODE` not found ||
-|| `ACCESS_DENIED` | `Application context required` | Method called outside of application context ||
-|| `ACCESS_DENIED` | `Access denied!` | Method was not executed by an administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` not provided ||
+|| `400` | `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters ||
+|| `400` | `ERROR_SENDER_NOT_FOUND` | `Sender not found!` | Provider with the given `CODE` not found among the providers of the current application ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | Method called outside of application context ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Method was not executed by an administrator ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
