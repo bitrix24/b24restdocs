@@ -23,12 +23,12 @@ The method `sale.property.add` adds an order property.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating an order property ||
+[`object`](../../data-types.md) | Field values for creating an order property [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
-Common parameters applicable to order properties of any type:
+Common parameters applicable to order properties of any type. When `multiple` = `Y`, explicitly pass `isFiltered` = `N`.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -36,9 +36,9 @@ Common parameters applicable to order properties of any type:
 || **Name**
 `type` | **Description** ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
+[`sale_person_type.id`](../data-types.md#sale_person_type) | Identifier of the payer type ||
 || **propsGroupId***
-[`sale_order_property_group.id`](../data-types.md) | Identifier of the property group ||
+[`sale_order_property_group.id`](../data-types.md#sale_order_property_group) | Identifier of the property group for the specified payer type ||
 || **name***
 [`string`](../../data-types.md) | Name of the order property ||
 || **type***
@@ -84,7 +84,7 @@ Possible values:
 
 If not provided, the default value is `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sorting. Default — `100` ||
 || **description**
 [`string`](../../data-types.md) | Description of the order property ||
 || **required**
@@ -106,111 +106,111 @@ If not provided, the default value is `N` ||
 || **defaultValue**
 [`any`](../../data-types.md) | Default value of the order property.
 
-For properties of type `file`, an object in the format `{"fileData": ["value1", "value2"]}` must be provided:
-- `value1` — file name with extension,
-- `value2` — file in [base64](../../files/how-to-upload-files.md) format.
+For properties of type `FILE`, pass an object in the format `{"fileData": ["value1", "value2"]}`:
+- `value1` — file name with extension
+- `value2` — file in [base64](../../files/how-to-upload-files.md) format
 
-For multiple order properties (multiple), an array of values is supported ||
+For multiple order properties (`multiple` = `Y`), an array of values is supported. For the `FILE` type, only the first successfully uploaded file from the array is retained ||
 || **settings**
 [`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for the order property.
 
-The list of supported keys for this object depends on the property type. For some property types (e.g., Y/N), additional properties are not provided. The description of the **settings** parameter for different property types is provided [below](#parameter-settings) ||
+The list of supported keys for this object depends on the property type. For some property types (e.g., `Y/N`), additional properties are not provided. The description of the **settings** parameter for different property types is provided [below](#settings) ||
 |#
 
-Parameters applicable to order properties of type `STRING`
+Parameters applicable to order properties of type `STRING`. When `isProfileName` = `Y`, explicitly pass `required` = `Y`.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **isProfileName**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the user profile name.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **isPayer**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the payer's name.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N`||
 || **isEmail**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as an e-mail (e.g., when registering a new user during order placement).
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N`||
 || **isPhone**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as a phone number.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N`||
 || **isZip**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as a postal code.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N`||
 || **isAddress**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as an address.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N`||
 |#
 
-Parameters applicable to order properties of type `LOCATION`
+Parameters applicable to order properties of type `LOCATION`. When `isLocation` = `Y` or `isLocation4tax` = `Y`, explicitly pass `multiple` = `N`.
 
 #|
 ||**Name**
 `type` | **Description** ||
 || **isLocation**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the buyer's location for calculating shipping costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **isLocation4tax**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the buyer's location for determining tax rates.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **inputFieldLocation**
-[`string`](../../data-types.md) | Deprecated field. Not used ||
+[`string`](../../data-types.md) | Identifier of the string property for entering the location manually. Retained when `isLocation` = `Y` and `multiple` = `N`; default — `"0"` ||
 |#
 
-Parameters applicable to order properties of type `ADDRESS`			
+Parameters applicable to order properties of type `ADDRESS`
 
 #|
 || **Name**
 `type` | **Description** ||
 || **isAddressFrom**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the buyer's address from which the order needs to be picked up for calculating shipping costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **isAddressTo**
 [`string`](../../data-types.md) | Indicator of whether to use the value of this order property as the buyer's address to which the order needs to be delivered for calculating shipping costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 |#
 
-### Parameter settings
+### Parameter settings {#settings}
 
 Parameters applicable to order properties of type `STRING`
 
@@ -228,17 +228,17 @@ Regular expression for validating a phone number ```^((8|\+1)[\- ]?)?(\(?\d{3}\)
 Regular expression for validating date format DD/MM/YYYY:
 ```^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$``` ||
 || **multiline**
-[`string`](../../data-types.md) | Indicator of whether to display a multiline input field for the property value. Possible values: 
+[`string`](../../data-types.md) | Indicator of displaying a multiline input field for the property value. Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **cols**
-[`integer`](../../data-types.md) | Deprecated parameter. Not used ||
+[`integer`](../../data-types.md) | Width of the multiline field in characters. Retained when `multiline` = `Y` ||
 || **rows**
-[`integer`](../../data-types.md) | Deprecated parameter. Not used ||
+[`integer`](../../data-types.md) | Number of rows in the multiline field. Retained when `multiline` = `Y` ||
 || **size**
-[`integer`](../../data-types.md) | Deprecated parameter. Not used ||
+[`integer`](../../data-types.md) | Width of the single-line field in characters. Retained when `multiline` is not `Y` ||
 |#
 
 Parameters applicable to order properties of type `NUMBER`
@@ -260,15 +260,15 @@ Parameters applicable to order properties of type `ENUM`
 || **Name**
 `type` | **Description** ||
 || **multielement**
-[`string`](../../data-types.md) | Indicator of whether to display the order property as a list of checkboxes.
+[`string`](../../data-types.md) | Indicator of displaying the order property options as radio buttons, or as checkboxes when `multiple` = `Y`.
 Value is used in some user interfaces.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **size**
-[`integer`](../../data-types.md) | Number of displayed values for the order property. Value is used in some user interfaces ||
+[`integer`](../../data-types.md) | Number of visible rows in the list. Retained when `multielement` is not `Y` ||
 |#
 
 Parameters applicable to order properties of type `FILE`
@@ -289,7 +289,7 @@ Parameters applicable to order properties of type `DATE`
 `type` | **Description** ||
 || **time**
 [`string`](../../data-types.md) | Indicator of whether to add the option to select time when working with the value of this order property. Value is used in some user interfaces.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -304,22 +304,22 @@ If not provided, the default value is `N` ||
 
 - cURL (Webhook)
 
-    ```http
-    -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.property.add
-    ```
-
-- cURL (OAuth)
-
-    ```http
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.property.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sale.property.add
     ```
 
 - JS (TS)
@@ -357,7 +357,7 @@ If not provided, the default value is `N` ||
         personTypeId: number
         propsGroupId: number
         required: string
-        settings: Record<string, string>
+        settings: Record<string, unknown>
         sort: number
         type: string
         userProps: string
@@ -373,7 +373,7 @@ If not provided, the default value is `N` ||
           fields: {
             personTypeId: 3,
             propsGroupId: 6,
-            name: 'Phone (for courier contact)',
+            name: 'Phone (for contacting the courier)',
             type: 'STRING',
             code: 'PHONE',
             active: 'Y',
@@ -431,7 +431,7 @@ If not provided, the default value is `N` ||
               fields: {
                 personTypeId: 3,
                 propsGroupId: 6,
-                name: 'Phone (for courier contact)',
+                name: 'Phone (for contacting the courier)',
                 type: 'STRING',
                 code: 'PHONE',
                 active: 'Y',
@@ -485,7 +485,7 @@ If not provided, the default value is `N` ||
     fields = {
         "personTypeId": 3,
         "propsGroupId": 6,
-        "name": "Phone (to contact the courier)",
+        "name": "Phone (for contacting the courier)",
         "type": "STRING",
         "code": "PHONE",
         "active": "Y",
@@ -567,13 +567,13 @@ If not provided, the default value is `N` ||
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding property: ' . $e->getMessage();
@@ -713,7 +713,7 @@ If not provided, the default value is `N` ||
     var item struct {
     	Active             string `json:"active"`
     	Code               string `json:"code"`
-    	DefaultValue       string `json:"defaultValue"`
+    	DefaultValue       json.RawMessage `json:"defaultValue"`
     	Description        string `json:"description"`
     	ID                 b24.ID `json:"id"`
     	InputFieldLocation string `json:"inputFieldLocation"`
@@ -757,7 +757,7 @@ HTTP Status: **200**
          "propsGroupId":6,
          "required":"Y",
          "settings":{
-            "maxlength":"100",
+            "maxlength":100,
             "multiline":"Y"
          },
          "sort":500,
@@ -786,7 +786,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **property**
-[`sale_order_property`](../data-types.md) | Object with information about the added order property ||
+[`sale_order_property`](../data-types.md#sale_order_property) | Data of the added order property in `result.property`. The `id` field is the identifier of the created property; the other fields are described in the `fields` input parameter. For the `FILE` type, the `defaultValue` field contains information about the saved file ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -797,7 +797,7 @@ HTTP Status: **400**
 
 ```json
 {
-   "error":0,
+   "error":"0",
    "error_description":"Required fields: propsGroupId"
 }
 ```
@@ -808,28 +808,48 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200850000005` | Empty value specified for payer type ||
-|| `200850000006` | Internal error adding property ||
-|| `200850000009` | Error occurs when trying to create an order property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not provided.
-Filtering by multiple order properties is not supported ||
-|| `200850000010` | Error occurs when trying to create an order property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not equal to `N`.
-Filtering by multiple order properties is not supported ||
-|| `200850000011` | Error occurs when trying to create an order property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter is not specified.
-Multiplicity is not supported for order properties marked with the `isLocation` indicator ||
-|| `200850000012` | Error occurs when trying to create an order property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter is not equal to `N`.
-Multiplicity is not supported for order properties marked with the `isLocation` indicator ||
-|| `200850000013` | Error occurs when trying to create an order property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter is not specified.
-Multiplicity is not supported for order properties marked with the `isLocation4tax` indicator ||
-|| `200850000014` | Error occurs when trying to create an order property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter is not equal to `N`.
-Multiplicity is not supported for order properties marked with the `isLocation4tax` indicator ||
-|| `200850000015` | Error occurs when trying to create an order property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not specified.
-Profile name is required and cannot be empty ||
-|| `200850000016` | Error occurs when trying to create an order property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not equal to `Y`.
-Profile name is required and cannot be empty ||
-|| `200040300020` | Insufficient permissions to add order property ||
-|| `100` | Parameter `fields` is not specified or is empty ||
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| `200850000005` | `person type id is empty`
+
+An empty payer type value is specified ||
+|| `200850000006` | Validation or save error message
+
+The property could not be validated or saved, for example, the group does not belong to the specified payer type ||
+|| `200850000009` | `Require fields: isFiltered.`
+
+`isFiltered` is not passed when `multiple` = `Y` ||
+|| `200850000010` | `Allowed values: isFiltered - [N]`
+
+`isFiltered` other than `N` is passed when `multiple` = `Y` ||
+|| `200850000011` | `Require fields: multiple.`
+
+`multiple` is not passed for `LOCATION` with `isLocation` = `Y` ||
+|| `200850000012` | `Allowed values: multiple - [N]`
+
+`multiple` other than `N` is passed for `LOCATION` with `isLocation` = `Y` ||
+|| `200850000013` | `Require fields: multiple.`
+
+`multiple` is not passed for `LOCATION` with `isLocation4tax` = `Y` ||
+|| `200850000014` | `Allowed values: multiple - [N]`
+
+`multiple` other than `N` is passed for `LOCATION` with `isLocation4tax` = `Y` ||
+|| `200850000015` | `Require fields: require.`
+
+`required` is not passed for `STRING` with `isProfileName` = `Y` ||
+|| `200850000016` | `Allowed values: require - [Y]`
+
+`required` other than `Y` is passed for `STRING` with `isProfileName` = `Y` ||
+|| `200850000017` | ```Wrong format of field `defaultValue` ```
+
+An invalid `defaultValue` format is passed for `FILE`. Use the `fileData` object with two strings: the file name and the base64-encoded content ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to add an order property ||
+|| `100` | `Could not find value for parameter {fields}`
+
+Parameter `fields` is not specified ||
+|| `0` | `Required fields: personTypeId, propsGroupId, name, type`
+
+Required fields are not provided in `fields`. The message lists the missing fields ||
 |#
 
 {% include notitle [system errors](../../../_includes/system-errors.md) %}

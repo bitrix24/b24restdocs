@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
-The method `sale.property.getfieldsbytype` retrieves the available fields of order properties by property type.
+The method `sale.property.getfieldsbytype` returns descriptions of the order property fields and settings for the specified type.
 
 ## Method Parameters
 
@@ -32,7 +32,9 @@ Possible values:
 - `FILE`
 - `DATE`
 - `LOCATION`
-- `ADDRESS`
+- `ADDRESS` — available when the `location` module is installed
+- `PRODUCT_CATEGORIES`
+- `CONCRETE_PRODUCT`
  ||
 
 |#
@@ -45,7 +47,7 @@ Possible values:
 
 - cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -55,7 +57,7 @@ Possible values:
 
 - cURL (OAuth)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -78,6 +80,7 @@ Possible values:
       isReadOnly: boolean
       isRequired: boolean
       type: string
+      fields?: Record<string, FieldDescriptor> | []
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
@@ -402,10 +405,12 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **property**
-[`sale_order_property`](../data-types.md#sale_order_property) | Description of the fields and settings of the order property for the selected type ||
+[`object`](../../data-types.md) | An object in `result`: keys are [`sale_order_property`](../data-types.md#sale_order_property) field names, values are [`rest_field_description`](../data-types.md#rest_field_description) objects with the type and the required and immutable flags ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
+
+`property.settings.fields` contains descriptions of the settings of the selected type in the same `rest_field_description` format. If the type has no settings, an empty array `[]` is returned.
 
 ## Error Handling
 
@@ -413,8 +418,8 @@ HTTP Status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"error"
+   "error":"200850000008",
+   "error_description":"type is out of range"
 }
 ```
 
@@ -424,7 +429,15 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available order property fields ||
+|| `200850000008` | `type is out of range`
+
+An invalid property type is passed in the `type` parameter ||
+|| `100` | `Could not find value for parameter {type}`
+
+The `type` parameter is not passed ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read available order property fields ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

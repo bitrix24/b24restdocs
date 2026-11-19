@@ -23,14 +23,20 @@ The method `sale.property.update` updates the order property.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property.id`](../data-types.md) | Identifier of the order property ||
+[`sale_order_property.id`](../data-types.md#sale_order_property) | Identifier of the order property. You can retrieve it using the [sale.property.list](./sale-property-list.md) method ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating the order property ||
+[`object`](../../data-types.md) | Field values for updating the order property [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
-General parameters relevant for order properties of any type:
+The `type`, `personTypeId`, and `propsGroupId` fields cannot be changed. Pass the required `name` field with every update.
+
+Omitted `Y/N` flags receive the default values listed below, and `settings` is rebuilt from the passed settings. To retain these values, pass them explicitly.
+
+Updating a property removes its links to payment systems and delivery services. Restore the required links using the [sale.propertyRelation.*](../property-relation/index.md) methods.
+
+General parameters for order properties of any type:
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -70,7 +76,7 @@ Possible values:
 
 If not provided, the default value is `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sort order. Default — `100` ||
 || **description**
 [`string`](../../data-types.md) | Description of the order property ||
 || **required**
@@ -92,18 +98,19 @@ If not provided, the default value is `N` ||
 || **defaultValue**
 [`any`](../../data-types.md) | Default value of the order property.
 
-For properties of type `file`, you need to provide an object in the format `{"fileData": ["value1", "value2"]}`:
-- `value1` — file name with extension,
-- `value2` — file in [base64](../../files/how-to-upload-files.md) format.
+For properties of type `FILE`, you need to provide an object in the format `{"fileData": ["value1", "value2"]}`:
+- `value1` — file name with extension
+- `value2` — file in [base64](../../files/how-to-upload-files.md) format
 
 To delete a file, use the object in the format `{"remove": "Y"}`.
 
-For multiple order properties (multiple), it supports passing an array of values.
-To delete a value, you need to pass `null`, or simply not pass the parameter. ||
+For multiple properties (`multiple: "Y"`), pass an array of values; for the `FILE` type, only the first successfully uploaded file from it is retained.
+
+If you pass `null` or omit `defaultValue`, the default value is cleared ||
 || **settings**
 [`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for the order property.
 
-The list of supported keys for this object depends on the type of property. For some property types (e.g., Y/N), additional properties are not provided. The description of the **settings** parameter for different property types is provided in the method description [`sale.property.add`](sale-property-add.md) ||
+The list of supported keys for this object depends on the type of property. For some property types (e.g., Y/N), additional properties are not provided. The description of the **settings** parameter for different property types is provided in the method description [`sale.property.add`](sale-property-add.md#settings) ||
 |#
 
 Parameters relevant for order properties of type `STRING`
@@ -175,7 +182,7 @@ Possible values:
 
 If not provided, the default value is `N` ||
 || **inputFieldLocation**
-[`string`](../../data-types.md) | Deprecated field. Not used. ||
+[`string`](../../data-types.md) | Identifier of an active `STRING` property of the same payer type for alternative location input. Used when `isLocation: "Y"` and `multiple: "N"`; default — `0` ||
 |#
 
 Parameters relevant for order properties of type `ADDRESS`
@@ -207,22 +214,22 @@ If not provided, the default value is `N` ||
 
 - cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":93,"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.property.update
+    -d '{"id":93,"fields":{"name":"Phone (for contacting the courier)","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.property.update
     ```
 
 - cURL (OAuth)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":93,"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.property.update
+    -d '{"id":93,"fields":{"name":"Phone (for contacting the courier)","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sale.property.update
     ```
 
 - JS (TS)
@@ -260,7 +267,7 @@ If not provided, the default value is `N` ||
         personTypeId: number
         propsGroupId: number
         required: string
-        settings: Record<string, string>
+        settings: Record<string, unknown>
         sort: number
         type: string
         userProps: string
@@ -275,10 +282,7 @@ If not provided, the default value is `N` ||
         params: {
           id: 93,
           fields: {
-            personTypeId: 3,
-            propsGroupId: 6,
-            name: 'Phone (courier contact)',
-            type: 'STRING',
+            name: 'Phone (for contacting the courier)',
             code: 'PHONE',
             active: 'Y',
             util: 'N',
@@ -334,10 +338,7 @@ If not provided, the default value is `N` ||
             params: {
               id: 93,
               fields: {
-                personTypeId: 3,
-                propsGroupId: 6,
-                name: 'Phone (courier contact)',
-                type: 'STRING',
+                name: 'Phone (for contacting the courier)',
                 code: 'PHONE',
                 active: 'Y',
                 util: 'N',
@@ -388,10 +389,7 @@ If not provided, the default value is `N` ||
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     fields = {
-        "personTypeId": 3,
-        "propsGroupId": 6,
-        "name": "Phone (to contact the courier)",
-        "type": "STRING",
+        "name": "Phone (for contacting the courier)",
         "code": "PHONE",
         "active": "Y",
         "util": "N",
@@ -445,10 +443,7 @@ If not provided, the default value is `N` ||
                 [
                     'id' => 93,
                     'fields' => [
-                        'personTypeId'  => 3,
-                        'propsGroupId'  => 6,
                         'name'          => 'Phone (for contacting the courier)',
-                        'type'          => 'STRING',
                         'code'          => 'PHONE',
                         'active'        => 'Y',
                         'util'          => 'N',
@@ -493,10 +488,7 @@ If not provided, the default value is `N` ||
         'sale.property.update', {
             id: 93,
             fields: {
-                personTypeId: 3,
-                propsGroupId: 6,
                 name: 'Phone (for contacting the courier)',
-                type: 'STRING',
                 code: 'PHONE',
                 active: 'Y',
                 util: 'N',
@@ -540,10 +532,7 @@ If not provided, the default value is `N` ||
         [
             'id' => 93,
             'fields' => [
-                'personTypeId' => 3,
-                'propsGroupId' => 6,
                 'name' => 'Phone (for contacting the courier)',
-                'type' => 'STRING',
                 'code' => 'PHONE',
                 'active' => 'Y',
                 'util' => 'N',
@@ -581,10 +570,7 @@ If not provided, the default value is `N` ||
     res, err := client.Core().Call(ctx, "sale.property.update", b24.Params{
     	"id": 93,
     	"fields": b24.Params{
-    		"personTypeId": 3,
-    		"propsGroupId": 6,
     		"name":         "Phone (for contacting the courier)",
-    		"type":         "STRING",
     		"code":         "PHONE",
     		"active":       "Y",
     		"util":         "N",
@@ -621,7 +607,7 @@ If not provided, the default value is `N` ||
     var item struct {
     	Active             string `json:"active"`
     	Code               string `json:"code"`
-    	DefaultValue       string `json:"defaultValue"`
+    	DefaultValue       json.RawMessage `json:"defaultValue"`
     	Description        string `json:"description"`
     	ID                 b24.ID `json:"id"`
     	InputFieldLocation string `json:"inputFieldLocation"`
@@ -646,7 +632,7 @@ HTTP Status: **200**
          "code":"PHONE",
          "defaultValue":"",
          "description":"property description",
-         "id":96,
+         "id":93,
          "inputFieldLocation":"0",
          "isAddress":"N",
          "isAddressFrom":"N",
@@ -665,7 +651,7 @@ HTTP Status: **200**
          "propsGroupId":6,
          "required":"Y",
          "settings":{
-            "maxlength":"100",
+            "maxlength":100,
             "multiline":"Y"
          },
          "sort":500,
@@ -693,10 +679,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **property**
-[`sale_order_property`](../data-types.md) | Object containing information about the updated order property ||
+|| **result.property**
+[`sale_order_property`](../data-types.md#sale_order_property) | The updated order property. In addition to the input fields, it contains `id`, `type`, `personTypeId`, and `propsGroupId` ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -705,8 +691,8 @@ HTTP Status: **400**
 
 ```json
 {
-   "error":200840400001,
-   "error_description":"property does not exist"
+   "error":"200840400001",
+   "error_description":"property is not exists"
 }
 ```
 
@@ -716,29 +702,44 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200840400001` | The order property being updated was not found ||
-|| `200850000003` | Internal error updating the property ||
-|| `200850000009` | Error occurs when trying to update an order property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not provided.
-Filtering by multiple order properties is not supported ||
-|| `200850000010` | Error occurs when trying to update an order property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not equal to `N`.
-Filtering by multiple order properties is not supported ||
-|| `200850000011` | Error occurs when trying to update an order property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter is not specified.
-Multiplicity is not supported for order properties marked with the `isLocation` indicator ||
-|| `200850000012` | Error occurs when trying to update an order property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter is not equal to `N`.
-Multiplicity is not supported for order properties marked with the `isLocation` indicator ||
-|| `200850000013` | Error occurs when trying to update an order property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter is not specified.
-Multiplicity is not supported for order properties marked with the `isLocation4tax` indicator ||
-|| `200850000014` | Error occurs when trying to update an order property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter is not equal to `N`.
-Multiplicity is not supported for order properties marked with the `isLocation4tax` indicator ||
-|| `200850000015` | Error occurs when trying to update an order property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not specified.
-Profile name is mandatory and cannot be empty ||
-|| `200850000016` | Error occurs when trying to update an order property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not equal to `Y`.
-Profile name is mandatory and cannot be empty ||
-|| `200040300020` | Insufficient permissions to update the order property ||
-|| `100` | The `id` parameter is not specified ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| `200840400001` | `property is not exists`
+
+The order property being updated was not found ||
+|| `200850000003` | Order property validation or save error. The reason is given in `error_description` ||
+|| `200850000009` | `Require fields: isFiltered.`
+
+`isFiltered` is not passed when `multiple: "Y"` ||
+|| `200850000010` | `Allowed values: isFiltered - [N]`
+
+When `multiple: "Y"`, `isFiltered` must be `N` ||
+|| `200850000011` | `Require fields: multiple.`
+
+`multiple` is not passed for the `LOCATION` type when `isLocation: "Y"` ||
+|| `200850000012` | `Allowed values: multiple - [N]`
+
+For the `LOCATION` type, when `isLocation: "Y"`, `multiple` must be `N` ||
+|| `200850000013` | `Require fields: multiple.`
+
+`multiple` is not passed for the `LOCATION` type when `isLocation4tax: "Y"` ||
+|| `200850000014` | `Allowed values: multiple - [N]`
+
+For the `LOCATION` type, when `isLocation4tax: "Y"`, `multiple` must be `N` ||
+|| `200850000015` | `Require fields: require.`
+
+`required` is not passed for the `STRING` type when `isProfileName: "Y"` ||
+|| `200850000016` | `Allowed values: require - [Y]`
+
+For the `STRING` type, when `isProfileName: "Y"`, `required` must be `Y` ||
+|| `200850000017` | ``Wrong format of field `defaultValue` ``
+
+Invalid `defaultValue` format for the `FILE` type ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to update the order property ||
+|| `100` | The `id` or `fields` parameter is not specified ||
+|| `0` | `Required fields: name`
+
+The `name` field is not passed in `fields`, including when the `fields` object is empty ||
 |#
 
 {% include notitle [system errors](../../../_includes/system-errors.md) %}

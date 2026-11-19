@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `sale.property.delete` deletes an order property.
 
+Deletion is irreversible: the property's value options, its bindings, and its values in customer profiles are deleted. Property values in existing orders are retained but lose their link to the deleted property. Customer profiles left with no values are also deleted.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -23,7 +25,7 @@ The method `sale.property.delete` deletes an order property.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property.id`](../data-types.md) | Identifier of the order property ||
+[`sale_order_property.id`](../data-types.md#sale_order_property) | Identifier of the order property. You can retrieve the identifier using the [sale.property.list](./sale-property-list.md) method ||
 |#
 
 ## Code Examples
@@ -34,7 +36,7 @@ The method `sale.property.delete` deletes an order property.
 
 - cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -44,7 +46,7 @@ The method `sale.property.delete` deletes an order property.
 
 - cURL (OAuth)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -246,7 +248,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the property deletion ||
+[`boolean`](../../data-types.md) | `true` if the property is deleted successfully ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -257,8 +259,8 @@ HTTP status: **400**
 
 ```json
 {	
-   "error":200840400001,
-   "error_description":"property does not exist"
+   "error":"200840400001",
+   "error_description":"property is not exists"
 }
 ```
 
@@ -268,11 +270,18 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200840400001` | The order property to be deleted was not found ||
-|| `200850000004` | Internal error deleting the order property ||
-|| `ERROR_CORE` | Internal error deleting the order property ||
-|| `200040300020` | Insufficient permissions to delete the order property ||
-|| `100` | Parameter `id` not specified ||
+|| `200840400001` | `property is not exists`
+
+The order property to be deleted was not found ||
+|| `200850000004` | `delete property error`
+
+Failed to delete the order property ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to delete the order property ||
+|| `100` | `Could not find value for parameter {id}`
+
+Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -282,7 +291,7 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./sale-property-add.md)
+- [{#T}](./sale-property-update.md)
 - [{#T}](./sale-property-get.md)
 - [{#T}](./sale-property-list.md)
-- [{#T}](./sale-property-update.md)
 - [{#T}](./sale-property-get-fields-by-type.md)

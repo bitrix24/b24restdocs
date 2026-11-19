@@ -11,33 +11,36 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
 The method `sale.property.list` retrieves a list of order properties.
 
 ## Method Parameters
 
+All parameters are optional.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [sale_order_property](../data-types.md) object).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [sale_order_property](../data-types.md#sale_order_property) object).
  
-If not provided or an empty array is passed, all available property fields will be selected.
+If not provided or an empty array is passed, all available property fields will be selected. The `isLocation4tax` field in `select` is ignored
 ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected payment bindings to shipments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering order properties in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
  
-Possible values for `field` correspond to the fields of the [sale_order_property](../data-types.md) object.
+Possible values for `field` correspond to the fields of the [sale_order_property](../data-types.md#sale_order_property) object. The method skips a condition on an unknown field without an error, so a typo in a field name broadens the selection.
 
 An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
+- `@` — in a list of values (IN), the filter value is an array
 - `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
 - `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
@@ -52,25 +55,27 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!%=` — NOT LIKE (see description above)
 ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected items in the shipment table in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting order properties in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
  
-Possible values for `field` correspond to the fields of the [sale_order_property](../data-types.md).
+Possible values for `field` correspond to the fields of the [sale_order_property](../data-types.md#sale_order_property).
  
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+By default, properties are sorted by `id` in ascending order
  ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
  
 The page size of results is always static: 50 records.
  
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
- 
 The formula for calculating the value of the `start` parameter:
  
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the number of the desired page. By default, `start` = `0`.
+
+To retrieve the next page, pass the `next` value from the response
  ||
 |#
 
@@ -82,21 +87,21 @@ The formula for calculating the value of the `start` parameter:
 
 - cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":"STRING","%code":"EMAIL"},"order":{"id":"desc"}}' \
+    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":["STRING"],"%code":"EMAIL"},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.property.list
     ```
 
 - cURL (OAuth)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":"STRING","%code":"EMAIL"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":["STRING"],"%code":"EMAIL"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.property.list
     ```
 
@@ -116,7 +121,7 @@ The formula for calculating the value of the `start` parameter:
         id: number
         active: string
         code: string
-        defaultValue: string
+        defaultValue: unknown
         description: string
         inputFieldLocation: string
         isAddress: string
@@ -165,7 +170,6 @@ The formula for calculating the value of the `start` parameter:
             'isEmail',
             'isFiltered',
             'isLocation',
-            'isLocation4tax',
             'isPayer',
             'isPhone',
             'isProfileName',
@@ -183,7 +187,7 @@ The formula for calculating the value of the `start` parameter:
             'xmlId',
           ],
           filter: {
-            '@type': 'STRING',
+            '@type': ['STRING'],
             '%code': 'EMAIL',
           },
           order: {
@@ -239,7 +243,6 @@ The formula for calculating the value of the `start` parameter:
                 'isEmail',
                 'isFiltered',
                 'isLocation',
-                'isLocation4tax',
                 'isPayer',
                 'isPhone',
                 'isProfileName',
@@ -257,7 +260,7 @@ The formula for calculating the value of the `start` parameter:
                 'xmlId',
               ],
               filter: {
-                '@type': 'STRING',
+                '@type': ['STRING'],
                 '%code': 'EMAIL',
               },
               order: {
@@ -306,7 +309,6 @@ The formula for calculating the value of the `start` parameter:
                 "isEmail",
                 "isFiltered",
                 "isLocation",
-                "isLocation4tax",
                 "isPayer",
                 "isPhone",
                 "isProfileName",
@@ -324,13 +326,13 @@ The formula for calculating the value of the `start` parameter:
                 "xmlId",
             ],
             filter={
-                "@type": "STRING",
+                "@type": ["STRING"],
                 "%code": "EMAIL",
             },
             order={
                 "id": "desc",
             },
-            start='1712818881.719586',
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -369,7 +371,6 @@ The formula for calculating the value of the `start` parameter:
                         'isEmail',
                         'isFiltered',
                         'isLocation',
-                        'isLocation4tax',
                         'isPayer',
                         'isPhone',
                         'isProfileName',
@@ -387,7 +388,7 @@ The formula for calculating the value of the `start` parameter:
                         'xmlId',
                     ],
                     'filter' => [
-                        '@type' => 'STRING',
+                        '@type' => ['STRING'],
                         '%code' => 'EMAIL',
                     ],
                     'order' => [
@@ -426,7 +427,6 @@ The formula for calculating the value of the `start` parameter:
                 "isEmail",
                 "isFiltered",
                 "isLocation",
-                "isLocation4tax",
                 "isPayer",
                 "isPhone",
                 "isProfileName",
@@ -444,7 +444,7 @@ The formula for calculating the value of the `start` parameter:
                 "xmlId",
             ],
             "filter": {
-                "@type": "STRING",
+                "@type": ["STRING"],
                 "%code": "EMAIL",
             },
             "order": {
@@ -482,7 +482,6 @@ The formula for calculating the value of the `start` parameter:
                 "isEmail",
                 "isFiltered",
                 "isLocation",
-                "isLocation4tax",
                 "isPayer",
                 "isPhone",
                 "isProfileName",
@@ -500,7 +499,7 @@ The formula for calculating the value of the `start` parameter:
                 "xmlId",
             ],
             'filter' => [
-                "@type" => "STRING",
+                "@type" => ["STRING"],
                 "%code" => "EMAIL",
             ],
             'order' => [
@@ -519,9 +518,9 @@ The formula for calculating the value of the `start` parameter:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "sale.property.list", b24.Params{
-    	"select": []string{"id", "active", "code", "defaultValue", "description", "inputFieldLocation", "isAddress", "isAddressFrom", "isAddressTo", "isEmail", "isFiltered", "isLocation", "isLocation4tax", "isPayer", "isPhone", "isProfileName", "isZip", "multiple", "name", "personTypeId", "propsGroupId", "required", "settings", "sort", "type", "userProps", "util", "xmlId"},
+    	"select": []string{"id", "active", "code", "defaultValue", "description", "inputFieldLocation", "isAddress", "isAddressFrom", "isAddressTo", "isEmail", "isFiltered", "isLocation", "isPayer", "isPhone", "isProfileName", "isZip", "multiple", "name", "personTypeId", "propsGroupId", "required", "settings", "sort", "type", "userProps", "util", "xmlId"},
     	"filter": b24.Params{
-    		"@type": "STRING",
+    		"@type": []string{"STRING"},
     		"%code": "EMAIL",
     	},
     	"order": b24.Params{
@@ -541,7 +540,7 @@ The formula for calculating the value of the `start` parameter:
     var items []struct {
     	Active             string `json:"active"`
     	Code               string `json:"code"`
-    	DefaultValue       string `json:"defaultValue"`
+    	DefaultValue       json.RawMessage `json:"defaultValue"`
     	Description        string `json:"description"`
     	ID                 b24.ID `json:"id"`
     	InputFieldLocation string `json:"inputFieldLocation"`
@@ -679,9 +678,11 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **properties**
-[`sale_order_property[]`](../data-types.md) | An array of objects with information about the selected properties ||
+[`sale_order_property[]`](../data-types.md#sale_order_property) | An array of the selected order properties inside `result`. The set of fields is defined by `select`. If nothing is found, the array is empty ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found. Not returned when `start` = `-1` ||
+|| **next**
+[`integer`](../../data-types.md) | The value to pass in `start` to retrieve the next page. Returned if there is a next page and `start` is not `-1` ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -692,8 +693,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"error"
+   "error":"200040300010",
+   "error_description":"Access Denied"
 }
 ```
 
@@ -703,7 +704,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read order properties ||
+|| `200040300010` | `Access Denied`
+
+Insufficient rights to read order properties ||
+|| `100` | `Invalid order "<VALUE>"`
+
+The sort direction passed in `order` is other than `asc` or `desc` ||
+|| `100` | `Order must be a string`
+
+The sort direction in `order` is not passed as a string ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

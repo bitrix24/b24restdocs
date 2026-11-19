@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
 The method `sale.property.get` retrieves the order property.
 
@@ -23,7 +23,7 @@ The method `sale.property.get` retrieves the order property.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property.id`](../data-types.md) | Identifier of the order property ||
+[`sale_order_property.id`](../data-types.md#sale_order_property) | Identifier of the order property. You can retrieve it using the [sale.property.list](./sale-property-list.md) method ||
 |#
 
 ## Code Examples
@@ -34,7 +34,7 @@ The method `sale.property.get` retrieves the order property.
 
 - cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -44,7 +44,7 @@ The method `sale.property.get` retrieves the order property.
 
 - cURL (OAuth)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -67,7 +67,7 @@ The method `sale.property.get` retrieves the order property.
       property: {
         active: string
         code: string
-        defaultValue: string
+        defaultValue: unknown
         description: string
         id: number
         inputFieldLocation: string
@@ -87,7 +87,7 @@ The method `sale.property.get` retrieves the order property.
         personTypeId: number
         propsGroupId: number
         required: string
-        settings: unknown[]
+        settings: Record<string, unknown> | unknown[]
         sort: number
         type: string
         userProps: string
@@ -256,7 +256,7 @@ The method `sale.property.get` retrieves the order property.
     var item struct {
     	Active             string `json:"active"`
     	Code               string `json:"code"`
-    	DefaultValue       string `json:"defaultValue"`
+    	DefaultValue       json.RawMessage `json:"defaultValue"`
     	Description        string `json:"description"`
     	ID                 b24.ID `json:"id"`
     	InputFieldLocation string `json:"inputFieldLocation"`
@@ -326,7 +326,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **property**
-[`sale_order_property`](../data-types.md) | Information about the order property ||
+[`sale_order_property`](../data-types.md#sale_order_property) | Information about the order property in the `result.property` object ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -337,8 +337,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":200840400001,
-   "error_description":"property does not exist"
+   "error":"200840400001",
+   "error_description":"property is not exists"
 }
 ```
 
@@ -348,8 +348,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200840400001` | Order property not found ||
-|| `200040300010` | Insufficient permissions to read the order property ||
+|| `200840400001` | `property is not exists`
+
+Order property with the specified `id` not found ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read the order property ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
