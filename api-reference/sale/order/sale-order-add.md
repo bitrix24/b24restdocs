@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method:
+> - administrator
+> - in the on-premise version — a user with write permission for the "e-Store" module
 
 Creates an order without basket items, payments, or shipments and returns its fields. Add basket items, payments, and shipments after the order is created, using the [sale.basketitem.*](../basket-item/index.md), [sale.payment.*](../payment/index.md), and [sale.shipment.*](../shipment/index.md) methods.
 

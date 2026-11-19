@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method:
+> - administrator
+> - in the on-premise version — a user with read permission for the "e-Store" module and permission to view the order in CRM
 
 The method `sale.order.get` retrieves all fields of an order together with its related objects, such as basket items, payments, shipments, property values, and CRM clients. To retrieve only the fields of the order itself or several orders at once, use [sale.order.list](./sale-order-list.md).
 

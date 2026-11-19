@@ -803,7 +803,7 @@ HTTP Status: **200**
 || **shipments**
 [`sale_order_shipment[]`](../data-types.md) | An array of objects with information about the selected shipments ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found, subject to the same permission restrictions as the shipment selection ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#

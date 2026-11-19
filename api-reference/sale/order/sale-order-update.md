@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method:
+> - administrator
+> - in the on-premise version — a user with write permission for the "e-Store" module and permission to view the order in CRM
 
 Updates order fields and returns the updated order.
 

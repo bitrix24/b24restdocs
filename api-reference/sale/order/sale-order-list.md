@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method:
+> - administrator
+> - in the on-premise version — a user with read permission for the "e-Store" module. The method does not check CRM permissions for individual orders
 
 The method `sale.order.list` retrieves a list of orders with filtering, sorting, and pagination. The response contains only order fields: basket items, payments, shipments, and property values are returned by the [sale.order.get](./sale-order-get.md) method.
 

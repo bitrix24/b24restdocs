@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with permissions to create and edit orders in CRM
+> Who can execute the method: a user with permission to create or edit orders in CRM and permission to read the `PAYMENT_ID` payment
 
 This method returns the payment system settings for a specific payment.
 
@@ -306,7 +306,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve settings | 403 ||
+|| `ACCESS_DENIED` | Insufficient permissions to retrieve settings. Error text: `Access denied!` | 403 ||
 || `ERROR_CHECK_FAILURE` | One of the required fields is not specified, the payment system with the specified `ID` is not found, or the payment with the specified `ID` linked to the specified payment system is not found (details in the error description) | 400 ||
 || `ERROR_INTERNAL_ORDER_NOT_FOUND` | Order not found that is linked to the specified payment | 400 ||
 |#

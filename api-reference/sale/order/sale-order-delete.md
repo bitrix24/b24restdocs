@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method:
+> - administrator
+> - in the on-premise version — a user with write permission for the "e-Store" module and permissions to view and delete the order in CRM
 
 The `sale.order.delete` method deletes an order together with its basket items, payments, and shipments. A deleted order cannot be restored. The method does not delete the order's property values — [sale.propertyvalue.list](../property-value/sale-property-value-list.md) with a filter by `orderId` still returns them.
 
