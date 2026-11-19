@@ -28,7 +28,7 @@
 - You conduct installation testing of the solution on your Bitrix24;
 - You independently check the functionality;
 - You submit the solution for review by the moderator by clicking the **"Submit For Moderation"** button in the list of solutions;
-- The moderator approves the solution/version or sends it back for revision, changing the solution to the appropriate status;
+- Moderation of a solution/version may be fully or partially automated, including with AI-based tools, or performed manually by moderators. After moderation, the solution/version is either approved for publication or returned for revision, and its status is updated accordingly. Automated moderation may produce incorrect results. If you disagree with its outcome, you can request a manual review by a moderator through the chat in your vendor account.
 
 ## 2. Adding a Solution
 
@@ -56,7 +56,7 @@
 - Adding a solution to the developer's list does not mean it automatically enters the moderation queue. You must click the **"Submit For Moderation"** button for the solution you wish to publish.
 - Moderators return the solution for revision if they find at least one error or non-compliance with the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./common-requirements.md). If the solution does not pass moderation, you will need to resubmit it after correcting the issues. The solution will go to the end of the moderation queue.
 - The moderator will report any found errors in the chat available in the Developer's area.
-- Moderation timelines are not regulated and depend on the current workload of the moderators.
+- Moderation usually takes 1-3 business days and depends on the current workload of the moderators.
 - A successfully moderated solution may be removed from the catalog due to subsequently discovered issues.
 - A solution may be denied publication in the Bitrix24 Market catalog without explanation by the moderators.
 - If the solution implements integration with an external system/service, you must provide test access to the system/service in advance, which will allow testing the integration's functionality. Access is provided in the chat with the moderator after submitting the solution for moderation or in a special "Test Data" field in the solution description (this data will not be published). For moderation purposes, within the integration setup, the moderator must be able to connect the system/service to at least two test Bitrix24 accounts (or several in turn). In other words, if the integration only works with one specific Bitrix24 prepared by the solution developer, this will not be sufficient grounds for passing moderation. If testing is not possible because there is no test Bitrix24 (only a Bitrix24 with an active commercial license is available) or because test data is difficult to obtain, Bitrix24 may request a video demonstrating the installation, setup, and main features of the solution.

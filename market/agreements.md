@@ -1,6 +1,6 @@
 # Document Flow for Publication
 
-To publish solutions, agreements must be signed with the Bitrix24 company. Depending on whether the solution will be free for the end user, paid under a subscription model, or sold separately, different agreements will need to be signed.
+To publish solutions, agreements must be signed with the Bitrix24 company. Solutions are published free of charge for the end user. A solution may contain additional paid functionality (in-app purchases) or require users to pay for an external service.
 
 ## How to Sign Documents
 

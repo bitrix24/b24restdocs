@@ -35,7 +35,7 @@ After you have submitted the changes to be verified by moderators, your app deta
 
 **HOW QUICKLY MY APP IS GOING TO BE MODERATED?**
 
-Usually we review the submitted applications during 2-3 business days. However, everything depends on an ongoing queue, because the number of in-progress moderations can be significant and may take some time.
+Usually we review the submitted applications during 1-3 business days. However, everything depends on an ongoing queue, because the number of in-progress moderations can be significant and may take some time.
 
 **WHAT'S PERMITTED AND WHAT'S NOT?**
 
