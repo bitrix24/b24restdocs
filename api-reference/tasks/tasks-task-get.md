@@ -20,6 +20,8 @@ Access to the data depends on permissions:
 - Managers can see their employees' tasks,
 - Others can only see tasks available to them.
 
+An external participant from a collab does not see tasks of a project they are not a member of, unless they participate in the task.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}

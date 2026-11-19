@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: Scrum owner or moderator, administrator
+> Who can execute the method: a user with permission to view and edit project tasks and to manage sprints
 
 The method `tasks.api.scrum.sprint.delete` deletes a sprint.
 

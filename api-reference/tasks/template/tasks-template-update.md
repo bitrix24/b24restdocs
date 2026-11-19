@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with template editing access permission
+> Who can execute the method: a user with permission to save the template
 
-The method `tasks.template.update` updates an existing task template.
+The method `tasks.template.update` updates an existing task template. Permission to save is checked against the resulting state of the template, including the passed changes. Without permission to save, the method returns `false`.
 
 ## Method Parameters
 
@@ -29,7 +29,11 @@ The task template identifier can be obtained when [creating a new template](./ta
 || **fields*** 
 [`object`](../../data-types.md) | The fields of the template that need to be changed.
 
-The fields and value types correspond to the description on the [Task Template Fields](./fields.md) page ||
+The fields and value types correspond to the description on the [Task Template Fields](./fields.md) page.
+
+The template creator does not change: `CREATED_BY` from the request is ignored. Templates for new employees are an exception.
+
+`TASK_ID` can be changed only if the user can edit both the new and the previous task ||
 |#
 
 ## Code Examples
@@ -347,7 +351,7 @@ HTTP Status: **200**
 
 Returns `false`
 - if a template with the specified `templateId` does not exist
-- if the user does not have access permission to edit the template ||
+- if the user does not have permission to save the template based on its resulting state ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

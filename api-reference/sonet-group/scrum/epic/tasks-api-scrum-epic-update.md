@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit Scrum tasks
+> Who can execute the method: a user with permission to view and edit project tasks
 
 This method updates an epic in Scrum.
+
+A user with the Member (`K`) role is denied access.
 
 ## Method Parameters
 
@@ -58,7 +60,7 @@ Pass only the fields you need to change. The method leaves the other epic fields
 || **description**
 [`string`](../../../data-types.md) | Epic description ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the Scrum to move the epic to. Requires access to the tasks of both groups ||
+[`integer`](../../../data-types.md) | Identifier of the Scrum to move the epic to. Requires permissions to view and edit tasks in both the source and target groups ||
 || **color**
 [`string`](../../../data-types.md) | Epic color, for example `#bbecf1`, up to 18 characters ||
 || **files**

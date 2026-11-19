@@ -26,6 +26,8 @@ Which tasks are included in the list depends on the user's permissions:
 - manager — tasks of their employees
 - others — only tasks available to them
 
+An external participant from a collab does not see tasks of a project they are not a member of, unless they participate in the task.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}

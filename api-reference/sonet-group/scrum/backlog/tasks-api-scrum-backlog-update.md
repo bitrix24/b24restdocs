@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit Scrum tasks
+> Who can execute the method: a user with permission to view and edit project tasks
 
 The method `tasks.api.scrum.backlog.update` updates the backlog.
 
-Changing `fields.groupId` moves the backlog to another group. The move is unavailable if the backlog contains tasks or the target group already has a backlog.
+Changing `fields.groupId` moves the backlog to another group. The move requires permissions to view and edit tasks in both the source and target groups, as well as permission to manage sprints. The target group must be a Scrum without its own backlog, and the backlog being moved must contain no tasks.
 
 ## Method Parameters
 

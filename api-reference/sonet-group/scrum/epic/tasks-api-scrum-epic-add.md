@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to Scrum
+> Who can execute the method: a user with permission to view, edit, and create project tasks
 
 This method adds an epic to Scrum.
+
+A user with the Member (`K`) role is denied access.
 
 ## Method Parameters
 
@@ -59,7 +61,7 @@ fields: {
 
 You can retrieve the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method ||
 || **color**
-[`string`](../../../data-types.md) | Epic color, for example `#69dafc`, up to 18 characters. The method does not validate the color format and retains the string as is ||
+[`string`](../../../data-types.md) | Epic color, for example `#69dafc`, up to 18 characters. The method does not validate the color format and retains the string as is. If `color` is not passed, the method picks a random color from the standard set ||
 || **files**
 [`array`](../../../data-types.md) | Array of Drive file identifiers. Prefix each identifier with `n`, for example `["n428", "n345"]` ||
 || **createdBy**
@@ -410,7 +412,7 @@ HTTP Status: **200**
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the epic. `0` for a new epic ||
 || **color**
-[`string`](../../../data-types.md) | Epic color. An empty string if no color was passed ||
+[`string`](../../../data-types.md) | Epic color. If `color` is not passed, the epic is assigned a random color from the standard set ||
 |#
 
 The method does not return attached files. You can retrieve them using the [tasks.api.scrum.epic.get](./tasks-api-scrum-epic-get.md) method.

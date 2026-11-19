@@ -29,7 +29,7 @@ Required fields for creating a template:
 - `TITLE` — title of the task template
 - `RESPONSIBLE_ID` — ID of the Participant
 
-The user who calls the method becomes the template creator. The `CREATED_BY` value in `fields` is ignored
+If a user without administrator permissions calls the method, this user becomes the template creator, and `CREATED_BY` in `fields` is ignored. An administrator can specify a different creator in `CREATED_BY`. For templates for new employees, `CREATED_BY` is not ignored
 
 ||
 |#
@@ -427,9 +427,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Identifier of the created task template.
+[```integer | null```](../../data-types.md) | Identifier of the created task template.
 
-The method will not create a template and will return `"result": 0` if not all required fields are specified in `fields`: `TITLE`, `RESPONSIBLE_ID` ||
+The method will not create a template and will return `"result": 0` if not all required fields are specified in `fields`: `TITLE`, `RESPONSIBLE_ID`.
+
+If assigning the creator fails, the method returns an error and `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -448,6 +450,8 @@ HTTP Status: **400**
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
+If saving the template is denied, the method returns `TEMPLATE_SAVE_ACCESS_DENIED`; if assigning members is denied, it returns `TEMPLATE_ASSIGN_MEMBERS_DENIED`. Other denials to create a template are returned with the `Access denied` text.
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||

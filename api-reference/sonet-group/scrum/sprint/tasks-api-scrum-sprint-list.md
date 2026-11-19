@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a project member with tasks enabled and permission to view them
 
 The method `tasks.api.scrum.sprint.list` returns a list of sprints.
+
+The method returns data only for projects the user is a member of, where tasks are enabled and the user has permission to view them. The `LOGIC` filter does not lift this restriction.
 
 ## Method Parameters
 

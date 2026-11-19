@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit Scrum tasks
+> Who can execute the method: a user with permission to view and edit project tasks
 
 The method `tasks.api.scrum.backlog.delete` removes the backlog.
 

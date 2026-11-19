@@ -169,10 +169,12 @@ Has a value of `null` if there is no parent task ||
 || **outlookVersion**
 [`integer`](../data-types.md) | Version of synchronization with Outlook ||
 || **mark**
-[`string`](../data-types.md) | Task rating. Possible values:
-- `positive` — positive
-- `negative` — negative
-- `none` — unrated ||
+[```string | null```](../data-types.md) | Task rating. Accepts on write:
+- `P` or `positive` — positive
+- `N` or `negative` — negative
+- `none` or `null` — unrated
+
+On read, `P` is returned as `positive`, `N` as `negative`, and `null` as `none` ||
 || **allowsChangeDeadline**
 [`boolean`](../data-types.md) | The assignee is allowed to change the deadline ||
 || **allowsTimeTracking**

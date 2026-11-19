@@ -23,7 +23,9 @@ You can check the permissions to modify the item using the method [task.checklis
 
 {% note warning "" %}
 
-Pass parameters in the request according to the order in the table. If the order is violated, the request will return an error or update a different item.
+Pass parameters in the request according to the order in the table: `TASKID`, `ITEMID`, `FIELDS`. Values are parsed by position, and parameter names do not change the order. If the order is violated, the request will return an error or update a different item.
+
+If the `FIELDS` array is passed in place of `TASKID` or `ITEMID`, the method returns `ERROR_CORE` with `TASKS_ERROR_EXCEPTION_#256` about the invalid type of the corresponding parameter. If the two identifiers are swapped, the result depends on whether the task is accessible and whether it contains the item.
 
 {% endnote %}
 
@@ -437,13 +439,15 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Cannot edit the task due to insufficient permissions; 4/TE/ACTION_NOT_ALLOWED<br> | The item has `MEMBERS` participants, but the user lacks permission to edit the task to add them to it. The item changes have already been saved. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, Prepare report]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | There is no item with the `ITEMID` identifier, or the parameters are passed out of order. ||
+|| `ERROR_CORE` | `TASKS_ERROR_EXCEPTION_#512`; Check listitem not found or not accessible | The item with the `ITEMID` identifier was not found or is not accessible at the initial check. This error is also possible when `TASKID` and `ITEMID` are swapped, if the task determined by the first parameter is accessible but contains no item with the identifier from the second parameter ||
+|| `ERROR_CORE` | `TASKS_ERROR_EXCEPTION_#8`; Checklist item not found or not accessible | The item disappeared between reading and saving ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` not provided. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::update() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` not provided. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) for method ctaskchecklistitem::update() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `ITEMID`. ||
 || `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `FIELDS` not provided. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) for method ctaskchecklistitem::update() expected to be of type "array", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | The third parameter must be the `FIELDS` array. An invalid type was passed, including because of a wrong parameter order ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Bitrix\Tasks\CheckList\Internals\CheckListTree::canAttach: Cannot create circular reference [261, 267]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | A subitem of the item being updated is passed in `PARENT_ID`. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Bitrix\Tasks\CheckList\Internals\CheckListTree::canAttach: Cannot attach node to itself [261, 261]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | The identifier of the item itself is passed in `PARENT_ID`. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) for method ctaskchecklistitem::update() must not contain key "ID".; 256/TE/WRONG_ARGUMENTS<br> | `FIELDS` contains a field that cannot be changed. Only the fields from the [FIELDS parameter](#fields) table can be changed. ||

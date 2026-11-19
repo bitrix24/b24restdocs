@@ -294,6 +294,8 @@ HTTP Status: **400**
 || `400` | `NOT_FOUND` | Stage was not found | There is no stage with the ID `id` ||
 || `400` | `IS_SYSTEM` | Default stage cannot be deleted | The stage is a system stage, for example the first stage of a Kanban or "My Planner" ||
 || `400` | `ACCESS_DENIED` | You cannot manage stages | The user is not the owner or moderator of the group the stage belongs to, or the stage belongs to another user's "My Planner" ||
+|| `400` | `TASKS_KANBAN_STAGE_DELETE_LOCK_FAILED` | Stage delete lock could not be acquired. | Failed to acquire a lock to delete the stage ||
+|| `400` | `TASKS_KANBAN_STAGE_DELETE_FAILED` | Stage could not be deleted. | Failed to delete the stage ||
 || `400` | `NO_EMPTY` | There are tasks in this stage | The stage contains tasks ||
 || `400` | `DISPATCHER_ERROR` | Argument "id" is required, but no value passed for task.stages.delete | The required parameter `id` is not passed ||
 |#

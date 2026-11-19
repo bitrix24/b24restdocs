@@ -42,7 +42,7 @@ Access to tasks is required to work with templates. Available actions and some f
 || **STAGE_ID**
 [`integer`](../../data-types.md) | Stage identifier. Default is `0` ||
 || **CREATED_BY**
-[`integer`](../../data-types.md) | Creator identifier. The value cannot be set via REST: on creation, the user who calls the method becomes the creator; on update, the field does not change ||
+[`integer`](../../data-types.md) | Creator identifier. When a user without administrator permissions creates a template, the calling user becomes the creator, and the passed value is ignored. An administrator can specify a different creator. On template update, the creator does not change, and the passed value is ignored. Templates for new employees are an exception to these rules ||
 || **RESPONSIBLE_ID**
 [`integer`](../../data-types.md) | Responsible person identifier ||
 || **DEPENDS_ON**
@@ -157,8 +157,10 @@ Used when `REPEAT_TILL = date`
 ||
 || **NEXT_EXECUTION_TIME**
 [`datetime`](../../data-types.md) | Date and time of the next execution ||
+|| **DEADLINE_TYPE**
+[`string`](../../data-types.md) | The `creation_day` value sets the deadline to the day the task is created. A positive `DEADLINE_OFFSET` takes precedence ||
 || **DEADLINE_OFFSET**
-[`integer`](../../data-types.md) | Deadline offset relative to the start time ||
+[`integer`](../../data-types.md) | Deadline offset relative to the start time. A positive value takes precedence over `DEADLINE_TYPE = creation_day`. If the value is zero or empty and `DEADLINE_TYPE` is not `creation_day`, the task is created without a deadline ||
 |#
 
 ### Parameters for Daily Repetition `PERIOD = daily`

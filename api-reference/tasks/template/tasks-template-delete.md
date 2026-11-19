@@ -26,6 +26,19 @@ The method `tasks.template.delete` removes a task template.
 [`integer`](../../data-types.md) | Identifier of the task template.
 
 The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) or by using the [template list method](./tasks-template-list.md) ||
+|| **params**
+[`object`](../../data-types.md) | Additional deletion parameters. Supports `UNSAFE_DELETE_ONLY` ||
+|#
+
+### params Parameter
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **UNSAFE_DELETE_ONLY**
+[`boolean`](../../data-types.md) | If `true`, the template is deleted permanently, without moving it to the Recycle Bin. The parameter is passed inside the `params` object and is taken into account only if the user has permission to edit the template. Without this permission, the parameter is discarded.
+
+Permission to delete the template is checked separately: without it, the method returns `false` ||
 |#
 
 ## Code Examples

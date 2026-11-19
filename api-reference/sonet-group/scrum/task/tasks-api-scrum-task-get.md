@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view the task
+> Who can execute the method: a user with permission to view project tasks or the specific task
 
 The `tasks.api.scrum.task.get` method retrieves the Scrum task field values by its identifier `id`.
 
@@ -286,6 +286,13 @@ HTTP Status: **200**
 
 #### result Object {#result}
 
+With permission to view project tasks, the method returns all record fields from the table below. With permission to view only the specific task, the method returns a reduced record:
+
+- if the group can be viewed — `entityId`, `storyPoints`, `epicId`, `groupId`
+- if the group cannot be viewed — `storyPoints`, `epicId`
+
+An unrelated user without permission to view the project tasks or the task itself receives `Access denied`.
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -327,10 +334,10 @@ HTTP Status: **200**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Task id not found | The task identifier is `0` ||
-|| `0` | Task not found | The task was not found among Scrum tasks. Only a user with permission to view tasks receives this error ||
-|| `0` | Access denied | The user does not have permission to view the task. The error is also returned for a nonexistent task if the user does not have this permission ||
-|| `100` | Could not find value for parameter {id} | The parameter name is incorrect or the parameter is missing ||
-|| `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
+|| `0` | Task not found | The task record was not found among Scrum tasks. This error is returned to a user with permission to view the task itself or the tasks of its project ||
+|| `0` | Access denied | The user does not have permission to view the project tasks or the task itself. An unrelated user also receives this error when the Scrum task record does not exist ||
+|| `100` | `Could not find value for parameter {id}` | The parameter name is incorrect or the parameter is missing ||
+|| `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int.` | Invalid parameter type ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -34,7 +34,9 @@ The method `tasks.task.update` updates a task.
 The task identifier can be obtained when [creating a new task](./tasks-task-add-rest-v3.md) or by using the old method of [getting the task list](./tasks-task-list-rest-v3.md) ||
 || **fields***
 [`object`](../data-types.md) | Values of the task fields to be updated.
-[Description of all task fields](./fields-rest-v3.md) ||
+[Description of all task fields](./fields-rest-v3.md).
+
+The `mark` field accepts `N`, `P`, `positive`, `negative`, `none`, or `null` ||
 |#
 
 ## Code Examples
@@ -372,6 +374,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `id`
 `fields` | Required field `#FIELD#` is missing | Add the specified field to the request body ||
+|| `mark` | This request requires data type "string" in field "mark" | Pass a string or `null` ||
 || `#FIELD#` | The field `#FIELD#` requires data type `#TYPE#` for such a request | Ensure the provided value is of the correct type ||
 || `responsibleId` | The user specified in the "Responsible" field was not found | Specify the identifier of an existing user in the `responsibleId` field ||
 || `parentId` | The task specified in the "Parent Task" field was not found | Specify the identifier of an existing task in the `parentId` field ||
@@ -381,13 +384,25 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `creatorId` | In DTO `TaskDto`, the field `creatorId` requires the presence of the `Editable` attribute for such a request | Remove the `creatorId` field from the request, it cannot be modified ||
 |#
 
+#### mark Value Validation Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `mark` | The mark must be one of: N, P, positive, negative, none or null. | Pass `N`, `P`, `positive`, `negative`, `none`, or `null` ||
+|#
+
 #### Access Error
+
+HTTP Status: **403**
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Access denied | No access to the task or the task does not exist ||
+|| `mark` | Access denied | The user does not have permission to rate the task ||
 |#
 
 #### Stage Errors

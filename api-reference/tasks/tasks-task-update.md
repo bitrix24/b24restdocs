@@ -17,6 +17,8 @@ Choose a tool for developing with an AI agent:
 
 The method `tasks.task.update` changes task fields and returns the full task after the update.
 
+Only a user who is the assignee of the task both before and after the change can change the task creator. An administrator can change the creator without this restriction.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
