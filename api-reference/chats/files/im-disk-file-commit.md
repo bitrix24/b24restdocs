@@ -31,6 +31,8 @@ You can obtain the identifier of the new file after uploading it using the metho
 - [disk.storage.getchildren](../../disk/storage/disk-storage-get-children.md) — if the file is located in the root of the storage
 - [disk.folder.getchildren](../../disk/folder/disk-folder-get-children.md) — if the file is located in a folder
 
+In a BitrixGPT chat, the number, size, and format of files are checked: no more than 10 files per message, up to 5 MiB per file, and the format must be supported by BitrixGPT. A voice file can be up to 25 MiB.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -61,6 +63,8 @@ Supports an additional parameter `AS_FILE`, which allows sending the image witho
 Required if `FILE_ID` is not provided ||
 || **MESSAGE**
 [`string`](../../data-types.md) | Text message with the file ||
+|| **COPILOT**
+[`array`](../../data-types.md) | Array of BitrixGPT request parameters, for example `promptCode` — the prompt code ||
 || **SILENT_MODE**
 [`string`](../../data-types.md) | Parameter for Open Channels chat
 
@@ -662,6 +666,10 @@ HTTP Status: **400**
 - `FILE_ID` or `UPLOAD_ID` is passed empty
 - non-existent file identifiers are passed ||
 || `400` | `DISK_QUOTA_EXCEEDED` | Disk quota exceeded | There is not enough space on Drive to copy the files from `FILE_ID` to the chat folder. The response also includes the `infoHelperCode` field ||
+|| `400` | `INVALID_FILE_FORMAT` | — | The file format is not supported in a BitrixGPT chat ||
+|| `400` | `FILE_TOO_LARGE` | — | The file size limit in a BitrixGPT chat is exceeded: 5 MiB for a regular file or 25 MiB for a voice file ||
+|| `400` | `TOO_MANY_FILES` | — | More than 10 files were added to a message in a BitrixGPT chat ||
+|| `400` | `FILE_METADATA_UNAVAILABLE` | — | Failed to retrieve file data for the check in a BitrixGPT chat ||
 || `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | Insufficient rights to view the dialog or a non-existent dialog is passed ||
 |#
 

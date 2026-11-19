@@ -108,6 +108,7 @@ The row order matches the order in the table of system errors above, and the cau
 || `INVALID_REQUEST` | Replace `http` with `https` in the request URL ||
 || `OVERLOAD_LIMIT` | Do not retry the call, and contact [technical support](bitrix-support.md): the block is manual and will not be lifted on its own ||
 || `ACCESS_DENIED` with status `401` | Switch to a commercial plan. With any other status, this code comes from a method — see the explanation after the table ||
+|| `FEATURE_NOT_AVAILABLE_ON_CURRENT_PLAN` | Remove unneeded Bitrix24 Market applications or switch to a plan with a higher application limit ||
 || `INVALID_CREDENTIALS` | Check the user identifier and the webhook code in the request URL: no active webhook with that pair was found ||
 || `ERROR_METHOD_NOT_FOUND` | Check the spelling of the method name and the presence of the required [scope](api-reference/scopes/permissions.md) ||
 || `insufficient_scope` | Add the missing [scope](api-reference/scopes/permissions.md) to the application or to the webhook ||
@@ -116,7 +117,7 @@ The row order matches the order in the table of system errors above, and the cau
 || `PORTAL_DELETED` | Open the public part of the site: while it is closed, the REST API will not respond ||
 |#
 
-The same code can appear both in the system list and in the list of a specific method — in that case the HTTP status tells them apart. System authorization and access errors arrive with status `401`, method errors with `400` or `403`. For example, `ACCESS_DENIED` with status `401` means that the REST API is not available on the current plan, while the same code with status `403` and the text `Access denied! Application context required` came from a method that requires an application context.
+The same code can appear both in the system list and in the list of a specific method. For example, the HTTP status helps tell apart the cases of the `ACCESS_DENIED` error: `ACCESS_DENIED` with status `401` means that the REST API is not available on the current plan, while the same code with status `403` and the text `Access denied! Application context required` came from a method that requires an application context.
 
 Retrying a call that returned a method error gives the same result — fix the request first.
 

@@ -17,6 +17,8 @@ The method `bizproc.workflow.start` initiates a new business process.
 
 To call this method, your Bitrix24 account must have [REST API access](../../first-steps/access-to-rest-api.md). In Bitrix24 Cloud, Vibe+ plans include this access; it is also available during the 15-day trial and may remain active under existing subscription terms during the transition period.
 
+An automation rule template modified in the workflow designer does not start on the Free plan.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -315,6 +317,7 @@ HTTP Status: **400**
 Attempting to start the template on an entity for which it was not created ||
 || `400` | `ERROR_WRONG_FILE_PARAMETER` | Invalid value for a parameter of type "File". Pass the file name and its contents in base64, or the ID of the file set as this parameter's default value. | A user without administrator permissions passed to a "File" parameter the ID of a file that is not set in the template as the parameter's default value, or a value in the wrong format. This check is not performed for administrators ||
 || `400` | `ERROR_WRONG_FILE_PARAMETER` | Cannot upload file. | The file could not be saved from the passed contents, for example, the contents are not in Base64 ||
+|| `400` | `EXTERNAL_MODIFIED_TEMPLATE` | Workflow not started: the template was modified in the workflow designer, which is not available on your current plan | An automation rule template modified in the workflow designer was passed on the Free plan ||
 || `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to start business processes for the document ||
 |#
 

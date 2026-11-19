@@ -64,9 +64,9 @@ Default: `bb` ||
 || **startDate***
 [`object`](../../data-types.md) | Call start period [(detailed description)](#startdate) ||
 || **participantId**
-[`integer`](../../data-types.md) | Employee identifier. Without the parameter, an administrator receives the Follow-ups of all employees; with the parameter, only those of this employee. Sync calls are included in the list in both cases. For a regular user, the filter always equals their own identifier ||
+[`integer`](../../data-types.md) | Employee identifier. With this parameter, an administrator receives the Follow-ups of the specified employee's calls and of Sync meetings where the employee spoke or is a member of the meeting chat. Without the parameter, an administrator receives all Follow-ups for the specified period. For a regular user, the filter always equals their own identifier: they receive only their own Follow-ups ||
 || **chatId**
-[`integer`](../../data-types.md) | Call chat identifier. The method returns Follow-ups only for calls from this chat.
+[`integer`](../../data-types.md) | Call chat identifier. The method returns Follow-ups only for calls and Sync meetings from this chat.
 
 Pass the value as a number: the string `"123"` returns a validation error. If you pass `0` or a negative number, the method returns an empty list.
 

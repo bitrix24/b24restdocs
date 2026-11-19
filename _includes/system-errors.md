@@ -23,6 +23,8 @@ Https required | Methods are called over the HTTPS protocol only ||
 REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block. To have it lifted, contact [Bitrix24 technical support](/bitrix-support.html) ||
 || `401` | `ACCESS_DENIED`
 REST is available only on commercial plans | REST API access is not active for this account. In Bitrix24 Cloud, check the [current plan or trial status](/first-steps/access-to-rest-api.html): Vibe+ plans include REST API access, while Essentials plans do not. A [webhook](/local-integrations/local-webhooks.html) receives a different error message — `REST is available only by subscription` ||
+|| `403` | `FEATURE_NOT_AVAILABLE_ON_CURRENT_PLAN`
+This feature is not available on your current plan. | The Bitrix24 Market application is blocked because the number of installed applications exceeds the plan limit. Events are not delivered to such an application. Applications exempt from the limit are not blocked ||
 || `401` | `INVALID_CREDENTIALS`
 Invalid request credentials | No active [webhook](/local-integrations/local-webhooks.html) with the specified user identifier and secret code was found ||
 || `404` | `ERROR_METHOD_NOT_FOUND`
