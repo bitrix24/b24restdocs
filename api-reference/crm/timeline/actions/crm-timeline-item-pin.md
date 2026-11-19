@@ -288,7 +288,7 @@ HTTP status: **400**
 || `400` | `100` | Could not find value for parameter {id} | A required parameter `id`, `ownerTypeId`, or `ownerId` is not passed. The error text contains the parameter name ||
 || `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | The parameter value is not a number ||
 || `400` | `OWNER_NOT_FOUND` | Owner was not found | An unknown `ownerTypeId` is passed, or the `ownerId` value is less than or equal to `0` ||
-|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM item ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM item. For a task activity record, the error is also returned if the task is not completed or has been deleted. This check runs after the check that the record is linked to the CRM item and before the pin limit check. Log records about a task, for example "Task created", can be pinned regardless of the task status ||
 || `400` | `NOT_FOUND` | Item was not found | There is no record with the passed `id`, or it is not linked to the CRM item passed in `ownerTypeId` and `ownerId` ||
 || `400` | `0` | You can pin up to 7 activities | Seven records are already pinned in the CRM item. The error is also returned when the method is called again for a record that is already one of the seven pinned. Unpin one of the records using the [crm.timeline.item.unpin](./crm-timeline-item-unpin.md) method ||
 || `400` | `CAN_NOT_CHANGE_PINNED` | Database error text | Failed to save the pin to the database ||

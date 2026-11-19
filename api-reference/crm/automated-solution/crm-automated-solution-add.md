@@ -506,6 +506,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
+|| `ADDRESS_BUSY` | Another address change is still being saved. Please try again. The section address is locked by a concurrent operation; the wait time is up to 3 seconds ||
+|| `ADDRESS_ALREADY_EXISTS` | This address is already in use ||
 || `LIMIT_EXCEEDED` | The number of available digital workspaces has been exceeded ||
 || `BX_EMPTY_REQUIRED` | A required field is not filled ||
 || `0` | SPAs cannot be moved from workspaces installed from the Automated solution gallery ||

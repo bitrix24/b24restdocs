@@ -343,6 +343,8 @@ Retrieve information about a lead with `id = 250`
 
 ## Response Handling
 
+Keys and values of system fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are excluded from the response based on the pipeline or category of the item.
+
 HTTP status: **200**
 
 ```json

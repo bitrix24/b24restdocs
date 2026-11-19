@@ -66,7 +66,7 @@ Default is `2` ||
 || **discountSum**
 [`double`](../../../data-types.md) | The absolute value of the discount (if using the absolute discount type) ||
 || **taxRate**
-[`double`](../../../data-types.md) | Tax rate in percentage. ||
+[`double`](../../../data-types.md) | Tax rate in percentage. The value `0` means a zero rate, `null` means no tax ||
 || **taxIncluded**
 [`string`](../../../data-types.md) | Indicator of whether the tax is included in the price. Possible values:
 - `Y` — tax included
@@ -74,7 +74,7 @@ Default is `2` ||
 Default is `N` ||
 || **taxName**
 [`string`](../../../data-types.md) | Name of the tax rate. For example, `VAT 20`.
-It is a label only: the calculation uses the `taxRate` value, and the method retains `taxName` as is. If `taxName` is not passed, a row without tax gets the `No VAT` value ||
+It is a label only: the calculation uses the `taxRate` value, and the method retains `taxName` as is. If `taxName` is not passed, the name is empty when `taxRate: 0` and `No VAT` when `taxRate: null` ||
 || **measureCode**
 [`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code.
 If it is not provided, but `productId` is given, the unit of measure from the product catalog is used ||

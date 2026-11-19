@@ -283,6 +283,8 @@ Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
 
 ## Response Handling
 
+The description of a system field is not returned if the field is hidden from the user by [system field visibility settings](../index.md#system-field-visibility) in at least one pipeline or category of the object type.
+
 HTTP status: **200**
 
 ```json

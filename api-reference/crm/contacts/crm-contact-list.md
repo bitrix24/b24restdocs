@@ -515,6 +515,8 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
+System fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are not returned, even if specified in `select`. `filter` conditions and `order` keys on hidden fields are silently discarded without an error.
+
 Example response to a request made on August 16, 2024: the lower bound of `DATE_CREATE` is February 16, 2024.
 
 HTTP Status: **200**

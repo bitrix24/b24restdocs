@@ -50,6 +50,47 @@ The SPA type ID `entityTypeId` is returned by the [crm.type.list](./universal/us
 
 The method name is written in lowercase: `crm.smartinvoice.add` and `crm.deal.productrow.list`, not `crm.smartInvoice.add` and `crm.deal.productRow.list`. A method with different casing or with a type that does not exist, for example `crm.smartprocess99999.add`, returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error with status 404.
 
+## System Field Visibility {#system-field-visibility}
+
+The "Field visibility" setting lets an administrator restrict which users can see a configurable CRM system field. For deals and SPAs, the restriction can be set in a specific pipeline or at the "All pipelines" level. Leads and estimates have no pipelines, so the common level applies. Contacts and companies have no "All pipelines" level: the setting applies only in the selected category, including the category of regular contacts or companies.
+
+Restrictions apply only if an administrator has configured field visibility. Without visibility settings, fields are not hidden. Restrictions do not apply to Bitrix24 administrators and CRM administrators. The permission to configure visibility does not by itself exempt a user from the restrictions.
+
+### Fields That Can Be Hidden
+
+The set of configurable fields depends on the object type. For example, a deal can hide the type `TYPE_ID`, probability `PROBABILITY`, comment `COMMENTS`, source `SOURCE_ID`, source description `SOURCE_DESCRIPTION`, UTM tags, links to the client and to my company, and start and end dates.
+
+Not every system field supports this setting. For example, a deal cannot hide `ID`, `TITLE`, `CATEGORY_ID`, `STAGE_ID`, `OPPORTUNITY`, `CURRENCY_ID`, or the responsible person `ASSIGNED_BY_ID`. Fields that are not in the list of configurable fields for the object type are not hidden by this setting either.
+
+### Methods of the Previous API Version
+
+In the `crm.deal.*`, `crm.lead.*`, `crm.contact.*`, `crm.company.*`, `crm.quote.*` methods and other CRM item proxies, a field hidden from the user is treated as unknown when reading:
+
+- `*.fields` does not return the field description if the field is hidden in at least one pipeline or category
+- `*.get` and `*.list` do not return the key and value of a hidden field; the rule of the pipeline or category of the specific item applies
+- a `filter` condition and an `order` key on a hidden field are silently discarded, and the response comes without a field visibility error. To determine hidden fields for filtering and sorting, all pipelines or categories of the object type are taken into account
+
+For example, if `SOURCE_ID` is hidden from the user, a filter on it does not narrow the selection: the request runs as if the condition were absent. Specifying the field explicitly in `select` does not return its value.
+
+The read restriction in these proxies does not block writing a hidden field through the add and update methods. The usual permission and field value checks still apply.
+
+The universal `crm.item.*` methods handle visibility as follows:
+
+- `crm.item.fields` excludes the description of a field hidden in at least one pipeline or category of the object type
+- `crm.item.get` and `crm.item.list` exclude hidden keys and values based on the pipeline or category of each item, including when the field is selected explicitly
+- `crm.item.list` silently discards `filter` conditions and `order` keys on hidden fields, taking into account restrictions in all pipelines or categories of the object type
+
+Some methods apply the restrictions when updating activities and searching for duplicates:
+
+- `crm.activity.update` excludes from the input data the fields hidden from the user in the context of the activity. If nothing remains of a non-empty set of fields after that, the method returns `true` without making any changes
+- `crm.duplicate.findbycomm` searches for matches only in the object types and categories where the requested communication type is visible to the user. Matches on a hidden phone number or email are not returned and do not count toward the search limit; if there is nowhere to search, the result is empty
+
+### REST 3.0
+
+In REST 3.0, a filter condition on a hidden system field results in the `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION` error with HTTP status 400. This also applies to hidden types of multiple fields, such as phone or email, and to nested conditions on a hidden field.
+
+Explicitly selecting a hidden system field in `select` of the item retrieval and list methods also results in this error.
+
 ## Methods Available for Each Object Type {#method-groups}
 
 Not every group of REST 3.0 methods is available for every type. For example, only deals and SPAs have stages, and only contacts and companies have requisites.

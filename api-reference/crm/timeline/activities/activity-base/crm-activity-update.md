@@ -311,6 +311,8 @@ Field behavior during updates:
 
 ## Response Handling
 
+Fields hidden from the user by [system field visibility settings](../../../index.md#system-field-visibility) in the context of the activity are excluded from the input data. If all passed fields are excluded, the method returns `true` without making any changes.
+
 HTTP Status: **200**
 
 ```json

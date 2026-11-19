@@ -208,6 +208,8 @@ No parameters are required.
 
 ## Response Handling
 
+The description of a system field is not returned if the field is hidden from the user by [system field visibility settings](../index.md#system-field-visibility) in at least one pipeline or category of the object type.
+
 The example is shortened. The set of fields and their properties depend on the Bitrix24 settings.
 
 HTTP Status: **200**

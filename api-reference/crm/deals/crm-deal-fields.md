@@ -229,6 +229,8 @@ No parameters.
 
 ## Response Handling
 
+The description of a system field is not returned if the field is hidden from the user by [system field visibility settings](../index.md#system-field-visibility) in at least one pipeline or category of the object type.
+
 HTTP Status: **200**
 
 ```json

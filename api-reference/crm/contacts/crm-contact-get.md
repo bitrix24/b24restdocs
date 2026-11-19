@@ -233,6 +233,8 @@ Get contact with `id = 23`
 
 ## Response Handling
 
+Keys and values of system fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are not returned. Visibility is determined by the pipeline or category of the item.
+
 HTTP Status: **200**
 
 ```json

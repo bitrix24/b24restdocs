@@ -365,6 +365,8 @@ Retrieve companies:
 
 ## Response Handling
 
+System fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are not returned, even if specified in `select`. `filter` conditions and `order` keys on hidden fields are silently discarded without an error.
+
 HTTP Status: **200**
 
 ```json

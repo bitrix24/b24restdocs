@@ -265,6 +265,8 @@ If 20 or more duplicates are found for one object, the other types are not retur
 
 ## Response Handling
 
+[System field visibility](../index.md#system-field-visibility) limits the search to the categories and object types where the requested communication type is visible to the user. Matches on a hidden phone number or email are not returned and do not count toward the search limit.
+
 HTTP status: **200**
 
 ```json

@@ -747,6 +747,8 @@ HTTP Status: **400**
 || `400` | `0` | SPA from an automated solution installed from Automated solution gallery cannot be used with another automated solution | The SPA is linked to an automated solution from the Automated solution gallery, and the passed `customSectionId` differs from the current one or is not passed ||
 || `400` | `BX_EMPTY_REQUIRED` | The field Name is required | An empty SPA title is passed ||
 || `400` | `BX_INVALID_VALUE` | Planned SPA item cycle length must be in range 0 to 365 days inclusive | The `daysBeforeClose` value is outside the range from `0` to `365` ||
+|| `400` | `ADDRESS_BUSY` | Another address change is still being saved. Please try again | The section address is locked by a concurrent operation while the SPA is being moved to a section or a section is being added ||
+|| `400` | `BX_ERROR` | Cannot enable communication fields because the SPA data structure was not updated | Enabling `isMultifieldsEnabled` was rejected because the SPA data schema is not ready. Contact technical support ||
 || `400` | `BX_ERROR` | — | `isPersonEnabled = 'Y'` is passed for an SPA without a predefined data schema ||
 || `400` | `BX_ERROR` | You cannot disable pipelines if there more than one of them | An attempt to disable pipelines when the SPA has more than one ||
 || `400` | `BX_ERROR` | Remove all items of this type from the Recycle Bin before disabling it | An attempt to disable the Recycle Bin when it contains SPA items ||

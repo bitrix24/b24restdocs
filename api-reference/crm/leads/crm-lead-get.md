@@ -273,6 +273,8 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 
 ## Response Handling
 
+Keys and values of system fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are not returned. Visibility is determined by the pipeline or category of the item.
+
 HTTP Status: **200**
 
 ```json

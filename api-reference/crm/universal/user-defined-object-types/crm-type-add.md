@@ -852,6 +852,8 @@ HTTP status: **400**, **403**
 || `400` | `INVALID_ARG_VALUE` | entityTypeId is out of allowed range | The passed `entityTypeId` is reserved for a system type based on SPAs ||
 || `400` | `BX_INVALID_VALUE` | EntityTypeId should be more or equal than 128 and less than 192 | An invalid `entityTypeId` is passed ||
 || `400` | `BX_INVALID_VALUE` | Planned SPA item cycle length must be in range 0 to 365 days inclusive | The `daysBeforeClose` value is outside the range from `0` to `365` ||
+|| `400` | `ADDRESS_BUSY` | Another address change is still being saved. Please try again | The section address is locked by a concurrent operation while the SPA is being moved to a section or a section is being added ||
+|| `400` | `BX_ERROR` | Cannot enable communication fields because the SPA data structure was not updated | Enabling `isMultifieldsEnabled` was rejected because the SPA data schema is not ready. Contact technical support ||
 || `400` | `BX_ERROR` | — | `isPersonEnabled = 'Y'` is passed for an SPA without a predefined data schema ||
 || `400` | `BX_EMPTY_REQUIRED` | The field Name is required | The SPA title is not passed or is empty ||
 || `400` | `INVALID_ARG_VALUE` | customSectionId is invalid | No automated solution with the specified `customSectionId` is found ||

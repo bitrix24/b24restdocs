@@ -86,6 +86,8 @@ Possible prefix values:
 
 The list of all available fields for filtering can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
 
+For some predefined relations, the `parentIdN` filter returns the `INVALID_ARG_VALUE` error. For example, when filtering estimates by their relation to a deal, the method returns `Invalid filter: field 'PARENT_ID_2' is not allowed in filter`. For such relations, use the object's own field: `dealId` for estimates.
+
 To filter by custom fields of type `boolean`, pass `1` or `0` values in `filter`, even if when receiving or changing an item, the value of such a field is passed in the format `Y` or `N`. For example, for the field `ufCrm2_1234567890` use the filter `{"ufCrm2_1234567890": 1}`. Format `Y` or `N` in the filter for custom fields of type `boolean` is not supported
 ||
 || **order**
@@ -1049,6 +1051,8 @@ For clarity, we will select only the necessary fields:
 {% endlist %}
 
 ## Response Handling
+
+System fields hidden from the user by [system field visibility settings](../index.md#system-field-visibility) are excluded from the response, even if specified in `select`. `filter` conditions and `order` keys on hidden fields are silently discarded without an error.
 
 HTTP status: **200**
 
