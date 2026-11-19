@@ -88,7 +88,9 @@ Default is an empty string ||
 || **RECORD_URL**
 [`string`](../data-types.md) | URL of the call recording.
 
-This parameter is deprecated and retained for backward compatibility. It is recommended to use [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md) ||
+This parameter is deprecated and retained for backward compatibility. It is recommended to use [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md).
+
+If this parameter is provided, Bitrix24 downloads and attaches the recording within the same request, so the method returns a response only after the file is downloaded. If the file cannot be downloaded, the method still completes the call and does not return an error ||
 || **VOTE**
 [`integer`](../data-types.md) | Rating of the call.
 

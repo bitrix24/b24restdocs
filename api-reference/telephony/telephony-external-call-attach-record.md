@@ -72,6 +72,16 @@ If neither `RECORD_URL` nor `FILENAME` is provided, the method returns an error
 
 {% endnote %}
 
+{% note warning "" %}
+
+The method runs synchronously. The response is returned after the file is saved and attached to the call and the CRM activity:
+- if `RECORD_URL` is provided, the method first downloads the file from the link. The response time depends on the file size and the speed of the server hosting the record
+- if the file is uploaded via `uploadUrl`, it is saved and attached during the upload request. The response to that request is also returned after the file is saved
+
+There is no parameter for deferred attachment in the background. Set a request timeout with a generous margin on the integration side. If the request times out or fails, call the method again: the new record will replace the previously attached one
+
+{% endnote %}
+
 ## Code Examples
 
 {% include [Note on examples](../../_includes/examples.md) %}
