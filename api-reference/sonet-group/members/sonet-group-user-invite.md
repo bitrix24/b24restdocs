@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
-> Who can perform the method: a user with the permission to Invite to a group or project
+> Who can perform the method: a user with the permission to Invite to a group or project. A specific user can be invited only if their privacy settings allow it. This check does not apply to administrators
 
 The method `sonet_group.user.invite` sends invitations to users in a workgroup or project.
 
@@ -27,11 +27,11 @@ The method `sonet_group.user.invite` sends invitations to users in a workgroup o
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[```integer | integer[]```](../../data-types.md#compound-types) | User identifier.
+[```integer | integer[]```](../../data-types.md#compound-types) | User identifier or an array of user identifiers.
 
-The identifier can be obtained using the [user.get](../../user/user-get.md) method. ||
+The identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
 || **MESSAGE**
-[`string`](../../data-types.md) | Invitation text. ||
+[`string`](../../data-types.md) | Invitation text. If the parameter is not provided or is empty, the standard invitation text with the name of the group or project is used. ||
 |#
 
 ## Code examples
@@ -71,7 +71,7 @@ The identifier can be obtained using the [user.get](../../user/user-get.md) meth
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<string[]>({
+      const response = await $b24.actions.v2.call.make<number[]>({
         method: 'sonet_group.user.invite',
         params: {
           GROUP_ID: 69,
@@ -178,7 +178,6 @@ The identifier can be obtained using the [user.get](../../user/user-get.md) meth
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -257,7 +256,7 @@ HTTP status: **200**
 
 ```json
 {
-    "result": ["1271"],
+    "result": [1271],
     "time": {
         "start": 1773846932,
         "finish": 1773846933.077318,
@@ -277,7 +276,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of user identifiers that were successfully invited.
+[`array`](../../data-types.md) | An array of user identifiers that were successfully invited. The identifiers are returned in the same form as they were passed in `USER_ID`: numbers in a JSON body are returned as numbers, values from a form or a query string as strings.
 
 An empty array means that none of the provided users could be invited. For example, the user is already a member of the group or the current user does not have permission to invite. ||
 || **time**
@@ -300,19 +299,20 @@ HTTP status: **400**
 ### Possible error codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
-|| — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
-|| — | `Socialnetwork group not found` | The group or project was not found or is not accessible to the current user. ||
-|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `USER_ID` contains a user who is not an employee. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong group ID` | `GROUP_ID` was not provided, or its value converted to an integer is not greater than zero. ||
+|| `400` | Empty value | `Wrong user IDs` | `USER_ID` was not provided, a single value converted to an integer is not greater than zero, or an empty array was provided. ||
+|| `400` | Empty value | `Socialnetwork group not found` | The group or project was not found or is not accessible to the current user. ||
+|| `400` | Empty value | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `USER_ID` contains a user who is not an employee. ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue exploring
 
-- [{#T}](./sonet-group-user-request.md)
+- [{#T}](./index.md)
 - [{#T}](./sonet-group-user-add.md)
 - [{#T}](./sonet-group-user-update.md)
 - [{#T}](./sonet-group-user-get.md)
 - [{#T}](./sonet-group-user-delete.md)
+- [{#T}](./sonet-group-user-request.md)

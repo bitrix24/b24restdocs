@@ -9,11 +9,15 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
 The method `sonet_group.user.get` returns a list of active participants in a workgroup or project.
+
+A user without administrator permissions can access visible groups and projects, as well as invisible groups and projects they are a member of. For an extranet user, the extranet site is also taken into account.
+
+The method returns all active participants found in a single response, without pagination.
 
 ## Method Parameters
 
@@ -23,7 +27,7 @@ The method `sonet_group.user.get` returns a list of active participants in a wor
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../data-types.md) | Identifier of the workgroup or project.
+[`integer`](../../data-types.md) | Positive identifier of the workgroup or project.
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 |#
@@ -170,7 +174,6 @@ The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -250,16 +253,16 @@ HTTP status: **200**
 {
     "result": [
         {
-        "USER_ID": "1269",
-        "ROLE": "A"
+            "USER_ID": "1269",
+            "ROLE": "A"
         },
         {
-        "USER_ID": "1271",
-        "ROLE": "E"
+            "USER_ID": "1271",
+            "ROLE": "E"
         },
         {
-        "USER_ID": "779",
-        "ROLE": "K"
+            "USER_ID": "779",
+            "ROLE": "K"
         }
     ],
     "time": {
@@ -281,9 +284,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of participants in the group or project ||
+[`array`](../../data-types.md) | Array of participant objects of the group or project [(field descriptions)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Element of the result Array {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **USER_ID**
-[`integer`](../../data-types.md) | Identifier of the participant ||
+[`string`](../../data-types.md) | Identifier of the participant ||
 || **ROLE**
 [`string`](../../data-types.md) | Role of the participant.
 
@@ -291,9 +303,7 @@ Possible values:
 
 - `A` — owner
 - `E` — moderator
-- `K` — participant  ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+- `K` — participant ||
 |#
 
 ## Error Handling
@@ -312,15 +322,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong socialnetwork group ID` | An incorrect `ID` of the group was provided ||
-|| — | `Socialnetwork group not found` | Group or project not found or is private ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong socialnetwork group ID` | An incorrect `ID` of the group was provided ||
+|| `400` | Empty value | `Socialnetwork group not found` | The group or project was not found or is not accessible to the current user ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sonet-group-user-invite.md)
 - [{#T}](./sonet-group-user-request.md)
 - [{#T}](./sonet-group-user-add.md)

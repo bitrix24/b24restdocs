@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or Social Network module administrator
 
 The method `sonet_group.user.add` adds users to a workgroup or project without an invitation and confirmation.
 
@@ -27,11 +27,11 @@ The method `sonet_group.user.add` adds users to a workgroup or project without a
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[```integer | integer[]```](../../data-types.md#compound-types) | User identifier.
+[```integer | integer[]```](../../data-types.md#compound-types) | User identifier or an array of identifiers.
 
 The identifier can be obtained using the [user.get](../../user/user-get.md) method.
 
-If the `intranet` module is enabled, the method adds only employees and extranet users. Other users are ignored. ||
+If the `intranet` module is installed, the method adds only employees and extranet users and skips the rest. The exception is a collab without the `extranet` module: the check from the error table applies to it. ||
 |#
 
 ## Code Examples
@@ -177,7 +177,6 @@ If the `intranet` module is enabled, the method adds only employees and extranet
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -259,8 +258,8 @@ HTTP Status: **200**
         "finish": 1773810300.8123,
         "duration": 0.8123,
         "processing": 0.4021,
-        "date_start": "2026-03-18T08:45:00+02:00",
-        "date_finish": "2026-03-18T08:45:00+02:00",
+        "date_start": "2026-03-18T07:05:00+02:00",
+        "date_finish": "2026-03-18T07:05:00+02:00",
         "operating_reset_at": 1773810900,
         "operating": 0
     }
@@ -273,9 +272,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of user identifiers that were successfully added.
+[`array`](../../data-types.md) | Array of string user identifiers that were successfully added.
 
-Users who are already group members and nonexistent identifiers are skipped. If no users could be added, an empty array is returned. ||
+The method skips nonexistent identifiers and users who already have a link to the group, such as participants or users with a pending invitation. If no users were added and the request completed without an error, an empty array is returned. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -296,20 +295,21 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
-|| — | `No permissions to add users` | Insufficient rights to add participants. ||
-|| — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
-|| — | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
-|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and `USER_ID` contains a user who is not an employee. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong group ID` | `GROUP_ID` was not provided, or its value converted to an integer is not greater than zero. ||
+|| `400` | Empty value | `No permissions to add users` | Insufficient rights to add participants. ||
+|| `400` | Empty value | `Wrong user IDs` | `USER_ID` was not provided, an empty array was provided, or a single value converted to an integer is not greater than zero. ||
+|| `400` | Empty value | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
+|| `400` | Empty value | `The required modules are not installed: extranet` | The users being added did not pass the check for a collab without the `extranet` module. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sonet-group-user-invite.md)
 - [{#T}](./sonet-group-user-request.md)
-- [{#T}](./sonet-group-user-update.md)
-- [{#T}](./sonet-group-user-get.md)
 - [{#T}](./sonet-group-user-delete.md)
+- [{#T}](./sonet-group-user-get.md)
+- [{#T}](./sonet-group-user-update.md)

@@ -29,9 +29,7 @@
 
   If the solution name changes when a new version is published, the new name is checked on general terms.
 
-  The solution name must not contain the designations "Bitrix", "Bitrix24", or "Alaio", including in other writing systems, unless the mention is directly related to the purpose and functionality of the solution.
-
-  These designations may be used in the name if they are necessary to describe the solution's functionality accurately, for example, for solutions designed for migration, import, export, synchronization, or data exchange between Bitrix24 and external systems.
+  The solution name must not contain "Bitrix", "Bitrix24", or "Alaio", including their transliterations.
 
   The solution name must not create the impression that the solution is developed, released, or officially endorsed by Bitrix24 if this is not the case.
 
@@ -70,7 +68,7 @@ If you feel that you lack the right tags, please contact the moderators in the c
 1. In the **Application Description** block, a description in English is required. English is the main language of the solution, even if the solution is developed for a specific country. You can add descriptions in other languages as an option for users to choose from.
 2. The **Short Description** of the application should contain 1-2 sentences describing the main purpose of your solution.
 3. It is not recommended to duplicate the application title in the short description. Avoid introductory words; formulate the description so that it complements the title. Remember that the short description will be displayed in application lists and should help you attract the user's interest to open your solution card.
-4. The **Full Description** of the solution should contain a list of tasks that your product solves and the capabilities it provides to Bitrix24 users. **You must indicate in the description the features of the solution that limit or affect its user properties, in particular:**
+4. The **Complete description** of the solution must clearly and accurately describe who the solution is for, the problems it solves, its main use cases, and the results users can expect. The description must match the current version and actual functionality. **You must indicate in the description the features of the solution that limit or affect how users can use it, in particular:**
    - Requirements for a specific Bitrix24 tariff plan;
    - The need for additional software for the solution to work;
    - The need to connect/pay for external systems and services, as well as additional functionality of the application (see point 4 below);
@@ -88,19 +86,37 @@ If you feel that you lack the right tags, please contact the moderators in the c
 8. The text in the **"Installation Process Description"** field should include a list of actions necessary for using the solution:
    - If the solution contains settings, indicate where to find them and describe specific options;
    - If the solution includes integration with an external system/service, specify how the integration is configured within the application and on the external service side; the description should be written for a user who is not familiar with the system/service – links to general user documentation are not sufficient.
-9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support operating schedule – working days and hours, response time to incoming requests. This field must contain links only to English-language resources (website, helpdesk, etc.).
+9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support schedule — working days and hours. This field must contain links only to English-language resources (website, helpdesk, etc.).
 10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness or noticeable pixelation are not allowed.
 
-    The use of Bitrix24 or third-party trademarks and logos in solution icons is not permitted. By publishing a solution whose icon contains third-party trademarks and/or logos, the developer warrants that they have all necessary rights to use them and can provide evidence of such lawful use. If a rights holder submits a claim, the solution may be removed from publication until the matter is resolved.
+    Do not round the icon corners yourself: Bitrix24 applies rounding automatically. The icon must not contain materials whose distribution is prohibited by applicable law.
+
+    Do not use Bitrix, Bitrix24, or Alaio trademarks and logos in the solution icon, screenshots, demo data, or other materials of the solution, except for the Bitrix24 interface shown in screenshots and mentions of Bitrix24 or Alaio by name where needed to describe the solution's functionality. Third-party trademarks and logos may be used only if the developer has the right to use them. By publishing a solution that contains such trademarks or logos, the developer warrants that they have all necessary rights and can provide evidence of such lawful use. If a rights holder submits a claim, the solution may be removed from publication until the matter is resolved.
 
 11. **Screenshots:**
-    - Must contain examples of your solution's interface demonstrating demo data relevant to the solution in the context of Bitrix24.
-    - Demo data must be as realistic as possible and demonstrate to the end user the process of setting up and using the application. Screenshots with empty fields, test users, empty reports, etc., are not accepted.
+    - Add at least one screenshot to the **Screenshots** field that shows the solution in the context of Bitrix24: its interface or its key feature.
+
+      If the solution has no interface of its own, upload an image that shows the result of its operation instead, for example:
+      - a chatbot's response;
+      - the result of an automation rule or workflow activity;
+      - a message sent by the solution;
+      - a data exchange diagram;
+      - a Bitrix24 item (for example, a CRM item) created or updated by the solution.
+
+    - Use realistic but fictitious demo data to demonstrate the setup and operation of your solution. Do not use real personal, commercial, payment, or other sensitive data. Screenshots containing empty fields, test users, empty reports, etc., will not be accepted. If you release a new version of the solution, update the screenshots so that they match it.
     - If the solution has its interface within Bitrix24, the application must be open in the slider on the screenshots. Screenshots highlighting details of the internal interface (e.g., enlarged images of options, etc.) are allowed as a supplement to full-screen screenshots.
-    - The size of screenshots must not exceed 1280 by 720 pixels.
+    - The size of screenshots must not exceed 1920 × 1080 pixels.
     - Supported formats are JPEG and PNG.
     - Screenshots must show only the English-language interface.
-12. You must provide a link to your own user license agreement in the **"Use my license agreement"** field, as well as a link to your own privacy policy in the **"Use my privacy policy"** field, drafted in accordance with the current legislation of the publication region. The license agreement defining the rights of the user to use your application must contain the name of the solution and the licensor. For your convenience, we have provided links to examples of such documents nearby. **Important:** the link must lead not to a download but to view the corresponding documents in the browser. Supported document formats: html, pdf, txt.
+12. You must provide a link to your own end user license agreement (EULA) in the **EULA** field, as well as a link to your own privacy policy in the **Privacy policy** field, drafted in accordance with the current legislation of the publication region. Your EULA must include:
+    - the solution name (it must exactly match the **Application name** specified in the solution card);
+    - the licensor (the legal entity that actually owns the solution).
+
+    A sample EULA is available next to the field. If you use it, review it carefully and replace the placeholder company name and placeholder solution name with the name of your legal entity and the name of your solution.
+
+    **Important:**
+    - The link must open the document directly in the browser rather than trigger a download or require extra steps (for example, some cloud storage services ask you to click through before showing the file).
+    - Supported formats: html, pdf, txt.
 13. Optionally, you can provide links for **"Contact the Developer"** and **"Request a Demo."** These should be links to a page about your product with any contact form (messenger, online chat, etc.).
 
 #### Pricing Policy Block
@@ -151,7 +167,11 @@ For the first version of the application, this field does not need to be filled;
   5. Offers to purchase the solution, partner services, and/or Bitrix24 products directly from the partner;
   6. Descriptions of promotions, special offers, and discounts on partner solutions and/or Bitrix24 products when purchased directly from the partner;
   7. Obvious grammatical errors in the description fields;
-  8. Texts in descriptions or screenshots that do not correspond to the selected description language.
+  8. Texts in descriptions or screenshots that do not correspond to the selected description language;
+  9. An inaccurate or outdated description, or screenshots and other images that do not match the current version and actual functionality of the solution;
+  10. Missing required information in the **Complete description** or **Additional terms** field: payment and pricing terms, functional limitations, dependencies, required permissions, or technical requirements;
+  11. Real personal, commercial, payment, or sensitive data in screenshots;
+  12. Materials that do not meet the requirements for format, size, language, or rights to use the content.
 - **ii. The version card will contain:**
   1. Offensive, obscene information in the version fields: calls to violence, pornography, racism, and other materials prohibited by applicable legislation;
   2. Unfilled "What's New in the Application" field, or text that does not correspond to the selected description language;

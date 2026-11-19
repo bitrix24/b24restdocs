@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or Social Network module administrator
 
 The method `sonet_group.user.delete` removes participants from a workgroup or project.
 
@@ -27,7 +27,7 @@ The method `sonet_group.user.delete` removes participants from a workgroup or pr
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[```integer | integer[]```](../../data-types.md#compound-types) | Identifier of the participant.
+[```integer | integer[]```](../../data-types.md#compound-types) | Identifier of the participant or an array of participant identifiers.
 
 The identifier can be obtained using the [sonet_group.user.get](./sonet-group-user-get.md) method. ||
 |#
@@ -181,7 +181,6 @@ You cannot remove the owner of the group or project and the scrum master.
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -277,9 +276,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of user identifiers that were successfully deleted.
+[`array`](../../data-types.md) | Array of string user identifiers that were successfully deleted.
 
-An empty array means that there was an attempt to remove the owner of the group or project. ||
+An empty array means that no users were deleted. For example, the specified user may have no link to the group or project. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
@@ -300,17 +299,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
-|| — | `No permissions to update users role` | Insufficient rights to remove participants. ||
-|| — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
-|| — | `Socialnetwork group not found` | Group or project with the specified `GROUP_ID` not found. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong group ID` | `GROUP_ID` was not provided, or its value converted to an integer is not greater than zero. ||
+|| `400` | Empty value | `No permissions to update users role` | Insufficient rights to remove participants. The message about updating the role is also returned on deletion. ||
+|| `400` | Empty value | `Wrong user IDs` | `USER_ID` was not provided, a non-positive scalar value was provided, or an empty array was provided. ||
+|| `400` | Empty value | `Socialnetwork group not found` | Group or project with the specified `GROUP_ID` not found. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sonet-group-user-invite.md)
 - [{#T}](./sonet-group-user-request.md)
 - [{#T}](./sonet-group-user-add.md)

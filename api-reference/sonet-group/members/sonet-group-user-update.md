@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or Social Network module administrator
 
 The method `sonet_group.user.update` changes the role of participants in a workgroup or project.
 
@@ -29,9 +29,11 @@ To change the owner, use the method [sonet_group.setowner](../sonet-group-setown
 
 The identifier can be obtained using the method [sonet_group.get](../sonet-group-get.md) ||
 || **USER_ID***
-[```integer | integer[]```](../../data-types.md#compound-types) | Identifier of the participant.
+[```integer | integer[]```](../../data-types.md#compound-types) | Identifier of the participant or an array of participant identifiers.
 
-The identifier can be obtained using the method [sonet_group.user.get](./sonet-group-user-get.md) ||
+The identifier can be obtained using the method [sonet_group.user.get](./sonet-group-user-get.md).
+
+For a single value, the method checks that it is greater than zero after conversion to an integer. For an array, it only checks that the array is not empty ||
 || **ROLE***
 [`string`](../../data-types.md) | Code of the new participant role.
 
@@ -44,6 +46,8 @@ Possible values:
 {% note info "" %}
 
 The user's role will not be updated if the user is the owner of the group or project.
+
+If a user has been invited to the group but has not yet accepted the invitation, the method can change their role and make them a participant without the invitation being accepted.
 
 {% endnote %}
 
@@ -194,7 +198,6 @@ The user's role will not be updated if the user is the owner of the group or pro
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -209,7 +212,7 @@ The user's role will not be updated if the user is the owner of the group or pro
         'sonet_group.user.update',
         {
             GROUP_ID: 69,
-            USER_ID: [1271],
+            USER_ID: [1271, 1272],
             ROLE: 'E'
         },
         function(result)
@@ -293,9 +296,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of user identifiers for which the role was successfully updated.
+[`array`](../../data-types.md) | Array of string user identifiers for which the role was successfully updated.
 
-An empty array means there is nothing to change: the specified users are not group members, already have the role from `ROLE`, or are the owner of the group or project. ||
+An empty array means that no roles were updated. For example, the specified users have no link to the group or already have the specified role. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -316,19 +319,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
-|| — | `No permissions to update users role` | Insufficient rights to change participant roles. ||
-|| — | `Incorrect role code` | An unsupported value for `ROLE` was provided. ||
-|| — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
-|| — | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
-|| — | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is not installed, and the `E` role is assigned to a user who is not an employee. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong group ID` | `GROUP_ID` was not provided, or its value converted to an integer is not greater than zero. ||
+|| `400` | Empty value | `No permissions to update users role` | Insufficient rights to change participant roles. ||
+|| `400` | Empty value | `Incorrect role code` | An unsupported value for `ROLE` was provided. ||
+|| `400` | Empty value | `Wrong user IDs` | `USER_ID` was not provided, a single value converted to an integer is not greater than zero, or an empty array was provided. ||
+|| `400` | Empty value | `Socialnetwork group not found` | The group or project with the specified `GROUP_ID` was not found. ||
+|| `400` | Empty value | `The required modules are not installed: extranet` | The group is a collab, the `extranet` module is unavailable, and the change creates a membership for a user who is not an employee or raises their role. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sonet-group-user-invite.md)
 - [{#T}](./sonet-group-user-request.md)
 - [{#T}](./sonet-group-user-add.md)

@@ -9,11 +9,13 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with access to the group or project
 
-The method `sonet_group.user.request` sends a request from the current user to join a workgroup or project.
+The method `sonet_group.user.request` sends a request from the current user to join a workgroup or project. If the group or project is open for joining, the user becomes a participant immediately.
+
+For a closed group or project, a user with permission to invite participants approves the request in a Bitrix24 notification.
 
 ## Method Parameters
 
@@ -170,7 +172,6 @@ The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -266,7 +267,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the request to join was successfully sent. ||
+[`boolean`](../../data-types.md) | `true` if the request to join was successfully sent or the user joined an open group or project. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -287,15 +288,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
-|| — | `Socialnetwork group not found` | The group or project was not found or is unavailable to the current user. ||
-|| — | `Cannot request to join group` | Failed to send the request to join. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
+|| `400` | Empty value | `Socialnetwork group not found` | The group or project was not found or is unavailable to the current user. ||
+|| `400` | Empty value | `Cannot request to join group` | The group or project is inactive, the user did not pass the eligibility check for joining, or the user's link to the group could not be saved. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
+
+- [{#T}](./index.md)
 
 - [{#T}](./sonet-group-user-invite.md)
 - [{#T}](./sonet-group-user-add.md)
