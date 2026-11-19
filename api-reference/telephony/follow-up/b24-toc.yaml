@@ -13,3 +13,13 @@ items:
     href: call-followup-field-list.md
   - name: Get Follow-up Field Description
     href: call-followup-field-get.md
+  - name: Bitrix24 Sync Call Follow-ups
+    items:
+      - name: Get a List of Follow-ups
+        href: syncconnector-followup-list.md
+      - name: Get Follow-up by Detailed Analysis Page
+        href: syncconnector-followup-get.md
+      - name: Get List of Follow-up Fields
+        href: syncconnector-followup-field-list.md
+      - name: Get Follow-up Field Description
+        href: syncconnector-followup-field-get.md

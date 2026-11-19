@@ -2,6 +2,11 @@
 
 ## 2026
 
+### November 19, 2026
+
+- Added the [syncconnector.followup.*](./api-reference/telephony/follow-up/index.md#sync) methods in REST 3.0: they retrieve Bitrix24 Sync call Follow-ups — a list for a period and the results of a single detailed analysis page, including the `field.list` and `field.get` field schema methods
+- Updated the [call.followup.*](./api-reference/telephony/follow-up/index.md) methods: they now return Bitrix24 Sync call Follow-ups together with Bitrix24 call Follow-ups, and the new `source` field shows the source: `call` or `sync`
+
 ### November 18, 2026
 
 - Added the [tasks.template.list](./api-reference/tasks/template/tasks-template-list.md) method: retrieves the task templates available to the user, with filtering, sorting, and field selection

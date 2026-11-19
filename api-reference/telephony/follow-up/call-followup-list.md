@@ -19,7 +19,7 @@ The method belongs to REST 3.0. Details regarding call specifics and the respons
 
 {% endnote %}
 
-The `call.followup.list` method returns a list of follow-up calls for the specified period.
+The `call.followup.list` method returns a list of follow-up calls for the specified period. A Follow-up is the AI-generated summary of a call, such as the meeting topic and the action items that came out of it. The list includes Bitrix24 calls and [Bitrix24 Sync](./index.md#sync) calls. You can tell them apart by the `source` field if you pass it in `select`, or by `callId`: for Sync calls it is greater than `10000000000`.
 
 ## Method Parameters
 
@@ -31,13 +31,13 @@ The `call.followup.list` method returns a list of follow-up calls for the specif
 || **filter***
 [`object`](../../data-types.md) | Selection criteria [(detailed description)](#filter) ||
 || **select**
-[`array`](../../data-types.md) | List of fields and nested paths to be returned in the list items.
+[`array`](../../data-types.md) | Fields to be returned in the list items.
 
-If the parameter is not passed or an empty array is passed, the method returns only basic metadata: `callId`, `callType`, `initiatorId`, `startDate`, `endDate`, `durationSeconds`.
+Without `select` or with an empty array, the method returns only `callId`, `callType`, `initiatorId`, `startDate`, `endDate`, `durationSeconds`. The `source` field is returned only if you specify it in `select`.
 
-In `select`, you can pass root Follow-up fields, AI blocks, or available nested paths via dot notation. For a full list of fields and available nested paths, see the article [Follow-up call fields](./fields.md#select-paths).
+You can pass a root Follow-up field, an AI block, or a nested path in dot notation, for example `overview.topic`. All fields and paths are listed in the article [Call Follow-up Fields](./fields.md#select-paths).
 
-Fields `transcription`, `overview`, and `insights` are considered heavy. If they are present in `select`, server will limit `pagination.limit` with value `20` ||
+Fields `transcription`, `overview`, and `insights` are heavy: if they are present in `select`, the server reduces the passed `pagination.limit` to `20` ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters [(detailed description)](#order).
 
@@ -64,9 +64,7 @@ Default: `bb` ||
 || **startDate***
 [`object`](../../data-types.md) | Call start period [(detailed description)](#startdate) ||
 || **participantId**
-[`integer`](../../data-types.md) | Call participant identifier.
-
-An Administrator can obtain Follow-ups for any user. For a regular user, the filter is forcibly restricted to their identifier ||
+[`integer`](../../data-types.md) | Employee identifier. Without the parameter, an administrator receives the Follow-ups of all employees; with the parameter, only those of this employee. Sync calls are included in the list in both cases. For a regular user, the filter always equals their own identifier ||
 || **chatId**
 [`integer`](../../data-types.md) | Call chat identifier. The method returns Follow-ups only for calls from this chat.
 
@@ -110,9 +108,9 @@ Default: `desc` ||
 || **limit**
 [`integer`](../../data-types.md) | Page size.
 
-Default: `50`. Maximum: `200` for light selection and `20` for selection with heavy AI fields. If a value greater than the maximum is passed, the server will apply the maximum value ||
+If the parameter is not passed — `50`. If it is passed, the maximum is `200`, or `20` with heavy AI fields in `select`. If you pass a larger value, the server applies the maximum ||
 || **afterCursor**
-[`object`](../../data-types.md) | Next page cursor. Pass the `afterCursor` value in its entirety from the previous response in the same format it was received [(detailed description)](#aftercursor) ||
+[`object`](../../data-types.md) | Next page cursor. Pass the `afterCursor` object from the previous response as is, without changes [(detailed description)](#aftercursor) ||
 |#
 
 #### Parameter pagination.afterCursor {#aftercursor}
@@ -122,6 +120,8 @@ To retrieve all pages:
 1. Send the first request without `pagination.afterCursor`
 2. If `hasMore` in the response equals `true`, copy the `afterCursor` object from the response into the `pagination.afterCursor` of the next request
 3. Repeat requests until `hasMore` equals `false`
+
+A page may be shorter than `limit` or empty even if `hasMore` is `true`: the method builds it from Bitrix24 calls and Sync calls. Do not stop at such a page.
 
 #|
 || **Name**

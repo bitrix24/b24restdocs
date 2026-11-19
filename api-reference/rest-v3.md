@@ -99,7 +99,7 @@ The REST 3.0 methods are described in the following sections:
 || [Company Structure](./departments/index.md) | Work with departments, teams, members, and roles — the `humanresources.*` group of methods. The `department.*` methods of the same section belong to the old version ||
 || [Event Log](./event-log/index.md) | Retrieve the entries of the Bitrix24 event log ||
 || [Time Tracking Records](./timeman/record/index.md) | Retrieve and modify time tracking records ||
-|| [Call Follow-up](./telephony/follow-up/index.md) | Retrieve the materials that the AI assistant generates after a video call ||
+|| [Call Follow-up](./telephony/follow-up/index.md) | Retrieve the materials that the AI assistant generates after a Bitrix24 video call or a Bitrix24 Sync call — the [call.followup.*](./telephony/follow-up/index.md#all-methods) and [syncconnector.followup.*](./telephony/follow-up/index.md#sync-methods) method groups ||
 || [Forum](./forum/index.md) | Delete forum messages and comments, create and configure custom fields of messages and values of "List" type fields ||
 || [Information Blocks](./iblock/index.md) | Retrieve information block elements with properties. Work only with information blocks that have REST access enabled in the admin panel ||
 |#

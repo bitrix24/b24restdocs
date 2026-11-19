@@ -19,7 +19,7 @@ The method belongs to REST 3.0. Calling features and the response format of the 
 
 {% endnote %}
 
-The `call.followup.get` method returns the follow-up of a single call by its identifier.
+The `call.followup.get` method returns the follow-up of a single Bitrix24 call or [Bitrix24 Sync](./index.md#sync) call by its identifier.
 
 ## Method Parameters
 
@@ -29,17 +29,18 @@ The `call.followup.get` method returns the follow-up of a single call by its ide
 || **Name**
 `type` | **Description** ||
 || **callId***
-[`integer`](../../data-types.md) | Call identifier.
+[`integer`](../../data-types.md) | Follow-up identifier:
 
-The identifier can be obtained using the [call.followup.list](./call-followup-list.md) method ||
+- Bitrix24 call — the call identifier
+- Sync call — `10000000000` plus the identifier of the detailed analysis page
+
+The [call.followup.list](./call-followup-list.md) method returns a ready-to-use identifier in the `callId` field, so you do not need to add anything to it ||
 || **select**
-[`array`](../../data-types.md) | A list of fields and nested paths to be returned in the response.
+[`array`](../../data-types.md) | Fields and nested paths to be returned in the response. All fields are listed in the [Call Follow-up Fields](./fields.md#select-paths) article.
 
-If the parameter is not provided, the method returns all fields from the [Root object](./fields.md#root-object) section. Missing data is set to `null`.
-
-If an empty array is provided, the method returns only basic metadata: `callId`, `callType`, `initiatorId`, `startDate`, `endDate`, `durationSeconds`.
-
-If a list of fields is provided, the method returns only the listed fields and always adds `callId`. See the full list of fields in the [Follow-up call fields](./fields.md#select-paths) article ||
+- parameter not provided — all fields from the [Root Object](./fields.md#root-object) section except `source`, which you must pass in `select` explicitly. Fields with no data are returned as `null`
+- empty array — only `callId`, `callType`, `initiatorId`, `startDate`, `endDate`, `durationSeconds`
+- list of fields — only these fields, plus `callId` every time ||
 || **mentionFormat**
 [`string`](../../data-types.md) | Format for user mentions in AI text fields.
 
@@ -388,7 +389,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `callId` | Call not found | Provide an existing call identifier. For a user without rights to the call, the method will return an access error ||
+|| `callId` | Call not found | Provide an existing call identifier; for a Sync call, pass `10000000000` plus the identifier of the detailed analysis page. Only an administrator receives this error; other users receive `access_denied` ||
 |#
 
 #### Errors in the `select` Parameter

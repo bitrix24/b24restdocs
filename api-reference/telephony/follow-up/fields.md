@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 A call follow-up contains call metadata, attendees, recording, and AI blocks: transcription, overview, summary, insights, and efficiency rating.
 
-Fields can be passed in the `select` parameter of the [call.followup.list](./call-followup-list.md) and [call.followup.get](./call-followup-get.md) methods.
+Fields can be passed in the `select` parameter of the [call.followup.list](./call-followup-list.md), [call.followup.get](./call-followup-get.md), [syncconnector.followup.list](./syncconnector-followup-list.md), and [syncconnector.followup.get](./syncconnector-followup-get.md) methods. All four methods return the same fields.
+
+For Bitrix24 Sync calls, some fields are filled in differently, whichever set of methods returns the Follow-up: [call.followup.*](./index.md#all-methods) or [syncconnector.followup.*](./index.md#sync-methods). The differences are described in the [Field Differences in Bitrix24 Sync](#sync) section.
 
 ## Which Fields Can Be Passed in Select {#select-paths}
 
@@ -31,7 +33,17 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 || **Name**
 `type` | **Description** ||
 || **callId**
-[`integer`](../../data-types.md) | Identifier of the call ||
+[`integer`](../../data-types.md) | Follow-up identifier:
+
+- for a Bitrix24 call — the call identifier
+- for a Bitrix24 Sync call — `10000000000` plus the identifier of the detailed analysis page. For example, page `128` corresponds to `callId` `10000000128` ||
+|| **source**
+[`string`](../../data-types.md) | Follow-up source:
+
+- `call` — a Bitrix24 call
+- `sync` — a Bitrix24 Sync call
+
+The field is returned only if you pass it in `select` ||
 || **callType**
 [`integer`](../../data-types.md) | Call type:
 
@@ -65,7 +77,7 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 - `insights` — insights and speaker analysis
 - `evaluation` — meeting effectiveness assessment ||
 || **createdAt**
-[`string`](../../data-types.md) | Date of the last AI record for the call in ISO 8601 format ||
+[`string`](../../data-types.md) | Date when the last AI block for the call was retained, in ISO 8601 format ||
 || **tracks**
 [`array`](../../data-types.md) | Call recordings [(detailed description)](#track) ||
 || **transcription**
@@ -73,11 +85,47 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 || **overview**
 [`object`](../../data-types.md) | Meeting overview [(detailed description)](#overview) ||
 || **summary**
-[`object`](../../data-types.md) | Segmented call summary [(detailed description)](#summary) ||
+[`object`](../../data-types.md) | Call summary by time segments [(detailed description)](#summary) ||
 || **insights**
 [`object`](../../data-types.md) | Insights and speaker analysis [(detailed description)](#insights) ||
 || **evaluation**
 [`object`](../../data-types.md) | Meeting effectiveness assessment [(detailed description)](#evaluation) ||
+|#
+
+## Field Differences in Bitrix24 Sync {#sync}
+
+For Bitrix24 Sync call Follow-ups, the field keys and types are the same as for Bitrix24 calls, but some fields have different values. This applies to both [call.followup.*](./index.md#all-methods) and [syncconnector.followup.*](./index.md#sync-methods):
+
+#|
+|| **Name**
+`type` | **Value in Bitrix24 Sync** ||
+|| **callId**
+[`integer`](../../data-types.md) | Built from the identifier of the detailed analysis page. One call can produce several pages, one for each call part.
+
+- [syncconnector.followup.*](./index.md#sync-methods) return the page identifier
+- [call.followup.*](./index.md#all-methods) return `10000000000` plus the page identifier ||
+|| **source**
+[`string`](../../data-types.md) | Always `sync`. The field is returned only if you pass it in `select` ||
+|| **callType**
+[`integer`](../../data-types.md) | Always `1` ||
+|| **initiatorId**
+[`integer`](../../data-types.md) | Always `null`: Sync does not pass to Bitrix24 who started the call ||
+|| **startDate**
+[`string`](../../data-types.md) | Start of the call part. If the page does not specify the start and end times of the call part, this field contains the time when the detailed analysis page became available ||
+|| **endDate**
+[`string`](../../data-types.md) | End of the call part. If the page does not specify the start and end times of the call part, this field is `null` ||
+|| **durationSeconds**
+[`integer`](../../data-types.md) | Duration of the call part in seconds. If the page does not specify the start and end times of the call part, this field is `null` ||
+|| **uuid**
+[`string`](../../data-types.md) | Sync call key shared by all its parts: use it to group the pages of one call. The value is not in UUID format ||
+|| **participants**
+[`array`](../../data-types.md) | Bitrix24 users who spoke in this call part. Guests are not listed ||
+|| **participants[].talkedSeconds**
+[`integer`](../../data-types.md) | How many seconds the user spoke — the sum of the durations of their transcription segments. Without a transcription — `null` ||
+|| **createdAt**
+[`string`](../../data-types.md) | The time the detailed analysis page became available ||
+|| **tracks**
+[`array`](../../data-types.md) | Audio recording of the Follow-up on Drive. The `type` field is always `record`, and `callId` has the same value as the root `callId` field. The array is empty if there is no recording or the user has no access to the file ||
 |#
 
 ## Participants[] Object {#participant}
@@ -88,7 +136,7 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 || **userId**
 [`integer`](../../data-types.md) | User identifier ||
 || **talkedSeconds**
-[`integer`](../../data-types.md) | User participation time in the call in seconds ||
+[`integer`](../../data-types.md) | User participation time in the call in seconds. For a Bitrix24 Sync call, the value means something else — see [Field Differences in Bitrix24 Sync](#sync) ||
 || **name**
 [`string`](../../data-types.md) | User's first name ||
 || **avatar**
@@ -119,7 +167,7 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 || **mimeType**
 [`string`](../../data-types.md) | File MIME type ||
 || **callId**
-[`integer`](../../data-types.md) | Identifier of the call ||
+[`integer`](../../data-types.md) | Follow-up identifier, the same value as in the root `callId` field ||
 || **relUrl**
 [`string`](../../data-types.md) | Relative file URL ||
 || **url**

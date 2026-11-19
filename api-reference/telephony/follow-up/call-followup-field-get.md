@@ -29,9 +29,9 @@ The `call.followup.field.get` method returns the description of the Follow-up fi
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | The name of the Follow-up field for which the description needs to be obtained.
+[`string`](../../data-types.md) | The name of the Follow-up field, for example `callId`.
 
-Available fields can be obtained using the [call.followup.field.list](./call-followup-field-list.md) method ||
+The [call.followup.field.list](./call-followup-field-list.md) method returns all field names ||
 || **select**
 [`array`](../../data-types.md) | List of description fields to return in the response.
 
@@ -47,7 +47,9 @@ Available fields:
 - `sortable` — sort availability indicator
 - `editable` — editability indicator
 - `multiple` — multiple value indicator
-- `elementType` — element type for composite fields ||
+- `elementType` — element type for composite fields
+
+If the parameter is not passed, the method returns all description fields ||
 |#
 
 ## Code Examples
@@ -278,7 +280,7 @@ HTTP status: **200**
             "name": "callId",
             "type": "int",
             "title": "callId",
-            "description": "Bitrix24 call identifier (b_call.ID). Always present.",
+            "description": "Identifier of the follow-up: b_call.ID of a Bitrix24 call, or 10000000000 + id of a Sync meeting page (see source). Always present.",
             "filterable": false,
             "sortable": false,
             "multiple": false
@@ -305,7 +307,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+[`object`](../../data-types.md) | Object with field description. The set of keys in the object depends on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

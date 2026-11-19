@@ -83,6 +83,7 @@ Some methods work only in the application context. When a webhook calls such a m
 || **salescenter** | [CRM. Payment](../crm/universal/payment/index.md) | Chat sales ||
 || **sign.b2e** | [e-Signature](../sign/index.md) | e-Signature ||
 || **[sonet_group](*key_sonet)** | [Social Network Working Groups](../sonet-group/sonet-group-create.md) | Social Network Working Groups ||
+|| **syncconnector** | [Bitrix24 Sync Call Follow-ups](../telephony/follow-up/index.md#sync) | Bitrix24 Sync ||
 || **[task](*key_task)** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||
 || **timeman** | [Time Tracking](../timeman/index.md) | Time Tracking ||
