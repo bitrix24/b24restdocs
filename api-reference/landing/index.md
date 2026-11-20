@@ -11,8 +11,6 @@ Choose a tool for developing with an AI agent:
 
 The methods in the `landing` group create and configure websites, stores, pages, and blocks. They manage publication, templates, access permissions, and embedding locations for applications.
 
-The sequence of calls resembles working in a website editor: first, you create or select a site, then a page, add blocks, configure content, and publish the result.
-
 > Quick navigation: [all sections and methods](#all-methods)
 >
 > User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
@@ -55,7 +53,7 @@ There are two groups of methods for page blocks. The methods for [working with b
 || Change the order, visibility, or state of a block on the page | Methods for [working with blocks on the page](./page/block-methods/index.md) ||
 || Change text, images, links, cards, or styles of a block | Methods [landing.block.*](./block/index.md) ||
 || Get the code of a standard or custom block before adding | [landing.block.getrepository](./block/methods/landing-block-get-repository.md) ||
-|| Get the identifier of an already placed block | [landing.block.getList](./block/methods/landing-block-get-list.md) with `params.edit_mode = true` ||
+|| Get the identifier of an already placed block | [landing.block.getlist](./block/methods/landing-block-get-list.md) with `params.edit_mode = true` ||
 |#
 
 ## Additional Scenarios
@@ -71,15 +69,11 @@ There are two groups of methods for page blocks. The methods for [working with b
 
 ## Embedding Locations
 
-Embedding locations allow you to add an application to the interface of websites and pages. The application can be opened from the website or page settings and from block editing actions.
+Embedding locations display an application item in the website interface. [LANDING_SETTINGS](./embedding/settings.md) adds it to the website or page settings menu, and [LANDING_BLOCK_*](./embedding/block.md) adds it to the block action menu. Only an application can register embedding locations.
 
-**Website or page settings.** The embedding location [LANDING_SETTINGS](./embedding/settings.md) adds an application item to the settings menu of the website or page. The identifiers of the website and page are passed to the handler in `PLACEMENT_OPTIONS`.
+`LANDING_SETTINGS` is registered using the [landing.repo.bind](./embedding/landing-repo-bind.md) or [placement.bind](../widgets/placement-bind.md) method, and `LANDING_BLOCK_*` only using the [landing.repo.bind](./embedding/landing-repo-bind.md) method. For the `LANDING_BLOCK_*` code, the [placement.bind](../widgets/placement-bind.md) method returns the `ERROR_PLACEMENT_NOT_FOUND` error.
 
-**Block actions.** The embedding location [LANDING_BLOCK_*](./embedding/block.md) adds an application item to the block action menu. The block identifier, block code, and page identifier are passed to the handler.
-
-**Knowledge Base.** The binding of the Knowledge Base to a menu or group is described in the subsection [Embedding the Knowledge Base](./embedding/knowledge-base/index.md). These bindings are managed by the `landing.site.*` methods because the Knowledge Base is presented as a separate website.
-
-In the `landing` module, embedding locations are registered using the internal method [landing.repo.bind](./embedding/landing-repo-bind.md). For `LANDING_SETTINGS`, [placement.bind](../widgets/placement-bind.md) also works; for `LANDING_BLOCK_*`, only `landing.repo.bind` does. You can remove the embedding location of the current application using the [landing.repo.unbind](./embedding/landing-repo-unbind.md) method, and a binding created with `placement.bind` using the [placement.unbind](../widgets/placement-unbind.md) method.
+An embedding location is removed the same way it was registered: using the [landing.repo.unbind](./embedding/landing-repo-unbind.md) or [placement.unbind](../widgets/placement-unbind.md) method.
 
 ## Types of Websites and Scope
 
@@ -90,13 +84,29 @@ This parameter is not related to the access scope [`landing`](../scopes/permissi
 ## Key Identifiers
 
 #| 
-|| **Identifier** | **Where used** | **How to obtain** ||
-|| `SITE_ID` or `siteId` | Page, folder, rights, template methods, website publication, and Knowledge Base bindings | From the result of [landing.site.add](./site/landing-site-add.md) or [landing.site.getList](./site/landing-site-get-list.md) ||
-|| `LID` or `lid` | Page, block, page publication methods, and embedding location `LANDING_SETTINGS` | From the result of [landing.landing.add](./page/methods/landing-landing-add.md), [landing.landing.addByTemplate](./page/methods/landing-landing-add-by-template.md), [landing.landing.copy](./page/methods/landing-landing-copy.md), or [landing.landing.getList](./page/methods/landing-landing-get-list.md) ||
-|| `FOLDER_ID`, `PARENT_ID` or `ID` of the folder | Placing pages in folders and managing website structure | From the result of [landing.site.addFolder](./site/landing-site-add-folder.md) or [landing.site.getFolders](./site/landing-site-get-folders.md) ||
-|| `ID` of the block | Modifying, moving, copying, hiding, and deleting a block on the page | From the result of [landing.landing.addblock](./page/block-methods/landing-landing-add-block.md) or [landing.block.getlist](./block/methods/landing-block-get-list.md) with `params.edit_mode = true`, if you need a block from the draft ||
-|| `CODE` of the block | Adding a standard or custom block to the page | From [landing.block.getrepository](./block/methods/landing-block-get-repository.md) or after registering the block using the [landing.repo.register](./user-blocks/landing-repo-register.md) method ||
+|| **Identifier** | **What it means** | **Where to get it** ||
+|| `SITE_ID`, `siteId`, or `id` | Website identifier, for example, `253` | `result` of the [landing.site.add](./site/landing-site-add.md) method or `result[].ID` of the [landing.site.getList](./site/landing-site-get-list.md) method ||
+|| `LID` or `lid` | Page identifier, for example, `2227` | `result` of the [landing.landing.add](./page/methods/landing-landing-add.md), [landing.landing.addByTemplate](./page/methods/landing-landing-add-by-template.md), and [landing.landing.copy](./page/methods/landing-landing-copy.md) methods or `result[].ID` of the [landing.landing.getList](./page/methods/landing-landing-get-list.md) method ||
+|| `FOLDER_ID`, `PARENT_ID`, `folderId`, or `id` | Folder identifier, for example, `89` | `result` of the [landing.site.addFolder](./site/landing-site-add-folder.md) method or `result[].ID` of the [landing.site.getFolders](./site/landing-site-get-folders.md) method ||
+|| `ID` of the block | Identifier of a block on the page, for example, `28597` | `result` of the [landing.landing.addblock](./page/block-methods/landing-landing-add-block.md) method or `result[].id` of the [landing.block.getlist](./block/methods/landing-block-get-list.md) method with `params.edit_mode = true` if you need a block from the draft ||
+|| `CODE` of the block | Code of a block in the repository, for example, `02.three_cols_big_1` or `repo_385` | Block key in the `items` list of the required section in the response of the [landing.block.getrepository](./block/methods/landing-block-get-repository.md) method. A custom block receives the code `repo_<ID>`, where `<ID>` is the `result` of the [landing.repo.register](./user-blocks/landing-repo-register.md) method ||
 |#
+
+The website identifier has different names in different methods:
+
+- `id` — in the methods of the [Sites](./site/index.md) object, for example, [landing.site.update](./site/landing-site-update.md).
+- `siteId` — in folder methods, for example, [landing.site.addFolder](./site/landing-site-add-folder.md), and in [landing.landing.addByTemplate](./page/methods/landing-landing-add-by-template.md).
+- `fields.SITE_ID` — in [landing.landing.add](./page/methods/landing-landing-add.md).
+- `params.filter.SITE_ID` — in the filter of [landing.landing.getList](./page/methods/landing-landing-get-list.md).
+
+The exact parameter name is specified on the page of each method.
+
+## Limitations and Features {#restrictions}
+
+- The [landing.landing.addblock](./page/block-methods/landing-landing-add-block.md) method returns the identifier of the created block as a number by default, for example, `28597`. If you pass `fields.RETURN_CONTENT = "Y"`, the method returns the block object, and the identifier is in the `result.id` field.
+- The [landing.repo.unbind](./embedding/landing-repo-unbind.md) method also removes an embedding location registered via [placement.bind](../widgets/placement-bind.md), but returns the `PLACEMENT_NO_EXIST` error: it treats as a success only the removal of a location registered via [landing.repo.bind](./embedding/landing-repo-bind.md).
+- All methods in the section except [landing.repo.bind](./embedding/landing-repo-bind.md) and [landing.repo.unbind](./embedding/landing-repo-unbind.md) can also be called via a webhook. Via a webhook, only a portal or sites administrator can register and delete custom blocks. The [Authorization in REST](../../settings/how-to-call-rest-api/authorization.md) article helps you choose an authorization method.
+- General REST API limits, including request execution time and request intensity, are described in the [REST API Limits](../../limits.md) article.
 
 ## Overview of Sections and Methods {#all-methods}
 

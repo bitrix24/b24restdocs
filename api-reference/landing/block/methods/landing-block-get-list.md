@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "view" access permission for sites
 
-The method `landing.block.getlist` returns a list of blocks for the selected page.
+The method `landing.block.getlist` returns all blocks of the selected page in a single call: pagination is not applied.
 
 ## Method Parameters
 
@@ -76,7 +76,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "lid": 4858,
+        "lid": 2215,
         "params": {
           "edit_mode": true,
           "get_content": true
@@ -91,7 +91,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "lid": 4858,
+        "lid": 2215,
         "params": {
           "edit_mode": true,
           "get_content": true
@@ -130,7 +130,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
       const response = await $b24.actions.v2.call.make<LandingBlock[]>({
         method: 'landing.block.getlist',
         params: {
-          lid: 4858,
+          lid: 2215,
           params: {
             edit_mode: true,
             get_content: true,
@@ -168,7 +168,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
           const response = await $b24.actions.v2.call.make({
             method: 'landing.block.getlist',
             params: {
-              lid: 4858,
+              lid: 2215,
               params: {
                 edit_mode: true,
                 get_content: true,
@@ -202,7 +202,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
 
     try:
         bitrix_response = client.landing.block.getlist(
-            lid=4858,
+            lid=2215,
             params={
                 "edit_mode": True,
                 "get_content": True,
@@ -222,6 +222,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -231,7 +232,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
             ->call(
                 'landing.block.getlist',
                 [
-                    'lid' => 4858,
+                    'lid' => 2215,
                     'params' => [
                         'edit_mode' => true,
                         'get_content' => true,
@@ -256,7 +257,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     BX24.callMethod(
         'landing.block.getlist',
         {
-            lid: 4858,
+            lid: 2215,
             params: {
                 edit_mode: true,
                 get_content: true
@@ -284,7 +285,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     $result = CRest::call(
         'landing.block.getlist',
         [
-            'lid' => 4858,
+            'lid' => 2215,
             'params' => [
                 'edit_mode' => true,
                 'get_content' => true,
@@ -309,7 +310,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "landing.block.getlist", b24.Params{
-    	"lid": 4858,
+    	"lid": 2215,
     	"params": b24.Params{
     		"edit_mode":   true,
     		"get_content": true,
@@ -364,7 +365,7 @@ HTTP Status: **200**
                 "XML_ID": "",
                 "DESIGNER_MODE": ""
             },
-            "content": "<div id=\"b2884\" class=\"block-wrapper block-0-menu-02\"><header class=\"landing-block u-header u-header--float u-header--sticky\">...</header></div>",
+            "content": "<div id=\"b28181\" class=\"block-wrapper block-0-menu-02\"><header class=\"landing-block u-header u-header--float u-header--sticky\">...</header></div>",
             "css": [],
             "js": []
         }
@@ -390,11 +391,11 @@ HTTP Status: **200**
 || **result**
 [`object[]`](../../../data-types.md) | List of blocks [(detailed description)](#block).
 
-The method can return `result: []` without an error in three cases.
+The method can return `result: []` without an error, for example, if:
 
-- There are no blocks on the page for the selected reading mode.
-- The page has not yet been published and `params.edit_mode` is not enabled.
-- The `deleted` filter did not find any suitable blocks. ||
+- there are no blocks on the page for the selected reading mode
+- the page has not yet been published and `params.edit_mode` is not enabled
+- the `deleted` filter did not find any suitable blocks ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
 |#
@@ -444,6 +445,8 @@ This field is returned only if `params.get_content` is enabled. If there are no 
 [`string`](../../../data-types.md) | Identifier of the block's page in string format.
 
 Duplicates the top-level field `lid`. ||
+|| **FAVORITE_META**
+[`string`](../../../data-types.md) | Service field for blocks saved to "My Blocks". It is returned as the string `Array`. ||
 || **CREATED_BY_ID**
 [`string`](../../../data-types.md) | Identifier of the user who created the block. ||
 || **DATE_CREATE**
@@ -459,9 +462,7 @@ The format depends on the language settings of the account. ||
 || **SITE_TYPE**
 [`string`](../../../data-types.md) | Type of the site to which the page belongs, such as `PAGE` or `STORE`. ||
 || **LANDING_TITLE**
-[`string`](../../../data-types.md) | Title of the page to which the block belongs.
-
-If the title is not filled, an empty string will be returned. ||
+[`string`](../../../data-types.md) | Service field. The method does not fill it and returns an empty string even if the page has a title. The page title is returned by the [landing.landing.getList](../../page/methods/landing-landing-get-list.md) method in the `TITLE` field. ||
 || **LANDING_TPL_CODE**
 [`string`](../../../data-types.md) | Code of the page template. ||
 || **SITE_TPL_CODE**
@@ -470,6 +471,8 @@ If the title is not filled, an empty string will be returned. ||
 [`string`](../../../data-types.md) | External identifier of the block.
 
 If it is not specified, an empty string will be returned. ||
+|| **DESIGNER_MODE**
+[`string`](../../../data-types.md) | Service field of the designer mode. This method always returns an empty string in it. ||
 |#
 
 ## Error Handling
