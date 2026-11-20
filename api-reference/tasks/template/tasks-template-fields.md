@@ -379,6 +379,11 @@ HTTP Status: **200**
             "type": "integer",
             "default": 0
         },
+        "REPLICATE_TYPE": {
+            "title": "Recurrence type",
+            "type": "integer",
+            "default": null
+        },
         "REPLICATE_PARAMS": {
             "title": "Task Creation Parameters",
             "type": "string"

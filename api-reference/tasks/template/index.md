@@ -23,18 +23,30 @@ Task templates help to describe a typical workflow in advance and use a unified 
 4. Create the template using the [tasks.template.add](./tasks-template-add.md) method.
 5. Retrieve the template using the [tasks.template.get](./tasks-template-get.md) method if you need to check the saved values. The [tasks.template.list](./tasks-template-list.md) method returns the list of available templates.
 6. Modify the template using the [tasks.template.update](./tasks-template-update.md) method if you need to adjust the parameters.
-7. Add checklist items using [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md), [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md), and [tasks.template.checklist.list](./checklist/tasks-template-checklist-list.md) if the task consists of recurring steps.
+7. If the task consists of recurring steps, add a checklist to the template using the methods of the [Task Template Checklists](./checklist/index.md) section.
 8. Delete the template using the [tasks.template.delete](./tasks-template-delete.md) method if it is no longer needed.
 
 ## Access Permissions
 
-Permissions for working with task templates depend on the access settings in tasks.
+Permissions for working with task templates depend on the access settings in tasks:
+
+- a user with the permission to create templates can create them
+- a user with the corresponding permission for a template can retrieve, update, and delete it
+- the [tasks.template.list](./tasks-template-list.md) method returns only the templates available to the user
 
 {% note tip "User Documentation" %}
 
 - [How to set access permissions in Bitrix24 tasks](https://helpdesk.bitrix24.com/open/20883624/)
 
 {% endnote %}
+
+## Method Specifics
+
+- The `TITLE` and `RESPONSIBLE_ID` fields are required when creating a template. If the method is called by a user without administrator rights, that user becomes the creator, and `CREATED_BY` is ignored
+- The [tasks.template.list](./tasks-template-list.md) method returns up to 50 templates per request. Request the next page with the `start` parameter
+- In `select` of the [tasks.template.list](./tasks-template-list.md) method, you can pass only the fields listed on the method page. The `*` value is not supported. The method returns custom `UF_*` fields and the checklist only if `select` is not passed
+- The list of templates is returned in `task_templates`: an empty page as the `[]` array, a non-empty page as an object with template IDs as keys
+- A successful response contains `result` and `time`; errors are returned in `error` and `error_description`. Error codes are described on the method pages
 
 ## Relationships with Other Objects
 
@@ -46,7 +58,7 @@ Permissions for working with task templates depend on the access settings in tas
 
 **CRM.** The template can pre-save links to CRM entities. In the `UF_CRM_TASK` field, specify the identifiers of CRM entities with a prefix, for example, `L_15` for a lead or `D_27` for a deal. Identifiers of existing entities can be obtained using the [crm.item.list](../../crm/universal/crm-item-list.md) method. If the entity needs to be created first, use [crm.item.add](../../crm/universal/crm-item-add.md).
 
-**Checklists.** If the typical task consists of recurring steps, add them to the template using [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md), [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md), and [tasks.template.checklist.delete](./checklist/tasks-template-checklist-delete.md).
+**Checklists.** If the typical task consists of recurring steps, add them to the template. Checklist items are created, updated, and deleted using the methods of the [Task Template Checklists](./checklist/index.md) section.
 
 ## Overview of Methods {#all-methods}
 
@@ -54,32 +66,14 @@ Permissions for working with task templates depend on the access settings in tas
 >
 > Who can execute the method: depending on the method
 
-### Main Methods
-
 #|
 || **Method** | **Description** ||
-|| [tasks.template.add](./tasks-template-add.md) | Adds a task template ||
-|| [tasks.template.update](./tasks-template-update.md) | Modifies a task template ||
-|| [tasks.template.get](./tasks-template-get.md) | Retrieves a task template by `id` ||
-|| [tasks.template.list](./tasks-template-list.md) | Retrieves a list of task templates ||
+|| [tasks.template.add](./tasks-template-add.md) | Creates a task template and returns its ID ||
+|| [tasks.template.update](./tasks-template-update.md) | Modifies the fields of an existing template ||
+|| [tasks.template.get](./tasks-template-get.md) | Retrieves a template by ID. By default, with all fields, including custom ones ||
+|| [tasks.template.list](./tasks-template-list.md) | Retrieves the templates available to the user with filtering, sorting, and pages of 50 records ||
 || [tasks.template.delete](./tasks-template-delete.md) | Deletes a task template ||
-|| [tasks.template.fields](./tasks-template-fields.md) | Retrieves the description of task template fields ||
+|| [tasks.template.fields](./tasks-template-fields.md) | Retrieves the description of template fields: title, type, whether the field is required, default value, and allowed values ||
 |#
 
-### Task Template Checklists
-
-#|
-|| **Method** | **Description** ||
-|| [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md) | Adds a checklist item ||
-|| [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md) | Updates a checklist item ||
-|| [tasks.template.checklist.get](./checklist/tasks-template-checklist-get.md) | Retrieves a checklist item by `id` ||
-|| [tasks.template.checklist.list](./checklist/tasks-template-checklist-list.md) | Retrieves a list of checklist items ||
-|| [tasks.template.checklist.delete](./checklist/tasks-template-checklist-delete.md) | Deletes a checklist item ||
-|| [tasks.template.checklist.moveAfter](./checklist/tasks-template-checklist-move-after.md) | Moves an item after the specified one ||
-|| [tasks.template.checklist.moveBefore](./checklist/tasks-template-checklist-move-before.md) | Moves an item before the specified one ||
-|| [tasks.template.checklist.complete](./checklist/tasks-template-checklist-complete.md) | Marks an item as completed ||
-|| [tasks.template.checklist.renew](./checklist/tasks-template-checklist-renew.md) | Returns an item to an incomplete state ||
-|| [tasks.template.checklist.addAttachmentByContent](./checklist/tasks-template-checklist-add-attachment-by-content.md) | Adds an attachment from content ||
-|| [tasks.template.checklist.addAttachmentsFromDisk](./checklist/tasks-template-checklist-add-attachments-from-disk.md) | Adds attachments from Drive ||
-|| [tasks.template.checklist.removeAttachments](./checklist/tasks-template-checklist-remove-attachments.md) | Removes attachments from a checklist item ||
-|#
+Checklist items of a template, their order, completion marks, and attachments are described in the [Task Template Checklists](./checklist/index.md) section.

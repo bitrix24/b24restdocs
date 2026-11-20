@@ -23,16 +23,24 @@ The method `tasks.template.add` creates a new task template.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Fields of the new task template [(detailed description)](./fields.md). 
+[`object`](../../data-types.md) | Fields of the new task template [(detailed description)](./fields.md).
 
 Required fields for creating a template:
 - `TITLE` — title of the task template
 - `RESPONSIBLE_ID` — ID of the Participant
 
-If a user without administrator permissions calls the method, this user becomes the template creator, and `CREATED_BY` in `fields` is ignored. An administrator can specify a different creator in `CREATED_BY`. For templates for new employees, `CREATED_BY` is not ignored
-
-||
+If a user without administrator permissions calls the method, this user becomes the template creator, and `CREATED_BY` in `fields` is ignored. An administrator can specify a different creator in `CREATED_BY`. For templates for new employees, `CREATED_BY` is not ignored ||
 |#
+
+If `fields` does not contain `TITLE` or `RESPONSIBLE_ID`, or `RESPONSIBLE_ID` refers to a non-existent user, the method does not create a template and returns `"result": 0` without an error message.
+
+The method saves a `PRIORITY` value outside the `0`, `1`, `2` list as `1`.
+
+{% note warning "" %}
+
+If you pass `REPLICATE: "Y"`, also pass the schedule in `REPLICATE_PARAMS`. Without a schedule, the method returns the `Internal server error.` error.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -429,7 +437,7 @@ HTTP Status: **200**
 || **result**
 [```integer | null```](../../data-types.md) | Identifier of the created task template.
 
-The method will not create a template and will return `"result": 0` if not all required fields are specified in `fields`: `TITLE`, `RESPONSIBLE_ID`.
+The method returns `0` if the template is not created: `TITLE` or `RESPONSIBLE_ID` is missing, or the assignee does not exist.
 
 If assigning the creator fails, the method returns an error and `null` ||
 || **time**
@@ -457,6 +465,7 @@ If saving the template is denied, the method returns `TEMPLATE_SAVE_ACCESS_DENIE
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing or empty ||
 || `400` | `0` | Access denied | Insufficient permissions to create a template ||
+|| `400` | `0` | Internal server error. | `REPLICATE: "Y"` is passed without `REPLICATE_PARAMS` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

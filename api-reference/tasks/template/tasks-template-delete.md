@@ -298,7 +298,7 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Invalid value {} to match with parameter {templateId}. Should be value of type int. | Parameter `templateId` is empty or has an invalid type ||
+|| `400` | `100` | Invalid value {`value`} to match with parameter {templateId}. Should be value of type int. | `templateId` is not a number or is an empty string ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

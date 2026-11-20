@@ -31,10 +31,16 @@ The task template identifier can be obtained when [creating a new template](./ta
 
 The fields and value types correspond to the description on the [Task Template Fields](./fields.md) page.
 
-The template creator does not change: `CREATED_BY` from the request is ignored. Templates for new employees are an exception.
+Pass only the fields that need to be changed. The template creator does not change: `CREATED_BY` from the request is ignored. Templates for new employees are an exception. The method also ignores an empty `TITLE` value.
 
 `TASK_ID` can be changed only if the user can edit both the new and the previous task ||
 |#
+
+{% note warning "" %}
+
+If you pass `REPLICATE: "Y"` without a schedule in `REPLICATE_PARAMS`, the method returns the `Internal server error.` error, but the recurrence flag is saved anyway. Pass `REPLICATE` together with `REPLICATE_PARAMS`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -347,11 +353,12 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the template was successfully updated.
+[`boolean`](../../data-types.md) | Returns `true` if the template was successfully updated. If `fields` is passed as an empty object, the method changes nothing and also returns `true`.
 
-Returns `false`
-- if a template with the specified `templateId` does not exist
-- if the user does not have permission to save the template based on its resulting state ||
+Returns `false` without an error message if:
+- a template with the specified `templateId` does not exist
+- the user does not have permission to save the template based on its resulting state
+- `RESPONSIBLE_ID` refers to a non-existent user ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -374,8 +381,9 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Invalid value {} to match with parameter {templateId}. Should be value of type int. | The `templateId` parameter is invalid or empty ||
+|| `400` | `100` | Invalid value {`value`} to match with parameter {templateId}. Should be value of type int. | `templateId` is not a number or is an empty string ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
+|| `400` | `0` | Internal server error. | `REPLICATE: "Y"` is passed without `REPLICATE_PARAMS`. The recurrence flag is saved anyway ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

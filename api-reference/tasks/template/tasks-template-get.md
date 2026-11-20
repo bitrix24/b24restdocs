@@ -346,8 +346,8 @@ HTTP Status: **200**
 || **result** 
 [`object`](../../data-types.md) | Task template data [(detailed description)](#result).
 
-Returns `false`:
-- if `templateId` is passed empty
+Returns `false` without an error message:
+- if `templateId` is passed empty or is not a number
 - if a template with the specified `templateId` does not exist
 - if the user does not have permission to view the template ||
 || **time** 
@@ -383,6 +383,10 @@ Returns `false`:
 [`string`](../../data-types.md) | Planned end date offset in seconds ||
 || **REPLICATE** 
 [`string`](../../data-types.md) | Indicator of a recurring task ||
+|| **REPLICATE_TYPE**
+[`integer`](../../data-types.md) | Recurrence type. Default is `null` ||
+|| **TIME_ESTIMATE**
+[`integer`](../../data-types.md) | Planned time estimate in seconds ||
 || **CREATED_BY** 
 [`integer`](../../data-types.md) | The ID of the Creator ||
 || **XML_ID** 

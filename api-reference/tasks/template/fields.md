@@ -36,7 +36,12 @@ Access to tasks is required to work with templates. Available actions and some f
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Template description ||
 || **PRIORITY**
-[`enum`](../../data-types.md) | Priority ||
+[`enum`](../../data-types.md) | Priority. Possible values:
+- `2` — high
+- `1` — medium
+- `0` — low
+
+Default is `1`. The method saves a value outside the list as `1` ||
 || **GROUP_ID**
 [`integer`](../../data-types.md) | Project identifier. Default is `0` ||
 || **STAGE_ID**
@@ -54,7 +59,14 @@ Access to tasks is required to work with templates. Available actions and some f
 || **AUDITORS**
 [`array`](../../data-types.md) | List of auditors ||
 || **STATUS**
-[`enum`](../../data-types.md) | Status ||
+[`enum`](../../data-types.md) | Status of the task to be created from the template. Possible values:
+- `2` — waiting for execution
+- `3` — in progress
+- `4` — awaiting control
+- `5` — completed
+- `6` — postponed
+
+Default is `2` ||
 || **MULTITASK**
 [`enum`](../../data-types.md) | Multitasking indicator. Possible values:
 - `Y` — yes
@@ -101,6 +113,8 @@ Default is `null` ||
 [`enum`](../../data-types.md) | For new users. Default is `0` ||
 || **TPARAM_REPLICATION_COUNT**
 [`integer`](../../data-types.md) | Number of created tasks. Default is `0` ||
+|| **REPLICATE_TYPE**
+[`integer`](../../data-types.md) | Recurrence type. Default is `null` ||
 || **REPLICATE_PARAMS**
 [`object`](../../data-types.md) | Template replication parameters [(detailed description)](#replicate_params) ||
 || **BASE_TEMPLATE_ID**
@@ -111,6 +125,10 @@ Default is `null` ||
 [`integer`](../../data-types.md) | Number of child templates.
 
 Default is `null` ||
+|| **UF_CRM_TASK**
+[`array`](../../data-types.md) | Link to CRM items. IDs are passed with a type prefix, for example, `L_15` for a lead or `D_27` for a deal ||
+|| **UF_TASK_WEBDAV_FILES**
+[`array`](../../data-types.md) | Drive files ||
 || **UF_* fields**
 [`object`](../../data-types.md) | Custom fields of the object ||
 |#

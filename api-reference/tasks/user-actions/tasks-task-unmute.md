@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `tasks.task.unmute` disables the "Mute" mode for a task.
+The `tasks.task.unmute` method turns off "Mute" mode in the task for the current user: notifications about task events arrive again. To turn the mode on, use the [tasks.task.mute](./tasks-task-mute.md) method.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `tasks.task.unmute` disables the "Mute" mode for a task.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md) | Task identifier. 
+[`integer`](../../data-types.md) | Task identifier. The method also accepts it as `taskId`.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
 |#
@@ -244,204 +244,84 @@ HTTP Status: **200**
     "result": {
         "task": {
             "id": "8017",
-            "parentId": "7817",
+            "parentId": null,
             "title": "Task Example",
-            "description": "Task description with [B]formatting[/B]",
-            "mark": "P",
-            "priority": "2",
+            "description": "",
+            "mark": null,
+            "priority": "1",
             "multitask": "N",
             "notViewed": "N",
-            "replicate": "Y",
-            "stageId": "395",
+            "replicate": "N",
+            "stageId": "0",
             "sprintId": null,
             "backlogId": null,
             "createdBy": "503",
-            "createdDate": "2025-06-04T16:15:55+02:00",
-            "responsibleId": "503",
+            "createdDate": "2026-11-20T09:28:51+01:00",
+            "responsibleId": "547",
             "changedBy": "503",
-            "changedDate": "2025-09-10T15:22:12+02:00",
-            "statusChangedBy": "503",
-            "closedBy": "0",
+            "changedDate": "2026-11-20T09:28:51+01:00",
+            "statusChangedBy": null,
+            "closedBy": null,
             "closedDate": null,
-            "activityDate": "2025-09-10T15:20:59+02:00",
-            "dateStart": "2025-09-10T15:22:12+02:00",
-            "deadline": "2025-09-11T08:00:00+02:00",
+            "activityDate": "2026-11-20T09:28:52+01:00",
+            "dateStart": null,
+            "deadline": "2026-11-27T22:00:00+01:00",
             "startDatePlan": null,
             "endDatePlan": null,
-            "guid": "{21e7b78d-498e-4c84-a896-2dbeb26861b8}",
+            "guid": "{7b740fda-1af7-457f-adf2-552a48079233}",
             "xmlId": null,
-            "commentsCount": "43",
-            "serviceCommentsCount": "27",
-            "allowChangeDeadline": "Y",
-            "allowTimeTracking": "Y",
+            "commentsCount": null,
+            "serviceCommentsCount": null,
+            "allowChangeDeadline": "N",
+            "allowTimeTracking": "N",
             "taskControl": "N",
             "addInReport": "N",
             "forkedByTemplateId": null,
-            "timeEstimate": "101580",
-            "timeSpentInLogs": "69963",
-            "matchWorkTime": "Y",
-            "forumTopicId": "1273",
-            "forumId": "11",
+            "timeEstimate": "0",
+            "timeSpentInLogs": null,
+            "matchWorkTime": "N",
+            "forumTopicId": null,
+            "forumId": null,
             "siteId": "s1",
-            "subordinate": "Y",
+            "subordinate": "N",
             "exchangeModified": null,
             "exchangeId": null,
-            "outlookVersion": "51",
-            "viewedDate": "2025-09-10T15:21:58+02:00",
+            "outlookVersion": "1",
+            "viewedDate": null,
             "sorting": null,
-            "durationFact": "1166",
+            "durationFact": null,
             "isMuted": "N",
             "isPinned": "N",
             "isPinnedInGroup": "N",
-            "flowId": "19",
+            "flowId": null,
+            "chatId": 5963,
             "descriptionInBbcode": "Y",
-            "status": "3",
-            "statusChangedDate": "2025-09-10T15:22:12+02:00",
-            "durationPlan": "0",
+            "status": "2",
+            "statusChangedDate": "2026-11-20T09:28:51+01:00",
+            "durationPlan": null,
             "durationType": "days",
-            "favorite": "Y",
-            "groupId": "129",
-            "auditors": [
-                "61",
-                "103",
-                "547"
-            ],
-            "accomplices": [
-                "3",
-                "11"
-            ],
-            "checklist": {
-                "433": {
-                    "id": "433",
-                    "taskId": "8017",
-                    "createdBy": "503",
-                    "parentId": "431",
-                    "title": "First",
-                    "sortIndex": "0",
-                    "isComplete": "N",
-                    "isImportant": "N",
-                    "toggledBy": null,
-                    "toggledDate": null,
-                    "ufChecklistFiles": false,
-                    "members": [],
-                    "attachments": [],
-                    "entityId": "8017",
-                    "action": {
-                        "modify": true,
-                        "remove": true,
-                        "toggle": true,
-                        "add": true,
-                        "addAccomplice": true
-                    }
-                },
-                "431": {
-                    "id": "431",
-                    "taskId": "8017",
-                    "createdBy": "503",
-                    "parentId": 0,
-                    "title": "Checklist 1",
-                    "sortIndex": "0",
-                    "isComplete": "N",
-                    "isImportant": "N",
-                    "toggledBy": null,
-                    "toggledDate": null,
-                    "ufChecklistFiles": false,
-                    "members": [],
-                    "attachments": [],
-                    "entityId": "8017",
-                    "action": {
-                        "modify": true,
-                        "remove": true,
-                        "toggle": true,
-                        "add": true,
-                        "addAccomplice": true
-                    }
-                },
-                "435": {
-                    "id": "435",
-                    "taskId": "8017",
-                    "createdBy": "503",
-                    "parentId": "431",
-                    "title": "Second",
-                    "sortIndex": "1",
-                    "isComplete": "N",
-                    "isImportant": "N",
-                    "toggledBy": null,
-                    "toggledDate": null,
-                    "ufChecklistFiles": false,
-                    "members": [],
-                    "attachments": [],
-                    "entityId": "8017",
-                    "action": {
-                        "modify": true,
-                        "remove": true,
-                        "toggle": true,
-                        "add": true,
-                        "addAccomplice": true
-                    }
-                }
-            },
-            "group": {
-                "id": "129",
-                "name": "Work Group",
-                "opened": false,
-                "membersCount": 1,
-                "image": "\/bitrix\/images\/socialnetwork\/workgroup\/folder.png",
-                "additionalData": []
-            },
+            "favorite": "N",
+            "groupId": "0",
+            "auditors": [],
+            "accomplices": [],
+            "checklist": [],
+            "group": [],
             "creator": {
                 "id": "503",
                 "name": "Maria Johnson",
-                "link": "\/company\/personal\/user\/503\/",
-                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
-                "workPosition": "Administrator"
+                "link": "/company/personal/user/503/",
+                "icon": "/bitrix/images/tasks/default_avatar.png",
+                "workPosition": null
             },
             "responsible": {
-                "id": "503",
-                "name": "Maria Johnson",
-                "link": "\/company\/personal\/user\/503\/",
-                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
-                "workPosition": "Administrator"
+                "id": "547",
+                "name": "Andrew Carter",
+                "link": "/company/personal/user/547/",
+                "icon": "/bitrix/images/tasks/default_avatar.png",
+                "workPosition": "Sales Manager"
             },
-            "accomplicesData": {
-                "3": {
-                    "id": "3",
-                    "name": "Andrew Smith",
-                    "link": "\/company\/personal\/user\/3\/",
-                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/249\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/cd526b0644e7ff4d794ea41cb36bc423\/odmin.png",
-                    "workPosition": "System Administrator"
-                },
-                "11": {
-                    "id": "11",
-                    "name": "Andrew Johnson",
-                    "link": "\/company\/personal\/user\/11\/",
-                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/231\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/026bf59e161a0bd50f401d3796800651\/66b.jpg",
-                    "workPosition": "Specialist"
-                }
-            },
-            "auditorsData": {
-                "61": {
-                    "id": "61",
-                    "name": "Ivan Brown",
-                    "link": "\/company\/personal\/user\/61\/",
-                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8674\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/7b5\/7b52e4c2304ec0520dab3d4261e9ca1f\/sp.jpg",
-                    "workPosition": "Marketer"
-                },
-                "103": {
-                    "id": "103",
-                    "name": "Svetlana Green",
-                    "link": "\/company\/personal\/user\/103\/",
-                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8644\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/45f\/45fff10d17d398a5583184c8350cd197\/buh.jpg",
-                    "workPosition": "Accountant"
-                },
-                "547": {
-                    "id": "547",
-                    "name": "Maria",
-                    "link": "\/company\/personal\/user\/547\/",
-                    "icon": "\/bitrix\/images\/tasks\/default_avatar.png",
-                    "workPosition": "Tester"
-                }
-            },
+            "accomplicesData": [],
+            "auditorsData": [],
             "newCommentsCount": 0,
             "action": {
                 "accept": false,
@@ -449,28 +329,28 @@ HTTP Status: **200**
                 "complete": true,
                 "approve": false,
                 "disapprove": false,
-                "start": false,
-                "pause": true,
+                "start": true,
+                "pause": false,
                 "delegate": true,
                 "remove": true,
                 "edit": true,
-                "defer": false,
+                "defer": true,
                 "renew": false,
                 "create": true,
                 "changeDeadline": true,
                 "checklistAddItems": true,
-                "addFavorite": false,
-                "deleteFavorite": true,
+                "addFavorite": true,
+                "deleteFavorite": false,
                 "rate": true,
                 "take": false,
                 "edit.originator": false,
                 "checklist.reorder": true,
                 "elapsedtime.add": true,
-                "dayplan.timer.toggle": true,
+                "dayplan.timer.toggle": false,
                 "edit.plan": true,
                 "checklist.add": true,
-                "favorite.add": false,
-                "favorite.delete": true
+                "favorite.add": true,
+                "favorite.delete": false
             },
             "checkListTree": {
                 "nodeId": 0,
@@ -492,106 +372,20 @@ HTTP Status: **200**
                     "nodeId": null
                 },
                 "action": [],
-                "descendants": [
-                    {
-                        "nodeId": 1,
-                        "fields": {
-                            "id": 431,
-                            "copiedId": null,
-                            "entityId": 8017,
-                            "userId": 503,
-                            "createdBy": 503,
-                            "parentId": 0,
-                            "title": "Checklist 1",
-                            "sortIndex": 0,
-                            "displaySortIndex": "",
-                            "isComplete": false,
-                            "isImportant": false,
-                            "completedCount": 0,
-                            "members": [],
-                            "attachments": [],
-                            "nodeId": null
-                        },
-                        "action": {
-                            "modify": true,
-                            "remove": true,
-                            "toggle": true,
-                            "add": true,
-                            "addAccomplice": true
-                        },
-                        "descendants": [
-                            {
-                                "nodeId": 2,
-                                "fields": {
-                                    "id": 433,
-                                    "copiedId": null,
-                                    "entityId": 8017,
-                                    "userId": 503,
-                                    "createdBy": 503,
-                                    "parentId": 431,
-                                    "title": "First",
-                                    "sortIndex": 0,
-                                    "displaySortIndex": "1",
-                                    "isComplete": false,
-                                    "isImportant": false,
-                                    "completedCount": 0,
-                                    "members": [],
-                                    "attachments": [],
-                                    "nodeId": null
-                                },
-                                "action": {
-                                    "modify": true,
-                                    "remove": true,
-                                    "toggle": true,
-                                    "add": true,
-                                    "addAccomplice": true
-                                },
-                                "descendants": []
-                            },
-                            {
-                                "nodeId": 3,
-                                "fields": {
-                                    "id": 435,
-                                    "copiedId": null,
-                                    "entityId": 8017,
-                                    "userId": 503,
-                                    "createdBy": 503,
-                                    "parentId": 431,
-                                    "title": "Second",
-                                    "sortIndex": 1,
-                                    "displaySortIndex": "2",
-                                    "isComplete": false,
-                                    "isImportant": false,
-                                    "completedCount": 0,
-                                    "members": [],
-                                    "attachments": [],
-                                    "nodeId": null
-                                },
-                                "action": {
-                                    "modify": true,
-                                    "remove": true,
-                                    "toggle": true,
-                                    "add": true,
-                                    "addAccomplice": true
-                                },
-                                "descendants": []
-                            }
-                        ]
-                    }
-                ]
+                "descendants": []
             },
             "checkListCanAdd": true
-        },
-        "time": {
-            "start": 1757513814.799823,
-            "finish": 1757513814.898483,
-            "duration": 0.09865999221801758,
-            "processing": 0.07469487190246582,
-            "date_start": "2025-09-10T17:16:54+02:00",
-            "date_finish": "2025-09-10T17:16:54+02:00",
-            "operating_reset_at": 1757514414,
-            "operating": 0
         }
+    },
+    "time": {
+        "start": 1795156135,
+        "finish": 1795156135.394104,
+        "duration": 0.39410400390625,
+        "processing": 0,
+        "date_start": "2026-11-20T09:28:55+01:00",
+        "date_finish": "2026-11-20T09:28:55+01:00",
+        "operating_reset_at": 1795156680,
+        "operating": 0
     }
 }
 ```
@@ -604,9 +398,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data.
 
-Returns an empty array `"result":[]` if the user does not have access to the task or if the task with the specified `id` does not exist. ||
+If the task with the specified `id` does not exist or the user has no access to it, the method does not return an error: the response contains an empty array `"result": []` ||
 || **task**
-[`object`](../../data-types.md) | Object with [task description](../fields.md) after the operation is performed. ||
+[`object`](../../data-types.md) | Object with [task description](../fields.md) after the operation is performed. The `isMuted` field is `N` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -627,13 +421,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `id` parameter is of an incorrect type. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for {taskId} | The `id` parameter is not provided ||
+|| `400` | `0` | wrong task id | `id` is not a number, for example, `abc` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-task-mute.md)
+- [{#T}](../tasks-task-get.md)

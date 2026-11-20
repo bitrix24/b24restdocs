@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method creates a dependency of one task on another.
+The method `task.dependence.add` creates a dependency between two tasks in the Gantt chart: the `taskIdTo` task becomes dependent on the `taskIdFrom` task.
 
 ## Method Parameters
 
@@ -23,19 +23,22 @@ This method creates a dependency of one task on another.
 || **Name**
 `type` | **Description** ||
 || **taskIdFrom*** 
-[`integer`](../data-types.md) | Identifier of the task from which the dependency is created ||
+[`integer`](../data-types.md) | Identifier of the task that the other task depends on ||
 || **taskIdTo*** 
-[`integer`](../data-types.md) | Identifier of the task for which the dependency is created ||
+[`integer`](../data-types.md) | Identifier of the dependent task ||
 || **linkType*** 
-[`integer`](../data-types.md) | Type of dependency:
-- `0` — start-start link 
-- `1` — start-finish link 
-- `2` — finish-start link 
-- `3` — finish-finish link 
-||
+[`integer`](../data-types.md) | Dependency type:
+- `0` — start-to-start: the `taskIdTo` task cannot start before the `taskIdFrom` task starts
+- `1` — start-to-finish: the `taskIdTo` task cannot finish before the `taskIdFrom` task starts
+- `2` — finish-to-start: the `taskIdTo` task cannot start before the `taskIdFrom` task finishes
+- `3` — finish-to-finish: the `taskIdTo` task cannot finish before the `taskIdFrom` task finishes
+
+The method does not validate the value: pass only the numbers from this list ||
 |#
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method.
+
+Two tasks can have only one dependency of any type and direction. A dependency of a task on itself or a repeated dependency between the same pair of tasks returns a circular dependency error. To change the dependency type, delete the dependency using the [task.dependence.delete](./task-dependence-delete.md) method and create it again.
 
 ## Code Examples
 
@@ -253,20 +256,18 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 HTTP Status: **200**
 
-Example of a successful request
-
 ```json
 {
-    "result": {
-        []
-    },
+    "result": [],
     "time": {
-        "start": 1712137817.343984,
-        "finish": 1712137817.605804,
-        "duration": 0.26182007789611816,
-        "processing": 0.018325090408325195,
-        "date_start": "2024-04-03T12:50:17+02:00",
-        "date_finish": "2024-04-03T12:50:17+02:00"
+        "start": 1795106720,
+        "finish": 1795106721.263738,
+        "duration": 1.2637379169464111,
+        "processing": 1,
+        "date_start": "2026-11-19T19:45:20+01:00",
+        "date_finish": "2026-11-19T19:45:21+01:00",
+        "operating_reset_at": 1795107300,
+        "operating": 0.2896251678466797
     }
 }
 ```
@@ -277,9 +278,9 @@ Example of a successful request
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | On success, contains an empty array ||
+[`array`](../data-types.md) | An empty array `[]` if the dependency is created ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -288,8 +289,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "ILLEGAL_NEW_LINK",
-    "error_description": "A link between tasks already exists"
+    "error": "ACTION_FAILED",
+    "error_description": "Circular dependencies are not allowed. (4363, 4361)"
 }
 ```
 
@@ -298,9 +299,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `ILLEGAL_NEW_LINK` | A link between tasks already exists ||
-|| `ACTION_NOT_ALLOWED` | Unable to add a link between tasks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACTION_FAILED` | Circular dependencies are not allowed. (`taskIdTo`, `taskIdFrom`) | The tasks already have a dependency of any type or direction, `taskIdFrom` and `taskIdTo` are the same, or the dependency would close a dependency chain ||
+|| `400` | `ACTION_FAILED` | Task not found | The `taskIdTo` task is not found ||
+|| `400` | `ACTION_NOT_ALLOWED.RESTRICTED` | This task action is not allowed | One of the tasks is not found or the user does not have permission to read it ||
+|| `400` | `DISPATCHER_ERROR` | Argument "`parameter name`" is required, but no value passed for task.dependence.add | The required `taskIdFrom`, `taskIdTo`, or `linkType` parameter is not provided ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
