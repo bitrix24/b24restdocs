@@ -80,7 +80,7 @@ The `PLACEMENT_OPTIONS` value is sent as a JSON string. It carries both the addr
 || **CONNECTION_STATUS**
 [`boolean`](../data-types.md) | The connection to the external service is confirmed ||
 || **REGISTER_STATUS**
-[`boolean`](../data-types.md) | The channel is registered in the external service. Both flags are raised by the application with the [imconnector.connector.data.set](../imopenlines/imconnector/imconnector-connector-data-set.md) method when it saves the channel settings ||
+[`boolean`](../data-types.md) | The channel is registered in the external service. `CONNECTION_STATUS` and `REGISTER_STATUS` are set by the [imconnector.activate](../imopenlines/imconnector/imconnector-activate.md) method with `ACTIVE: 1` when the connector is enabled for an open channel ||
 || **ERROR_STATUS**
 [`boolean`](../data-types.md) | The connector has an error. The flag is set by the `imconnector.set.error` method ||
 || **STATUS**
@@ -95,7 +95,33 @@ A separate [placement.bind](./placement-bind.md) call is not needed for this pla
 
 - specify the address of the settings page in `PLACEMENT_HANDLER` of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method
 - Bitrix24 will create the binding to the `SETTING_CONNECTOR` placement and link it to the connector
-- to change the address, call `imconnector.register` again with the same `ID`
+
+The `imconnector.register` method is called only from an application: a webhook receives the `WRONG_AUTH_TYPE` error. Besides `PLACEMENT_HANDLER`, the `ID`, `NAME`, and the `ICON[DATA_IMAGE]` icon are required. `ID` must not contain a dot.
+
+{% include [Note on Examples](../../_includes/examples.md) %}
+
+```js
+BX24.callMethod(
+    'imconnector.register',
+    {
+        ID: 'my_connector',
+        NAME: 'My messenger',
+        ICON: {
+            DATA_IMAGE: 'data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2070%2071%22%3E%3Ccircle%20cx%3D%2235%22%20cy%3D%2235%22%20r%3D%2230%22%20fill%3D%22%230C99BA%22%2F%3E%3C%2Fsvg%3E'
+        },
+        PLACEMENT_HANDLER: 'https://your-domain.com/connector/settings.php'
+    },
+    function (result) {
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            console.log(result.data()); // {result: true}
+        }
+    }
+);
+```
+
+A repeated `imconnector.register` call with the same `ID` and a new address does not replace the binding but adds a second one. To change the address, remove the old binding with the [placement.unbind](./placement-unbind.md) method with `PLACEMENT: 'SETTING_CONNECTOR'` and the old address in `HANDLER`, then register the connector again. The [imconnector.unregister](../imopenlines/imconnector/imconnector-unregister.md) method removes the connector together with its binding.
 
 The placement does not support the `OPTIONS` parameters: there is no way to pass them when registering a connector.
 

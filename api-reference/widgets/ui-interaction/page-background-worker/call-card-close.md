@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
-The `CallCardClose` command closes the call card.
+The `CallCardClose` command closes the call card. It is usually called when the conversation has ended in the application's WebRTC client and the card needs to be removed from Bitrix24.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -33,11 +35,13 @@ BX24.placement.call('CallCardClose', {}, function (result) {
 
 ## Command Parameters
 
-The command takes no parameters. Pass an empty object `{}` as the second argument.
+The command takes no parameters. In BX24.js, pass an empty object `{}` as the second argument; in B24JsSDK, the second argument can be omitted.
 
 {% note warning %}
 
-After `CallCardClose` is invoked, the card can no longer be managed.
+After `CallCardClose` is invoked, the card can no longer be managed: all commands except [CallCardGetListUiStates](./call-card-get-list-ui-states.md) return the `Call card is undefined` error.
+
+Closing the card does not end the call. To end it in Bitrix24, call the [telephony.externalCall.finish](../../../telephony/telephony-external-call-finish.md) method.
 
 {% endnote %}
 
@@ -47,7 +51,7 @@ After `CallCardClose` is invoked, the card can no longer be managed.
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -102,7 +106,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
 ### Returned Data
 
-An empty array on a successful call.
+An empty array on a successful call. In the browser, the card closes immediately. The [BackgroundCallCard::closeButtonClick](./events/close-button-click.md) event arrives only when the operator clicks "Close" themselves. It does not arrive after the command.
 
 ## Errors
 
@@ -121,7 +125,11 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to close ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardClose` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

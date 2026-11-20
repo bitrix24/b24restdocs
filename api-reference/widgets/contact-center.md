@@ -21,6 +21,23 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](./placement-bind.md) method using the `CONTACT_CENTER` code. The method works only on behalf of an application: you cannot register the placement via a webhook. The method documentation explains which users can register widgets
+2. An application tile appears in the Contact Center
+3. When a user clicks the tile, Bitrix24 opens the handler. The handler receives a POST request with the data described in the [What the Handler Receives](#handler-data) section
+4. The handler calls REST on behalf of the current user with the token from `AUTH_ID`: for example, it connects a communication channel with the [imconnector.*](../imopenlines/imconnector/index.md) methods
+
+## When to Use
+
+The placement suits an application that connects its own communication channel to Bitrix24 when the user looks for it among the other channels. For example:
+
+- a messenger that is not among the built-in channels
+- an internal chat on the company website
+- a request form from an external system
+
+If the channel is connected as an open channel connector, choose the [SETTING_CONNECTOR](./setting-connector.md) placement for its settings page. It is registered by the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method.
+
 ## Where the Widget is Embedded
 
 #|
@@ -34,9 +51,9 @@ Open the Contact Center at `/contact_center/`. The application tile is displayed
 
 ![Tile in the Contact Center](./_images/CONTACT_CENTER.png "Tile in the Contact Center")
 
-The tile name is set by the `TITLE` parameter during registration. If the parameter is not passed, the application name is displayed. For an active application, the tile is marked with a check, like the connected built-in channels.
+The tile name is set by the `TITLE` parameter during registration. If `LANG_ALL` is passed, Bitrix24 takes the name from it in the user's language and ignores `TITLE`. If neither is passed, the application name is displayed. For an active application, the tile is marked with a check, like the connected built-in channels.
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -71,12 +88,12 @@ Array
 || **ID**
 [`string`](../data-types.md) | The identifier of the handler registration — the same value that comes in the `id` field of the [placement.get](./placement-get.md) method response.
 
-An application can register several tiles with different handlers. By this key, the handler determines which of them the user opened ||
+By this key, the handler determines which registration the opened tile belongs to ||
 || **URI**
 [`string`](../data-types.md) | The address of the Contact Center page the widget is opened from ||
 |#
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and [placement.get](./placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and in the [placement.get](./placement-get.md) response, the `options` field of this handler comes as an empty array.
 
 ## Relationship with Other Objects
 
@@ -316,6 +333,7 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./placement-bind.md)
 - [{#T}](./placement-list.md)
 - [{#T}](./placement-unbind.md)

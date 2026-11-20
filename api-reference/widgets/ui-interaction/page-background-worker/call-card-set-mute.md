@@ -1,4 +1,4 @@
-# Mute the Operator's Microphone from the Application CallCardSetMute
+# Toggle the Microphone Button in the Call Card from the Application CallCardSetMute
 
 {% note tip "" %}
 
@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
-The `CallCardSetMute` command mutes or unmutes the operator's microphone in the call card.
+The `CallCardSetMute` command toggles the operator's microphone button in the call card: it shows that the microphone is muted or unmuted.
+
+The microphone can be muted in the card or in the application. If the operator clicks the microphone button in the card, the application receives the [BackgroundCallCard::muteButtonClick](./events/mute-button-click.md) event and mutes the microphone in its WebRTC client. If the microphone was muted in the application, toggle the button in the card with this command. The command toggles only the button and does not trigger the `muteButtonClick` event.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -43,8 +47,10 @@ BX24.placement.call('CallCardSetMute', {muted: true}, function (result) {
 
 Possible values:
 
-- `true` — mute the microphone
-- `false` — unmute the microphone ||
+- `true` — show in the card that the microphone is muted
+- `false` — show in the card that the microphone is unmuted
+
+In the browser, without the parameter, the command unmutes the microphone, as with `false`. In the Bitrix24 desktop application, without the parameter, the `missing field muted` error is returned ||
 |#
 
 ## Code Examples
@@ -53,7 +59,7 @@ Possible values:
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -110,11 +116,11 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
 An empty array on a successful call.
 
-If the microphone is already in the requested state, the command returns an empty array right away: the card does not change and the [BackgroundCallCard::muteButtonClick](./events/mute-button-click.md) event does not occur.
+If the microphone is already in the requested state, the command returns an empty array right away and does not change the card.
 
 ## Errors
 
-The command error arrives in the same callback function: instead of the usual result, it receives an array with an object whose `result` equals `error`.
+The command error arrives in the same callback function. Usually, it is an array with an object whose `result` equals `error`. The `missing field muted` error arrives as a single object, without an array. Therefore, check the `result` field both in the object and in the first element of the array: the `error` value means that the command was not executed.
 
 ```json
 [
@@ -129,8 +135,12 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
-|| `missing field muted` | The required `muted` parameter was not passed | In the desktop scenario, the `muted` field is required. This code arrives as a single object, without being wrapped in an array ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+|| `missing field muted` | The required `muted` parameter was not passed | In the Bitrix24 desktop application, the `muted` field is required. This code arrives as a single object, without being wrapped in an array ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetMute` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

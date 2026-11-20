@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../scopes/permissions.md)
 
-The widget adds an item to the main menu of Bitrix24. The user selects the item, and the application interface opens as a separate page — across the entire working area, not in a slider. The placement suits applications with a section of their own: a dashboard, a report, a catalog.
+The widget adds an item to the main menu of Bitrix24. The user selects the item, and the application interface opens as a separate page — across the entire working area, not in a slider.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
 
@@ -20,6 +20,23 @@ The placement code is specified in the `PLACEMENT` parameter of the [placement.b
 The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
+
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](./placement-bind.md) method using the `LEFT_MENU` code. The method works only on behalf of an application: you cannot register the placement via a webhook. The method documentation explains which users can register widgets
+2. An application item appears in the *Applications* group of the main menu
+3. When a user selects the item, Bitrix24 opens the handler across the entire working area. The handler receives a POST request with the data described in the [What the Handler Receives](#handler-data) section
+4. The handler calls REST on behalf of the current user with the token from `AUTH_ID`
+
+## When to Use
+
+The placement suits an application with a section of its own that is opened from the main menu. For example:
+
+- a dashboard with metrics from an external system
+- a report on CRM or task data
+- a company directory
+
+If the menu item can open the main application URL, the placement is not needed: an [Application Item in the Main Menu](./index.md#own-page) is enabled in the application settings, without REST calls.
 
 ## Where the Widget is Embedded
 
@@ -34,11 +51,11 @@ The application item goes to the *Applications* group of the main menu, together
 
 ![Item in the main menu of Bitrix24](./_images/LEFT_MENU.png "Item in the main menu of Bitrix24")
 
-The item name is set by the `TITLE` parameter during registration. If the parameter is not passed, the application name is displayed.
+The item name is set by the `TITLE` parameter during registration. If `LANG_ALL` is passed, Bitrix24 takes the name from it in the user's language and ignores `TITLE`. If neither is passed, the application name is displayed.
 
 Only the employees who have access to the application see the item. Bitrix24 checks access every time it displays the menu.
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -68,15 +85,9 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-This placement has no own keys. The call context carries only the universal `URI` key — the address of the page the user came from when selecting the menu item. The menu is shown on every page of Bitrix24, so the value of `URI` differs every time and does not depend on the application itself.
+This placement has no own keys. The call context carries only the universal `URI` key — the address of the page the user came from when selecting the menu item. The menu is shown on every page of Bitrix24, so the value of `URI` depends on the page the user came from, not on the application.
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and [placement.get](./placement-get.md) returns an empty array.
-
-{% note tip "Typical use-cases and scenarios" %}
-
-- [Application with its own page in the left menu](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26022)
-
-{% endnote %}
+This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and in the [placement.get](./placement-get.md) response, the `options` field of this handler comes as an empty array.
 
 ## Code Examples
 
@@ -312,6 +323,7 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./placement-bind.md)
 - [{#T}](./placement-list.md)
 - [{#T}](./placement-unbind.md)

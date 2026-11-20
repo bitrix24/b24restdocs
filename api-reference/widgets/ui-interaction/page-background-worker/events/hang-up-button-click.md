@@ -1,4 +1,4 @@
-# When Clicking the "End" Button BackgroundCallCard::hangupButtonClick
+# When Clicking the "Hang Up" Button BackgroundCallCard::hangupButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::hangupButtonClick` event occurs when the button that ends the active conversation is clicked.
+The `BackgroundCallCard::hangupButtonClick` event occurs when the operator clicks the "Hang Up" button in the call card.
+
+The button is available in the `connectingIncoming`, `connectingOutgoing`, `connected`, and `transferConnected` states. The application enables these states with the [CallCardSetUiState](../call-card-set-ui-state.md) command. The event only reports the click: Bitrix24 does not end the call or close the card. The application ends the conversation in its own WebRTC client, records the end of the call with the [telephony.externalCall.finish](../../../../telephony/telephony-external-call-finish.md) method, and closes the card with the [CallCardClose](../call-card-close.md) command. The event does not pass `CALL_ID`, so save it in advance — it is returned in the `telephony.externalCall.register` response and in the [BackgroundCallCard::initialized](./initialized.md) event.
 
 {% note info "" %}
 
@@ -101,6 +103,9 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](../call-card-close.md)
+- [{#T}](./close-button-click.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

@@ -17,9 +17,13 @@ The `BackgroundCallCard::entityChanged` event occurs when the card loads or chan
 
 The event arrives in three cases:
 
-- the call card opened and pulled up the client data from the CRM. In this case, the event may arrive earlier than [BackgroundCallCard::initialized](./initialized.md)
-- the client was identified or the call was rebound to another CRM object
-- in call campaign mode, the operator moved on to the next client
+- the call card opened — in this case, the event arrives earlier than [BackgroundCallCard::initialized](./initialized.md)
+- the call was bound to another CRM object, for example, the operator created a new lead or contact from the card
+- Bitrix24 updated the CRM data for the call and reloaded the card — in this case, the event arrives with the same CRM object
+
+That is why the event does not always mean that the binding has changed: compare `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` with the previous values.
+
+If the call is not bound to the CRM, the event still arrives: `CRM_ENTITY_TYPE` is an empty string, and `CRM_ENTITY_ID` is `0`.
 
 {% note info "" %}
 
@@ -47,11 +51,11 @@ callback({
 || **Parameter**
 `type` | **Description** ||
 || **PHONE_NUMBER**
-[`string`](../../../../data-types.md) | The client's phone number.
-
-If the client has no phone number at all, the string `unknown` arrives ||
+[`string`](../../../../data-types.md) | The client's phone number ||
 || **CRM_ENTITY_TYPE**
-[`string`](../../../../data-types.md) | The type of the CRM object linked to the call ||
+[`string`](../../../../data-types.md) | The type of the CRM object linked to the call, for example, `CONTACT`.
+
+An empty string if the call is not bound to the CRM ||
 || **CRM_ENTITY_ID**
 [`integer`](../../../../data-types.md) | The identifier of the CRM object linked to the call.
 
@@ -134,6 +138,8 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](./initialized.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

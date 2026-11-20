@@ -1,4 +1,4 @@
-# Put the Call on Hold from the Application CallCardSetHold
+# Toggle the Hold Button in the Call Card from the Application CallCardSetHold
 
 {% note tip "" %}
 
@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
-The `CallCardSetHold` command puts the call on hold or takes it off hold in the call card.
+The `CallCardSetHold` command toggles the hold button in the call card: it shows that the call is on hold or that the hold is released.
+
+Hold can be turned on in the card or in the application. If the operator clicks the hold button in the card, the application receives the [BackgroundCallCard::holdButtonClick](./events/hold-button-click.md) event and puts the call on hold in its WebRTC client. If hold was turned on in the application, toggle the button in the card with this command. The command toggles only the button and does not trigger the `holdButtonClick` event.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -43,8 +47,10 @@ BX24.placement.call('CallCardSetHold', {held: true}, function (result) {
 
 Possible values:
 
-- `true` — put the call on hold
-- `false` — take the call off hold ||
+- `true` — show in the card that the call is on hold
+- `false` — show in the card that the hold is released
+
+In the browser, without the parameter, the command releases the hold, as with `false`. In the Bitrix24 desktop application, without the parameter, the `missing field held` error is returned ||
 |#
 
 ## Code Examples
@@ -53,7 +59,7 @@ Possible values:
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -110,7 +116,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
 An empty array on a successful call.
 
-If the call is already in the requested state, the command returns an empty array right away: the card does not change and the [BackgroundCallCard::holdButtonClick](./events/hold-button-click.md) event does not occur.
+If the call is already in the requested state, the command returns an empty array right away and does not change the card.
 
 ## Errors
 
@@ -129,8 +135,12 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
-|| `missing field held` | The required `held` parameter was not passed | A parameter error in the desktop scenario. Because of the way it is implemented, a second response — an empty array — may arrive after it ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+|| `missing field held` | The required `held` parameter was not passed | A parameter error in the Bitrix24 desktop application. Because of the way it is implemented, a second response — an empty array — may arrive after it ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetHold` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

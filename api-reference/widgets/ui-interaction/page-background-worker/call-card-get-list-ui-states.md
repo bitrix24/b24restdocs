@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee with access to the application
 
-The `CallCardGetListUiStates` command returns the list of available interface states of the call card.
+The `CallCardGetListUiStates` command returns the list of call card interface states that can be passed to the `uiState` parameter of the [CallCardSetUiState](./call-card-set-ui-state.md) command. The application can use this list to check that the required state is supported before switching the card.
 
 {% note info "" %}
 
@@ -33,7 +33,7 @@ BX24.placement.call('CallCardGetListUiStates', {}, function (result) {
 
 ## Command Parameters
 
-The command takes no parameters. Pass an empty object `{}` as the second argument.
+The command takes no parameters. In BX24.js, pass an empty object `{}` as the second argument; in B24JsSDK, the second argument can be omitted.
 
 ## Code Examples
 
@@ -41,7 +41,7 @@ The command takes no parameters. Pass an empty object `{}` as the second argumen
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The command does not need an open call card: it can be called both before the [BackgroundCallCard::initialized](./events/initialized.md) event and after the card is closed.
 
 {% endnote %}
 
@@ -127,6 +127,8 @@ Possible values:
 - `error` — call error
 - `moneyError` — an error caused by insufficient funds
 - `redial` — redial
+
+The list does not include the internal states `idle`, `externalCard`, and `sipPhoneError`, although `CallCardSetUiState` accepts them too. In the `externalCard` state, Bitrix24 shows the external call card: it has only the "Close" button at the bottom.
 
 ## Errors
 

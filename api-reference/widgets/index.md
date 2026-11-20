@@ -31,7 +31,7 @@ An application can show its interface to the user in different ways. Widgets are
 || [Connector settings page](./setting-connector.md) | The interface for connecting a communication channel in the open channel connector settings | The `PLACEMENT_HANDLER` parameter of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method ||
 |#
 
-### Application Page of Its Own
+### Application Page of Its Own {#own-page}
 
 An application item in the main menu is not a widget. No handler is registered for it: the item opens the main application URL.
 
@@ -53,7 +53,7 @@ A main menu item can also open a registered handler with a call context. To do t
 
 {% note warning "" %}
 
-The handler URL must be reachable from an external network. Links to `localhost` and local domains will not work: Bitrix24 addresses the handler from its own side.
+The handler opens in the employee's browser: Bitrix24 submits a form with the call data to the widget frame. The handler URL must therefore be accessible to everyone who uses the widget. The `placement.bind` method does not accept a URL without a dot in the server name, such as `localhost`, and returns the `ERROR_WRONG_HANDLER_URL` error.
 
 {% endnote %}
 
@@ -75,7 +75,7 @@ The required set is specified in the header of each placement page — rely on i
 
 Application permissions are not the only condition. Only the employees who have access to the application see the widget: Bitrix24 checks the access every time the widget is displayed.
 
-The `placement.bind` and `placement.unbind` methods are available to the Bitrix24 administrator and, in a local application, also to an employee with permission to create applications. The `placement.get` and `placement.list` methods are available to any user with access to the application. All of them work in the application context: a call made with a webhook returns the `WRONG_AUTH_TYPE` error.
+The `placement.bind` and `placement.unbind` methods are available to the Bitrix24 administrator, in a local application also to an employee with permission to create applications, and in a personal application to its owner. The `placement.get` and `placement.list` methods are available to any user with access to the application. All of them work in the application context: a call made with a webhook returns the `WRONG_AUTH_TYPE` error.
 
 ## How to Get Started
 
@@ -99,6 +99,22 @@ curl -X POST \
   }' \
   https://**put_your_bitrix24_address**/rest/placement.bind
 ```
+
+## Placements by Section
+
+Placements are grouped by Bitrix24 tools. A section overview shows which placements it contains, where they appear in the interface, and what the handler receives.
+
+- [Widgets in CRM](./crm/index.md)
+- [Widgets in Tasks](./task/index.md)
+- [Widgets in Messenger](./im/index.md)
+- [Widgets in Telephony](./telephony/index.md)
+- [Widgets in Workgroups and Projects](./workgroups/index.md)
+- [Widgets in User Profile](./user-profile/index.md)
+- [Calendar View](./calendar.md)
+- [Universal Widgets](./universal/index.md)
+- [Custom Field Types](./user-field/index.md)
+
+Placements without a section of their own are listed in the [Placement Catalog](./placements.md): the `LEFT_MENU` item in the main menu, the tile in the Contact Center, the widget in a mobile application chat, and others.
 
 ## What the Handler Receives
 
@@ -143,7 +159,7 @@ The call context comes as a JSON string in the `PLACEMENT_OPTIONS` parameter. Th
 
 The full set of keys is described on the page of each placement.
 
-A complete handler — receiving the POST request, parsing `PLACEMENT_OPTIONS`, and responding with a page for the frame — is shown step by step in the [{#T}](../../tutorials/crm/crm-widgets/widget-as-detail-tab.md) tutorial. The code in it suits any placement: only the code in `PLACEMENT` and the call context keys change.
+A complete handler — receiving the POST request, parsing `PLACEMENT_OPTIONS`, and responding with a page for the frame — is shown step by step in the [{#T}](../../tutorials/crm/crm-widgets/widget-as-detail-tab.md) tutorial. The code in it suits any placement except [BI_ANALYTICS_MENU](./crm/bi-analytics-menu.md): only the code in `PLACEMENT` and the call context keys change.
 
 ## What You Can Do from a Widget
 

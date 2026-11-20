@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator or an employee with permission to create applications
+> Who can execute the method: administrator, an employee with permission to create applications, or the owner of a personal application
 
 The method `placement.unbind` removes the registered widget handler.
 
@@ -45,7 +45,7 @@ The method works only in the context of the [application](../../settings/app-ins
 
 `HANDLER` can be obtained using the [placement.get](./placement-get.md) method in the `handler` field.
 
-If the parameter is not provided or is empty, the method removes all handlers of the specified placement registered by the application. ||
+If the parameter is not provided or is empty, the method removes the handlers of the specified placement registered by the application. An administrator removes all such handlers; a non-administrator removes shared handlers and their own personal ones ||
 || **USER_ID**
 [`integer`](../data-types.md) | Identifier of the Bitrix24 user for whom the handler was registered.
 
@@ -53,7 +53,7 @@ If the parameter is not provided or is empty, the method removes all handlers of
 - using the [user.get](../user/user-get.md) method
 - using the [user.current](../user/user-current.md) method for the current user
 
-If the parameter is provided, the method removes only the handlers for the specified user. ||
+If the parameter is provided, the method removes only the handlers for the specified user. With the value `0`, the method removes only shared handlers that are not bound to a user. A non-administrator can pass only `0` or their own identifier. Only the [PAGE_BACKGROUND_WORKER](./universal/background-worker.md) placement has personal handlers ||
 |#
 
 ## Code Examples
@@ -274,7 +274,7 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "count": 4
+        "count": 1
     },
     "time": {
         "start": 1775058296,
@@ -297,9 +297,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | Object with the result of the removal:
 
-- **count** [`integer`](../data-types.md) — number that the method increments:
-  - by `1` for each found handler record before the removal call
-  - by another `1` after each successful removal ||
+- **count** [`integer`](../data-types.md) — the number of removed handlers. In the example above, one handler with the specified URL is removed. Without `HANDLER`, the method removes all matching handlers of the placement, and `count` can be greater than `1`. If there are no matching handlers, for example when the placement is specified with a typo, `result.count` is `0` and no error is returned ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -322,9 +320,9 @@ HTTP Status: **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method call not from application context ||
-|| `403` | `ACCESS_DENIED` | Access denied! | User does not have permission to remove the application's widgets, or `USER_ID` specifies another user ||
-|| `400` | `ERROR_ARGUMENT` | Argument 'PLACEMENT' is null or empty | 'PLACEMENT' not provided or empty value passed ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument 'PLACEMENT' must be of type string | 'PLACEMENT' parameter passed is not a string ||
+|| `403` | `ACCESS_DENIED` | Access denied! | User does not have permission to remove the application's widgets, or a non-administrator specified another user in `USER_ID` ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'PLACEMENT' is null or empty | An empty string is passed in `PLACEMENT` ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'PLACEMENT' must be of type string | The `PLACEMENT` parameter is not provided or is not a string ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

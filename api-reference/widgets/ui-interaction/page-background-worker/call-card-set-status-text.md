@@ -1,4 +1,4 @@
-# Change the Text in the Center of the Call Card from the Application CallCardSetStatusText
+# Change the Status Text in the Call Card from the Application CallCardSetStatusText
 
 {% note tip "" %}
 
@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
-The `CallCardSetStatusText` command changes the status text in the center of the call card.
+The `CallCardSetStatusText` command changes the status text in the call card — the line below the client details. It usually shows the operator what is happening with the call in the application, for example, "Connecting to the client". The title in the top line of the card is changed by the [CallCardSetCardTitle](./call-card-set-card-title.md) command.
+
+In the initial state of the card, the status line is hidden. The text appears when the application switches the card to a working state with the [CallCardSetUiState](./call-card-set-ui-state.md) command, for example, `incoming` or `connected`.
+
+Bitrix24 does not write its own status to the external call card. The application's text is retained until the next command call or until the card is closed; changing the state does not reset it.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -39,7 +45,7 @@ BX24.placement.call('CallCardSetStatusText', {statusText: 'Connection establishe
 || **Name**
 `type` | **Description** ||
 || **statusText***
-[`string`](../../../data-types.md) | The new status text in the center of the card ||
+[`string`](../../../data-types.md) | The new status text below the client details ||
 |#
 
 ## Code Examples
@@ -48,7 +54,7 @@ BX24.placement.call('CallCardSetStatusText', {statusText: 'Connection establishe
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -122,8 +128,12 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
-|| `missing field statusText` | The required `statusText` parameter was not passed | In the desktop scenario, the `statusText` field is required ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+|| `missing field statusText` | The required `statusText` parameter was not passed | In the Bitrix24 desktop application, the `statusText` field is required ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetStatusText` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

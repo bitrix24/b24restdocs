@@ -1,4 +1,4 @@
-# When Clicking the "Call" or "Callback" Button BackgroundCallCard::makeCallButtonClick
+# When Clicking the "Call" or "Redial" Button BackgroundCallCard::makeCallButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::makeCallButtonClick` event occurs when a call is started from the call card.
+The `BackgroundCallCard::makeCallButtonClick` event occurs when the operator clicks the "Call" or "Redial" button in the call card.
+
+The "Call" button is available in the `outgoing` state, and the "Redial" button in the `redial` state. The external call card opens in the `externalCard` state, which has neither of these buttons. The application enables the `outgoing` and `redial` states with the [CallCardSetUiState](../call-card-set-ui-state.md) command. The event only reports the click: Bitrix24 does not dial the number or change the card state. The application dials the number in its own WebRTC client and switches the card, for example, to `connectingOutgoing`.
 
 {% note info "" %}
 
@@ -101,6 +103,9 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](../call-card-set-ui-state.md)
+- [{#T}](./hang-up-button-click.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

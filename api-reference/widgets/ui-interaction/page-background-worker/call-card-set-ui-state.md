@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
 The `CallCardSetUiState` command changes the interface state of the call card.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -56,7 +58,9 @@ Possible values:
 - `moneyError` — an error caused by insufficient funds
 - `redial` — redial
 
-The same list can be retrieved programmatically with the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) command. How the card looks in each state and which buttons are available in it is shown on the page [{#T}](./card.md) ||
+The same list can be retrieved programmatically with the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) command. How the card looks in each state and which buttons are available in it is shown on the page [{#T}](./card.md).
+
+The command also accepts, without an error, the internal values `idle`, `externalCard`, and `sipPhoneError`, which are not in the list. The `Invalid ui state` error is returned only for a value that is neither in the list nor among the internal values. In the `externalCard` state, or in the `idle` state for an incoming call, only the "Close" button remains at the bottom of the card ||
 || **disableAutoStartTimer**
 [`boolean`](../../../data-types.md) | An additional parameter for `uiState = connected`.
 
@@ -66,13 +70,22 @@ Possible values:
 - `false` or no parameter — start the timer automatically ||
 |#
 
+Bitrix24 shows the external call card in the internal `externalCard` state: it has only the "Close" button at the bottom. After that, only the application switches the states: the card buttons send events to it but do not change the state. The exception is the "Close" button: Bitrix24 handles it itself and closes the card.
+
+A typical incoming call goes like this:
+
+1. `incoming` — the application shows the operator the call with the "Answer" and "Ignore" buttons
+2. The operator clicks "Answer", the application receives the [BackgroundCallCard::answerButtonClick](./events/answer-button-click.md) event and connects the call in its WebRTC client. While the call is connecting, you can switch to `connectingIncoming` — it has the "Hang Up" button
+3. `connected` — the conversation is in progress, and the timer starts automatically
+4. The conversation is over — the application records the call with the [telephony.externalCall.finish](../../../telephony/telephony-external-call-finish.md) method and closes the card with the [CallCardClose](./call-card-close.md) command
+
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -146,8 +159,12 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
-|| `Invalid ui state` | An incorrect `uiState` value | The state that was passed is not in the list of supported states ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+|| `Invalid ui state` | An incorrect `uiState` value | The passed value is neither in the list of supported states nor among the internal values `idle`, `externalCard`, and `sipPhoneError` ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetUiState` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

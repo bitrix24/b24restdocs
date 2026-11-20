@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The `BackgroundCallCard::initialized` event occurs after the call card is created and the initial data is passed.
 
+After this event, the application can manage the card with commands, for example, switch its state with the [CallCardSetUiState](../call-card-set-ui-state.md) command. If the card loads CRM data, the [BackgroundCallCard::entityChanged](./entity-changed.md) event with the CRM client arrives before `initialized`. The `PHONE_NUMBER`, `CRM_ENTITY_TYPE`, and `CRM_ENTITY_ID` fields from `entityChanged` also arrive in `initialized`.
+
 {% note info "" %}
 
 The event operates within the application context in the `PAGE_BACKGROUND_WORKER` placement. This is a JS interface event, not a REST event: you cannot subscribe to it with a request to `/rest/`.
@@ -27,13 +29,12 @@ Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
 
 ```js
 callback({
-    "CALL_ID": "E45D40253D1C2D2F.1774588815.822533",
+    "CALL_ID": "externalCall.a33fa16db5c695dbda7d8dadb66696a2.1795102259",
     "PHONE_NUMBER": "+19001234567",
-    "LINE_NUMBER": "reg151083",
-    "LINE_NAME": "",
+    "LINE_NUMBER": "sip-line-1",
+    "LINE_NAME": "Support line",
     "CRM_ENTITY_TYPE": "CONTACT",
     "CRM_ENTITY_ID": 123,
-    "CRM_ACTIVITY_ID": 456,
     "CRM_BINDINGS": [{"ENTITY_TYPE": "DEAL", "ENTITY_ID": 789}],
     "CALL_DIRECTION": "outgoing",
     "CALL_STATE": "idle",
@@ -55,11 +56,13 @@ callback({
 
 The key does not arrive at all if the number is not identified ||
 || **LINE_NUMBER**
-[`string`](../../../../data-types.md) | The line number ||
+[`string`](../../../../data-types.md) | The line number.
+
+An empty string if the line number was not passed when the call was registered ||
 || **LINE_NAME**
 [`string`](../../../../data-types.md) | The name of the company's phone line.
 
-It can be an empty string if the line name is not set ||
+If the line has no name, its number arrives. If the line number was not passed when the call was registered, an empty string arrives ||
 || **CRM_ENTITY_TYPE**
 [`string`](../../../../data-types.md) | The type of the current CRM object: `LEAD`, `CONTACT`, `COMPANY`, or `DEAL`.
 
@@ -71,9 +74,11 @@ An empty string if the call is not bound to the CRM ||
 || **CRM_ACTIVITY_ID**
 [`integer`](../../../../data-types.md) | The identifier of the CRM activity created for the call.
 
-If there is no activity, the key either does not arrive at all or arrives as an empty string ||
+In this event, the key does not arrive: the `BackgroundCallCard::*` events arrive only from the external call card ||
 || **CRM_BINDINGS**
-[`object[]`](../../../../data-types.md) | The bindings of the call to CRM objects [(detailed description)](#crm_bindings) ||
+[`object[]`](../../../../data-types.md) | The bindings of the call to CRM objects [(detailed description)](#crm_bindings).
+
+An empty array if the call is not bound to the CRM ||
 || **CALL_DIRECTION**
 [`string`](../../../../data-types.md) | The direction of the call.
 
@@ -89,9 +94,13 @@ Possible values:
 
 - `idle` — no connection
 - `connecting` — establishing connection
-- `connected` — connection established ||
+- `connected` — connection established
+
+In this event, it is always `idle`: the state of the card interface is set by the application with the [CallCardSetUiState](../call-card-set-ui-state.md) command ||
 || **CALL_LIST_MODE**
-[`boolean`](../../../../data-types.md) | Indicator of the call campaign mode ||
+[`boolean`](../../../../data-types.md) | Indicator of the call campaign mode.
+
+In this event, it is always `false`. The call campaign card is not an external one: the `BackgroundCallCard::*` events do not arrive from it ||
 |#
 
 ### CRM_BINDINGS Parameter {#crm_bindings}
@@ -155,7 +164,6 @@ For this event — `BackgroundCallCard::initialized` ||
       LINE_NAME: string
       CRM_ENTITY_TYPE: string
       CRM_ENTITY_ID: number
-      CRM_ACTIVITY_ID?: number | string
       CRM_BINDINGS: Array<{ ENTITY_TYPE: string; ENTITY_ID: number }>
       CALL_DIRECTION: string
       CALL_STATE: string
@@ -195,6 +203,9 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](./entity-changed.md)
+- [{#T}](../call-card-set-ui-state.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

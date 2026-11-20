@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::holdButtonClick` event occurs when the operator clicks the hold button.
+The `BackgroundCallCard::holdButtonClick` event occurs when the operator clicks the hold button in the call card.
+
+The button is available in the `connected` state. The event only reports the click: the application puts the call on hold or takes it off hold in its own WebRTC client based on the `eventData` value. If the application switches the button itself with the [CallCardSetHold](../call-card-set-hold.md) command, the event does not occur.
 
 {% note info "" %}
 
@@ -37,7 +39,7 @@ callback(true);
 || **Parameter**
 `type` | **Description** ||
 || **eventData***
-[`boolean`](../../../../data-types.md) | The current hold state after the button is clicked.
+[`boolean`](../../../../data-types.md) | The state of the hold button in the card after it is clicked.
 
 Possible values:
 
@@ -121,6 +123,9 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](../call-card-set-hold.md)
+- [{#T}](./mute-button-click.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

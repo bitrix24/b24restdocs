@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
 The `CallCardStopTimer` command stops counting the conversation time in the call card.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -23,7 +25,7 @@ The command operates within the application context in the `PAGE_BACKGROUND_WORK
 
 The command is needed when the application shows its own conversation time in the card or puts the call on hold.
 
-Some interface states stop the timer on their own: `incoming`, `transferIncoming`, `outgoing`, `connectingIncoming`, `connectingOutgoing`, `error`, `moneyError`, and `redial`. During a call transfer, however — the `transferring`, `transferFailed`, and `transferConnected` states — the countdown continues, and only this command can stop it. The states are described on the page [CallCardSetUiState](./call-card-set-ui-state.md).
+Some interface states stop the timer on their own: `incoming`, `transferIncoming`, `outgoing`, `connectingIncoming`, `connectingOutgoing`, `error`, `moneyError`, and `redial`. During a call transfer, however — the `transferring`, `transferFailed`, and `transferConnected` states — the countdown continues, and this command can stop it. The states are described on the page [CallCardSetUiState](./call-card-set-ui-state.md).
 
 ## How to Call the Command
 
@@ -38,7 +40,7 @@ BX24.placement.call('CallCardStopTimer', {}, function (result) {
 
 ## Command Parameters
 
-The command takes no parameters. Pass an empty object `{}` as the second argument.
+The command takes no parameters. In BX24.js, pass an empty object `{}` as the second argument; in B24JsSDK, the second argument can be omitted.
 
 ## Code Examples
 
@@ -46,7 +48,7 @@ The command takes no parameters. Pass an empty object `{}` as the second argumen
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -72,7 +74,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
     declare const $b24: B24Frame
 
-    // in the browser, the promise does not resolve on success — do not await the result
+    // in the browser, on success, the command sends no response — do not wait for it
     $b24.placement.call('CallCardStopTimer')
     ```
 
@@ -85,7 +87,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
       document.addEventListener('DOMContentLoaded', async () => {
         const $b24 = await B24Js.initializeB24Frame()
 
-        // in the browser, the promise does not resolve on success — do not await the result
+        // in the browser, on success, the command sends no response — do not wait for it
         $b24.placement.call('CallCardStopTimer')
       })
     </script>
@@ -95,15 +97,19 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
 ## Command Result
 
-In the browser, a successful call returns nothing: the callback function is not invoked, and the counting in the card stops.
+### Returned Data
 
-The timer itself is not hidden — the last value stays in the card. It disappears when the card switches to a state other than `connected`. Calling the command again on an already stopped timer is safe: it does nothing and reports nothing.
-
-In the Bitrix24 desktop application, an empty array arrives after a successful call.
+In the browser, a successful call returns nothing: the callback function is not invoked. In the Bitrix24 desktop application, an empty array arrives after a successful call.
 
 ```json
 []
 ```
+
+### How the Card Behaves After Stopping
+
+The timer stops counting, but it stays in the card with the last value. The timer disappears and resets when the application switches the card to any state other than `connected` — this is done by the [CallCardSetUiState](./call-card-set-ui-state.md) command. If you call [CallCardStartTimer](./call-card-start-timer.md) again instead, the timer shows the entire time since the first start, including the time while the timer was stopped.
+
+Calling the command again on an already stopped timer is safe: it does nothing and reports nothing.
 
 ## Errors
 

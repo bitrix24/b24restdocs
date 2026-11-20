@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
 The `CallCardStartTimer` command shows the timer in the call card and starts counting the conversation time.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -23,7 +25,9 @@ The command operates within the application context in the `PAGE_BACKGROUND_WORK
 
 The command is needed when the application counts the conversation time itself. When the card switches to the `connected` state, the timer starts automatically — the automatic start can be disabled with the `disableAutoStartTimer` parameter of the [CallCardSetUiState](./call-card-set-ui-state.md) command.
 
-The countdown runs from the moment of the first start, not from the command call. If the timer is already running, the command changes nothing; after [CallCardStopTimer](./call-card-stop-timer.md), it resumes counting from the previous point rather than from zero. The only way to reset it is to switch the card to `connected` with `disableAutoStartTimer`.
+The countdown runs from the moment of the first start, not from the command call. If the timer is already running, the command changes nothing. If the timer was stopped with the [CallCardStopTimer](./call-card-stop-timer.md) command, `CallCardStartTimer` starts it again and shows the entire time since the first start, including the time while the timer was stopped.
+
+To start counting from zero, stop the timer and switch the card to any state other than `connected`. The timer is hidden and reset. On the next switch to `connected`, the timer starts counting again from zero. If you do not need the automatic start, switch the card to `connected` with `disableAutoStartTimer: true` and call `CallCardStartTimer`.
 
 ## How to Call the Command
 
@@ -38,7 +42,7 @@ BX24.placement.call('CallCardStartTimer', {}, function (result) {
 
 ## Command Parameters
 
-The command takes no parameters. Pass an empty object `{}` as the second argument.
+The command takes no parameters. In BX24.js, pass an empty object `{}` as the second argument; in B24JsSDK, the second argument can be omitted.
 
 ## Code Examples
 
@@ -46,7 +50,7 @@ The command takes no parameters. Pass an empty object `{}` as the second argumen
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -72,7 +76,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
     declare const $b24: B24Frame
 
-    // in the browser, the promise does not resolve on success — do not await the result
+    // on success, the command sends no response — do not wait for it
     $b24.placement.call('CallCardStartTimer')
     ```
 
@@ -85,7 +89,7 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
       document.addEventListener('DOMContentLoaded', async () => {
         const $b24 = await B24Js.initializeB24Frame()
 
-        // in the browser, the promise does not resolve on success — do not await the result
+        // on success, the command sends no response — do not wait for it
         $b24.placement.call('CallCardStartTimer')
       })
     </script>

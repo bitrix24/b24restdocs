@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-A placement is a location in the Bitrix24 interface where an application adds its own interface: a tab in a card, a menu item, a button in a panel, or a separate page. When the user opens a widget, Bitrix24 opens the address of the application handler and passes the call data to it — the application authorization and the context of the location the widget was called from.
+A placement is a location in the Bitrix24 interface where an application adds its own interface: a tab in a card, a menu item, a button in a panel, or a separate page. When the user opens a widget, Bitrix24 opens the address of the application handler and, for most placements, passes the call data to it — the application authorization and the context of the location the widget was called from.
 
 The handler is registered with the [placement.bind](./placement-bind.md) method: the code of the required location is passed in the `PLACEMENT` parameter. One application can register several widgets, including several in the same location — for example, two tabs in a deal card or two context menu items in the task list. [Universal placements](./universal/index.md) are limited to a single handler.
 
@@ -62,9 +62,9 @@ Some embeddings are registered with a method other than `placement.bind`.
 
 ## All Placements {#all-placements}
 
-The handler is registered with the `placement.bind` method, so an application always needs the [`placement`](../scopes/permissions.md) scope. The column shows the second scope of the pair given in the header of the placement page. If the column says not required, the placement is declared in the global `placement` scope and needs no second scope.
+The handler is registered with the `placement.bind` method, so an application always needs the [`placement`](../scopes/permissions.md) scope. The column shows the second scope of the pair given in the header of the placement page. If the column says not required, the `placement` scope is enough for the placement.
 
-The exception is `SETTING_CONNECTOR`: it is connected with the `imconnector.register` method and requires only the `imopenlines` scope. For messenger placements, the `im` scope is needed not for registration but by the handler — to work with the chat by the received `dialogId`.
+The exception is `SETTING_CONNECTOR`: it is connected with the `imconnector.register` method and requires only the `imopenlines` scope. For messenger placements, the `im` scope is needed not for registration but by the handler — to work with the chat by the received `dialogId`. The `IM_NAVIGATION` placement opens without a chat, so it does not receive `dialogId`.
 
 #|
 || **Code** | **Where It Appears in the Interface** | **Additional Scope** ||
@@ -79,7 +79,7 @@ The exception is `SETTING_CONNECTOR`: it is connected with the `imconnector.regi
 || [CRM_FUNNELS_TOOLBAR](./crm/funnels-toolbar.md) | Button in the sales pipelines and tunnels | `crm` ||
 || [CRM_REQUISITE_AUTOCOMPLETE](./crm/requisites-autocomplete/requisite-autocomplete.md) | Search source in the details field of a CRM card | `crm` ||
 || [CRM_XXX_ACTIVITY_TIMELINE_MENU](./crm/activity-timeline-menu.md) | Context menu item of an activity record in the card timeline | `crm` ||
-|| [CRM_XXX_DETAIL_ACTIVITY](./crm/detail-activity.md) | Button in the panel above the card timeline | `crm` ||
+|| [CRM_XXX_DETAIL_ACTIVITY](./crm/detail-activity.md) | Button in the panel above the card timeline. For details, see [{#T}](./crm/detail-activity-area.md) | `crm` ||
 || [CRM_XXX_DETAIL_TAB](./crm/detail-tab.md) | Tab in a CRM element card | `crm` ||
 || [CRM_XXX_DETAIL_TOOLBAR](./crm/detail-toolbar.md) | Top button menu item of a card | `crm` ||
 || [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./crm/document-generator-button.md) | Document generator menu item in a card | `crm` ||

@@ -23,14 +23,14 @@ The commands and events of this section are not REST methods. The application ca
 
 ## Getting Started with PAGE_BACKGROUND_WORKER
 
-1. Register the `PAGE_BACKGROUND_WORKER` placement with the [placement.bind](../../placement-bind.md) method. The method is available only to an administrator and only from the application context: the placement cannot be bound with a webhook
-2. During registration, pass the required `OPTIONS[errorHandlerUrl]` parameter. An application can have only one handler, plus a separate personal one for a specific user — details are in the article [{#T}](../../universal/background-worker.md)
+1. Register the `PAGE_BACKGROUND_WORKER` placement with the [placement.bind](../../placement-bind.md) method. The method works only from the application context: the placement cannot be bound with a webhook. Who can register widgets is described on the method page
+2. During registration, pass the required `OPTIONS[errorHandlerUrl]` parameter. An application can have only one handler for this placement. If a common handler already exists, the method does not register a personal handler for an individual user and returns the `ERROR_PLACEMENT_MAX_COUNT` error. Details are in the article [{#T}](../../universal/background-worker.md)
 3. Check the registration scenario and the requirements for the handler on the page [{#T}](./webrtc-scenario.md)
-4. Register the call with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method — the same method raises the call card
-5. Wait for the [BackgroundCallCard::initialized](./events/initialized.md) event. Before it, there is no card, and any command returns the `Call card is undefined` error
+4. Register the call with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method — the same method shows the call card. Subscribe to the card events in advance, in the code of the background handler: the handler does not receive events sent before the subscription
+5. Wait for the [BackgroundCallCard::initialized](./events/initialized.md) event. Before it, there is no card, and the card management commands return the `Call card is undefined` error. Only [CallCardGetListUiStates](./call-card-get-list-ui-states.md) works without a card
 6. Manage the card with commands through [BX24.placement.call](../bx24-placement-call.md) and subscribe to the operator's actions through [BX24.placement.bindEvent](../bx24-placement-bind-event.md)
 
-The fourth step is mandatory. The commands and events work only with the card of an external call raised by the application itself. During a regular Bitrix24 call, the card looks the same, but the `BackgroundCallCard::*` events do not arrive, and the commands respond with the `Call card is undefined` error.
+The fourth step is mandatory. The commands and events work only with the card of an external call shown by the `telephony.externalCall.register` method. During a regular Bitrix24 call, the card looks the same, but the `BackgroundCallCard::*` events do not arrive, and the commands respond with the `Call card is undefined` error.
 
 A minimal working cycle: the application waits for the card to be created, switches it to the required state, and listens to the operator's buttons.
 
@@ -45,7 +45,7 @@ BX24.ready(function () {
         });
 
         BX24.placement.bindEvent('BackgroundCallCard::hangupButtonClick', function () {
-            // the operator clicked "end" — end the call in your own WebRTC client
+            // the operator clicked "Hang Up" — end the call in your own WebRTC client
         });
     });
 });
@@ -53,7 +53,7 @@ BX24.ready(function () {
 
 ## How a Placement Command Call Works
 
-A command is invoked by name: pass the command name as the first argument of [BX24.placement.call](../bx24-placement-call.md), the parameters object as the second, and the callback function as the third.
+A command is invoked by name: pass the command name as the first argument of [BX24.placement.call](../bx24-placement-call.md), the parameters object as the second, and the callback function as the third. If a command has no parameters, pass an empty object `{}` as the second argument. The parameters each command accepts are shown in the table of the [Commands Overview](#all-methods).
 
 The result depends on the command.
 
@@ -73,23 +73,23 @@ How the card itself is arranged, which areas it has, and which buttons are avail
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the commands: any user
+> Who can execute the commands: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
 {% list tabs %}
 
 - Commands
 
     #|
-    || **Command** | **Description** ||
-    || [CallCardSetMute](./call-card-set-mute.md) | Mutes or unmutes the operator's microphone ||
-    || [CallCardSetHold](./call-card-set-hold.md) | Puts the call on hold or takes it off hold ||
-    || [CallCardSetUiState](./call-card-set-ui-state.md) | Changes the interface state of the call card ||
-    || [CallCardGetListUiStates](./call-card-get-list-ui-states.md) | Returns the available interface states of the card ||
-    || [CallCardSetCardTitle](./call-card-set-card-title.md) | Changes the title of the call card ||
-    || [CallCardSetStatusText](./call-card-set-status-text.md) | Changes the text in the central part of the card ||
-    || [CallCardStartTimer](./call-card-start-timer.md) | Shows the timer and starts counting the conversation time ||
-    || [CallCardStopTimer](./call-card-stop-timer.md) | Stops counting the conversation time ||
-    || [CallCardClose](./call-card-close.md) | Closes the call card ||
+    || **Command** | **Description** | **Parameters** ||
+    || [CallCardSetMute](./call-card-set-mute.md) | Toggles the microphone button in the card | `muted` ||
+    || [CallCardSetHold](./call-card-set-hold.md) | Toggles the hold button in the card | `held` ||
+    || [CallCardSetUiState](./call-card-set-ui-state.md) | Changes the interface state of the call card | `uiState`, optional `disableAutoStartTimer` ||
+    || [CallCardGetListUiStates](./call-card-get-list-ui-states.md) | Returns the available interface states of the card | none ||
+    || [CallCardSetCardTitle](./call-card-set-card-title.md) | Changes the title of the call card | `title` ||
+    || [CallCardSetStatusText](./call-card-set-status-text.md) | Changes the status text below the client data | `statusText` ||
+    || [CallCardStartTimer](./call-card-start-timer.md) | Shows the timer and starts counting the conversation time | none ||
+    || [CallCardStopTimer](./call-card-stop-timer.md) | Stops counting the conversation time | none ||
+    || [CallCardClose](./call-card-close.md) | Closes the call card | none ||
     |#
 
 - Events
@@ -98,18 +98,18 @@ How the card itself is arranged, which areas it has, and which buttons are avail
     || **Event** | **Triggered** ||
     || [BackgroundCallCard::initialized](./events/initialized.md) | After the call card is created ||
     || [BackgroundCallCard::addCommentButtonClick](./events/add-comment-button-click.md) | When a comment is saved in the call card ||
-    || [BackgroundCallCard::muteButtonClick](./events/mute-button-click.md) | When the mute button is clicked ||
+    || [BackgroundCallCard::muteButtonClick](./events/mute-button-click.md) | When the microphone button is clicked ||
     || [BackgroundCallCard::holdButtonClick](./events/hold-button-click.md) | When the hold call button is clicked ||
     || [BackgroundCallCard::closeButtonClick](./events/close-button-click.md) | When the close call card button is clicked ||
     || [BackgroundCallCard::transferButtonClick](./events/transfer-button-click.md) | When an operator is selected to transfer the call to ||
     || [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) | When the "continue call" button is clicked ||
     || [BackgroundCallCard::completeTransferButtonClick](./events/complete-transfer-button-click.md) | When the "redirect" button is clicked ||
-    || [BackgroundCallCard::hangupButtonClick](./events/hang-up-button-click.md) | When the "end" button is clicked ||
-    || [BackgroundCallCard::nextButtonClick](./events/next-button-click.md) | When the "next" button is clicked ||
+    || [BackgroundCallCard::hangupButtonClick](./events/hang-up-button-click.md) | When the "hang up" button is clicked ||
+    || [BackgroundCallCard::nextButtonClick](./events/next-button-click.md) | When the "next" button is clicked. In the current version, it does not arrive in the application ||
     || [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) | When the "ignore" button is clicked ||
     || [BackgroundCallCard::answerButtonClick](./events/answer-button-click.md) | When the "answer" button is clicked ||
     || [BackgroundCallCard::entityChanged](./events/entity-changed.md) | When the CRM object linked to the call is loaded or changed ||
-    || [BackgroundCallCard::makeCallButtonClick](./events/make-call-button-click.md) | When the "call" or "callback" button is clicked ||
+    || [BackgroundCallCard::makeCallButtonClick](./events/make-call-button-click.md) | When the "call" or "redial" button is clicked ||
     || [BackgroundCallCard::dialpadButtonClick](./events/dialpad-button-click.md) | When one of the numeric buttons of the phone is pressed ||
     || [BackgroundCallCard::notifyAdminButtonClick](./events/notify-admin-button-click.md) | When the "notify administrator" button is clicked ||
     |#

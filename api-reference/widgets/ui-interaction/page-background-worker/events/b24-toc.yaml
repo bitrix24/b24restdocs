@@ -7,7 +7,7 @@ items:
     href: initialized.md
   - name: When Saving a Comment in the Call Detail Form
     href: add-comment-button-click.md
-  - name: When Clicking the Mute Button
+  - name: When Clicking the Microphone Button
     href: mute-button-click.md
   - name: When Clicking the Hold Call Button
     href: hold-button-click.md
@@ -19,7 +19,7 @@ items:
     href: cancel-transfer-button-click.md
   - name: When Clicking the "Redirect" Button
     href: complete-transfer-button-click.md
-  - name: When Clicking the "End" Button
+  - name: When Clicking the "Hang Up" Button
     href: hang-up-button-click.md
   - name: When Clicking the "Next" Button
     href: next-button-click.md
@@ -29,7 +29,7 @@ items:
     href: answer-button-click.md
   - name: When Loading or Changing a CRM Object
     href: entity-changed.md
-  - name: When Clicking the "Call" or "Callback" Button
+  - name: When Clicking the "Call" or "Redial" Button
     href: make-call-button-click.md
   - name: When Pressing One of the Phone's Numeric Buttons
     href: dialpad-button-click.md

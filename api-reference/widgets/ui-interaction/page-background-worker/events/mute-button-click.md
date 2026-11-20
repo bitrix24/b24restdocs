@@ -1,4 +1,4 @@
-# When Clicking the Mute Button BackgroundCallCard::muteButtonClick
+# When Clicking the Microphone Button BackgroundCallCard::muteButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::muteButtonClick` event occurs when the operator clicks the microphone control button.
+The `BackgroundCallCard::muteButtonClick` event occurs when the operator clicks the microphone button in the call card.
+
+The button is available in the `connected` state. The event only reports the click: the application mutes or unmutes the microphone in its own WebRTC client based on the `eventData` value. If the application switches the button itself with the [CallCardSetMute](../call-card-set-mute.md) command, the event does not occur.
 
 {% note info "" %}
 
@@ -37,7 +39,7 @@ callback(true);
 || **Parameter**
 `type` | **Description** ||
 || **eventData***
-[`boolean`](../../../../data-types.md) | The current state of the microphone after the button is clicked.
+[`boolean`](../../../../data-types.md) | The state of the microphone button in the card after it is clicked.
 
 Possible values:
 
@@ -121,6 +123,9 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](../../bx24-placement-bind-event.md)
+- [{#T}](../call-card-set-mute.md)
+- [{#T}](./hold-button-click.md)
 - [{#T}](./index.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)

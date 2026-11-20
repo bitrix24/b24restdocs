@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the command: any user
+> Who can execute the command: an employee to whom Bitrix24 showed the call card, if they have access to the application
 
-The `CallCardSetCardTitle` command changes the title of the call card.
+The `CallCardSetCardTitle` command changes the title of the call card — its top line. By default, Bitrix24 shows the call direction and the number in this line, for example, "Call from +49 30 1234567". The text below the client details is changed by the [CallCardSetStatusText](./call-card-set-status-text.md) command.
+
+The new title is retained until the next command call or until the card is closed. Changing the card state does not reset it.
+
+The command works only with the call card of an external call, which the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method shows. For calls made by Bitrix24 itself, the command returns the `Call card is undefined` error in the browser. Call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event: before it and after the card is closed, the same error is returned.
 
 {% note info "" %}
 
@@ -48,7 +52,7 @@ BX24.placement.call('CallCardSetCardTitle', {title: 'Client on the line'}, funct
 
 {% note info "" %}
 
-It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
+The examples show the command call itself. In an application, it is usually placed in the [BackgroundCallCard::initialized](./events/initialized.md) event handler.
 
 {% endnote %}
 
@@ -122,8 +126,12 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
-|| `missing field title` | The required `title` parameter was not passed | In the desktop scenario, the `title` field is required ||
+|| `Call card is undefined` | The call card is unavailable | There is no external call card. The command was called:
+
+- before the `BackgroundCallCard::initialized` event
+- after the card was closed
+- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+|| `missing field title` | The required `title` parameter was not passed | In the Bitrix24 desktop application, the `title` field is required ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetCardTitle` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

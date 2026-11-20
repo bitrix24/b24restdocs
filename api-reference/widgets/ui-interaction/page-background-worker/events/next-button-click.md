@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::nextButtonClick` event occurs when the operator moves on to the next client in call campaign mode.
+{% note warning "Event Not Delivered to the Application" %}
+
+The event exists in the placement interface, but in the current version it does not reach the application. The "Next" button is available only in the CRM call campaign card, while the `BackgroundCallCard::*` events arrive only from the external call card shown by the [telephony.externalCall.register](../../../../telephony/telephony-external-call-register.md) method. There is no replacement.
+
+{% endnote %}
+
+The `BackgroundCallCard::nextButtonClick` event is intended for the "Next" button in the CRM call campaign card: the operator clicks it to move on to the next client in the list.
 
 {% note info "" %}
 

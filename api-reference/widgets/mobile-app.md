@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, im`](../scopes/permissions.md)
 
-The widget adds its own item to the *Apps* menu above the input field in a chat of the Bitrix24 mobile application. The handler receives the identifier of the chat it was opened from, so the placement suits applications that work with the current conversation: reply templates, conversation hints, or a client card from an external system.
+The widget adds its own item to the *Apps* menu above the input field in a chat of the Bitrix24 mobile application. The handler receives the identifier of the chat it was opened from.
 
-The placement is declared in the global `placement` scope — it has no mobile scope of its own. The `im` scope is required for the handler to work with the chat by the received `dialogId`.
+The placement does not need a scope of its own: the `placement` scope is enough for registration. The `im` scope is required for the handler to work with the chat by the received `dialogId`.
 
 The placement code is passed in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
 
@@ -24,6 +24,23 @@ This is the only placement of the mobile application. All other widgets are disp
 The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
+
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](./placement-bind.md) method using the `IMMOBILE_CONTEXT_MENU` code. The method works only on behalf of an application: you cannot register the placement via a webhook. The method documentation explains which users can register widgets
+2. An item appears in the *Apps* menu above the input field in a mobile chat
+3. When a user taps the item, the mobile application opens the handler as a separate page on top of the conversation. The handler receives a POST request with the chat identifier described in the [What the Handler Receives](#handler-data) section
+4. The handler calls REST on behalf of the current user with the token from `AUTH_ID`: for example, it retrieves chat data with the [im.dialog.get](../chats/im-dialog-get.md) method
+
+## When to Use
+
+The placement suits applications that work with the current conversation in the mobile application. For example:
+
+- reply templates for a client
+- conversation hints
+- a client card from an external system
+
+The web version of the messenger has its own placements, for example [IM_CONTEXT_MENU](./im/context-menu.md) and [IM_TEXTAREA](./im/textarea.md).
 
 ## Where the Widget is Embedded
 
@@ -36,13 +53,13 @@ The widget is not displayed in the interface until the application installation 
 
 Open a chat in the Bitrix24 mobile application and look at the row of buttons above the input field. Tap the *Apps* button — a menu opens with all applications that registered this placement. The item is named after the `TITLE` parameter, and if it is empty, after the application name.
 
-The button is displayed in a regular chat, in a CoPilot chat, and in an AI assistant chat. The widget opens as a separate page on top of the conversation.
+The button is displayed in a regular chat, in a CoPilot chat, and in an AI assistant chat.
 
-If no handler is registered, the menu does not open — instead, the mobile application shows a notification that there are no applications.
+If no applications with this placement are available to the employee, the *Apps* button may not appear at all.
 
 The button is not present in every Bitrix24: its display is enabled on the Bitrix24 side and depends neither on the application settings nor on the registration parameters. While the button is missing, a registered widget is not displayed, although the registration itself works.
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -83,7 +100,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
 [`string`](../data-types.md) | Identifier of the chat the widget is opened from: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by it with the [im.dialog.get](../chats/im-dialog-get.md) method ||
 |#
 
-The universal `URI` key does not arrive to this placement. Bitrix24 substitutes it from the address of the page the widget is opened on, while in the mobile application the widget opens as a separate page rather than as a frame inside the interface.
+Do not rely on the universal `URI` key: Bitrix24 substitutes it from the address of the page the widget is opened from, and the mobile application usually has no such address.
 
 ## OPTIONS When Registering via placement.bind
 
@@ -126,11 +143,11 @@ Any other value results in the `INVALID_ERROR_ROLE` error
 ||
 |#
 
-The restrictions set by these parameters are applied by the web version of the messenger. The mobile application requests the list of widgets without filtering by `context`, `role`, and `extranet`, so check the rights and the chat type in the handler itself instead of relying on the registration parameters.
+The restrictions set by these parameters are applied by the web version of the messenger. The mobile application requests the list of widgets without filtering by `context`, `role`, and `extranet`, so check the rights and the chat type in the handler itself instead of relying on the registration parameters. The mobile application does not show the list of widgets to extranet users, even with `extranet: 'Y'`.
 
-The placement supports no other parameters. The icon name cannot be set: it is the same for all menu items, and a passed `iconName` value is not retained by Bitrix24. A personal handler binding is not supported either — with the `USER_ID` parameter the method returns the `ERROR_PLACEMENT_USER_MODE` error.
+The placement supports no other parameters. The icon name cannot be set: it is the same for all menu items, and a passed `iconName` value is not retained by Bitrix24. A personal handler binding is not supported either — with a user identifier in `USER_ID`, the method returns the `ERROR_PLACEMENT_USER_MODE` error. The value `0` creates a regular shared binding.
 
-### Code Examples
+## Code Examples
 
 {% include [Note on Examples](../../_includes/examples.md) %}
 
@@ -403,10 +420,10 @@ The placement supports no other parameters. The icon name cannot be set: it is t
 
 #|
 || **Mistake** | **Solution** ||
-|| The *Apps* button is missing in the chat | Update the mobile application: older versions have no row of buttons above the input field at all. If the button is missing in the current version as well, its display is not yet enabled for this Bitrix24 — in this case the widget cannot be displayed ||
+|| The *Apps* button is missing in the chat | Check that the widget is registered and the employee has access to the application: without available applications, the button may be missing. Update the mobile application: older versions have no row of buttons above the input field at all. If the button is missing in the current version as well, its display is not yet enabled for this Bitrix24 — in this case the widget cannot be displayed ||
 || The menu opens, but the application item is not there | Complete the [application installation](../../settings/app-installation/installation-finish.md). Until the installation is complete, the widget is not displayed ||
 || The item is looked for in the web version of the messenger | The placement works in the mobile application only. The web interface has its own placements: [IM_CONTEXT_MENU](./im/context-menu.md), [IM_SIDEBAR](./im/sidebar.md), [IM_TEXTAREA](./im/textarea.md) ||
-|| The handler expects the `URI` key | This placement does not receive `URI`. The only context key is `dialogId` ||
+|| The handler expects the `URI` key | Do not rely on `URI` for this placement. Identify the chat by the `dialogId` key ||
 || Access is limited with the `role` and `context` parameters | The mobile application does not apply them. Check the rights and the chat type in the handler ||
 |#
 

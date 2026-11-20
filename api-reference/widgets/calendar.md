@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, calendar`](../scopes/permissions.md)
 
-The widget adds its own view to the calendar. The user switches to it in the row of views, and the application interface opens instead of the calendar grid. The call context carries the date range the calendar was showing at the moment of switching.
+The widget adds its own view to the calendar. The call context carries the date range the calendar was showing at the moment of switching.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
 
@@ -20,6 +20,23 @@ The placement code is specified in the `PLACEMENT` parameter of the [placement.b
 The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
+
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](./placement-bind.md) method using the `CALENDAR_GRIDVIEW` code. The method works only on behalf of an application: you cannot register the placement via a webhook. The method documentation explains which users can register widgets
+2. An application item appears in the row of calendar views
+3. When a user switches to it, Bitrix24 opens the handler instead of the calendar grid. The handler receives a POST request with the date range described in the [What the Handler Receives](#handler-data) section
+4. The handler retrieves events for this range with the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method on behalf of the current user with the token from `AUTH_ID` and draws its own grid
+
+## When to Use
+
+A custom view is needed when the standard calendar views do not show what matters to the team. For example:
+
+- employee workload by day
+- availability of meeting rooms and equipment
+- events from an external calendar next to Bitrix24 events
+
+If the application only needs to create, change, or read events, a custom view is not needed: the [Calendar Methods](../calendar/index.md) are enough, for example [calendar.event.get](../calendar/calendar-event/calendar-event-get.md).
 
 ## Where the Widget is Embedded
 
@@ -34,9 +51,9 @@ Open the company calendar at `/calendar/` or an employee's personal calendar at 
 
 ![View in the row of calendar views](./_images/CALENDAR_GRIDVIEW.png "View in the row of calendar views")
 
-The item name is set by the `TITLE` parameter during registration. If the parameter is not passed, the application name is displayed.
+The item name is set by the `TITLE` parameter during registration. If `LANG_ALL` is passed, Bitrix24 takes the name from it in the user's language and ignores `TITLE`. If neither is passed, the application name is displayed.
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -80,11 +97,11 @@ These are the boundaries of the grid, not of the period: in the *Month* view, th
 
 Using the range from `viewRangeFrom` and `viewRangeTo`, the application retrieves events with the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method and draws its own grid.
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and [placement.get](./placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](./placement-bind.md) method: the values passed are not retained, and in the [placement.get](./placement-get.md) response, the `options` field of this handler comes as an empty array.
 
 ## Relationship with Other Objects
 
-**Calendar events.** The date range from the call context is passed to the filter of the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method — this way the widget shows the same events as the built-in calendar views.
+**Calendar events.** The date range from the call context is passed to the `from` and `to` parameters of the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method. The application itself specifies which calendar to read, for example a user's calendar, with the `type` and `ownerId` parameters.
 
 **Bitrix24 calendar.** Calendar commands are available from the open widget — [BX24.placement.call](./ui-interaction/bx24-placement-call.md) opens an event card, a creation form, and an edit form. In the other direction, the calendar notifies the widget about period changes and view refreshes — subscribe to these events with the [BX24.placement.bindEvent](./ui-interaction/bx24-placement-bind-event.md) method. The full list of commands and events with examples is in the article [{#T}](../calendar/calendar-grid-view.md).
 
