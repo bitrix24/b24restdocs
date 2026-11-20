@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with read access to the invoice specified in the record's `INVOICE_ID`
 
 {% note warning "DEPRECATED" %}
 
@@ -160,3 +160,25 @@ This method returns the fields of the recurring invoice template settings by ID.
     ```
 
 {% endlist %}
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Text** | **Description** ||
+|| Empty value | `Access denied.` | Insufficient rights to read the invoice specified in the record's `INVOICE_ID` ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}

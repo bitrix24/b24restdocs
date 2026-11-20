@@ -22,6 +22,12 @@ Please use the section [Universal Methods for Invoices](../../universal/invoice.
 >
 > Who can execute the method: any user
 
+{% note warning "" %}
+
+If old invoices in Bitrix24 are switched to export-only mode, any `crm.invoice.*` method, including `crm.invoice.recurring.*`, `crm.invoice.status.*`, and `crm.invoice.userfield.*`, returns the `CRM_OLD_INVOICE_DISABLED` error with the text `Old invoices are no longer available.` and HTTP status **403**.
+
+{% endnote %}
+
 ## Methods
 
 #| 

@@ -709,6 +709,7 @@ HTTP status: **400**
 || `400` | `0` | `VAT vatId is not exists` | The VAT rate in `fields.vatId` was not found ||
 || `400` | `0` | `Currency purchasingCurrency is not exists` | The purchasing price currency was not found ||
 || `400` | `0` | `User createdBy is not exists` or `User modifiedBy is not exists` | The user in `createdBy` or `modifiedBy` was not found ||
+|| `400` | `0` | ``Wrong format value of field `propertyN`.`` | A value of a File-type property was passed in a format other than `fileData`. The method does not accept the identifier of an existing file: pass the file name and its Base64-encoded content ||
 || `400` | `0` | `Internal error adding product. Try adding again.` | An internal error occurred while saving the product ||
 |#
 

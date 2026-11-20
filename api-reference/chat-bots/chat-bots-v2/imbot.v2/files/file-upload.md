@@ -329,7 +329,8 @@ HTTP Status: **400**, **403**
 || `FILE_EMPTY` | File name or content is empty | File name or content is not specified ||
 || `FILE_INVALID_CONTENT` | Invalid base64 content | Invalid Base64 ||
 || `FILE_FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||
-|| `FILE_UPLOAD_FAILED` | File upload failed | File upload error ||
+|| `STORAGE_QUOTA_EXCEEDED` | Not enough space on the Drive | Not enough space on Bitrix24 Drive ||
+|| `FILE_UPLOAD_FAILED` | File upload failed | File upload error for another reason ||
 || `FILE_SEND_FAILED` | Failed to send message | Message sending error ||
 || `FILE_TOO_LARGE` | File is too large | File size exceeds 100 MB ||
 |#

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Read" permission for the file and "Add" permission for the folder
+> Who can execute the method: a user with "Read" permission and download permission for the file, and "Add" permission for the target folder
 
 The method `disk.file.copyTo` copies a file to the specified folder.
 
@@ -382,7 +382,7 @@ HTTP Status: **400**
 || `DISK_OBJ_22000` | A file with this name already exists | A file with this name already exists ||
 || `DISK_FILE_22003` | Could not copy file | Error creating a copy of the file in the database ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | File with the specified `id` or folder with the specified `targetFolderId` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to copy the file ||
+|| `ACCESS_DENIED` | Access denied! | HTTP status **403**. The user lacks "Read" permission or download permission for the source file, or "Add" permission for the target folder ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

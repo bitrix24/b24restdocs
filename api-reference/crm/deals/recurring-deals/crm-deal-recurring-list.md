@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `crm.deal.recurring.list` returns a list of recurring deal template settings based on the provided filter.
 
+The list includes only records for deals the user has read access to. Other records are skipped without an error.
+
 ## Method Parameters
 
 #|
@@ -411,6 +413,8 @@ The formula for obtaining the N-th page:
 
 HTTP Status: **200**
 
+The example shows two records of the first page.
+
 ```json
 {
     "result": [
@@ -465,7 +469,8 @@ HTTP Status: **200**
             }
         }
     ],
-    "total": 5,
+    "total": 55,
+    "next": 50,
     "time": {
         "start": 1772757008,
         "finish": 1772757008.649235,
@@ -491,7 +496,7 @@ Field descriptions are provided in the method [crm.deal.recurring.get](./crm-dea
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **next**
-[`integer`](../../../data-types.md) | Offset for the next page request.
+[`integer`](../../../data-types.md) | The value to pass in the `start` parameter of the next request to retrieve the next page.
 
 This field is present if there is a next page of results ||
 || **time**

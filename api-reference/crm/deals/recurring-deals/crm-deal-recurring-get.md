@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "read" access permission for deals
+> Who can execute the method: user with read access to the template deal specified in the record's `DEAL_ID`
 
 The method `crm.deal.recurring.get` returns the fields of the recurring deal template settings by its identifier.
 
@@ -416,7 +416,7 @@ HTTP Status: **400**
 || `id is not defined or invalid` | The parameter `id` has been passed with an empty or incorrect value ||
 || `Recurring is not allowed` | Recurring deals are not available in Bitrix24 ||
 || `Recurring deal is not found` | The recurring deal template was not found ||
-|| `Access denied` | Insufficient rights to read the recurring deal template ||
+|| `Access denied` | Insufficient rights to read the template deal specified in the record's `DEAL_ID` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

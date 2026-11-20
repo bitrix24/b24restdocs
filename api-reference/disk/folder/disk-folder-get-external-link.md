@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with "Read" access permission for the required folder
 
-The method `disk.folder.getExternalLink` returns an active public link to the folder. If the link does not exist or has expired, the method creates a new one. While the link remains active, repeated calls return the same value.
+The method `disk.folder.getExternalLink` returns an active public link to the folder. The plan is checked only when a new link is created. An existing active link is returned on any plan. If the link does not exist or has expired, the method creates a new one. While the link remains active, repeated calls return the same value.
 
 ## Method Parameters
 
@@ -285,7 +285,7 @@ If a link to the root was created earlier, the method returns its address, but t
 || `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
 - the user does not have permission to manage the public link to the folder
 - public links are disabled in the Bitrix24 settings
-- the Bitrix24 plan does not allow public links to folders
+- the Bitrix24 plan does not allow new public links to folders; an existing active link is still returned
 
 The response does not indicate which reason applies ||
 |#

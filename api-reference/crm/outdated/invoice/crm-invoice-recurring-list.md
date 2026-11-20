@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with read access to invoices
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,8 @@ The development of this method has been halted. Please use [Universal Methods fo
 {% endnote %}
 
 This method returns a list of recurring invoice template settings based on the specified filter.
+
+The list includes only records of invoices the user has read access to.
 
 When querying, use the wildcard "*" to select all fields (excluding custom and multiple fields).
 

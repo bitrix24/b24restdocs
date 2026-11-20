@@ -81,7 +81,7 @@ Types of permissions:
 
 {% note info "" %}
 
-If the parameter is not provided, the authorized user who called the method is assigned full access.
+Non-string permission values, such as `{"U1": ["X"]}`, are skipped without an error. If no permissions remain after that, or the parameter is not provided, the authorized user who called the method is assigned full access.
 
 {% endnote %}
 ||

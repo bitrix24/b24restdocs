@@ -455,7 +455,8 @@ HTTP Status: **400**
 || `FILE_INVALID_CONTENT` | Invalid base64 content | The file content is not a Base64 string ||
 || `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | The chat from `dialogId` was not found ||
 || `FILE_FOLDER_ERROR` | Could not get chat folder | Failed to retrieve the chat folder ||
-|| `FILE_UPLOAD_FAILED` | File upload failed | Failed to store the file on Drive ||
+|| `STORAGE_QUOTA_EXCEEDED` | Not enough space on the Drive | Not enough space on Bitrix24 Drive ||
+|| `FILE_UPLOAD_FAILED` | File upload failed | Failed to store the file on Drive for another reason ||
 || `FILE_SEND_FAILED` | Failed to send file message | The file was stored, but the message containing it was not sent ||
 || `FILE_TOO_LARGE` | File size exceeds maximum allowed | File size exceeds 100 MB ||
 || `ACCESS_DENIED` | ACCESS_DENIED | The user is not a member of the chat or cannot send messages to it ||

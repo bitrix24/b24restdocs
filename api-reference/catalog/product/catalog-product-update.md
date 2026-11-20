@@ -730,6 +730,7 @@ HTTP status: **400**
 || `400` | `0` | `User createdBy is not exists` or `User modifiedBy is not exists` | The user in `createdBy` or `modifiedBy` was not found ||
 || `400` | `0` | `Name is not specified.<br>` | An empty string was passed in `name` ||
 || `400` | `0` | `Incorrect starting date format.<br>` | A `dateActiveFrom` value was passed. For `dateActiveTo`, the error text is `Incorrect expiration date format.<br>` ||
+|| `400` | `0` | ``Wrong format value of field `propertyN`.`` | A value of a File-type property was passed in a format other than `fileData`. The method does not accept the identifier of an existing file: pass the file name and its Base64-encoded content, or pass `valueId` with `remove` set to `Y` to delete the file ||
 || `400` | `0` | `Internal error updating product. Try updating again.` | An internal error occurred while saving the product ||
 |#
 

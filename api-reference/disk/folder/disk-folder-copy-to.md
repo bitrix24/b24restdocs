@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Read" permission for the source folder and "Add" permission for the target folder
+> Who can execute the method: a user with "Read" permission and download permission for the source folder, and "Add" permission for the target folder
 
-The method `disk.folder.copyTo` copies a folder and all its contents to the specified folder. The response contains only the new root folder object of the copy. Retrieve its contents using [disk.folder.getChildren](./disk-folder-get-children.md).
+The method `disk.folder.copyTo` copies a folder and its contents to the specified folder. Nested files and folders without read or download permission are skipped along with their contents; the rest are copied. The response does not report skipped objects. The response contains only the new root folder object of the copy. Retrieve its contents using [disk.folder.getChildren](./disk-folder-get-children.md).
 
 ## Method Parameters
 
@@ -363,7 +363,7 @@ HTTP status: **400**
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` or `targetFolderId` is missing ||
 || `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` or `targetFolderId` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to copy the folder ||
+|| `ACCESS_DENIED` | Access denied! | HTTP status **403**. The user lacks "Read" permission or download permission for the source folder, or "Add" permission for the target folder ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

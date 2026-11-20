@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `ai.engine.list` returns a list of registered AI services.
+The method `ai.engine.list` returns a list of AI services registered by the current application. When called without application context, such as through a webhook, the method returns an empty list.
 
 ## Method Parameters
 
@@ -33,7 +33,7 @@ The method `ai.engine.list` returns a list of registered AI services.
 
 If the parameter is not passed, the method returns records without additional filtering.
 
-When called from an application, the selection is always limited to the services of that application. The `filter` conditions, including those combined with `LOGIC` set to `OR`, apply within this limit.
+The selection is always limited to the services of the current application. The `filter` conditions, including those combined with `LOGIC` set to `OR`, apply within this limit.
 
 Possible operator prefixes:
 - `>=` — greater than or equal to
@@ -65,11 +65,7 @@ The list of fields available for filtering is provided in the section [(detailed
 || **ID**
 [`integer`](../data-types.md) | Service identifier ||
 || **APP_CODE**
-[`string`](../data-types.md) | Application code to which the service belongs.
-
-Without application context, such as through a webhook, you can filter by any `APP_CODE`.
-
-In the context of an OAuth application, the method always shows only the services of the current application ||
+[`string`](../data-types.md) | Application code to which the service belongs. The method always shows only the services of the current application, so a filter by another application's `APP_CODE` returns an empty list ||
 || **NAME**
 [`string`](../data-types.md) | Service name ||
 || **CODE**
@@ -95,21 +91,6 @@ Possible values:
 {% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -d '{
-        "filter": {
-          "=CATEGORY": "text"
-        },
-        "limit": 2
-      }' \
-      https://**put_your_bitrix24_address**/rest/**put_your_webhook_id**/**put_your_webhook_code**/ai.engine.list.json
-    ```
 
 - cURL (OAuth)
 

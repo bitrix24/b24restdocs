@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with "Read" permission for the required file
 
-The method `disk.file.getExternalLink` returns a public link to a file.
+The method `disk.file.getExternalLink` returns a public link to a file. The plan is checked only when a new link is created. An existing active link is returned on any plan.
 
 ## Method Parameters
 
@@ -281,7 +281,7 @@ HTTP Status: **400**
 || `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
 - the user does not have permission to manage the public link to the file
 - public links are disabled in the Bitrix24 settings
-- the Bitrix24 plan does not allow public links to objects of this type. Files and boards are checked separately
+- the Bitrix24 plan does not allow new public links to objects of this type; an existing active link is still returned. Files and boards are checked separately
 
 The response does not indicate which reason applies ||
 |#

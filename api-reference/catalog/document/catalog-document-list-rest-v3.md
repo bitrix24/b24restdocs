@@ -66,6 +66,8 @@ Pass the processing status `status` in the filter as a boolean: `true` — proce
 
 If vendors are managed in CRM, the filter by `contractorId` causes an error — use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method.
 
+Without the CRM provider, `contractorId` supports only the `=`, `in`, and `!=` operators; other operators and a nonexistent vendor identifier cause an error.
+
 The method returns only documents of the types for which the user has the "View" permission ||
 || **order**
 [`object`](../../data-types.md) | Sort order in the format `{"field": "direction"}`, for example `{"id": "desc"}`.
@@ -75,7 +77,7 @@ Possible direction values:
 - `asc` — ascending
 - `desc` — descending
 
-You can sort by any field listed in the `select` parameter description ||
+You can sort by any field listed in the `select` parameter description, except `contractorId` if vendors are managed in CRM ||
 || **pagination**
 [`object`](../../data-types.md) | Pagination. [Parameter description](#pagination) ||
 |#
@@ -512,7 +514,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `status` | This request requires data type `bool` in field `status` | Pass the status as `true` or `false`. The same error with a different type is returned if the condition value does not fit the field, for example, the string `"abc"` for `id` ||
-|| — | Field contractorId is unavailable while a contractor provider is active; use catalog.document.contractor.list | Vendors are managed in CRM, so the filter by `contractorId` is unavailable. Use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method ||
+|| — | Field contractorId is unavailable while a contractor provider is active; use catalog.document.contractor.list | Vendors are managed in CRM, so filtering and sorting by `contractorId` are unavailable. Use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method ||
+|| — | Operator "…" is not supported for field contractorId | Without the CRM provider, use only the `=`, `in`, and `!=` operators for `contractorId` ||
+|| — | Contractor not found: … | Specify an existing vendor identifier ||
 |#
 
 #### Filter Format Error

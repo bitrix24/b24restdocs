@@ -113,9 +113,9 @@ You can use this template as a basis for your own service.
 
 ## Connection with the Application and Access
 
-**Application.** The service is linked to the application via the `APP_CODE` field. This can be obtained in the response from the [ai.engine.list](./ai-engine-list.md) method. In the context of an OAuth application, the list contains only the services of the current application.
+**Application.** The service is linked to the application via the `APP_CODE` field. This can be obtained in the response from the [ai.engine.list](./ai-engine-list.md) method. The list always contains only the services of the current application.
 
-**Webhook.** You can filter services by any `APP_CODE` through the webhook.
+**Webhook.** Through a webhook, the [ai.engine.list](./ai-engine-list.md) method returns an empty list: a webhook has no application context.
 
 ## Overview of Methods {#all-methods}
 

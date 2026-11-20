@@ -375,7 +375,7 @@ HTTP status: **200**
             "DATE_UPDATE": "2023-03-21T15:19:50+02:00"
         }
     ],
-    "total": 0,
+    "total": 4,
     "time": {
         "start": 1716986687.629166,
         "finish": 1716986688.481436,
@@ -396,7 +396,7 @@ HTTP status: **200**
 || **result**
 [`crm_currency[]`](../data-types.md#crm_currency) | An array of all Bitrix24 currencies [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | Always `0`. The number of currencies is the length of the `result` array ||
+[`integer`](../../data-types.md) | Number of currencies in the `result` array ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
