@@ -15,6 +15,18 @@ items:
         href: crm-entity-activity-complete-rest-v3.md
       - name: Reopen an Activity
         href: crm-entity-activity-uncomplete-rest-v3.md
+  - name: Item Calls
+    items:
+      - name: Get a Call
+        href: crm-entity-activity-call-get-rest-v3.md
+      - name: Get a List of Item Calls
+        href: crm-entity-activity-call-list-rest-v3.md
+  - name: Item Open Channel Chats
+    items:
+      - name: Get an Open Channel Chat
+        href: crm-entity-activity-openline-get-rest-v3.md
+      - name: Get a List of Item Open Channel Chats
+        href: crm-entity-activity-openline-list-rest-v3.md
   - name: Activities Without an Object Type
     items:
       - name: Get an Activity

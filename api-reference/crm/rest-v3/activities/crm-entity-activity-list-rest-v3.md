@@ -37,7 +37,7 @@ The list includes activities with any binding to the item, and each activity is 
 || SPA | `crm.smartprocess<entityTypeId>.activity.list`, for example, `crm.smartprocess1038.activity.list` ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The method name is written in lowercase: `crm.smartinvoice.activity.list`, not `crm.smartInvoice.activity.list`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -540,13 +540,15 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.activity.list`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. My company and B2E documents have no activity methods ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.activity.list`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no activity methods ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./crm-entity-activity-call-get-rest-v3.md)
+- [{#T}](./crm-entity-activity-openline-get-rest-v3.md)
 - [{#T}](./index.md)
 - [{#T}](./crm-entity-activity-get-rest-v3.md)
 - [{#T}](./crm-activity-list-rest-v3.md)

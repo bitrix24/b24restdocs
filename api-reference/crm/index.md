@@ -21,9 +21,9 @@ Choose a tool for developing with an AI agent:
 
 #|
 || **If you need to** | **Open the section** ||
-|| Start a new integration: work with CRM and SPA items, their fields, pipelines and stages, products, requisites, addresses, activities, and card views | [REST 3.0 Methods](#method-groups) ||
+|| Start a new integration: work with CRM and SPA items, SPA types, their fields, pipelines and stages, products, requisites, addresses, activities, change history, the recycle bin, and card views | [REST 3.0 Methods](#method-groups) ||
 || Collect requests from a website and create CRM objects from them | [CRM Forms](./form/index.md) ||
-|| Configure SPA types, work with the timeline, documents, automation, and other sections that are not available in REST 3.0 | [Sections Available Only in the Previous Version](#no-rest-v3) ||
+|| Work with the timeline, documents, automation, and other sections that are not available in REST 3.0 | [Sections Available Only in the Previous Version](#no-rest-v3) ||
 || Support an existing integration built on methods at the `/rest/` address | [Previous API Version](./previous-api.md) ||
 || Migrate an integration from the methods of the previous version to REST 3.0 | [Migrating to the New CRM Methods](./migration.md) ||
 |#
@@ -46,7 +46,7 @@ In REST 3.0, the object type is part of the method name: `crm.<type>.<action>`. 
 || SPA | `smartprocess<entityTypeId>` | `crm.smartprocess1038.list` ||
 |#
 
-The SPA type ID `entityTypeId` is returned by the [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) method. REST 3.0 has no equivalent of this method, so call it at the previous version address `/rest/`.
+The SPA type ID `entityTypeId` is returned by the [crm.smartprocess.list](./rest-v3/smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The method name is written in lowercase: `crm.smartinvoice.add` and `crm.deal.productrow.list`, not `crm.smartInvoice.add` and `crm.deal.productRow.list`. A method with different casing or with a type that does not exist, for example `crm.smartprocess99999.add`, returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error with status 404.
 
@@ -110,9 +110,13 @@ Not every group of REST 3.0 methods is available for every type. For example, on
 || [Addresses](./rest-v3/addresses/index.md) | — | + | + | + | — | — | — | — | — | — ||
 || [Card views](./rest-v3/detail-page-layout/index.md) | + | + | + | + | + | + | — | + | + | + ||
 || [Activities](./rest-v3/activities/index.md) | + | + | + | + | + | + | — | + | — | + ||
+|| [Calls and Open Channel chats](./rest-v3/activities/index.md) | + | + | + | + | + | + | — | + | — | + ||
+|| Item copy `copy` | + | + | + | + | + | + | + | — | — | + ||
+|| [Change history](./rest-v3/history/index.md) | + | + | + | + | — | + | — | — | — | + ||
+|| [Stage history](./rest-v3/history/index.md) | + | + | — | — | — | + | — | — | — | + ||
 |#
 
-[Directories](./rest-v3/dictionaries/index.md) and [lead mode](./rest-v3/lead-mode/index.md) are not tied to an object type: `crm.dictionary.<directory>.*`, `crm.lead.isenabled`, `crm.lead.enable`, `crm.lead.disable`.
+[SPA types](./rest-v3/smart-process-types/index.md), [directories](./rest-v3/dictionaries/index.md), the [CRM recycle bin](./rest-v3/recyclebin/index.md), and [lead mode](./rest-v3/lead-mode/index.md) are not tied to an object type: `crm.smartprocess.*`, `crm.dictionary.<directory>.*`, `crm.recyclebin.*`, `crm.lead.isenabled`, `crm.lead.enable`, `crm.lead.disable`.
 
 The exact list of methods available in your Bitrix24 is returned by the [OpenAPI documentation](../rest-v3.md#openapi).
 
@@ -129,7 +133,7 @@ The set of fields also depends on the settings. The fields that disappear withou
 
 ## How to Get Started
 
-1. Determine the object type and the method name from the [Object Type in the Method Name](#method-name) table. For an SPA, retrieve `entityTypeId` with the [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) method
+1. Determine the object type and the method name from the [Object Type in the Method Name](#method-name) table. For an SPA, retrieve `entityTypeId` with the [crm.smartprocess.list](./rest-v3/smart-process-types/crm-smart-process-list-rest-v3.md) method
 2. Look up the fields of the type on its fields page, for example [Deal fields](./rest-v3/items/fields-deal.md), or with the [crm.&lt;type&gt;.field.list](./rest-v3/fields/crm-entity-field-list-rest-v3.md) method
 3. Create an item with the [crm.&lt;type&gt;.add](./rest-v3/items/crm-entity-add-rest-v3.md) method
 4. Retrieve items with the [crm.&lt;type&gt;.list](./rest-v3/items/crm-entity-list-rest-v3.md) method. Without the `select` parameter, the `get` and `list` methods return only `id`, so list the fields you need in `select`
@@ -175,14 +179,17 @@ CRM entities are linked to Bitrix24 users, tasks, the product catalog, telephony
 
 #|
 || **Section** | **What the methods do** ||
-|| [Items](./rest-v3/items/index.md) | Create, update, retrieve, count, and delete CRM items, work with multiple fields and the primary contact. This section also has the fields page for each object type ||
+|| [SPA Types](./rest-v3/smart-process-types/index.md) | Create, update, and retrieve SPA types and the description of their fields. The type ID `entityTypeId` is required for the method name, for example `crm.smartprocess1038.add` ||
+|| [Items](./rest-v3/items/index.md) | Create, copy, update, retrieve, count, and delete CRM items, work with multiple fields and the primary contact. This section also has the fields page for each object type ||
 || [Field Management](./rest-v3/fields/index.md) | Return field descriptions, create custom fields and list values, and set required fields ||
 || [Pipelines and Stages](./rest-v3/categories/index.md) | Create and configure pipelines and stages of deals and SPAs, and pipelines of contacts and companies ||
 || [Product Items](./rest-v3/product-rows/index.md) | Add, update, and replace products in deals, leads, estimates, invoices, documents, and SPAs ||
 || [Requisites](./rest-v3/requisites/index.md) | Work with requisites, bank details, and requisite addresses of contacts and companies, and link client and my company requisites to items ||
 || [Addresses](./rest-v3/addresses/index.md) | Work with addresses of contacts, companies, and leads ||
 || [Card Views](./rest-v3/detail-page-layout/index.md) | Configure the sections and fields of the item card, select the view for a user, and set the common view ||
-|| [Activities](./rest-v3/activities/index.md) | Retrieve, complete, and delete activities, manage activity links to items, and work with emails. Activities and comments are created by the [timeline](./timeline/index.md) methods of the previous version ||
+|| [Activities](./rest-v3/activities/index.md) | Retrieve, complete, and delete activities, manage activity links to items, work with emails, and read item calls and Open Channel chats. Activities and comments are created by the [timeline](./timeline/index.md) methods of the previous version ||
+|| [Change History](./rest-v3/history/index.md) | Retrieve the history of item field and stage changes ||
+|| [CRM Recycle Bin](./rest-v3/recyclebin/index.md) | Retrieve deleted CRM items and restore them ||
 || [Directories](./rest-v3/dictionaries/index.md) | Return and modify CRM directories: deal and contact types, sources, salutations, industries, and others ||
 || [Lead Mode](./rest-v3/lead-mode/index.md) | Check, enable, and disable leads in CRM ||
 || [CRM Forms](./form/index.md) | Create, configure, enable, and delete CRM forms, and retrieve the code for embedding a form on a website ||
@@ -194,7 +201,7 @@ These methods are called at the previous version address `/rest/`.
 
 #|
 || **Section** | **What the methods do** ||
-|| [SPA Types](./universal/user-defined-object-types/index.md) | Create and configure SPA types. The type ID `entityTypeId` is required for the REST 3.0 method name, for example `crm.smartprocess1038.add` ||
+|| [SPA Types](./universal/user-defined-object-types/index.md) | Delete SPA types and return the internal type `id`. SPA types can be created, updated, and retrieved with the [REST 3.0 methods](./rest-v3/smart-process-types/index.md) ||
 || [Timeline and Activities](./timeline/index.md) | Create activities, comments, log entries, and other timeline items ||
 || [Document Generator](./document-generator/index.md) | Generate documents from templates and manage templates and numerators ||
 || [CRM Automation](./automation/index.md) | Run webhook triggers and register application triggers ||

@@ -35,14 +35,14 @@ The documentation has one page per action that covers all object types. Each pag
 || SPA | `smartprocess<entityTypeId>` | `crm.smartprocess1038.add` | [SPA fields](./fields-smart-process.md) ||
 |#
 
-The SPA type ID `entityTypeId` is returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. The method name is written in lowercase: `crm.smartinvoice.add`, not `crm.smartInvoice.add`.
+The SPA type ID `entityTypeId` is returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. The method name is written in lowercase: `crm.smartinvoice.add`, not `crm.smartInvoice.add`.
 
 The set of methods available for an SPA depends on the settings of its type. For example, if client linking is disabled for the type, it has no `setprimarycontact` method. The fields that depend on the settings are described on the [SPA fields](./fields-smart-process.md) page.
 
 ## Getting Started
 
 1. Look up the fields of the object type on its fields page or with the [crm.&lt;type&gt;.field.list](../fields/crm-entity-field-list-rest-v3.md) method. The method shows which fields can be edited, filtered, and sorted
-2. Create an item with the [crm.&lt;type&gt;.add](./crm-entity-add-rest-v3.md) method. Leads, companies, and my companies require the `title` field, and contacts require `name` or `lastName`
+2. Create an item with the [crm.&lt;type&gt;.add](./crm-entity-add-rest-v3.md) method. Leads, companies, and my companies require the `title` field, and contacts require `name` or `lastName`. To create an item based on an existing one, use [crm.&lt;type&gt;.copy](./crm-entity-copy-rest-v3.md): the method copies fields and product rows, and you can override values in `fields`. Activities are not copied, and CRM documents do not have this method
 3. Retrieve an item with the [crm.&lt;type&gt;.get](./crm-entity-get-rest-v3.md) method or a list of items with the [crm.&lt;type&gt;.list](./crm-entity-list-rest-v3.md) method. Without the `select` parameter, these methods return only `id`: list the fields you need in `select`
 4. Update an item with the [crm.&lt;type&gt;.update](./crm-entity-update-rest-v3.md) method. To add or remove a single value of a multiple field, such as a phone number or a contact, use [crm.&lt;type&gt;.addfieldvalue](./crm-entity-add-field-value-rest-v3.md) and [crm.&lt;type&gt;.deletefieldvalue](./crm-entity-delete-field-value-rest-v3.md)
 5. Delete an item with the [crm.&lt;type&gt;.delete](./crm-entity-delete-rest-v3.md) method
@@ -55,7 +55,7 @@ The `crm.mycompany.*` methods are available only to a CRM administrator. To read
 
 ## Relationship with Other Objects
 
-A CRM item is linked to pipelines, custom fields, contacts and companies, products, requisites, activities, and the card view.
+A CRM item is linked to pipelines, custom fields, contacts and companies, products, requisites, activities, change history, the recycle bin, and the card view.
 
 **Pipelines and stages.** The item's pipeline is stored in the `categoryId` field, and its stage in `stageId`. Retrieve the values with the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) and [crm.&lt;type&gt;.category.stage.list](../categories/crm-entity-category-stage-list-rest-v3.md) methods. Deals, contacts, companies, and SPAs have pipelines; deals and SPAs have stages.
 
@@ -67,7 +67,9 @@ A CRM item is linked to pipelines, custom fields, contacts and companies, produc
 
 **Requisites and addresses.** Requisites and addresses of contacts and companies are separate objects. Their methods are described in the [crm.&lt;type&gt;.requisite.*](../requisites/crm-entity-requisite-list-rest-v3.md) and [crm.&lt;type&gt;.address.*](../addresses/crm-entity-address-list-rest-v3.md) groups.
 
-**Activities.** The item's activities are returned by the [crm.&lt;type&gt;.activity.list](../activities/crm-entity-activity-list-rest-v3.md) method.
+**Activities.** The item's activities are returned by the [crm.&lt;type&gt;.activity.list](../activities/crm-entity-activity-list-rest-v3.md) method, calls by [crm.&lt;type&gt;.activity.call.list](../activities/crm-entity-activity-call-list-rest-v3.md), and Open Channel chats by [crm.&lt;type&gt;.activity.openline.list](../activities/crm-entity-activity-openline-list-rest-v3.md).
+
+**History and recycle bin.** The history of item field changes is returned by the [crm.&lt;type&gt;.history.list](../history/crm-entity-history-list-rest-v3.md) method, and the stage history by [crm.&lt;type&gt;.stagehistory.list](../history/crm-entity-stage-history-list-rest-v3.md). If the recycle bin is enabled for the object type, a deleted item goes there. The list of deleted items is returned by [crm.recyclebin.list](../recyclebin/crm-recyclebin-list-rest-v3.md), and an item is restored by [crm.recyclebin.restore](../recyclebin/crm-recyclebin-restore-rest-v3.md). A restored item gets a new ID.
 
 **Item card.** The fields and blocks a user sees in the item card are defined by [card views](../detail-page-layout/index.md).
 
@@ -85,6 +87,7 @@ A CRM item is linked to pipelines, custom fields, contacts and companies, produc
 || [crm.&lt;type&gt;.update](./crm-entity-update-rest-v3.md) | Updates an item ||
 || [crm.&lt;type&gt;.get](./crm-entity-get-rest-v3.md) | Returns an item by ID ||
 || [crm.&lt;type&gt;.list](./crm-entity-list-rest-v3.md) | Returns a list of items with filtering, sorting, and pagination ||
+|| [crm.&lt;type&gt;.copy](./crm-entity-copy-rest-v3.md) | Creates a copy of an item, values of fields can be overridden in `fields` ||
 || [crm.&lt;type&gt;.delete](./crm-entity-delete-rest-v3.md) | Deletes an item ||
 || [crm.&lt;type&gt;.aggregate](./crm-entity-aggregate-rest-v3.md) | Counts items by filter ||
 |#

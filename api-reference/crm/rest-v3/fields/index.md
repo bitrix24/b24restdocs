@@ -39,7 +39,7 @@ The object type is part of the method name: [crm.deal.field.custom.add](./crm-en
 
 My company has only the field description methods: [crm.mycompany.field.get](./crm-entity-field-get-rest-v3.md) and [crm.mycompany.field.list](./crm-entity-field-list-rest-v3.md). It has no methods for custom fields, list field options, or field requirements.
 
-The type ID `entityTypeId` of your SPA is returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. SPAs have field methods regardless of the type settings, for example, when pipelines and stages are disabled in the type.
+The type ID `entityTypeId` of your SPA is returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. SPAs have field methods regardless of the type settings, for example, when pipelines and stages are disabled in the type.
 
 The method name is written in lowercase: `crm.smartinvoice.field.list`, not `crm.smartInvoice.field.list`.
 

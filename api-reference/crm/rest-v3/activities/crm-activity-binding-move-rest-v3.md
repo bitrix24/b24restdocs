@@ -35,7 +35,7 @@ The ID can be retrieved with the [crm.&lt;type&gt;.activity.list](./crm-entity-a
 || **from***
 [`object`](../../../data-types.md) | CRM item in the `{"entityTypeId": 2, "entityId": 9001}` format: `entityTypeId` is the object type ID, `entityId` is the item ID. The item the activity is unbound from. The activity must be bound to it.
 
-Object type IDs are returned by the [crm.dictionary.entitytype.list](../dictionaries/crm-dictionary-list-rest-v3.md) method, and for an SPA by [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) ||
+Object type IDs are returned by the [crm.dictionary.entitytype.list](../dictionaries/crm-dictionary-list-rest-v3.md) method, and for an SPA by [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
 || **to***
 [`object`](../../../data-types.md) | CRM item the activity is bound to, in the same format ||
 |#

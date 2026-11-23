@@ -20,7 +20,7 @@ In the previous version, CRM items are handled by two sets of methods:
 - the universal methods [crm.item.*](./universal/index.md) — the same methods for all types, with the object type passed in the `entityTypeId` parameter. Field names are written in `camelCase`, for example `assignedById`
 - the object methods `crm.deal.*`, `crm.lead.*`, `crm.contact.*`, `crm.company.*`, `crm.quote.*` — a separate set for each type. Field names are written in uppercase, for example `ASSIGNED_BY_ID`
 
-SPA types are created and configured with the [crm.type.*](./universal/user-defined-object-types/index.md) methods. REST 3.0 has no equivalents of these methods, so integrations built on REST 3.0 need them as well.
+SPA types are created, updated, and retrieved with the [REST 3.0 methods](./rest-v3/smart-process-types/index.md). The previous version [crm.type.*](./universal/user-defined-object-types/index.md) methods are needed to delete a type or retrieve its internal `id`.
 
 The REST 3.0 equivalents of the methods, their limitations, and the differences between the versions are described on the [Migrating to the New CRM Methods](./migration.md) page.
 

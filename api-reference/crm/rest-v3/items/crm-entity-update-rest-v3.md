@@ -35,7 +35,7 @@ The `crm.<type>.update` method updates the fields of an existing CRM item. The o
 || SPA | `crm.smartprocess<entityTypeId>.update`, for example, `crm.smartprocess1038.update` | [SPA fields](./fields-smart-process.md) ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The method name is written in lowercase: `crm.smartinvoice.update`, not `crm.smartInvoice.update`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -453,13 +453,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.update`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.update`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](../history/crm-entity-history-list-rest-v3.md)
 - [{#T}](./index.md)
 - [{#T}](./crm-entity-add-rest-v3.md)
 - [{#T}](./crm-entity-get-rest-v3.md)

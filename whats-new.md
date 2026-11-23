@@ -2,6 +2,10 @@
 
 ## 2026
 
+### November 23, 2026
+
+- Added CRM methods in REST 3.0: [SPA types](./api-reference/crm/rest-v3/smart-process-types/index.md) `crm.smartprocess.*`, item [change history and stage history](./api-reference/crm/rest-v3/history/index.md), the [CRM recycle bin](./api-reference/crm/rest-v3/recyclebin/index.md), item copying [crm.&lt;type&gt;.copy](./api-reference/crm/rest-v3/items/crm-entity-copy-rest-v3.md), item [calls](./api-reference/crm/rest-v3/activities/crm-entity-activity-call-list-rest-v3.md) and [Open Channel chats](./api-reference/crm/rest-v3/activities/crm-entity-activity-openline-list-rest-v3.md), and the custom field types directory [customfieldtype](./api-reference/crm/rest-v3/dictionaries/crm-dictionary-list-rest-v3.md#custom-field-types)
+
 ### November 19, 2026
 
 - Added the [syncconnector.followup.*](./api-reference/telephony/follow-up/index.md#sync) methods in REST 3.0: they retrieve Bitrix24 Sync call Follow-ups — a list for a period and the results of a single detailed analysis page, including the `field.list` and `field.get` field schema methods

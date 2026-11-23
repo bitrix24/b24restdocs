@@ -35,7 +35,7 @@ The `crm.<type>.field.get` method returns the description of a single field of a
 || SPA | `crm.smartprocess<entityTypeId>.field.get`, for example, `crm.smartprocess1038.field.get` | [SPA fields](../items/fields-smart-process.md) ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. SPAs have field description methods regardless of the type settings.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. SPAs have field description methods regardless of the type settings.
 
 The method name is written in lowercase: `crm.smartinvoice.field.get`, not `crm.smartInvoice.field.get`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -436,7 +436,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.field.get`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.field.get`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

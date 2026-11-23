@@ -29,7 +29,7 @@ The `crm.<type>.category.stage.list` method returns the stages of a single pipel
 || SPA | `crm.smartprocess<entityTypeId>.category.stage.list`, for example, `crm.smartprocess1038.category.stage.list` ||
 |#
 
-For an SPA, the method name includes its type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+For an SPA, the method name includes its type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 Deals have pipeline stages, and so does an SPA if both pipelines and stages are enabled in its type settings. Leads, contacts, companies, estimates, invoices, and my company have no pipeline stage methods.
 
@@ -497,13 +497,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartprocess1038.category.stage.list`. Only deals and SPAs have stage methods. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method and whether pipelines and stages are enabled in the type ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartprocess1038.category.stage.list`. Only deals and SPAs have stage methods. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method and whether pipelines and stages are enabled in the type ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](../history/crm-entity-stage-history-list-rest-v3.md)
 - [{#T}](./index.md)
 - [{#T}](./crm-entity-category-list-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-get-rest-v3.md)

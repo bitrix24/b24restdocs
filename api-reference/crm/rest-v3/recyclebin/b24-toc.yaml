@@ -1,0 +1,13 @@
+title: CRM Recycle Bin
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get a List of Deleted CRM Items
+    href: crm-recyclebin-list-rest-v3.md
+  - name: Restore an Item from the CRM Recycle Bin
+    href: crm-recyclebin-restore-rest-v3.md
+  - name: Get a List of CRM Recycle Bin Record Fields
+    href: crm-recyclebin-field-list-rest-v3.md
+  - name: Get a CRM Recycle Bin Record Field Description
+    href: crm-recyclebin-field-get-rest-v3.md

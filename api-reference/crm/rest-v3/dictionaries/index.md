@@ -42,6 +42,7 @@ The directory is part of the method name: [crm.dictionary.dealtype.list](./crm-d
 || CRM object types | `entitytype` | No ||
 || Stage groups | `stagesemantic` | No ||
 || Activity providers | `activityprovider` | No ||
+|| Custom field types | `customfieldtype` | No ||
 |#
 
 The method name is written in lowercase: `crm.dictionary.dealtype.list`, not `crm.dictionary.dealType.list`.
@@ -60,7 +61,7 @@ Example: an app sells subscriptions and marks such deals with its own "Subscript
 
 ## Relationship with Other Objects
 
-Directories are linked to CRM items and their phones, emails, websites, and messengers, as well as to addresses, stages, activities, and object types.
+Directories are linked to CRM items and their phones, emails, websites, and messengers, as well as to addresses, stages, activities, object types, and custom fields.
 
 **CRM items.** An item stores the value ID in a field: `typeId` of a deal, contact, or company, `sourceId`, `honorificId`, `industryId`, `employeesId`. If you need the whole directory value rather than only its ID, pass a related object without the `Id` suffix in `select` of the [crm.&lt;type&gt;.get](../items/crm-entity-get-rest-v3.md) method, for example, `type` or `source`. The fields of each object type are described on the fields pages, for example, [deal fields](../items/fields-deal.md) and [company fields](../items/fields-company.md).
 
@@ -72,7 +73,9 @@ Directories are linked to CRM items and their phones, emails, websites, and mess
 
 **Activities.** The `providerId` field shows what kind of activity it is: a call, an email, a meeting, or a task. For example, for an email, `providerId` is `CRM_EMAIL`. All providers are stored in the [`activityprovider`](./crm-dictionary-list-rest-v3.md#activity-providers) directory. The activities of an item are returned by the [crm.&lt;type&gt;.activity.list](../activities/crm-entity-activity-list-rest-v3.md) method.
 
-**Object types.** The [`entitytype`](./crm-dictionary-list-rest-v3.md#entity-types) directory stores the `entityTypeId` of system types: lead, deal, contact, company, and others. It contains no SPAs. Their `entityTypeId` is returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method.
+**Object types.** The [`entitytype`](./crm-dictionary-list-rest-v3.md#entity-types) directory stores the `entityTypeId` of system types: lead, deal, contact, company, and others. It contains no SPAs. Their `entityTypeId` is returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
+
+**Custom fields.** The [`customfieldtype`](./crm-dictionary-list-rest-v3.md#custom-field-types) directory lists the field types that can be created with the [crm.&lt;type&gt;.field.custom.add](../fields/crm-entity-field-custom-add-rest-v3.md) method: string, number, date, money, links to CRM, and others. The type ID is passed in the `userTypeId` field.
 
 ## Methods of the Previous Version
 
@@ -97,7 +100,7 @@ These methods are available for the `dealtype`, `contacttype`, `companytype`, `h
 
 ### Reading
 
-These methods are available for all 15 directories. They can be called by a user with permission to view leads, deals, or other CRM objects.
+These methods are available for all 16 directories. They can be called by a user with permission to view leads, deals, or other CRM objects. The `customfieldtype` directory is available to any user.
 
 #|
 || **Method** | **Description** ||

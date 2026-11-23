@@ -29,7 +29,7 @@ The object type is set by the `<type>` segment of the method name: `crm.deal.pro
 || SPA | `smartprocess<entityTypeId>`, for example, `smartprocess1038` ||
 |#
 
-Contacts, companies, and my companies have no product items. An SPA has the methods only if linking to catalog products is enabled in the type settings — without it, a call returns the "Method Not Found" error. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+Contacts, companies, and my companies have no product items. An SPA has the methods only if linking to catalog products is enabled in the type settings — without it, a call returns the "Method Not Found" error. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 Method names are written in lowercase: `crm.deal.productrow.getavailableforpayment`.
 

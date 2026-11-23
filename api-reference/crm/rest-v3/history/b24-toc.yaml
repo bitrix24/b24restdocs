@@ -1,0 +1,9 @@
+title: Change History
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get the Change History of an Item
+    href: crm-entity-history-list-rest-v3.md
+  - name: Get the Stage History of an Item
+    href: crm-entity-stage-history-list-rest-v3.md

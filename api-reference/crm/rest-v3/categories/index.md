@@ -33,7 +33,7 @@ The object type is set by the `<type>` segment of the method name: `crm.deal.cat
 
 An SPA has pipeline methods only if pipelines are enabled in the type settings, and stage methods only if both pipelines and stages are enabled. Leads, estimates, invoices, and my company have no pipeline or stage methods.
 
-SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. Method names are written in lowercase: `crm.smartprocess1038.category.list`.
+SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Method names are written in lowercase: `crm.smartprocess1038.category.list`.
 
 ## Getting Started
 

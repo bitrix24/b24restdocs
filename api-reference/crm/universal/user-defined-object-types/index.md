@@ -11,6 +11,8 @@ Choose a tool for developing with an AI agent:
 
 An SPA is a versatile CRM object that can be customized to meet the needs of a company. For each SPA, Bitrix24 creates a separate section in the CRM. In this section, you can configure Sales Funnels and stages, Automation rules, fields, and connections to other Bitrix24 entities.
 
+SPA types can also be created, updated, and retrieved with the [REST 3.0 methods](../../rest-v3/smart-process-types/index.md) `crm.smartprocess.*`. The previous version `crm.type.*` methods are still needed to delete a type or retrieve its internal `id`.
+
 > Quick Navigation: [All Methods and Events](#all-methods)
 >
 > User Documentation: [Smart Process Automation in CRM](https://helpdesk.bitrix24.com/open/19141012/)
