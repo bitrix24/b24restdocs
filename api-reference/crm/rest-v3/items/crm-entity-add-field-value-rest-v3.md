@@ -77,7 +77,7 @@ A single-value custom field causes the `CRM_FIELD_NOT_MULTIPLE` error. The metho
 
 #|
 || **Field** | **Value format** ||
-|| `phone`, `email`, `web`, `im` | Object `{"valueTypeId": "WORK", "value": "+49300000000"}`. `valueTypeId` is the value type, for example, `WORK` or `MOBILE`. The types are returned by the `crm.dictionary.phonetype.list`, `crm.dictionary.emailtype.list`, `crm.dictionary.webtype.list`, and `crm.dictionary.imtype.list` methods — [description of the reference list methods](../dictionaries/crm-dictionary-list-rest-v3.md) ||
+|| `phone`, `email`, `web`, `im` | Object `{"valueTypeId": "WORK", "value": "+49300000000"}`. `valueTypeId` is the value type, for example, `WORK` or `MOBILE`. If it is not passed, the type is taken from the field's "Default type" setting in the card. If the setting is not configured, the type is `WORK`, or `OTHER` for `im`. The types are returned by the `crm.dictionary.phonetype.list`, `crm.dictionary.emailtype.list`, `crm.dictionary.webtype.list`, and `crm.dictionary.imtype.list` methods — [description of the reference list methods](../dictionaries/crm-dictionary-list-rest-v3.md) ||
 || `contactsId` | ID of an existing contact, a number. The string `"3213"` causes an error ||
 || `companiesId` | ID of an existing company, a number ||
 || `observersId` | ID of an existing user, a number ||
@@ -429,7 +429,7 @@ Value errors. In these errors, the `field` field contains an error code instead 
 || `CRM_FIELD_VALUE_INVALID` | The custom field value is invalid | The value does not fit the custom field: wrong type or a nonexistent list option ||
 || `CRM_FIELD_VALUE_LIMIT_EXCEEDED` | Too many multifield values | The field already contains the maximum number of values ||
 || `CRM_FIELD_VALUE_LOCKED` | The field is being changed by another operation | Another request is changing this item field at the moment. Retry the call later ||
-|| `-` | The field value is invalid | The value has the wrong format: a string instead of a number, a phone object without `valueTypeId`, an unknown value type, a string of spaces ||
+|| `-` | The field value is invalid | The value has the wrong format: a string instead of a number, `valueTypeId` that is not a string, an unknown value type, a string of spaces ||
 |#
 
 #### Method Not Found {#method-not-found}

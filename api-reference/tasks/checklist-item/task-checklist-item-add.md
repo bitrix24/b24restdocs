@@ -417,6 +417,7 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; ; 4/TE/ACTION_NOT_ALLOWED<br> | No permission to add checklist items in the task ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Add item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | No access to the task or insufficient permissions to work with checklists in the task ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::add(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` not provided ||
 || `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` value is less than or equal to zero ||

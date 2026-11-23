@@ -326,7 +326,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (afterItemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | A required parameter is missing. The parameter number and name in the message: `Param #0 (taskId)`, `Param #1 (itemId)`, or `Param #2 (afterItemId)` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type. The parameter number and name in the message indicate which value is incorrect ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, ]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | There is no item with the `ITEMID` identifier ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE<br> | The `TASKID` task has no item with the `ITEMID` or `AFTERITEMID` identifier ||
 || `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Parent item cannot be a subitem of itself; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | `AFTERITEMID` is a subitem of the item being moved `ITEMID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Move item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||

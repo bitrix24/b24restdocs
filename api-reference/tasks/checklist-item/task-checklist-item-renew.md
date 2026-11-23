@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to the task
 
 The method `task.checklistitem.renew` marks a completed checklist item as incomplete.
 
@@ -23,7 +23,7 @@ To mark the item as completed, use the [task.checklistitem.complete](./task-chec
 
 {% note warning "" %}
 
-Pass parameters in the request according to the order in the table. If the order is violated, the method treats the `TASKID` value as the item identifier: it returns `false` if no such item exists, or marks a different item as incomplete.
+Pass parameters in the request according to the order in the table. If the order is violated, the method treats the `TASKID` value as the item identifier: it returns `false` if the task with that identifier has no item from the second parameter.
 
 {% endnote %}
 
@@ -279,7 +279,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the checklist item is marked as incomplete. A repeated call for an already incomplete item also returns `true`.
 
-Returns `false` if an item with the `ITEMID` identifier does not exist. The same response is returned if the item has `MEMBERS` participants and the user lacks permission to edit the task: in this case, the item status has already been changed ||
+Returns `false` if the `TASKID` task has no item with the `ITEMID` identifier. The same response is returned if the item has `MEMBERS` participants and the user lacks permission to edit the task: in this case, the item status has already been changed ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -305,6 +305,7 @@ HTTP status: **400**
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::renew(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` is missing ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::renew() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type. The parameter number and name in the message indicate which value is incorrect ||
 || `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#1; Task not found or not accessible; 1/TE/TASK_NOT_FOUND_OR_NOT_ACCESSIBLE<br> | The task was not found, or the user has no read access to it ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

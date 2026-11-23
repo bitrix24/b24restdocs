@@ -39,7 +39,9 @@ You can add an operator prefix to the key:
 - `>`, `>=`, `<`, `<=` — greater than, greater than or equal to, less than, less than or equal to
 - `@` — in an array of values
 
-For example, `{"paid": "Y", ">sum": 1000}` returns paid payments with an amount greater than 1000. If you pass a field that the payment does not have, the method returns the `Internal server error.` error ||
+For example, `{"paid": "Y", ">sum": 1000}` returns paid payments with an amount greater than 1000. If you pass a field that the payment does not have, the method returns the `Internal server error.` error.
+
+Pass dates, for example in `datePaid`, in ISO 8601 format — `2026-11-01` or `2026-11-01T10:00:00+01:00`. The method does not accept a value in another format, for example `01.11.2026`, and returns the `INVALID_ARG_VALUE` error ||
 || **order**
 [`object`](../../../../api-reference/data-types.md) | Sorting in the `{"field": "direction"}` format. The fields are the same as in `filter`. Direction:
 - `ASC` — ascending
@@ -443,6 +445,7 @@ HTTP status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `entityId` or `entityTypeId` was not provided ||
 || `400` | `100` | Internal server error. | A field that the payment does not have was passed in `filter` or `order` ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field '>=DATE_PAID' has invalid value | A date in `filter` was passed in an unsupported format. The error message contains the filter key with its prefix ||
 || `400` | `ACCESS_DENIED` | Access denied | No permission to read the CRM object ||
 |#
 

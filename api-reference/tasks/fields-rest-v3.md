@@ -20,7 +20,7 @@ Some task fields exist in two forms: as an identifier and as an object, for exam
 || [tasks.task.add](./tasks-task-add-rest-v3.md) | Fields of the [Task Object](#taskdto) table with identifiers of related objects: `creatorId`, `responsibleId`, `groupId`. Required: `title`, `creatorId`, `responsibleId` | The task object with the same structure as [tasks.task.get](./tasks-task-get-rest-v3.md) without `select` ||
 || [tasks.task.update](./tasks-task-update-rest-v3.md) | The same fields as `tasks.task.add` | Success flag `true` ||
 || [tasks.task.get](./tasks-task-get-rest-v3.md) | Task `id` and `select` | Without `select`, the basic set of fields without related objects. List the object fields in `select` using dot notation, for example, `["creator.name", "creator.email"]`. The method does not return the identifiers of the creator, assignee, group, stage, flow, template, email, and change authors, even if they are specified in `select`. Such fields are marked in the table ||
-|| [tasks.task.list](./tasks-task-list-rest-v3.md) | `select`, `filter`, `order`, `pagination` | Without `select`, only `id`. Returns the identifiers of related objects, but not the objects themselves, even if their fields are specified in `select` ||
+|| [tasks.task.list](./tasks-task-list-rest-v3.md) | `select`, `filter`, `order`, `pagination` | Without `select`, only `id`. Returns the identifiers of related objects, but not the objects themselves, even if their fields are specified in `select`. The exception is participants `accomplices` and observers `auditors`: the method returns them as arrays of objects ||
 |#
 
 In `fields` of the methods `tasks.task.add` and `tasks.task.update`, you cannot pass `id`, `created`, `accomplices`, `auditors`, `tags`, `userFields`, and object fields — `creator`, `group`, `parent`, and others. For such a field, the method returns a validation error stating that the field is read-only. Fields marked "changes automatically" do not need to be passed: their value is calculated by Bitrix24.
@@ -98,11 +98,11 @@ When the task is updated, the stage must exist and belong to the task's group; o
 || **statusChanged**
 [```datetime | null```](../data-types.md) | Status change date in ISO 8601 format ||
 || **accomplices**
-[`array<object>`](#user) | Participants. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["accomplices.id", "accomplices.name"]`.
+[`array<object>`](#user) | Participants. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) and [tasks.task.list](./tasks-task-list-rest-v3.md), for example, `["accomplices.id", "accomplices.name"]`.
 
 The methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md) do not accept the field. To assign participants, use the classic method [tasks.task.update](./tasks-task-update.md) with the `ACCOMPLICES` field ||
 || **auditors**
-[`array<object>`](#user) | Observers. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["auditors.id", "auditors.name"]`.
+[`array<object>`](#user) | Observers. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) and [tasks.task.list](./tasks-task-list-rest-v3.md), for example, `["auditors.id", "auditors.name"]`.
 
 The methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md) do not accept the field. To assign observers, use the classic method [tasks.task.update](./tasks-task-update.md) with the `AUDITORS` field ||
 || **parentId**
@@ -110,6 +110,8 @@ The methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update
 Has a value of `null` if there is no parent task ||
 || **parent**
 [`object`](#taskdto) | Parent task. An object of type [task](#taskdto). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
+|| **checklistAutonumbering**
+[`boolean`](../data-types.md) | Automatic numbering of checklist items. The field is accepted by [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md) ||
 || **containsChecklist**
 [`boolean`](../data-types.md) | Indicates the presence of a checklist. The field is automatically updated ||
 || **containsSubTasks**
@@ -200,7 +202,7 @@ On read, `P` is returned as `positive`, `N` as `negative`, and `null` as `none` 
 || **maxDeadlineChangeDate**
 [```datetime | null```](../data-types.md) | Date after which the deadline cannot be changed, in ISO 8601 format ||
 || **maxDeadlineChanges**
-[```integer | null```](../data-types.md) | Maximum number of deadline extensions ||
+[```integer | null```](../data-types.md) | Maximum number of deadline extensions. If you pass a new value in [tasks.task.update](./tasks-task-update-rest-v3.md), the counter of extensions already made is reset ||
 || **requireDeadlineChangeReason**
 [`boolean`](../data-types.md) | Require a reason when the deadline is moved ||
 || **tags**

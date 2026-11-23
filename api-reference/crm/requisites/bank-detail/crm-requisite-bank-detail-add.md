@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "add" access permission for the contact or company that owns the requisite
+> Who can execute the method: a user with "add" access permission for contacts or companies and "edit" access permission for the contact or company that owns the requisite
 
 {% note warning "DEPRECATED" %}
 
@@ -446,7 +446,7 @@ HTTP status: **40x**, **50x**
 #|
 || **Error text** | **Description** ||
 || `ENTITY_ID is not defined or invalid` | The identifier of the detail is not defined or has an invalid value ||
-|| `Access denied` | Insufficient access permissions to add a bank detail ||
+|| `Access denied` | No permission to add objects of the requisite owner's type or to edit the owner itself, or the requisite was not found ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

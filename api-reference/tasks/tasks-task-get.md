@@ -452,6 +452,7 @@ HTTP Status: **400**
 || `0` | wrong task id | The value of the `taskId` parameter is of an incorrect type. ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing. ||
 || `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter is empty or contains invalid values. ||
+|| `0` | Invalid select data | A nested array or object was passed in `select`, for example `["ID", ["TITLE"]]`. Pass a flat list of field names ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -42,7 +42,7 @@ You can obtain the identifier using the [socialnetwork.api.workgroup.list](../..
 
 A different `groupId` moves the sprint to another Scrum. Only a sprint without tasks can be moved ||
 || **name** 
-[`string`](../../../data-types.md) | Name of the sprint ||
+[`string`](../../../data-types.md) | Name of the sprint. The method does not accept an empty name or a name consisting only of spaces and returns the `Sprint name is required` error ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint.
 
@@ -454,6 +454,7 @@ HTTP status: **400**
 || `400` | `0` | `Access denied` | No access to the Scrum ||
 || `400` | `0` | `Sprint id not found` | `0` is passed in the `id` parameter ||
 || `400` | `0` | `Sprint not found` | The sprint with the specified `id` is not found ||
+|| `400` | `0` | `Sprint name is required` | An empty string or a string consisting only of spaces was passed in `name` ||
 || `400` | `0` | `It is forbidden move a sprint with items` | A different `groupId` is passed, but the sprint contains tasks ||
 || `400` | `0` | `createdBy user not found` | The user with the identifier from the `createdBy` field is not found ||
 || `400` | `0` | `modifiedBy user not found` | The user with the identifier from the `modifiedBy` field is not found ||
