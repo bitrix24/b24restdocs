@@ -21,7 +21,23 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method, passing a code from the [table](#codes) in `PLACEMENT`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. An application item appears in the top button menu of the card
+3. The user clicks the item, and Bitrix24 opens the handler in a frame. The call context is described in the [What the Handler Receives](#handler-data) section
+4. The handler uses the object identifier from `PLACEMENT_OPTIONS` to retrieve data via REST with the `AUTH_ID` token of the current user
+
+## When to Use
+
+The placement suits a one-off action on the open item. For example:
+
+- send deal data to an external system
+- open an approval form for an estimate
+
+For ongoing viewing of related data, use a [card tab](./detail-tab.md); for an action next to activities, use the [button above the timeline](./detail-activity.md). For actions on the list as a whole, use the [menu item above the list](./list-toolbar.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
@@ -38,13 +54,15 @@ The widget is not displayed in the interface until the application installation 
 
 Open a CRM object card and expand the menu of the button in the top right corner of the card — the one to the left of the *Document* button. The application item appears in this menu, next to the knowledge base and Bitrix24 Market items.
 
+For a new invoice and a custom object type item, save the item first: the widget menu is not displayed in the creation card.
+
 ![Top button menu item in the deal card](./_images/CRM_DEAL_DETAIL_TOOLBAR.png "Top button menu item in the deal card")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_DETAIL_TOOLBAR` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
+The example is shown for the `CRM_DEAL_DETAIL_TOOLBAR` placement. For other placements, the `PLACEMENT` value changes; the name of the key with the identifier depends on the object type, as described below.
 
 ```php
 
@@ -74,7 +92,7 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the object identifier.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the object identifier.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -83,14 +101,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || **ID*** or **ENTITY_ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
-
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+For a lead, deal, contact, company, estimate, new invoice, or custom object type item, use [crm.item.get](../../crm/universal/crm-item-get.md), specifying `entityTypeId` and `id`.
 
 The key name depends on the object type: for a lead, deal, contact, and company the identifier arrives in the `ID` key, and for an estimate, new invoice, and custom object type in the `ENTITY_ID` key.
 
@@ -312,11 +323,11 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     	"HANDLER":   "https://your-domain.com/widgets/crm-detail-toolbar-handler.php",
     	"TITLE":     "My deal card item",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My deal card item",
-    		},
     		"en": b24.Params{
     			"TITLE": "My deal card item",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein Deal-Kartenelement",
     		},
     	},
     })
@@ -337,8 +348,6 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
-|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The item cannot be found in the card | Expand the menu of the button in the top right corner of the card — the one to the left of the *Document* button ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.

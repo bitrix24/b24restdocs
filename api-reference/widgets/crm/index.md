@@ -13,7 +13,7 @@ Placements add the application interface inside CRM: its own tab in an object ca
 
 Placements fall into two groups. The first group works with a specific object type, and the placement code contains the name of that type: `CRM_DEAL_DETAIL_TAB`, `CRM_LEAD_LIST_MENU`. The second group belongs to the CRM section as a whole, and the code carries no object name: `CRM_ANALYTICS_MENU`, `CRM_ANALYTICS_TOOLBAR`, `CRM_DETAIL_SEARCH`.
 
-Pipelines stand apart: for deals the code carries no object name — `CRM_FUNNELS_TOOLBAR`, while for new invoices and custom object types it does — `CRM_SMART_INVOICE_FUNNELS_TOOLBAR` and `CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR`.
+Pipelines stand apart: for deals the code carries no object name — `CRM_FUNNELS_TOOLBAR`, while for custom object types it does — `CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR`.
 
 To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
@@ -102,7 +102,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md) | `ENTITY_ID`, `ASSOCIATED_ENTITY_ID`, `ASSOCIATED_ENTITY_TYPE_ID`, `TYPE_ID`, `TYPE_CATEGORY_ID`, `TIMELINE_ITEM_ID` | Identifiers of the object and of the activity whose record the widget is opened on, and the type of that record ||
 || [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | `ENTITY_ID` | Identifier of the object the document is generated for ||
 || [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | none | The pipeline identifier can be taken from the path in `URI` ||
-|| [CRM_FUNNELS_TOOLBAR, CRM_SMART_INVOICE_FUNNELS_TOOLBAR, CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR](./funnels-toolbar.md) | none | The widget opens above the pipeline list ||
+|| [CRM_FUNNELS_TOOLBAR, CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR](./funnels-toolbar.md) | none | The widget opens above the pipeline list ||
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | none | The widget opens in the analytics section ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | none | The widget opens in the analytics section ||
 || [CRM_DETAIL_SEARCH](./detail-search.md) | `entityTypeName`, `searchQuery` | Client type and the search query from the form ||
@@ -171,7 +171,7 @@ The exception is `BI_ANALYTICS_MENU`: the placement is declared in the global [`
 || [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md) | Context menu item of an activity record in the timeline ||
 || [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | Dropdown menu item of the document generator ||
 || [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | Button in the automation rules designer ||
-|| [CRM_FUNNELS_TOOLBAR, CRM_SMART_INVOICE_FUNNELS_TOOLBAR, CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR](./funnels-toolbar.md) | Button in the pipelines and tunnels of deals, new invoices, and custom object types ||
+|| [CRM_FUNNELS_TOOLBAR, CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR](./funnels-toolbar.md) | Button in the pipelines and tunnels of deals and custom object types ||
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | Application report in the left menu of CRM Analytics ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | Button in the CRM Analytics header ||
 || [CRM_DETAIL_SEARCH](./detail-search.md) | Client search in an external source from the CRM form ||

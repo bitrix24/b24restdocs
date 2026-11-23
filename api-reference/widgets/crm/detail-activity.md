@@ -15,15 +15,29 @@ The widget adds its own button to the panel above the timeline of a CRM object c
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-Extended capabilities of the button above the timeline are described in the article [Additional Placement Features in CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md).
-
 {% note info "" %}
 
 The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method, passing a code from the [table](#codes) in `PLACEMENT`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. An application item appears in the *More* menu above the timeline
+3. The user clicks the item: by default, Bitrix24 opens the handler in a frame in a slider. With `OPTIONS.useBuiltInInterface = 'Y'`, the handler is loaded in a hidden frame and calls `setLayout`, passing the [interface structure](./detail-activity-area.md#LayoutDto). Bitrix24 renders the interface from this structure. The call context is described in the [What the Handler Receives](#handler-data) section
+4. The handler uses the object identifier from `PLACEMENT_OPTIONS` to retrieve data via REST with the `AUTH_ID` token of the current user
+
+## When to Use
+
+The placement suits actions next to activities and comments. For example:
+
+- open a form for logging a request in an external system
+- prepare a message to the client based on deal data
+
+Choose the regular slider for the application's own markup and the built-in interface for a form based on the interface structure. For ongoing viewing of related data, use a [card tab](./detail-tab.md); for an action in the top menu, use the [card menu item](./detail-toolbar.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #|
 || **Placement Code** | **Location** ||
@@ -41,13 +55,15 @@ The widget is not displayed in the interface until the application installation 
 
 Open a CRM object card and click *More* in the panel above the timeline — the row with the *Activity*, *Comment*, and *Message* buttons. The application item appears in this menu.
 
+In read-only mode, clicking the application item does not open the widget.
+
 ![Button above the timeline of the deal card](./_images/CRM_DEAL_DETAIL_ACTIVITY.png "Button above the timeline of the deal card")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_DETAIL_ACTIVITY` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
+The example is shown for a regular slider opening in the `CRM_DEAL_DETAIL_ACTIVITY` placement. The built-in interface receives a different set of `PLACEMENT_OPTIONS` keys, described below.
 
 ```php
 
@@ -77,45 +93,46 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the object identifier.
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
+The `PLACEMENT_OPTIONS` value is passed as a JSON string. A regular slider opening passes `ID`; with `useBuiltInInterface = 'Y'`, it passes `entityTypeId`, `entityId`, and `useBuiltInInterface = 'Y'`.
 
 #|
 || **Parameter** | **Description** ||
-|| **ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the CRM object or order for a regular slider opening.
 
-It can be used to retrieve additional information using the corresponding methods:
+For a lead, deal, contact, company, estimate, new invoice, or custom object type item, use [crm.item.get](../../crm/universal/crm-item-get.md), specifying `entityTypeId` and `id`.
 
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+For an order, use [sale.order.get](../../sale/order/sale-order-get.md), specifying `id`. To call `sale.*` methods, the application needs the `sale` scope.
 
-The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_DETAIL_ACTIVITY` code, the type identifier is `183`
+For a regular slider opening, the object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_DETAIL_ACTIVITY` code, the type identifier is `183`
 
 ||
+|| **entityTypeId**
+[`integer`](../../data-types.md) | Identifier of the [CRM object type](../../crm/data-types.md#object_type) or order. Passed in the built-in interface ||
+|| **entityId**
+[`integer`](../../data-types.md) | Identifier of the CRM object or order. Passed in the built-in interface; the object data can be retrieved with the same methods as for `ID` ||
+|| **useBuiltInInterface**
+[`string`](../../data-types.md) | Built-in interface flag. Passed with the `Y` value in this mode ||
 |#
+
+Clicking *Learn more* in the welcome notification opens a separate slider: its context contains `entityTypeId`, `entityId`, `newUserNotification = 'Y'`, and `bx24_width = 800`.
 
 ## OPTIONS When Registering via placement.bind
 
 For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method supports the `OPTIONS` parameters. They switch the widget to the built-in Bitrix24 interface instead of the application's own markup and configure the welcome notification.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 #|
 || **Parameter**
 `type` | **Description** ||
 || **useBuiltInInterface**
-[`boolean`](../../data-types.md) | Use the built-in Bitrix24 interface, `N` by default. When set to `Y`, the interface is built from the [LayoutDto](./detail-activity-area.md#LayoutDto) structure ||
+[`string`](../../data-types.md) | Use the built-in Bitrix24 interface: `Y` to enable, `N` to disable. `N` by default. When set to `Y`, the interface is built from the [interface structure](./detail-activity-area.md#LayoutDto) ||
 || **newUserNotificationTitle**
 [`string`](../../data-types.md) | Title of the notification for a new user ||
 || **newUserNotificationText**
-[`string`](../../data-types.md) | Text of the notification for a new user. Clicking *Learn more* opens a slider with the `newUserNotification=Y` context and a width of `800px` ||
+[`string`](../../data-types.md) | Text of the notification for a new user ||
 |#
+
+To show the notification, specify a non-empty title and text. The notification is shown in a saved card to a user who has not viewed it yet, provided that notifications are not disabled and the button is available in the interface.
 
 ## Code Examples
 
@@ -356,11 +373,11 @@ For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method suppor
     	"HANDLER":   "https://your-domain.com/widgets/crm-detail-activity-handler.php",
     	"TITLE":     "My timeline button",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My timeline button",
-    		},
     		"en": b24.Params{
     			"TITLE": "My timeline button",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Meine Timeline-Schaltfläche",
     		},
     	},
     	"OPTIONS": b24.Params{
@@ -382,15 +399,7 @@ For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method suppor
 
 ## Common Mistakes
 
-#|
-|| **Mistake** | **Solution** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
-|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The item cannot be found in the card | The item is located in the *More* menu of the panel above the timeline — the row with the *Activity*, *Comment*, and *Message* buttons ||
-|#
-
-Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+Registration errors and how to fix them are described on the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Learning
 

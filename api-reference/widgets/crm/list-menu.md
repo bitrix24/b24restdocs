@@ -21,7 +21,21 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method, passing a code from the [table](#codes) in the `PLACEMENT` parameter. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. An item with the name from `TITLE` appears in the context menu of the element. If no name is passed, the application name is shown
+3. When the user clicks the item, Bitrix24 opens the handler in a frame. The handler receives a POST request with the [call data](#handler-data), including the element identifier in `PLACEMENT_OPTIONS.ID`
+4. The handler calls REST on behalf of the current user with the token from `AUTH_ID`: for example, it retrieves the deal with the [crm.item.get](../../crm/universal/crm-item-get.md) method, passing `entityTypeId = 2` and the received `ID`
+
+## When to Use
+
+- open the history of data exchange between the selected deal and an external system in the application
+- show a form for sending the data of a specific contact to an external service
+
+For actions on the list as a whole, use [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md). To open the application from the element form, choose [CRM_XXX_DETAIL_TAB](./detail-tab.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
@@ -35,17 +49,17 @@ The widget is not displayed in the interface until the application installation 
 || `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
 |#
 
-### Where to Find It in the Interface
+### Where to Find It in the Interface {#interface}
 
 Open a CRM section in list view, click the menu button to the left of an element, and hover over *Bitrix24 Market*. The application item appears in this submenu.
 
 ![Context menu item in the deal list](./_images/CRM_DEAL_LIST_MENU.png "Context menu item in the deal list")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_LIST_MENU` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
+The example is shown for the `CRM_DEAL_LIST_MENU` placement.
 
 ```php
 
@@ -69,13 +83,11 @@ Array
 
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the placement’s own key.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -84,15 +96,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
-
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
-- activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
+A lead, deal, contact, company, estimate, new invoice, or custom object type item can be retrieved with the [crm.item.get](../../crm/universal/crm-item-get.md) method by passing the corresponding [entityTypeId](../../crm/data-types.md#object_type). For an activity, use [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md).
 
 The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_LIST_MENU` code, the type identifier is `183`
 
@@ -312,11 +316,11 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     	"HANDLER":   "https://your-domain.com/widgets/crm-list-menu-handler.php",
     	"TITLE":     "My deal menu item",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My deal menu item",
-    		},
     		"en": b24.Params{
     			"TITLE": "My deal menu item",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein Deal-Menüelement",
     		},
     	},
     })
@@ -338,7 +342,7 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
 || The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The item is not visible in the context menu of an element | Open the CRM section in list view and hover over the *Bitrix24 Market* item: the application item is displayed in this submenu ||
+|| The item is not visible in the context menu of an element | Check the path in the [Where to Find It in the Interface](#interface) section ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.

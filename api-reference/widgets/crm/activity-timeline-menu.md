@@ -1,4 +1,4 @@
-# Context Menu Item for CRM Activity in CRM_XXX_ACTIVITY_TIMELINE_MENU, CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU
+# Context Menu Item for a Timeline Record in CRM_XXX_ACTIVITY_TIMELINE_MENU, CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 
-The widget adds its own item to the context menu of an activity record in the timeline of a CRM object card: a [lead](../../crm/leads/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), or [custom object type](../../crm/universal/index.md).
+The widget adds an item to the context menu of a timeline record in a CRM object card: a [lead](../../crm/leads/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), or [custom object type](../../crm/universal/index.md).
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -21,28 +21,43 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Widget Placement
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method, passing a code from the [table](#codes) in `PLACEMENT`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. In the web interface, the application item appears in the *Extensions* submenu of a timeline record. Extensions are added only to records that have a context menu
+3. The user selects the item, and Bitrix24 opens the handler in a frame with the [call data](#handler-data)
+4. The handler can call REST on behalf of the current user with the token from `AUTH_ID`: for example, retrieve the CRM object by `ENTITY_ID` or the associated activity by `ASSOCIATED_ENTITY_ID`
+
+## When to Use
+
+- open external system data for a CRM object by `ENTITY_ID`
+- show the details of the associated activity, retrieved with [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md), if `ASSOCIATED_ENTITY_TYPE_ID` is `6`
+- link a history record to a record in an external system by `TIMELINE_ITEM_ID`, if it is passed
+
+For an action on the card as a whole, use the [top menu item](./detail-toolbar.md); for a button above the timeline, use [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md).
+
+## Widget Placement {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
-|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a [lead](../../crm/leads/index.md) ||
-|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an [estimate](../../crm/quote/index.md) ||
-|| `CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU` | Context menu item for [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for custom CRM object types. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_ACTIVITY_TIMELINE_MENU` ||
+|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a timeline record in a [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a timeline record in a [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for a timeline record in an [estimate](../../crm/quote/index.md) ||
+|| `CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU` | Context menu item for a timeline record in a [new invoice](../../crm/universal/invoice.md). The placement is available if new invoices are enabled ||
+|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for a timeline record in custom CRM object types. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_ACTIVITY_TIMELINE_MENU` ||
 |#
 
-### Where to Find It in the Interface
+### Where to Find It in the Interface {#interface}
 
-Open a CRM object card, find an activity record in the timeline, click *•••* in the lower right corner of the record, and hover over *Extensions*. The application item appears in this submenu.
+Open a CRM object card, find a timeline record with a context menu, click *•••* in the lower right corner of the record, and hover over *Extensions*. The application item appears in this submenu.
 
-![Context menu item for an activity in the deal card](./_images/CRM_DEAL_ACTIVITY_TIMELINE_MENU.png "Context menu item for an activity in the deal card")
+![Context menu item for a timeline record in the deal card](./_images/CRM_DEAL_ACTIVITY_TIMELINE_MENU.png "Context menu item for a timeline record in the deal card")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_ACTIVITY_TIMELINE_MENU` placement on an activity record.
+The example is shown for the `CRM_DEAL_ACTIVITY_TIMELINE_MENU` placement on a scheduled activity.
 
 ```php
 
@@ -66,6 +81,8 @@ Array
 
 ```
 
+`APPLICATION_SCOPE` contains the scopes of the example application. The placement itself is registered in the `crm` scope.
+
 After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 ```json
@@ -83,47 +100,41 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the identifiers of the object and of the timeline record.
+The context always contains the CRM object identifier in `ENTITY_ID`. The set of the remaining keys depends on the timeline record:
 
-The `ENTITY_ID`, `ASSOCIATED_ENTITY_ID`, and `ASSOCIATED_ENTITY_TYPE_ID` keys arrive for an activity record. The set of the remaining keys depends on the type of the timeline record the widget is opened on.
+- for a scheduled activity, `ASSOCIATED_ENTITY_ID` and `ASSOCIATED_ENTITY_TYPE_ID` may be passed, as in the example above
+- for a configurable history record, the context may also contain `TYPE_ID`, `TYPE_CATEGORY_ID`, and `TIMELINE_ITEM_ID`
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+Check that a key is present before using it. Keys without a value are not included in the context.
 
 #| 
 || **Parameter** | **Description** ||
 || **ENTITY_ID*** 
 [`string`](../../data-types.md) | The identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
-
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+To retrieve the object data, use the [crm.item.get](../../crm/universal/crm-item-get.md) method with the object identifier and its [type](../../crm/data-types.md#object_type).
 
 The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_ACTIVITY_TIMELINE_MENU` code, the type identifier is `183`
 
 ||
-|| **ASSOCIATED_ENTITY_ID*** 
-[`string`](../../data-types.md) | The identifier of the CRM activity for which the widget was opened.
-
-It can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
+|| **ASSOCIATED_ENTITY_ID**
+[`string`](../../data-types.md) | The identifier of the object associated with the timeline record. If it is an activity, retrieve it with the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method
 
 ||
-|| **ASSOCIATED_ENTITY_TYPE_ID*** 
-[`string`](../../data-types.md) | The identifier of the activity entity type.
+|| **ASSOCIATED_ENTITY_TYPE_ID**
+[`string`](../../data-types.md) | The identifier of the [associated object type](../../crm/data-types.md#object_type). For an activity, the value is `6`
 
 ||
-|| **TYPE_ID*** 
-[`string`](../../data-types.md) | The identifier of the event type.
+|| **TYPE_ID**
+[`string`](../../data-types.md) | The type of the history record in the timeline. Not passed for a scheduled activity
 
 ||
-|| **TYPE_CATEGORY_ID*** 
-[`string`](../../data-types.md) | The identifier of the timeline record type.
+|| **TYPE_CATEGORY_ID**
+[`string`](../../data-types.md) | The category of the history record in the timeline. Not passed for a scheduled activity
 
 ||
-|| **TIMELINE_ITEM_ID*** 
-[`string`](../../data-types.md) | The identifier of the timeline record.
+|| **TIMELINE_ITEM_ID**
+[`string`](../../data-types.md) | The identifier of the history record in the timeline. Not passed for a scheduled activity
 
 ||
 |#
@@ -341,11 +352,11 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     	"HANDLER":   "https://your-domain.com/widgets/crm-timeline-menu-handler.php",
     	"TITLE":     "My activity menu item",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My activity menu item",
-    		},
     		"en": b24.Params{
     			"TITLE": "My activity menu item",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein Aktivitäten-Menüelement",
     		},
     	},
     })
@@ -366,8 +377,6 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
-|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The item cannot be found on an activity record | The item is located in the *Extensions* submenu: click *•••* in the lower right corner of the record and hover over that item ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
