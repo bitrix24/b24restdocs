@@ -5,6 +5,8 @@
 ### November 23, 2026
 
 - Added CRM methods in REST 3.0: [SPA types](./api-reference/crm/rest-v3/smart-process-types/index.md) `crm.smartprocess.*`, item [change history and stage history](./api-reference/crm/rest-v3/history/index.md), the [CRM recycle bin](./api-reference/crm/rest-v3/recyclebin/index.md), item copying [crm.&lt;type&gt;.copy](./api-reference/crm/rest-v3/items/crm-entity-copy-rest-v3.md), item [calls](./api-reference/crm/rest-v3/activities/crm-entity-activity-call-list-rest-v3.md) and [Open Channel chats](./api-reference/crm/rest-v3/activities/crm-entity-activity-openline-list-rest-v3.md), and the custom field types directory [customfieldtype](./api-reference/crm/rest-v3/dictionaries/crm-dictionary-list-rest-v3.md#custom-field-types)
+- Added the [tasks.flow.Team.list](./api-reference/tasks/flow/tasks-flow-team-list.md) method: retrieves the employees of the flow team, and with the `withNavigation` parameter also pagination data
+- Added task template methods in REST 3.0: the template [tasks.template.*](./api-reference/tasks/template/index.md#rest-v3), its files, history, recurrence, and task creation from a template, the checklist [tasks.template.checklist.*](./api-reference/tasks/template/checklist/tasks-template-checklist-get-rest-v3.md), and template relations [tasks.template.relation.*](./api-reference/tasks/template/relation/index.md). The template fields are described on the [Task Template Fields v 3.0](./api-reference/tasks/template/fields-rest-v3.md) page
 
 ### November 19, 2026
 

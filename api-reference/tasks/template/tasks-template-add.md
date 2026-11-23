@@ -472,6 +472,7 @@ If saving the template is denied, the method returns `TEMPLATE_SAVE_ACCESS_DENIE
 
 ## Continue Learning
 
+- [{#T}](./tasks-template-add-rest-v3.md)
 - [{#T}](./tasks-template-fields.md)
 - [{#T}](./tasks-template-get.md)
 - [{#T}](./tasks-template-list.md)

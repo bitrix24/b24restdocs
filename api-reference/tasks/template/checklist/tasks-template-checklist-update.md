@@ -459,6 +459,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./tasks-template-checklist-item-update-rest-v3.md)
 - [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-get.md)

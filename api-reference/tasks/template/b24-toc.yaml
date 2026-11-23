@@ -5,19 +5,59 @@ items:
     href: index.md  
   - name: Task Template Fields  
     href: fields.md  
+  - name: Task Template Fields v 3.0  
+    href: fields-rest-v3.md  
   - name: Add Task Template  
     href: tasks-template-add.md  
+  - name: Add Task Template v 3.0  
+    href: tasks-template-add-rest-v3.md  
   - name: Update Task Template  
     href: tasks-template-update.md  
+  - name: Update Task Template v 3.0  
+    href: tasks-template-update-rest-v3.md  
   - name: Get Task Template  
     href: tasks-template-get.md  
+  - name: Get Task Template v 3.0  
+    href: tasks-template-get-rest-v3.md  
   - name: Get Task Template List  
     href: tasks-template-list.md  
+  - name: Get Task Template List v 3.0  
+    href: tasks-template-list-rest-v3.md  
+  - name: Copy Task Template v 3.0  
+    href: tasks-template-copy-rest-v3.md  
   - name: Delete Task Template  
     href: tasks-template-delete.md  
+  - name: Delete Task Template v 3.0  
+    href: tasks-template-delete-rest-v3.md  
   - name: Get Task Template Fields  
     href: tasks-template-fields.md  
+  - name: Get Task Template Permissions v 3.0  
+    href: tasks-template-access-get-rest-v3.md  
+  - name: Get Task Template CRM Items v 3.0  
+    href: tasks-template-crm-item-list-rest-v3.md  
+  - name: Get Task Template Files v 3.0  
+    href: tasks-template-file-list-rest-v3.md  
+  - name: Attach Files to Task Template v 3.0  
+    href: tasks-template-file-attach-rest-v3.md  
+  - name: Detach Files from Task Template v 3.0  
+    href: tasks-template-file-detach-rest-v3.md  
+  - name: Get Task Template Recurrence History v 3.0  
+    href: tasks-template-history-list-rest-v3.md  
+  - name: Get Task Template History Record Count v 3.0  
+    href: tasks-template-history-count-rest-v3.md  
+  - name: Enable or Disable Task Template Recurrence v 3.0  
+    href: tasks-template-replication-set-state-rest-v3.md  
+  - name: Save Template Form Defaults v 3.0  
+    href: tasks-template-state-set-rest-v3.md  
+  - name: Get Task Draft from Template v 3.0  
+    href: tasks-template-task-get-rest-v3.md  
+  - name: Create Task from Template v 3.0  
+    href: tasks-template-task-add-rest-v3.md  
   - name: Task Template Checklists  
     include:  
       path: checklist/b24-toc.yaml  
+      mode: link  
+  - name: Task Template Relations  
+    include:  
+      path: relation/b24-toc.yaml  
       mode: link  
