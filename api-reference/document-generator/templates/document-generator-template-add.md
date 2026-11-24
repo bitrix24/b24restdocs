@@ -40,18 +40,12 @@ The method creates templates only for the `rest` module: `moduleId` in the respo
 || **name***
 [`string`](../../data-types.md) | Template name, 1 to 100 characters ||
 || **file***
-[`file`](../../data-types.md#standart-types) | Template file in `.docx` format. Required if `fileId` is not passed.
+[`file`](../../data-types.md#standart-types) | Template file in `.docx` format.
 
 The file can be passed in three ways:
 - as a [Base64 String](../../files/how-to-upload-files.md#string) — the file name is not passed in this format
 - as an [Array](../../files/how-to-upload-files.md#array) `["file_name.docx","base64_content"]`
-- as a `multipart/form-data` file with the field name `file`
-
-If `fileId` is passed, the `file` parameter is not used ||
-|| **fileId**
-[`integer`](../../data-types.md) | Identifier of the template file in the document generator. Used instead of `file` to create a template based on the file of an existing template.
-
-You can retrieve the identifier from the `fileId` field using the [documentgenerator.template.list](./document-generator-template-list.md) method. A Drive file identifier does not work here: it is a different identifier ||
+- as a `multipart/form-data` file with the field name `file` ||
 || **numeratorId***
 [`integer`](../../data-types.md) | Identifier of the numerator.
 
@@ -558,7 +552,8 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an object. The passed value is shown in curly braces ||
-|| `400` | `0` | Missing file content | Neither `file` nor `fileId` provided ||
+|| `400` | `FILE_ID_NOT_SUPPORTED` | FILE_ID_NOT_SUPPORTED | `fileId` was passed in `fields`. The template file is passed only in `file` ||
+|| `400` | `0` | Invalid file content | `file` is not passed, or an empty value was passed ||
 || `400` | `0` | Could not save file | Parameter `file` passed in an invalid format, for example an array without the file content ||
 || `400` | `0` | Empty required fields: name, numeratorId, region | Required fields not provided. The error text lists only the missing fields out of `name`, `numeratorId`, `region` ||
 || `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier. | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||

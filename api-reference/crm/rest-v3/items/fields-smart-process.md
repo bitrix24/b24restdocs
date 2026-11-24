@@ -15,7 +15,7 @@ These fields belong to REST 3.0 methods. The call specifics and response format 
 
 {% endnote %}
 
-SPA item fields are returned by the [`crm.smartprocess<entityTypeId>.get`](./crm-entity-get-rest-v3.md) and [`crm.smartprocess<entityTypeId>.list`](./crm-entity-list-rest-v3.md) methods and accepted by the [`crm.smartprocess<entityTypeId>.add`](./crm-entity-add-rest-v3.md) and [`crm.smartprocess<entityTypeId>.update`](./crm-entity-update-rest-v3.md) methods. The method name includes the SPA type ID `entityTypeId`, for example, `crm.smartprocess1038.get`. Type IDs and settings are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method.
+SPA item fields are returned by the [`crm.smartprocess<entityTypeId>.get`](./crm-entity-get-rest-v3.md) and [`crm.smartprocess<entityTypeId>.list`](./crm-entity-list-rest-v3.md) methods and accepted by the [`crm.smartprocess<entityTypeId>.add`](./crm-entity-add-rest-v3.md) and [`crm.smartprocess<entityTypeId>.update`](./crm-entity-update-rest-v3.md) methods. The method name includes the SPA type ID `entityTypeId`, for example, `crm.smartprocess1038.get`. Type IDs and settings are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The set of fields depends on the SPA type settings: without pipelines, an item has no `categoryId`, and without stages, it has no `stageId` and other stage fields. For such fields, the [SPA Object](#item) table specifies which type setting is required. The list of fields of a specific type is returned by the [`crm.smartprocess<entityTypeId>.field.list`](../fields/crm-entity-field-list-rest-v3.md) method.
 
@@ -516,7 +516,7 @@ Field `currency`.
 
 ## Custom Fields {#userfields}
 
-Custom SPA fields are named `UF_CRM_<type id>_<code>`, for example, `UF_CRM_3_1628508893`. The name contains the type ID `id`, not `entityTypeId`: the field in the example belongs to the type with `id = 3` and `entityTypeId = 174`. Both IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. Custom fields are passed and requested by name in the same way as standard fields. The list of custom fields of the type is returned by the [`crm.smartprocess<entityTypeId>.field.custom.list`](../fields/crm-entity-field-custom-list-rest-v3.md) method.
+Custom SPA fields are named `UF_CRM_<type id>_<code>`, for example, `UF_CRM_3_1628508893`. The name contains the type ID `id`, not `entityTypeId`: the field in the example belongs to the type with `id = 3` and `entityTypeId = 174`. `entityTypeId` is also returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method, while `id` is returned only by the previous version [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. Custom fields are passed and requested by name in the same way as standard fields. The list of custom fields of the type is returned by the [`crm.smartprocess<entityTypeId>.field.custom.list`](../fields/crm-entity-field-custom-list-rest-v3.md) method.
 
 Each custom field has a paired `UF_CRM_…_data` field, which is read-only and requested in `select`. It contains the value in several representations:
 
@@ -529,6 +529,7 @@ For a multiple custom field, `UF_CRM_…_data` is an array of such objects.
 
 ## Continue Learning
 
+- [{#T}](../smart-process-types/crm-smart-process-get-rest-v3.md)
 - [{#T}](./crm-entity-add-rest-v3.md)
 - [{#T}](./crm-entity-update-rest-v3.md)
 - [{#T}](./crm-entity-get-rest-v3.md)

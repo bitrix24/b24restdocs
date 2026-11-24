@@ -15,15 +15,27 @@ The `CRM_REQUISITE_AUTOCOMPLETE` point connects an application handler to the se
 
 The embedding point code is passed in the `PLACEMENT` parameter of the [placement.bind](../../placement-bind.md) method.
 
-The general workflow is described in the [Autofilling details in the CRM card](./index.md) overview.
-
 {% note info "" %}
 
 The handler will not be available in the search source selection interface until the application installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
-## Where the Widget Is Embedded
+## How the Placement Works
+
+1. The application registers the handler with the [placement.bind](../../placement-bind.md) method using the `CRM_REQUISITE_AUTOCOMPLETE` code. The method works only on behalf of an application; the placement cannot be registered with a webhook. The widget can be registered by an administrator or by an employee with the permission to create applications
+2. The user opens the [search field](#codes) and enters at least three characters. If several sources are available, the user selects the application source
+3. Bitrix24 loads the handler in a hidden frame and passes the search string in `PLACEMENT_OPTIONS`
+4. The handler can call REST on behalf of the current user with the token from `AUTH_ID`. The application returns the options with the `crmShowFoundEntities` command, and after an option is selected, it receives the `onCrmEntityIsNeedToCreate` event and passes the fields to fill in with the `crmShowCreatedEntity` command
+
+## When to Use
+
+- find a company by its tax ID in an external directory
+- fill in client details from an accounting system
+
+To search for a bank in the details form, use [CRM_BANK_DETAIL_AUTOCOMPLETE](./bank-detail-autocomplete.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #|
 || **Embedding Point Code** | **Location** ||
@@ -32,13 +44,13 @@ The handler will not be available in the search source selection interface until
 
 ### Where to Find It in the Interface
 
-Open a company or contact card and go to the *Details* field. The handler is connected to the search in this field.
+Open a company or contact card and go to the *Details* field. The handler is connected to the search in this field. Enter at least three characters to start the search.
 
-If only one search source is available, its name is shown as a hint inside the field. If there are several sources, they are offered in a list below the field as you type a query. The application handler appears in this list under the name from the `TITLE` parameter.
+If only one search source is available, its name is shown as a hint inside the field. If there are several sources, they are offered in a list below the field as you type a query. The application handler appears in this list under the name for the current language from `LANG_ALL`; if `LANG_ALL` is not filled in, `TITLE` is used.
 
 ![Application handler in the list of details search sources](./_images/CRM_REQUISITE_AUTOCOMPLETE.png "Application handler in the list of details search sources")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -71,11 +83,13 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 }
 ```
 
+`APPLICATION_SCOPE` lists the scopes of the application from the example. The placement itself is registered in the `crm` scope.
+
 {% include notitle [standard data description](../../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call. Along with the universal `URI` key, the context carries the key of the placement itself.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -93,7 +107,7 @@ The placement supports the `OPTIONS` parameter of the [placement.bind](../../pla
 || **Parameter**
 `type` | **Description** ||
 || **countries**
-[`string`](../../../data-types.md) | Country identifiers separated by commas without spaces. If the parameter is not passed, the handler is available to all countries for which the search field is open.
+[`string`](../../../data-types.md) | Positive numeric country identifiers without leading zeros, separated by commas without spaces, for example `1,3`. If the parameter is missing or the string does not match this format, no country restriction is applied.
 
 Country identifiers can be obtained via the [crm.requisite.preset.countries](../../../crm/requisites/presets/crm-requisite-preset-countries.md) ||
 |#
@@ -101,6 +115,8 @@ Country identifiers can be obtained via the [crm.requisite.preset.countries](../
 ## How to Return Found Options
 
 Pass the found options using the [BX24.placement.call](../../ui-interaction/bx24-placement-call.md) command with the name `crmShowFoundEntities`.
+
+Pass the result within 20 seconds after the hidden handler frame is created. If the response does not arrive in time, the search source reports an error.
 
 #|
 || **Field**
@@ -148,15 +164,15 @@ The data of the selected option is passed to the `onCrmEntityIsNeedToCreate` eve
 || **appSid**
 [`string`](../../../data-types.md) | Application session identifier in which the selected option was found ||
 || **data**
-[`object`](../../../data-types.md) | Data of the selected option from the list that the application passed via `crmShowFoundEntities` ||
+[`object`](../../../data-types.md) | The selected option: `id` is the identifier from the application response, `title` is the `name` value, `attributes` contains the contact data. The object also contains service fields of the interface ||
 |#
 
-In the `fields` object, pass the detail fields that should be populated in the CRM card. The composition of the object depends on the data that the application retrieved from its source.
+In the `fields` object, pass the detail fields that should be populated in the CRM card. The available fields are described in the [requisite fields reference](../../../crm/requisites/universal/crm-requisite-fields.md).
 
 ```javascript
 BX24.placement.bindEvent('onCrmEntityIsNeedToCreate', function (eventData) {
     const selected = eventData.data;
-    const selectedTitle = selected.title || selected.name;
+    const selectedTitle = selected.title;
 
     BX24.placement.call(
         'crmShowCreatedEntity',
@@ -178,11 +194,11 @@ Fields of the `crmShowCreatedEntity` command:
 || **Field**
 `type` | **Description** ||
 || **entityType**
-[`string`](../../../data-types.md) | Created object type. For a company, pass `company`, for a contact — `contact` ||
+[`string`](../../../data-types.md) | Option type on the application side, for example `company` or `contact` ||
 || **id**
-[`string`](../../../data-types.md) | Created object identifier on the application side ||
+[`string`](../../../data-types.md) | Selected option identifier on the application side ||
 || **title**
-[`string`](../../../data-types.md) | Created object name ||
+[`string`](../../../data-types.md) | Selected option name ||
 || **fields**
 [`object`](../../../data-types.md) | Requisite fields to be inserted into the CRM card ||
 |#
@@ -443,10 +459,10 @@ Fields of the `crmShowCreatedEntity` command:
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || The handler is registered but does not appear in the list of search sources | Complete the [application installation](../../../../settings/app-installation/installation-finish.md) and check that the `CRM_REQUISITE_AUTOCOMPLETE` code is passed in `PLACEMENT` ||
 || The handler is unavailable for the required country | Check the value of `OPTIONS[countries]`. The string must contain country identifiers separated by commas without spaces ||
-|| The handler is not called while the user is typing the query | Bitrix24 calls the external search when the search string contains at least three characters ||
-|| The handler does not find the search string in the request body | `searchQuery` arrives inside `PLACEMENT_OPTIONS` as a separate JSON string, not as a separate parameter ||
+|| The handler is not called while the user is typing the query | Enter at least three characters in the search string ||
+|| The handler does not find the search string in the request body | Parse the `PLACEMENT_OPTIONS` JSON string and read the value of the `searchQuery` key: it is not passed as a separate request parameter ||
 || Found options are not displayed | Pass the array of options to the `data` field of the `crmShowFoundEntities` command ||
-|| The option is not filled into the card after selection | Subscribe to `onCrmEntityIsNeedToCreate` and call `crmShowCreatedEntity` after creating the object ||
+|| The option is not filled into the card after selection | Subscribe to `onCrmEntityIsNeedToCreate` and pass the requisite fields with the `crmShowCreatedEntity` command ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../../placement-bind.md) page.

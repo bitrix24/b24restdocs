@@ -305,6 +305,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./tasks-template-delete-rest-v3.md)
 - [{#T}](./tasks-template-add.md)
 - [{#T}](./tasks-template-update.md)
 - [{#T}](./tasks-template-get.md)

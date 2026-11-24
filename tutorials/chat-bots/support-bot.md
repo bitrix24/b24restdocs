@@ -1,5 +1,9 @@
 # How to Create a Support Channel via Bitrix24 Network Open Channel
 
+> Scope: [`imopenlines`](../../api-reference/scopes/permissions.md)
+>
+> Who can execute the methods: any user
+
 {% note tip "" %}
 
 Choose a tool for developing with an AI agent:
@@ -14,18 +18,14 @@ Using a Bitrix24 Network Open Channel, you can organize support for application 
 The scenario links two Bitrix24 instances:
 
 - Support Bitrix24 — the "Bitrix24 Network" channel is connected here and the Open Channel is configured. This is where the connector code is retrieved.
-- User Bitrix24 — the application is installed here, which performs both REST calls and sends the welcome message to the user.
+- User Bitrix24 — the application is installed here, which calls both methods and sends the welcome message to the user.
 
 The scenario consists of two steps.
 
 1. Connect the Open Channel using the [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) method.
 2. Send a welcome message to the user using the [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md) method.
 
-Both methods use the same connector code. The network bot identifier from step 1 is not required to send the message.
-
-> Scope: [`imopenlines`](../../api-reference/scopes/permissions.md)
->
-> Who can execute the methods: any user
+The network bot identifier from step 1 is not required to send the message.
 
 ## Prepare the Application and Open Channel
 
@@ -36,7 +36,10 @@ In the user's Bitrix24, prepare a local application without a user interface.
 1. Prepare a handler address accessible from the internet, for example `https://example.com/handler`
 2. Create a [local application with an installation handler](../../settings/app-installation/local-apps/installation-callback.md): leave the "Menu item text" fields empty and the "Application completes the installation itself" option disabled.
 3. In the "Initial installation path" field, specify the handler address and grant the application the [`imopenlines`](../../api-reference/scopes/permissions.md) permission.
-4. In the handler, retrieve the authorization data `auth` and [initialize the SDK](./index.md#sdk-init).
+
+The handler is accessible from the internet, so before using the tokens, verify them with the `app.info` method as described in the [installation handler instructions](../../settings/app-installation/local-apps/installation-callback.md). Store the tokens only on the server and do not write them to the log.
+
+All code fragments below are parts of this installation handler: run them in order after initializing the SDK.
 
 ### Configure the Open Channel
 
@@ -50,14 +53,16 @@ Perform the following actions in the support Bitrix24.
 ### Prepare the Values
 
 - `connectorCode` — the connector code from the "Code" field. This is a 32-character string.
-- `userId` — the user identifier from `auth[user_id]` in the application installation data.
+- `userId` — the user identifier from `auth[user_id]` in the application installation data. To message another employee of the user's Bitrix24, pass their identifier.
 - `message` — non-empty welcome text.
+
+Usually, one message can be sent to a user on behalf of the line every 7 days. The limit does not apply with an NFR license or in the on-premise version with the `IMOPENLINES_NETWORK_LIMIT` constant defined. To repeat the scenario check, choose a different user.
 
 The `CODE` parameter contains only the connector code. In the examples below, the SDK client substitutes the OAuth token. In a direct REST request without the SDK, the token is passed as a separate parameter `auth` or `access_token`, rather than within the method parameters.
 
 ### Initialize the SDK
 
-Prepare the initialization functions following the [event data processing example](./index.md#sdk-init). In the installation handler, create an SDK client from the authorization data `auth`.
+Prepare the initialization functions following the [event data processing example](./index.md#sdk-init). The installation event arrives as a POST request in the `application/x-www-form-urlencoded` format. In the installation handler, retrieve `auth` from it and create an SDK client. The `unflatten` function for Python is provided in the "Receive the Event in the Handler" section of the same page.
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
@@ -66,7 +71,9 @@ Prepare the initialization functions following the [event data processing exampl
 - JS
 
     ```js
-    const $b24 = makeClient(auth)
+    // Express with app.use(express.urlencoded({ extended: true }))
+    const auth = req.body.auth || {}
+    const $b24 = makeClient(oauthParamsFromEvent(auth))
     ```
 
 - Python
@@ -74,6 +81,8 @@ Prepare the initialization functions following the [event data processing exampl
     ```python
     from b24pysdk.errors import BitrixAPIError
 
+    # Flask: unflatten collects keys like auth[user_id] into a nested dictionary
+    auth = unflatten(request.form).get("auth", {})
     client, token = make_client(auth)
     ```
 
@@ -81,15 +90,16 @@ Prepare the initialization functions following the [event data processing exampl
 - PHP
 
     ```php
-    $b24 = makeServiceBuilder($request);
+    $auth = (array)($_POST['auth'] ?? []);
+    $b24 = makeServiceBuilder($auth);
     ```
 {% endlist %}
 
-The PHP client initialization example specifies the scope `imbot,im,task`. For the support scenario, replace it with `imopenlines`.
+The PHP client initialization example specifies the scope `imbot,task`. For the support scenario, replace it with `imopenlines`.
 
 ## 1. Connect an Open Channel
 
-Pass the connector code into the `CODE` parameter of the [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) method. In the examples, replace the demonstration value `connectorCode` with your own code. If the line is already connected, the method will return the identifier of the existing network bot.
+Pass the connector code into the `CODE` parameter of the [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) method. In the examples, replace the demonstration value `connectorCode` with your own code. If the line is already connected, the method will return the identifier of the existing network bot. If the connection fails, stop the handler: without a network bot, the message in step 2 will not be sent.
 
 {% list tabs %}
 
@@ -109,8 +119,9 @@ Pass the connector code into the `CODE` parameter of the [imopenlines.network.jo
             throw new Error(response.getErrorMessages().join('; '))
         }
     } catch (error) {
-        // API, transport or SDK error
+        // API, transport or SDK error — skip step 2
         console.error(error)
+        return
     }
     ```
 
@@ -125,6 +136,7 @@ Pass the connector code into the `CODE` parameter of the [imopenlines.network.jo
         ).response
     except BitrixAPIError as error:
         print(f"Open line connection error: {error}")
+        return
     ```
 
 
@@ -139,6 +151,7 @@ Pass the connector code into the `CODE` parameter of the [imopenlines.network.jo
         ]);
     } catch (Throwable $e) {
         echo $e->getMessage();
+        return;
     }
     ```
 {% endlist %}
@@ -162,7 +175,7 @@ Pass the same connector code, the User ID, and the text to the [imopenlines.netw
 - JS
 
     ```js
-    const connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2'
+    // connectorCode — from step 1
     const userId = Number(auth.user_id)
     const message = 'Thanks for installing! If you have any questions, write to this chat. Have a nice day! :)'
 
@@ -189,7 +202,7 @@ Pass the same connector code, the User ID, and the text to the [imopenlines.netw
 - Python
 
     ```python
-    connector_code = "a588e1a88baaf301b9d0b0b33b1eefc2"
+    # connector_code — from step 1
     user_id = int(auth["user_id"])
     message = "Thanks for installing! If you have any questions, write to this chat. Have a nice day! :)"
 
@@ -207,8 +220,8 @@ Pass the same connector code, the User ID, and the text to the [imopenlines.netw
 - PHP
 
     ```php
-    $connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2';
-    $userId = (int)$request->request->all('auth')['user_id'];
+    // $connectorCode — from step 1
+    $userId = (int)$auth['user_id'];
     $message = 'Thanks for installing! If you have any questions, write to this chat. Have a nice day! :)';
 
     try {
@@ -233,6 +246,8 @@ Successful response:
 
 ## Verify the Result
 
+Deploy the handler at the address from the "Initial installation path" field and click *Reinstall* in the application form — only an administrator can do this. Bitrix24 sends the installation request, and the handler runs both steps. To compare the responses, log the `result` value of each call during the check, but not the `auth` data.
+
 1. In the response of the [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) method, the `result` field must contain the network bot ID.
 2. In the response of the [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md) method, the `result` field must contain the value `true`.
 3. The User whose identifier was passed must see the welcome message from the line in the messenger.
@@ -245,7 +260,7 @@ If the Open Channel failed to connect or the message was not sent, determine whi
 
 | Error Code    | What to Check and Fix                                                                           |
 | ------------- | ----------------------------------------------------------------------------------------------- |
-| `CODE`        | Copy the "Code" field value from the connector page again. The code must contain 32 characters. |
+| `CODE`        | Copy the "Code" field value from the connector page again.                                     |
 | `IMBOT_ERROR` | Contact the administrator: module `imbot` is not installed.                                     |
 
 ### Open Channel Fails to Connect
@@ -254,8 +269,9 @@ Check the error code of the [imopenlines.network.join](../../api-reference/imope
 
 | Error Code       | What to Check and Fix                                                                                |
 | ---------------- | ---------------------------------------------------------------------------------------------------- |
-| `LINE_NOT_FOUND` | In Bitrix24 Helpdesk, ensure that the "Bitrix24 Network" connector is connected to the Open Channel. |
-| `INACTIVE`       | In Bitrix24 Helpdesk, ensure that the Open Channel is active.                                        |
+| `LINE_NOT_FOUND` | In the support Bitrix24, ensure that the "Bitrix24 Network" connector is connected to the Open Channel. |
+| `INACTIVE`       | In the support Bitrix24, ensure that the Open Channel is active.                                        |
+| `NOT_FOUND`      | The code belongs to a Bitrix24 service line and cannot be connected via REST. Use the code of your own Open Channel. |
 
 After fixing, call the [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) method again.
 
@@ -266,14 +282,14 @@ Check the error code of the [imopenlines.network.message.add](../../api-referenc
 | Error Code           | What to Check and Fix                                                                                            |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `WRONG_AUTH_TYPE`    | Use the OAuth token from the application installation data instead of session authorization.                     |
-| `NOT_FOUND`          | In Bitrix24 Helpdesk, ensure that the Open Channel is active and the connector is connected.                     |
+| `NOT_FOUND`          | No network bot with this code is connected in the user's Bitrix24, or the code belongs to a Bitrix24 service line. Make sure you use the code of your own Open Channel, and complete step 1 with the `imopenlines.network.join` method. |
 | `USER_ID_EMPTY`      | Pass the User identifier from `auth[user_id]` in the `USER_ID` parameter.                                        |
-| `USER_MESSAGE_LIMIT` | A message has already been sent to this User this week. Retry later or check the scenario with a different User. |
+| `USER_MESSAGE_LIMIT` | A message has already been sent to this User on behalf of this line within the last 7 days. Retry 7 days after the previous message or check the scenario with a different User. |
 | `MESSAGE_EMPTY`      | Pass non-empty text in the `MESSAGE` parameter.                                                                  |
-| `WRONG_REQUEST`      | Check the values of parameters `CODE`, `USER_ID`, and `MESSAGE`.                                                 |
+| `WRONG_REQUEST`      | The parameters passed validation, but the message was not added. Check the `USER_ID` value and repeat step 2.    |
 
 ## Continue Learning
 
-- [Connect an external Open Channel to the portal using imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md)
+- [Connect an external Open Channel using imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md)
 - [Send a message to a User on behalf of an Open Channel using imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md)
 - [Open Channels: Overview of Methods and Events](../../api-reference/imopenlines/openlines/index.md)

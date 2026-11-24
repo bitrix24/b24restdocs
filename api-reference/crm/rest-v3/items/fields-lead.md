@@ -388,7 +388,7 @@ Fields `contact`, `contacts`, `company`, `related<type code>`.
 
 ### Phone Numbers, Email, Websites, and Messengers {#multifield}
 
-Fields `phone`, `email`, `web`, `im`. When writing data, pass `valueTypeId` and `value`, both are required. If the value type is not in the reference list, the method returns the error 'Field value is not one of the possible values'.
+Fields `phone`, `email`, `web`, `im`. When writing data, pass `value` and, if needed, `valueTypeId`. If the value type is not in the reference list, the method returns the error 'Field value is not one of the possible values'.
 
 #|
 || **Name**
@@ -396,7 +396,7 @@ Fields `phone`, `email`, `web`, `im`. When writing data, pass `valueTypeId` and 
 || **id**
 [`integer`](../../../data-types.md) | Value ID. Assigned when writing data; when the list is replaced, the values receive new IDs ||
 || **valueTypeId**
-[`string`](../../../data-types.md) | Value type, for example, `WORK` or `MOBILE` for a phone number ||
+[`string`](../../../data-types.md) | Value type, for example, `WORK` or `MOBILE` for a phone number. If it is not passed when writing data, the type is taken from the field's "Default type" setting in the card. If the setting is not configured, the type is `WORK`, or `OTHER` for `im` ||
 || **valueType**
 [`object`](../../../data-types.md) | Value type with its name: `id`, `name` — full name, `nameShort` — short name. Read-only ||
 || **value**

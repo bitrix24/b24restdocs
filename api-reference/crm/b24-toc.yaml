@@ -9,6 +9,10 @@ items:
     include:
       path: rest-v3/items/b24-toc.yaml
       mode: link
+  - name: SPA Types
+    include:
+      path: rest-v3/smart-process-types/b24-toc.yaml
+      mode: link
   - name: Field Management
     include:
       path: rest-v3/fields/b24-toc.yaml
@@ -36,6 +40,14 @@ items:
   - name: Activities
     include:
       path: rest-v3/activities/b24-toc.yaml
+      mode: link
+  - name: Change History
+    include:
+      path: rest-v3/history/b24-toc.yaml
+      mode: link
+  - name: CRM Recycle Bin
+    include:
+      path: rest-v3/recyclebin/b24-toc.yaml
       mode: link
   - name: Directories
     include:

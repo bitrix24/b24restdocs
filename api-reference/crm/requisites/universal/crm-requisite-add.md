@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "add" access permission for the contact or company that owns the requisite
+> Who can execute the method: a user with "add" access permission for contacts or companies and "edit" access permission for the contact or company that owns the requisite
 
 {% note warning "DEPRECATED" %}
 
@@ -602,7 +602,7 @@ HTTP status: **400**
 || Empty value | ENTITY_ID is not defined or invalid. | Identifier of the parent object is not defined or has an invalid value ||
 || Empty value | PRESET_ID is not defined or invalid. | Identifier of the details template is not defined or has an invalid value ||
 || Empty value | Entity not found. | The object for which the details are being created was not found ||
-|| Empty value | Access denied. | Insufficient access permissions to add the details ||
+|| Empty value | Access denied. | No permission to add objects of the owner's type or to edit the requisite owner itself ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

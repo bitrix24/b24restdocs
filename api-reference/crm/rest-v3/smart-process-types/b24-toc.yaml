@@ -1,0 +1,17 @@
+title: SPA Types
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create an SPA Type
+    href: crm-smart-process-add-rest-v3.md
+  - name: Update an SPA Type
+    href: crm-smart-process-update-rest-v3.md
+  - name: Get an SPA Type
+    href: crm-smart-process-get-rest-v3.md
+  - name: Get a List of SPA Types
+    href: crm-smart-process-list-rest-v3.md
+  - name: Get an SPA Type Field Description
+    href: crm-smart-process-field-get-rest-v3.md
+  - name: Get SPA Type Field Descriptions
+    href: crm-smart-process-field-list-rest-v3.md

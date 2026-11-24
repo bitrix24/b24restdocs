@@ -48,7 +48,7 @@ You can obtain it when [creating a new entry](./task-elapsed-item-add.md) or by 
 || **Name**
 `type` | **Description** ||
 || **SECONDS***
-[`integer`](../../data-types.md) | Amount of time spent in seconds ||
+[`integer`](../../data-types.md) | Amount of time spent in seconds. The method does not accept a negative value and returns the `0x000008` error ||
 || **COMMENT_TEXT**
 [`string`](../../data-types.md) | Comment text ||
 || **CREATED_DATE**
@@ -349,7 +349,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Internal Code** | **Description** ||
 || `ERROR_CORE` | `0x000004` | The action is not allowed. Only the entry author or an administrator can update the entry ||
-|| `ERROR_CORE` | `0x000008` | Failed to update the entry ||
+|| `ERROR_CORE` | `0x000008` | Failed to update the entry, for example, a negative value was passed in `SECONDS` ||
 || `ERROR_CORE` | `0x000100` | A required parameter was not passed, an invalid type was specified, or an unsupported field was passed ||
 || `ERROR_CORE` | `0x000200` | The task or entry was not found or is unavailable ||
 |#

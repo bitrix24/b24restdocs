@@ -1,0 +1,23 @@
+title: Task Template Relations
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Child Templates v 3.0
+    href: tasks-template-relation-child-add-rest-v3.md
+  - name: Unlink Child Templates v 3.0
+    href: tasks-template-relation-child-delete-rest-v3.md
+  - name: Get Child Template IDs v 3.0
+    href: tasks-template-relation-child-ids-rest-v3.md
+  - name: Get Child Template List v 3.0
+    href: tasks-template-relation-child-list-rest-v3.md
+  - name: Get Templates with Child Templates by IDs v 3.0
+    href: tasks-template-relation-child-list-by-ids-rest-v3.md
+  - name: Link Tasks to Template v 3.0
+    href: tasks-template-relation-related-add-rest-v3.md
+  - name: Unlink Tasks from Template v 3.0
+    href: tasks-template-relation-related-delete-rest-v3.md
+  - name: Get Template Related Task List v 3.0
+    href: tasks-template-relation-related-list-rest-v3.md
+  - name: Get Template Related Tasks by IDs v 3.0
+    href: tasks-template-relation-related-list-by-ids-rest-v3.md

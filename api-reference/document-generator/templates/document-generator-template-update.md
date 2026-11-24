@@ -45,9 +45,7 @@ Pass only the fields you need to change: the other fields keep their current val
 The file can be passed in three ways:
 - as a [Base64 String](../../files/how-to-upload-files.md#string) — the file name is not passed in this format
 - as an [Array](../../files/how-to-upload-files.md#array) `["file_name.docx","base64_content"]`
-- as a `multipart/form-data` file with the field name `file`
-
-The method does not accept the `fileId` parameter: if you pass it, the value is ignored ||
+- as a `multipart/form-data` file with the field name `file` ||
 || **numeratorId**
 [`integer`](../../data-types.md) | Identifier of the numerator.
 
@@ -527,6 +525,9 @@ HTTP Status: **400**
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an object. The passed value is shown in curly braces ||
 || `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `FILE_ID_NOT_SUPPORTED` | FILE_ID_NOT_SUPPORTED | `fileId` was passed in `fields`. The template file is passed only in `file` ||
+|| `400` | `0` | Missing file content | `null` was passed in `file` ||
+|| `400` | `0` | Invalid file content | An empty string or an array without file content was passed in `file` ||
 || `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier. | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
 || `400` | `BX_EMPTY_REQUIRED` | The field NAME is required. | The `name` field contains an empty string ||
 || `400` | `BX_INVALID_VALUE` | The length of "NAME" should not exceed 100 characters. | The `name` value is longer than 100 characters ||

@@ -40,6 +40,7 @@ The `crm.dictionary.<directory>.get` method returns a single CRM directory value
 || CRM object types | `crm.dictionary.entitytype.get` ||
 || Stage groups | `crm.dictionary.stagesemantic.get` ||
 || Activity providers | `crm.dictionary.activityprovider.get` ||
+|| Custom field types | `crm.dictionary.customfieldtype.get` ||
 |#
 
 The method name is written in lowercase: `crm.dictionary.dealtype.get`, not `crm.dictionary.dealType.get`. If the name is written in a different case or contains an unknown directory, the method returns the ["Method Not Found"](#method-not-found) error.
@@ -63,7 +64,9 @@ If the parameter is not passed or an empty array is passed, the method returns a
 
 In [CRM value directories](./crm-dictionary-list-rest-v3.md#crm-values), that is, the directories whose values can be changed, for example, `dealtype` or `source`, the ID is case-insensitive: `sale` finds `SALE`. In the other directories, pass the ID in the same case as in the response of the [crm.dictionary.&lt;directory&gt;.list](./crm-dictionary-list-rest-v3.md) method.
 
-The `entitytype` directory contains no SPAs. For an SPA type ID, for example, `1038`, the `crm.dictionary.entitytype.get` method returns the ["Value Not Found"](#not-found) error. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method.
+In the [`customfieldtype`](./crm-dictionary-list-rest-v3.md#custom-field-types) directory, the ID is written in lowercase: `money` finds the "Money" type, but `MONEY` does not. For types that are not in the directory, for example, `enumeration` or `file`, the method returns the ["Value Not Found"](#not-found) error.
+
+The `entitytype` directory contains no SPAs. For an SPA type ID, for example, `1038`, the `crm.dictionary.entitytype.get` method returns the ["Value Not Found"](#not-found) error. SPA type IDs are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 ## Code Examples
 

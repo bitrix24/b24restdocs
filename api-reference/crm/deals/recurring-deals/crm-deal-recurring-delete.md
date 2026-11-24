@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "delete" access permission for deals
+> Who can execute the method: a user with "delete" access permission for the template deal in its pipeline
 
 The method `crm.deal.recurring.delete` removes an existing setting for a recurring deal template. It is suitable when you need to delete the record of a recurring deal template if the associated deal no longer exists.
 
@@ -276,9 +276,9 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `id is not defined or invalid` | The `id` parameter has been passed with an empty or incorrect value ||
 || `Recurring is not allowed` | Recurring deals are not available in Bitrix24 ||
-|| `Recurring deal is not found` | The recurring deal template was not found ||
+|| `Recurring deal is not found` | The recurring deal template settings were not found, or the linked template deal does not exist ||
 || `Deleting is impossible. Connected recurring deal exists` | Cannot delete the setting while a related deal template exists ||
-|| `Access denied` | Insufficient permissions to delete deals ||
+|| `Access denied` | No permission to delete the template deal in its pipeline ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

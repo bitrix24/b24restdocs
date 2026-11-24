@@ -530,6 +530,8 @@ HTTP status: **400**
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not provided as an object ||
 || `400` | `0` | Template was not found | Template with the specified `id` not found ||
+|| `400` | `0` | Missing file content | `null` was passed in `fields.file` ||
+|| `400` | `0` | Invalid file content | An empty string or an array without file content was passed in `fields.file` ||
 || `400` | `0` | Could not save file | Failed to save the template file ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
 || `400` | `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||

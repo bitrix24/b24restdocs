@@ -305,6 +305,7 @@ HTTP Status: **400**
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` is missing ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type. The parameter number and name in the message indicate which value is incorrect ||
 || `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Checklist item not found or not accessible; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | The `TASKID` task has no item with the `ITEMID` identifier ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Delete item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
 |#
 

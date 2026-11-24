@@ -38,7 +38,7 @@ An additional view is a set of card sections and fields with a name and a list o
 || SPA | `crm.smartprocess<entityTypeId>.detailpagelayout.add`, for example, `crm.smartprocess1038.detailpagelayout.add` ||
 |#
 
-For an SPA, the method name includes its type ID `entityTypeId`. Type IDs can be retrieved with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. Card view methods are available for an SPA regardless of the type settings. My company has no such methods.
+For an SPA, the method name includes its type ID `entityTypeId`. Type IDs can be retrieved with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Card view methods are available for an SPA regardless of the type settings. My company has no such methods.
 
 The method name is written in lowercase: `crm.deal.detailpagelayout.add`, not `crm.deal.detailPageLayout.add`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -640,7 +640,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.detailpagelayout.add`. My company has no card view methods. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.detailpagelayout.add`. My company has no card view methods. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -62,6 +62,8 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `=%` and `%=` — LIKE, the `%` character must be passed in the value, for example `"mol%"`
 - `!=%` and `!%=` — NOT LIKE, the `%` character must be passed in the value
 
+Pass dates in ISO 8601 format — `2026-11-01` or `2026-11-01T10:00:00+01:00`. The method does not accept a value in another format, for example `01.11.2026`, and returns the `INVALID_ARG_VALUE` error.
+
 The method always adds its own conditions to the filter and ignores the passed values of these keys. With `=orderId`, it takes the shipments only of those orders that are linked to the CRM object. With `=system` and `!deliveryId`, it discards system shipments and shipments without a delivery service. The method applies the remaining conditions together with its own, and they can only narrow the selection.
 
 ## Code Examples
@@ -419,6 +421,7 @@ HTTP status: **400**
 || `400` | `100` | Could not find value for parameter {entityTypeId} | The required parameter `entityTypeId` is not provided ||
 || `400` | `100` | Invalid value {value} to match with parameter {entityId}. Should be value of type int | The value of `entityId` or `entityTypeId` cannot be cast to an integer. The error text names the specific parameter ||
 || `400` | `100` | Invalid value {value} to match with parameter {filter}. Should be value of type array | The value of `filter` or `order` is not passed as an object. The error text names the specific parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field '>=DATE_INSERT' has invalid value | A date in `filter` was passed in an unsupported format. The error message contains the filter key with its prefix ||
 || `400` | `ACCESS_DENIED` | Access denied | The user has no read access to the CRM object whose deliveries are requested. The method returns the same error if the pair of `entityId` and `entityTypeId` does not point to a CRM object — for example, when `entityId` equals `0` ||
 |#
 

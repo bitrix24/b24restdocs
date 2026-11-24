@@ -42,6 +42,7 @@ To specify a deal type, pass the value ID in the `typeId` field: for the "Sales"
 || CRM object types | `crm.dictionary.entitytype.list` | The `entityTypeId` field ||
 || Stage groups | `crm.dictionary.stagesemantic.list` | The `stageSemanticId` field ||
 || Activity providers | `crm.dictionary.activityprovider.list` | The `providerId` field of an activity ||
+|| Custom field types | `crm.dictionary.customfieldtype.list` | The `userTypeId` field in the [crm.&lt;type&gt;.field.custom.add](../fields/crm-entity-field-custom-add-rest-v3.md) method ||
 |#
 
 The method name is written in lowercase: `crm.dictionary.dealtype.list`, not `crm.dictionary.dealType.list`. If the name is written in a different case or contains an unknown directory, the method returns the ["Method Not Found"](#method-not-found) error.
@@ -128,7 +129,7 @@ The direction is case-insensitive. The fields available for sorting are listed i
 If `order` is not passed, the order depends on the directory:
 
 - CRM value directories — by `sort` in ascending order
-- stage groups — by `id`
+- stage groups and custom field types — by `id`
 - other directories — in the order in which Bitrix24 stores them
 
 ### The pagination Parameter {#pagination}
@@ -244,7 +245,7 @@ You can filter by all fields with the operators `=`, `!=`, `in`. You can sort by
 
 ### CRM Object Types {#entity-types}
 
-The `entitytype` directory contains only system object types: lead, deal, contact, company, estimate, invoice, document, and company document. It contains no SPAs. Their `entityTypeId` IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method.
+The `entitytype` directory contains only system object types: lead, deal, contact, company, estimate, invoice, document, and company document. It contains no SPAs. Their `entityTypeId` IDs are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 #|
 || **Name**
@@ -289,6 +290,25 @@ The `activityprovider` directory — CRM activity providers, for example, univer
 |#
 
 You can filter only by the `id`, `isAvailable`, and `isActive` fields with the operators `=`, `!=`, `in`. You can sort only by `id`.
+
+### Custom Field Types {#custom-field-types}
+
+The `customfieldtype` directory lists the custom field types that can be created with the [crm.&lt;type&gt;.field.custom.add](../fields/crm-entity-field-custom-add-rest-v3.md) method. The type ID is passed in the `userTypeId` field. The directory contains 15 types: `address`, `boolean`, `crm`, `crm_status`, `date`, `datetime`, `double`, `employee`, `iblock_element`, `iblock_section`, `integer`, `money`, `rich_text`, `string`, `url`. These are not all Bitrix24 custom field types: for example, the list `enumeration` and the file `file` are not in the directory because the `crm.<type>.field.custom.add` method does not create them.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../../data-types.md) | Field type ID in lowercase, for example, `string` or `iblock_element` ||
+|| **name**
+[`string`](../../../data-types.md) | Type name in the response language, for example, "String" or "Link to information block elements" ||
+|| **supportsMultiple**
+[`boolean`](../../../data-types.md) | Whether a field of this type can be created as multiple, with `isMultiple: true`. Currently `true` for all types ||
+|| **requiredSettings**
+[`string[]`](../../../data-types.md) | `settings` keys without which a field of this type cannot be created. Currently an empty array for all types, although the `iblockId` setting is required for `iblock_section` and `iblock_element` ||
+|#
+
+Filtering is available only by the `id` and `name` fields with the `=`, `!=`, and `in` operators, without `negative` in condition groups. Sorting is available only by `id` and `name`. Permission to view CRM objects is not checked for this directory: any user can retrieve it.
 
 ## Code Examples
 

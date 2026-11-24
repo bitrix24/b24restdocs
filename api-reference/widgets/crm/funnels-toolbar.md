@@ -1,4 +1,4 @@
-# Button in Sales Pipelines and Tunnels CRM_FUNNELS_TOOLBAR, CRM_XXX_FUNNELS_TOOLBAR
+# Button in Sales Pipelines and Tunnels CRM_FUNNELS_TOOLBAR, CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR
 
 {% note tip "" %}
 
@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 
-The widget adds its own button to the window where sales pipelines and tunnels are configured.
+The widget adds an item to the split button menu in the settings window for sales pipelines and tunnels of [deals](../../crm/deals/index.md) and [custom object types](../../crm/universal/index.md).
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -21,26 +21,43 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method: it passes a code from the [table](#codes) in `PLACEMENT` and the handler URL in `HANDLER`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. An item with the name from `TITLE` appears in the split button menu in the header of the sales pipelines and tunnels window. If no name is set, the application name is used. Items with the same `GROUP_NAME` are combined into a submenu
+3. When a user selects the item, Bitrix24 opens the handler in a frame. The handler receives a POST request with the [call data](#handler-data)
+4. The handler can call REST on behalf of the current user with the token from `AUTH_ID`. The CRM object type is determined by the code in `PLACEMENT`: `CRM_FUNNELS_TOOLBAR` means deals, `CRM_DYNAMIC_183_FUNNELS_TOOLBAR` means the custom type with `entityTypeId` 183. The pipeline identifier is not passed to the handler; the pipelines of a type can be retrieved with the [crm.category.list](../../crm/universal/category/crm-category-list.md) method
+
+## When to Use
+
+The placement suits cases when you need to:
+
+- open the integration settings from the pipelines and tunnels window
+- show an application report on pipelines
+
+For actions from the object list, use [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md), and from the automation rules designer — [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
-|| `CRM_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of [deals](../../crm/deals/index.md) ||
-|| `CRM_SMART_INVOICE_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of a custom CRM object type. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_FUNNELS_TOOLBAR` ||
+|| `CRM_FUNNELS_TOOLBAR` | Split button menu item in the pipelines and tunnels of [deals](../../crm/deals/index.md) ||
+|| `CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR` | Split button menu item in the pipelines and tunnels of a custom CRM object type. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_FUNNELS_TOOLBAR` ||
 |#
-
-For deals, the placement code does not contain the object name — `CRM_FUNNELS_TOOLBAR`. For the other types, the object name is part of the code {.b24-info}
 
 ### Where to Find It in the Interface
 
-Open the kanban of CRM objects, expand the pipeline list, and select *Sales tunnels*. The application button appears on the right in the window header.
+Open the kanban of CRM objects, expand the pipeline list, and select *Sales tunnels*. A split button appears on the right in the window header: click the arrow on it and select the application item. The button itself shows the item the user selects most often, or the *Extensions* label. The screenshot below shows what the button looks like.
 
-![Button in the deal pipelines and tunnels](./_images/CRM_FUNNELS_TOOLBAR.png "Button in the deal pipelines and tunnels")
+To open the window, the user needs at least one of these permissions: manage pipelines, stages, or tunnels of the corresponding CRM type. For a custom object type, the window opens only if pipelines are enabled in the type settings.
 
-## What the Handler Receives
+![Split button menu item in the deal pipelines and tunnels](./_images/CRM_FUNNELS_TOOLBAR.png "Split button menu item in the deal pipelines and tunnels")
+
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
+
+The example is shown for the `CRM_FUNNELS_TOOLBAR` placement. For the other codes, the data set is the same: only the `PLACEMENT` value and the path in `URI` change.
 
 ```php
 
@@ -70,9 +87,7 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
-
-The placement has no keys of its own — the context carries only the universal `URI` key.
+The placement has no keys of its own. The common `URI` key is described in the standard data above.
 
 ## OPTIONS When Registering via placement.bind
 
@@ -93,13 +108,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
       -d '{
         "PLACEMENT": "CRM_FUNNELS_TOOLBAR",
         "HANDLER": "https://your-domain.com/widgets/crm-funnels-toolbar-handler.php",
-        "TITLE": "My sales tunnels button",
+        "TITLE": "My sales tunnels item",
         "LANG_ALL": {
           "en": {
-            "TITLE": "My sales tunnels button"
+            "TITLE": "My sales tunnels item"
           },
           "de": {
-            "TITLE": "Meine Vertriebstunnel-Schaltfläche"
+            "TITLE": "Mein Vertriebstunnel-Menüpunkt"
           }
         },
         "auth": "**put_access_token_here**"
@@ -123,13 +138,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         params: {
           PLACEMENT: 'CRM_FUNNELS_TOOLBAR',
           HANDLER: 'https://your-domain.com/widgets/crm-funnels-toolbar-handler.php',
-          TITLE: 'My sales tunnels button',
+          TITLE: 'My sales tunnels item',
           LANG_ALL: {
             en: {
-              TITLE: 'My sales tunnels button',
+              TITLE: 'My sales tunnels item',
             },
             de: {
-              TITLE: 'Meine Vertriebstunnel-Schaltfläche',
+              TITLE: 'Mein Vertriebstunnel-Menüpunkt',
             },
           },
         },
@@ -165,13 +180,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
             params: {
               PLACEMENT: 'CRM_FUNNELS_TOOLBAR',
               HANDLER: 'https://your-domain.com/widgets/crm-funnels-toolbar-handler.php',
-              TITLE: 'My sales tunnels button',
+              TITLE: 'My sales tunnels item',
               LANG_ALL: {
                 en: {
-                  TITLE: 'My sales tunnels button',
+                  TITLE: 'My sales tunnels item',
                 },
                 de: {
-                  TITLE: 'Meine Vertriebstunnel-Schaltfläche',
+                  TITLE: 'Mein Vertriebstunnel-Menüpunkt',
                 },
               },
             },
@@ -207,13 +222,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
                 [
                     'PLACEMENT' => 'CRM_FUNNELS_TOOLBAR',
                     'HANDLER' => 'https://your-domain.com/widgets/crm-funnels-toolbar-handler.php',
-                    'TITLE' => 'My sales tunnels button',
+                    'TITLE' => 'My sales tunnels item',
                     'LANG_ALL' => [
                         'en' => [
-                            'TITLE' => 'My sales tunnels button',
+                            'TITLE' => 'My sales tunnels item',
                         ],
                         'de' => [
-                            'TITLE' => 'Meine Vertriebstunnel-Schaltfläche',
+                            'TITLE' => 'Mein Vertriebstunnel-Menüpunkt',
                         ],
                     ],
                 ]
@@ -235,10 +250,10 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         {
             PLACEMENT: 'CRM_FUNNELS_TOOLBAR',
             HANDLER: 'https://your-domain.com/widgets/crm-funnels-toolbar-handler.php',
-            TITLE: 'My sales tunnels button',
+            TITLE: 'My sales tunnels item',
             LANG_ALL: {
-                en: { TITLE: 'My sales tunnels button' },
-                de: { TITLE: 'Meine Vertriebstunnel-Schaltfläche' }
+                en: { TITLE: 'My sales tunnels item' },
+                de: { TITLE: 'Mein Vertriebstunnel-Menüpunkt' }
             }
         },
         function(result) {
@@ -261,13 +276,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         [
             'PLACEMENT' => 'CRM_FUNNELS_TOOLBAR',
             'HANDLER' => 'https://your-domain.com/widgets/crm-funnels-toolbar-handler.php',
-            'TITLE' => 'My sales tunnels button',
+            'TITLE' => 'My sales tunnels item',
             'LANG_ALL' => [
                 'en' => [
-                    'TITLE' => 'My sales tunnels button',
+                    'TITLE' => 'My sales tunnels item',
                 ],
                 'de' => [
-                    'TITLE' => 'Meine Vertriebstunnel-Schaltfläche',
+                    'TITLE' => 'Mein Vertriebstunnel-Menüpunkt',
                 ],
             ],
         ]
@@ -285,13 +300,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
     	"PLACEMENT": "CRM_FUNNELS_TOOLBAR",
     	"HANDLER":   "https://your-domain.com/widgets/crm-funnels-toolbar-handler.php",
-    	"TITLE":     "My sales tunnels button",
+    	"TITLE":     "My sales tunnels item",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My sales tunnels button",
-    		},
     		"en": b24.Params{
-    			"TITLE": "My sales tunnels button",
+    			"TITLE": "My sales tunnels item",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein Vertriebstunnel-Menüpunkt",
     		},
     	},
     })
@@ -311,8 +326,8 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
 #|
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
-|| The `CRM_DEAL_FUNNELS_TOOLBAR` code is registered for deals | For deals, the placement code carries no object name — use `CRM_FUNNELS_TOOLBAR` ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | Check the code against the [placement table](#codes) and make sure the application has been granted the `crm` scope ||
+|| `placement.bind` with the `CRM_DEAL_FUNNELS_TOOLBAR` code returns `ERROR_PLACEMENT_NOT_FOUND` | For deals, the placement code carries no object name — use `CRM_FUNNELS_TOOLBAR` ||
 || The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
 |#
 

@@ -35,7 +35,7 @@ The `crm.<type>.deletefieldvalue` method removes a single value from a multiple 
 || SPA | `crm.smartprocess<entityTypeId>.deletefieldvalue`, for example, `crm.smartprocess1038.deletefieldvalue` | [SPA fields](./fields-smart-process.md) ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The method name is written in lowercase: `crm.smartinvoice.deletefieldvalue`, not `crm.smartInvoice.deletefieldvalue`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -431,7 +431,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.deletefieldvalue`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.deletefieldvalue`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

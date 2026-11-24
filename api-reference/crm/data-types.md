@@ -120,8 +120,8 @@ The `crm.lead.*`, `crm.contact.*`, and `crm.company.*` methods return the keys i
 
 To write in the previous version, pass an array of objects to the field, for example `PHONE`:
 
-- add a value — `VALUE` and `VALUE_TYPE`
-- change a value — `ID`, the new `VALUE`, and `VALUE_TYPE`. Without `VALUE_TYPE`, the type is reset to `WORK`, or to `OTHER` for `IM`
+- add a value — `VALUE` and `VALUE_TYPE`. Without `VALUE_TYPE`, leads, contacts, and companies take the type from the field's "Default type" setting in the card. If the setting is not configured, the type is `WORK`, or `OTHER` for `IM`
+- change a value — `ID`, the new `VALUE`, and `VALUE_TYPE`. Without `VALUE_TYPE`, the value keeps its type
 - delete a value — `ID` and `DELETE: "Y"` or an empty `VALUE`
 
 See examples on the [crm.contact.update](./contacts/crm-contact-update.md) page.

@@ -33,6 +33,8 @@ If, with queue distribution or self-assignment, no one from the team is at work,
 
 **Task Template.** Flow tasks can be created from a template — the template identifier is passed in the `templateId` parameter.
 
+**Team.** The employees who work on flow tasks are the flow team. The team IDs as type–ID pairs are returned by the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method in the `team` field, and the names, positions, and photos of employees by the [tasks.flow.Team.list](./tasks-flow-team-list.md) method.
+
 {% note tip "User Documentation" %}
 
 - [Create a workgroup or project](https://helpdesk.bitrix24.com/open/22796428/)
@@ -76,7 +78,7 @@ The flow name must be unique. The [tasks.flow.Flow.isExists](./tasks-flow-flow-i
 > Who can execute the method:
 > - create a flow — a Bitrix24 administrator or a user with permission to create flows, except extranet users
 > - update, delete, enable, or disable a flow — a Bitrix24 administrator, the flow creator, or the flow administrator
-> - retrieve and pin a flow — a user who can see the flow: a Bitrix24 administrator, a flow member, or an employee of a department specified in the flow. If all users can add tasks to the flow, all employees can see it
+> - retrieve and pin a flow, retrieve the flow team — a user who can see the flow: a Bitrix24 administrator, a flow member, or an employee of a department specified in the flow. If all users can add tasks to the flow, all employees can see it
 > - check a name — any user
 
 #| 
@@ -84,6 +86,7 @@ The flow name must be unique. The [tasks.flow.Flow.isExists](./tasks-flow-flow-i
 || [tasks.flow.Flow.create](./tasks-flow-flow-create.md) | Creates a flow ||
 || [tasks.flow.Flow.update](./tasks-flow-flow-update.md) | Updates a flow ||
 || [tasks.flow.Flow.get](./tasks-flow-flow-get.md) | Retrieves a flow ||
+|| [tasks.flow.Team.list](./tasks-flow-team-list.md) | Retrieves the employees of the flow team ||
 || [tasks.flow.Flow.delete](./tasks-flow-flow-delete.md) | Deletes a flow ||
 || [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) | Checks whether a flow with this name exists ||
 || [tasks.flow.Flow.activate](./tasks-flow-flow-activate.md) | Enables or disables a flow ||

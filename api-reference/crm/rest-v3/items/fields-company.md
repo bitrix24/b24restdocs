@@ -275,7 +275,7 @@ The `phone`, `email`, `web`, and `im` fields are arrays of values. Each value is
 || **id**
 [`integer`](../../../data-types.md) | Value ID. Assigned when writing data and cannot be passed: the method returns the error 'Field "id" is read-only.' ||
 || **valueTypeId**
-[`string`](../../../data-types.md) | Value type, for example, `WORK` or `MOBILE`. Required when writing data. The allowed types for each field are returned by the [crm.dictionary.phonetype.list, crm.dictionary.emailtype.list, crm.dictionary.webtype.list, and crm.dictionary.imtype.list](../dictionaries/crm-dictionary-list-rest-v3.md) methods ||
+[`string`](../../../data-types.md) | Value type, for example, `WORK` or `MOBILE`. If it is not passed when writing data, the type is taken from the field's "Default type" setting in the card. If the setting is not configured, the type is `WORK`, or `OTHER` for `im`. The allowed types for each field are returned by the [crm.dictionary.phonetype.list, crm.dictionary.emailtype.list, crm.dictionary.webtype.list, and crm.dictionary.imtype.list](../dictionaries/crm-dictionary-list-rest-v3.md) methods ||
 || **valueType**
 [`object`](../../../data-types.md) | Value type with its name: `id`, `name` — full name, for example, `Work Phone`, `nameShort` — short name, for example, `Work Phone`. Read-only ||
 || **value**

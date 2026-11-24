@@ -34,7 +34,7 @@ The `crm.<type>.field.custom.add` method creates a custom field for a CRM object
 || SPA | `crm.smartprocess<entityTypeId>.field.custom.add`, for example, `crm.smartprocess1038.field.custom.add` | [SPA fields](../items/fields-smart-process.md) ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. SPAs have custom field methods regardless of the type settings. My company does not have these methods: Bitrix24 responds to `crm.mycompany.field.custom.add` with the ["Method Not Found"](#method-not-found) error.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. SPAs have custom field methods regardless of the type settings. My company does not have these methods: Bitrix24 responds to `crm.mycompany.field.custom.add` with the ["Method Not Found"](#method-not-found) error.
 
 The method name is written in lowercase: `crm.smartinvoice.field.custom.add`, not `crm.smartInvoice.field.custom.add`. If the name is written in a different case, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -170,6 +170,8 @@ Names already in use are returned by the [crm.&lt;type&gt;.field.custom.list](./
 - `crm_status` — link to a CRM directory
 - `iblock_section` — link to information block sections
 - `iblock_element` — link to information block elements
+
+Field types with their names are returned by the [crm.dictionary.customfieldtype.list](../dictionaries/crm-dictionary-list-rest-v3.md#custom-field-types) method.
 
 The method does not create fields of the "List" `enumeration` and "File" `file` types and returns a [validation error](#dto-validation). If a list field already exists, its values can be added, updated, and deleted with the [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) methods.
 
@@ -611,7 +613,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Required field `name` is empty | Pass `name` in `fields` ||
 || `userTypeId` | Required field `userTypeId` is empty | Pass `userTypeId` in `fields` ||
-|| `userTypeId` | Field value is not one of the possible values: `#VALUES#` | Pass a type from the [list of types](#user-type-id). The method does not create `enumeration` and `file` fields ||
+|| `userTypeId` | Field value is not one of the possible values: `#VALUES#` | Pass a type from the [list of types](#user-type-id). The allowed types are in the `customfieldtype` directory. The method does not create `enumeration` and `file` fields ||
 || `showFilter` | Field value is not one of the possible values: N, I, E, S | Pass one of the values `N`, `I`, `E`, `S` ||
 || `id` | Field `id` is read-only | Remove `id` from `fields`: the ID is assigned automatically ||
 || `entityId` | Field `entityId` is read-only | Remove `entityId` from `fields`: the object type is set by the method name ||
@@ -650,7 +652,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.field.custom.add`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. My company has no custom field methods ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.field.custom.add`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company has no custom field methods ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

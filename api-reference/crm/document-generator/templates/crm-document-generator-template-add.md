@@ -525,7 +525,7 @@ HTTP status: **400**
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not provided as an object ||
 || `400` | `0` | Empty required fields: name, numeratorId, region, entityTypeId | Required fields not provided in the `fields` object ||
-|| `400` | `0` | Missing file content | Template file not provided in `fields.file` ||
+|| `400` | `0` | Invalid file content | Template file not provided in `fields.file`, or an empty value was passed ||
 || `400` | `0` | Empty required fields: providers | None of the `entityTypeId` identifiers matches an available data provider ||
 || `400` | `0` | Could not save file | Failed to save the template file ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||

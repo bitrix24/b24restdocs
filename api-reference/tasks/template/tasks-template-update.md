@@ -390,6 +390,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./tasks-template-update-rest-v3.md)
 - [{#T}](./tasks-template-add.md)
 - [{#T}](./tasks-template-get.md)
 - [{#T}](./tasks-template-list.md)

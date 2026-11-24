@@ -103,7 +103,9 @@ The row order matches the order in the table of system errors above, and the cau
 || **Code** | **What to Do** ||
 || `INTERNAL_SERVER_ERROR`, `ERROR_UNEXPECTED_ANSWER` | Retry the call in a few seconds. If the error persists, contact the server administrator in the on-premise version or [technical support](bitrix-support.md) ||
 || `QUERY_LIMIT_EXCEEDED` | Reduce the request intensity and retry the call later. The intensity allowed on each plan is listed in the [REST API limits](limits.md) ||
-|| `OPERATION_TIME_LIMIT` | Pause the calls to this method. Use the `operating_reset_at` field from the [`time`](api-reference/data-types.md#time) block of the last successful response as the reference point for the first retry. If the retry hits the limit again, wait for the next reset: the mechanics are described in the [REST API limits](limits.md) ||
+|| `BITRIX_REST_V3_EXCEPTION_LIMITER_QUERYTIMELIMITEXCEPTION` | Retry the call no earlier than after the time in the `Retry-After` header: it contains the limit in seconds. Narrow the selection: add filters, reduce the page size, remove unnecessary fields ||
+|| `OPERATION_TIME_LIMIT` | Pause the calls to this method for 5 minutes: the block is fixed and there is no `Retry-After` header in the response. Monitor `operating` in successful responses so as not to hit the limit again: the mechanics are described in the [REST API limits](limits.md) ||
+|| `BITRIX_REST_V3_EXCEPTION_RATELIMITEXCEPTION` | The same block in REST 3.0 methods. Wait for the time from the `Retry-After` header: it contains the remaining block time, no more than 300 seconds. Then reduce the load on the method ||
 || `NO_AUTH_FOUND` | Pass an access token or a webhook code in the request: the current request has neither ||
 || `INVALID_REQUEST` | Replace `http` with `https` in the request URL ||
 || `OVERLOAD_LIMIT` | Do not retry the call, and contact [technical support](bitrix-support.md): the block is manual and will not be lifted on its own ||

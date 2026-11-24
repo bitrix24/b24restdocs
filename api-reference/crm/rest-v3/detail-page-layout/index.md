@@ -87,7 +87,7 @@ Request validation errors are returned in the common REST 3.0 format with `BITRI
 
 Card views are linked to object types, pipelines, and employees.
 
-**Object type.** The methods are available for deals, leads, contacts, companies, estimates, invoices, CRM documents, B2E documents, and SPAs. The object type is set by the `<type>` segment of the method name; for an SPA, it is `smartprocess<entityTypeId>`, for example, `crm.smartprocess1038.detailpagelayout.get`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. My company has no card view methods.
+**Object type.** The methods are available for deals, leads, contacts, companies, estimates, invoices, CRM documents, B2E documents, and SPAs. The object type is set by the `<type>` segment of the method name; for an SPA, it is `smartprocess<entityTypeId>`, for example, `crm.smartprocess1038.detailpagelayout.get`. SPA type IDs are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company has no card view methods.
 
 **Pipeline.** Each pipeline stores its own views. The pipeline ID is passed in `categoryId`, and the list of pipelines is returned by the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method.
 

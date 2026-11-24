@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 
-The widget adds its own item to the dropdown menu of the document generator of a CRM object. The placement suits applications that build a document for the object on their own side: a printed form, a contract, or an act.
+The widget adds its own item to the dropdown menu of the document generator of a CRM object. When a user selects the application item, the widget handler opens.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -21,7 +21,23 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method using a code from the [table](#codes). The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. The application item appears in the *Extensions* submenu of the document generator menu in a CRM entity form
+3. The user selects the item, and Bitrix24 opens the handler in a frame with the data described in the [What the Handler Receives](#handler-data) section
+4. The handler can call REST on behalf of the current user with the token from `AUTH_ID`: for example, retrieve the object data by `ENTITY_ID`
+
+## When to Use
+
+The placement suits applications that build documents for the object on their own side. For example:
+
+- prepare a printed form based on the deal data
+- open an external service to draft a contract or an act
+
+For an action in the top menu of the form, use [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md); for a separate tab with the application interface, use [CRM_XXX_DETAIL_TAB](./detail-tab.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #|
 || **Placement Code** | **Location** ||
@@ -36,15 +52,17 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open a CRM entity form, click the *Document* button at the top of the form, and hover over the *Extensions* item. The application item appears in this submenu, next to the knowledge bases and Bitrix24 Market.
+Open a CRM entity form, click the *Document* or *Documents* button at the top of the form, and hover over the *Extensions* item. The application item appears in this submenu.
+
+The button is available if the document generator is enabled and the user has permission to view documents or edit templates. In the form of a custom object type item or a new invoice, the item must also be saved, and document generation must be enabled for the object type.
 
 ![Application item in the dropdown menu of the deal document generator](./_images/CRM_DEAL_DOCUMENTGENERATOR_BUTTON.png "Application item in the dropdown menu of the deal document generator")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_DOCUMENTGENERATOR_BUTTON` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
+The example is shown for the `CRM_DEAL_DOCUMENTGENERATOR_BUTTON` placement.
 
 ```php
 
@@ -68,13 +86,15 @@ Array
 
 ```
 
+`APPLICATION_SCOPE` contains the scopes of the example application. Registering the placement itself requires only `placement` and `crm`.
+
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Besides the universal `URI` key, the context contains the key of the placement itself.
+The placement's own key is `ENTITY_ID`.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -83,14 +103,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || **ENTITY_ID***
 [`string`](../../data-types.md) | The identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
-
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+Use the identifier to retrieve the object data with the corresponding CRM method. [crm.item.get](../../crm/universal/crm-item-get.md) also requires the [object type identifier](../../crm/data-types.md#object_type).
 
 The object type identifier does not arrive as a separate key. For a custom object type it can be taken from the value of the `PLACEMENT` parameter: for the `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON` code, the type identifier is `183`
 
@@ -310,11 +323,11 @@ The placement does not support the `OPTIONS` parameters. Passed values are not s
     	"HANDLER":   "https://your-domain.com/widgets/crm-document-handler.php",
     	"TITLE":     "Supply contract",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "Supply contract",
-    		},
     		"en": b24.Params{
     			"TITLE": "Supply contract",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Liefervertrag",
     		},
     	},
     })
@@ -336,7 +349,7 @@ The placement does not support the `OPTIONS` parameters. Passed values are not s
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
 || The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The item is not visible in the *Document* button menu | Hover over the *Extensions* item: the application item is displayed in this submenu ||
+|| The item is not visible in the document generator menu | Hover over the *Extensions* item: the application item is displayed in this submenu ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.

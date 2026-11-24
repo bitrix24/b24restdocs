@@ -24,11 +24,11 @@ The scenario consists of two steps.
 
 ## What You Need Before You Start
 
-- an administrator inbound webhook or an application with the `bizproc` scope
+- an administrator inbound webhook with the `bizproc` scope: the examples initialize the SDK using a webhook
 - a date before which running workflows should be found. The examples use `2025-01-01T00:00:00Z`
-- a decision on what to do with the found workflows: delete them using `bizproc.workflow.kill` or stop them using `bizproc.workflow.terminate`
+- to stop workflows instead of deleting them, replace `bizproc.workflow.kill` with `bizproc.workflow.terminate` in the examples. In PHP, replace the typed `workflow()->kill(...)` call with `$b24->core->call('bizproc.workflow.terminate', ['ID' => ...])`: use `$workflowIds[0]` in step 2 and `$workflowId` in the full example
 
-Before deleting, make sure to verify the found `ID` values. Re-running the same filter may find different workflows if new launches with matching dates appear in the meantime.
+Before deleting, make sure to verify the found `ID` values. The full example displays the list and asks for confirmation during the same run: only the `ID` values from the displayed list are deleted, with no new search before deletion.
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
@@ -39,6 +39,8 @@ Use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflo
 - `filter[<STARTED]` — launch date. The `<` prefix selects workflows started before the specified time
 - `select` — the fields required by the scenario. It is enough to get `ID` and `STARTED`
 
+If you change the filter, check the field name and operation prefix: the method skips unknown fields or operations without an error, so the request will return workflows without a date restriction. The examples in this step retrieve the first page, up to 50 workflows. For mass processing, use the [Full Example](#full-example).
+
 {% list tabs %}
 
 - JS
@@ -46,8 +48,8 @@ Use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflo
     ```js
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
-    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_WEBHOOK_URL)
+    // B24_WEBHOOK_URL = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     const response = await $b24.actions.v2.call.make({
         method: 'bizproc.workflow.instances',
@@ -168,27 +170,26 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
 
 - `ID` — the workflow identifier from the response of [step 1](#workflow-id). Pass a string such as `660e559f34af10.95144732`
 
+The examples below delete the first workflow in the list without asking for confirmation. Check its `ID` and launch date first. To review and confirm the entire list, use the [Full Example](#full-example).
+
 {% list tabs %}
 
 - JS
 
     ```js
-    const response = await $b24.actions.v2.call.make({
+    const killResponse = await $b24.actions.v2.call.make({
         method: 'bizproc.workflow.kill',
         params: { ID: workflowIds[0] },
         requestId: 'workflow-kill',
     })
 
-    const isKilled = response.getData().result
+    const isKilled = killResponse.getData().result
     ```
 
 - Python
 
     ```python
-    token.call_method(
-        "bizproc.workflow.kill",
-        {"ID": workflow_ids[0]},
-    )
+    is_killed = client.bizproc.workflow.kill(workflow_ids[0]).response.result
     ```
 
 - PHP
@@ -202,15 +203,15 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
 - Go
 
     ```go
-    res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
+    killRes, killErr := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
         "ID": workflowIDs[0],
     })
-    if err != nil {
-        log.Fatal(err)
+    if killErr != nil {
+        log.Fatal(killErr)
     }
 
     var isKilled bool
-    if err := json.Unmarshal(res.Result, &isKilled); err != nil {
+    if err := json.Unmarshal(killRes.Result, &isKilled); err != nil {
         log.Fatal(err)
     }
     log.Println(isKilled)
@@ -218,7 +219,7 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
 
 {% endlist %}
 
-The successful response contains `true`.
+The successful response contains `true`. The method does not return `false`: if a workflow cannot be deleted, it returns an error. See [Errors and Diagnostics](#errors) for details on handling it.
 
 ```json
 {
@@ -226,37 +227,54 @@ The successful response contains `true`.
 }
 ```
 
-## Code Example
+## Code Example {#full-example}
 
-The example first prints all found workflows for review. To delete the workflows, run the example with the `--confirm` argument. For large volumes of data, keep REST limits and the [Performance](../../settings/performance/index.md) recommendations in mind.
+Running workflows may finish during pagination, so the list may not include all matching workflows. After processing, repeat the search to retrieve a new list. The example first displays all found workflows with their launch dates for review. Check the identifiers and dates, and confirm deletion only if all workflows in the list can be deleted. To delete them, enter `yes` at the confirmation prompt. Any other response cancels deletion.
+
+Install the SDK for your chosen language: `npm install @bitrix24/b24jssdk`, `pip install b24pysdk`, `composer require bitrix24/b24phpsdk:"^3.0"`, or `go get github.com/bitrix24/b24gosdk`. Save the example to a file and pass the webhook URL through environment variables rather than in the code: `B24_WEBHOOK_URL` for JS, PHP, and Go, and `B24_DOMAIN` and `B24_WEBHOOK_TOKEN` for Python. Run the JS example as an ES module, for example `node kill.mjs 01.01.2025`. It accepts the date as an argument, as does Go. Python and PHP prompt for the date at startup. The cutoff is 00:00 UTC on the specified date. For large volumes of data, consider the REST limits and the [Performance](../../settings/performance/index.md) recommendations.
 
 {% list tabs %}
 
 - JS
 
     ```js
+    import readline from 'node:readline/promises'
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_WEBHOOK_URL)
 
     const [day, month, year] = (process.argv[2] || '').split('.')
-    if (!day || !month || !year) {
-        throw new Error('Pass the date in dd.mm.yyyy format')
+    const isoDate = `${year}-${month}-${day}T00:00:00Z`
+    const parsed = new Date(isoDate)
+    if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== isoDate.slice(0, 10)) {
+        throw new Error('Enter a valid date in dd.mm.yyyy format')
     }
 
-    const isoDate = `${year}-${month}-${day}T00:00:00Z`
-    const confirmed = process.argv.includes('--confirm')
+    // The workflow ID is a string, so paginate using start rather than callList
+    const instances = []
+    for (let start = 0; ; start += 50) {
+        const pageResponse = await $b24.actions.v2.call.make({
+            method: 'bizproc.workflow.instances',
+            params: {
+                select: ['ID', 'STARTED'],
+                filter: { '<STARTED': isoDate },
+                order: { ID: 'ASC' },
+                start,
+            },
+            requestId: `workflow-instances-${start}`,
+        })
 
-    const listResponse = await $b24.actions.v2.callList.make({
-        method: 'bizproc.workflow.instances',
-        params: {
-            select: ['ID', 'STARTED'],
-            filter: { '<STARTED': isoDate },
-        },
-        requestId: 'workflow-instances',
-    })
+        if (!pageResponse.isSuccess) {
+            throw new Error(pageResponse.getErrorMessages().join('; '))
+        }
 
-    const instances = listResponse.getData()
+        const page = pageResponse.getData().result
+        instances.push(...page)
+        if (page.length < 50) {
+            break
+        }
+    }
+
     const workflowIds = instances.map((instance) => instance.ID)
 
     if (!workflowIds.length) {
@@ -266,26 +284,34 @@ The example first prints all found workflows for review. To delete the workflows
     }
 
     console.log(`Found workflows: ${workflowIds.length}`)
-    for (const workflowId of workflowIds) {
-        console.log(`Workflow to delete: ${workflowId}`)
+    for (const instance of instances) {
+        console.log(`Workflow to delete: ${instance.ID}, started: ${instance.STARTED}`)
     }
 
-    if (!confirmed) {
-        console.log('Review the list and rerun the example with the --confirm argument to delete the workflows')
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+    const answer = await rl.question(`Delete the workflows in the list (${workflowIds.length})? Enter yes: `)
+    rl.close()
+
+    if (answer.trim() !== 'yes') {
+        console.log('Deletion canceled')
         $b24.destroy()
         process.exit(0)
     }
 
     for (const workflowId of workflowIds) {
-        const killResponse = await $b24.actions.v2.call.make({
-            method: 'bizproc.workflow.kill',
-            params: { ID: workflowId },
-            requestId: `workflow-kill-${workflowId}`,
-        })
+        try {
+            const killResponse = await $b24.actions.v2.call.make({
+                method: 'bizproc.workflow.kill',
+                params: { ID: workflowId },
+                requestId: `workflow-kill-${workflowId}`,
+            })
 
-        console.log(killResponse.isSuccess
-            ? `Workflow ${workflowId} deleted`
-            : `Error deleting workflow ${workflowId}: ${killResponse.getErrorMessages().join('; ')}`)
+            console.log(killResponse.isSuccess
+                ? `Workflow ${workflowId} deleted`
+                : `Error deleting workflow ${workflowId}: ${killResponse.getErrorMessages().join('; ')}`)
+        } catch (error) {
+            console.log(`Error deleting workflow ${workflowId}: ${error.message}`)
+        }
     }
 
     $b24.destroy()
@@ -294,38 +320,43 @@ The example first prints all found workflows for review. To delete the workflows
 - Python
 
     ```python
-    import re
+    import os
     import sys
+    from datetime import datetime
 
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
     user_date_input = input("Enter the date in dd.mm.yyyy format: ")
-    if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", user_date_input):
-        raise ValueError("Enter the date in dd.mm.yyyy format")
+    try:
+        date = datetime.strptime(user_date_input, "%d.%m.%Y")
+    except ValueError:
+        raise SystemExit("Enter a valid date in dd.mm.yyyy format")
 
-    day, month, year = user_date_input.split(".")
-    iso_date = f"{year}-{month}-{day}T00:00:00Z"
-    confirmed = "--confirm" in sys.argv
+    iso_date = date.strftime("%Y-%m-%dT00:00:00Z")
 
     token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],  # user_id/webhook_key
     )
     client = Client(token)
 
     start = None
     workflow_ids = []
+    started = {}
     while True:
         params = {
             "select": ["ID", "STARTED"],
             "filter": {"<STARTED": iso_date},
+            "order": {"ID": "ASC"},
         }
         if start is not None:
             params["start"] = start
 
         response = client.bizproc.workflow.instances(**params).response
-        workflow_ids.extend(instance["ID"] for instance in response.result or [])
+        for instance in response.result or []:
+            workflow_ids.append(instance["ID"])
+            started[instance["ID"]] = instance["STARTED"]
 
         if response.next is None:
             break
@@ -337,15 +368,16 @@ The example first prints all found workflows for review. To delete the workflows
 
     print(f"Found workflows: {len(workflow_ids)}")
     for workflow_id in workflow_ids:
-        print(f"Workflow to delete: {workflow_id}")
+        print(f"Workflow to delete: {workflow_id}, started: {started[workflow_id]}")
 
-    if not confirmed:
-        print("Review the list and rerun the example with the --confirm argument to delete the workflows")
+    answer = input(f"Delete the workflows in the list ({len(workflow_ids)})? Enter yes: ")
+    if answer.strip() != "yes":
+        print("Deletion canceled")
         sys.exit(0)
 
     for workflow_id in workflow_ids:
         try:
-            token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
+            client.bizproc.workflow.kill(workflow_id).response
         except BitrixAPIError as error:
             print(f"Error deleting workflow {workflow_id}: {error}")
         else:
@@ -358,33 +390,36 @@ The example first prints all found workflows for review. To delete the workflows
     // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Symfony\Component\EventDispatcher\EventDispatcher;
     use Psr\Log\NullLogger;
 
     $b24 = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_WEBHOOK_URL'));
 
-    $userDateInput = readline('Enter the date in dd.mm.yyyy format: ');
-    if (!preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $userDateInput)) {
-        throw new InvalidArgumentException('Enter the date in dd.mm.yyyy format');
+    $userDateInput = (string)readline('Enter the date in dd.mm.yyyy format: ');
+    $date = DateTimeImmutable::createFromFormat('!d.m.Y', $userDateInput);
+    if ($date === false || $date->format('d.m.Y') !== $userDateInput) {
+        throw new InvalidArgumentException('Enter a valid date in dd.mm.yyyy format');
     }
 
-    [$day, $month, $year] = explode('.', $userDateInput);
-    $isoDate = "{$year}-{$month}-{$day}T00:00:00Z";
-    $confirmed = in_array('--confirm', $argv, true);
+    $isoDate = $date->format('Y-m-d') . 'T00:00:00Z';
     $workflowIds = [];
+    $started = [];
     $start = 0;
 
     do {
         $response = $b24->core->call('bizproc.workflow.instances', [
             'select' => ['ID', 'STARTED'],
             'filter' => ['<STARTED' => $isoDate],
+            'order' => ['ID' => 'ASC'],
             'start' => $start,
         ]);
 
         foreach ($response->getResponseData()->getResult() as $instance) {
             $workflowIds[] = $instance['ID'];
+            $started[$instance['ID']] = $instance['STARTED'];
         }
 
         $start = $response->getResponseData()->getPagination()->getNextItem();
@@ -397,19 +432,22 @@ The example first prints all found workflows for review. To delete the workflows
 
     echo "Found workflows: " . count($workflowIds) . "\n";
     foreach ($workflowIds as $workflowId) {
-        echo "Workflow to delete: {$workflowId}\n";
+        echo "Workflow to delete: {$workflowId}, started: {$started[$workflowId]}\n";
     }
 
-    if (!$confirmed) {
-        echo "Review the list and rerun the example with the --confirm argument to delete the workflows\n";
+    $answer = readline('Delete the workflows in the list (' . count($workflowIds) . ')? Enter yes: ');
+    if (trim((string)$answer) !== 'yes') {
+        echo "Deletion canceled\n";
         exit;
     }
 
     foreach ($workflowIds as $workflowId) {
-        $isKilled = $b24->getBizProcScope()->workflow()->kill($workflowId)->isSuccess();
-        echo $isKilled
-            ? "Workflow {$workflowId} deleted\n"
-            : "Error deleting workflow {$workflowId}\n";
+        try {
+            $b24->getBizProcScope()->workflow()->kill($workflowId);
+            echo "Workflow {$workflowId} deleted\n";
+        } catch (BaseException $e) {
+            echo "Error deleting workflow {$workflowId}: {$e->getMessage()}\n";
+        }
     }
     ```
 
@@ -421,16 +459,17 @@ The example first prints all found workflows for review. To delete the workflows
     //
     // Run:
     //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go 01.01.2025
-    //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go 01.01.2025 --confirm
 
     package main
 
     import (
+        "bufio"
         "context"
         "encoding/json"
         "fmt"
         "os"
         "strings"
+        "time"
 
         b24 "github.com/bitrix24/b24gosdk"
     )
@@ -452,25 +491,23 @@ The example first prints all found workflows for review. To delete the workflows
             return fmt.Errorf("pass the date in dd.mm.yyyy format")
         }
 
-        parts := strings.Split(os.Args[1], ".")
-        if len(parts) != 3 || len(parts[0]) != 2 || len(parts[1]) != 2 || len(parts[2]) != 4 {
-            return fmt.Errorf("pass the date in dd.mm.yyyy format")
+        date, err := time.Parse("02.01.2006", os.Args[1])
+        if err != nil {
+            return fmt.Errorf("enter a valid date in dd.mm.yyyy format")
         }
 
-        isoDate := fmt.Sprintf("%s-%s-%sT00:00:00Z", parts[2], parts[1], parts[0])
-        confirmed := false
-        for _, arg := range os.Args[2:] {
-            if arg == "--confirm" {
-                confirmed = true
-            }
-        }
-
+        isoDate := date.Format("2006-01-02") + "T00:00:00Z"
         ctx := context.Background()
         core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
 
-        workflowIDs, err := getWorkflowIDs(ctx, core, isoDate)
+        workflows, err := getWorkflows(ctx, core, isoDate)
         if err != nil {
             return err
+        }
+
+        workflowIDs := make([]string, 0, len(workflows))
+        for _, workflow := range workflows {
+            workflowIDs = append(workflowIDs, workflow.ID)
         }
 
         if len(workflowIDs) == 0 {
@@ -479,12 +516,14 @@ The example first prints all found workflows for review. To delete the workflows
         }
 
         fmt.Printf("Found workflows: %d\n", len(workflowIDs))
-        for _, workflowID := range workflowIDs {
-            fmt.Printf("Workflow to delete: %s\n", workflowID)
+        for _, workflow := range workflows {
+            fmt.Printf("Workflow to delete: %s, started: %s\n", workflow.ID, workflow.Started)
         }
 
-        if !confirmed {
-            fmt.Println("Review the list and rerun the example with the --confirm argument to delete the workflows")
+        fmt.Printf("Delete the workflows in the list (%d)? Enter yes: ", len(workflowIDs))
+        answer, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+        if strings.TrimSpace(answer) != "yes" {
+            fmt.Println("Deletion canceled")
             return nil
         }
 
@@ -500,13 +539,14 @@ The example first prints all found workflows for review. To delete the workflows
         return nil
     }
 
-    func getWorkflowIDs(ctx context.Context, core *b24.Core, isoDate string) ([]string, error) {
-        workflowIDs := []string{}
+    func getWorkflows(ctx context.Context, core *b24.Core, isoDate string) ([]workflowInstance, error) {
+        workflows := []workflowInstance{}
 
         for start := 0; ; start += 50 {
             res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
                 "select": []string{"ID", "STARTED"},
                 "filter": b24.Params{"<STARTED": isoDate},
+                "order":  b24.Params{"ID": "ASC"},
                 "start":  start,
             }, b24.WithIdempotent())
             if err != nil {
@@ -518,16 +558,14 @@ The example first prints all found workflows for review. To delete the workflows
                 return nil, fmt.Errorf("decode bizproc.workflow.instances: %w", err)
             }
 
-            for _, instance := range instances {
-                workflowIDs = append(workflowIDs, instance.ID)
-            }
+            workflows = append(workflows, instances...)
 
             if len(instances) < 50 {
                 break
             }
         }
 
-        return workflowIDs, nil
+        return workflows, nil
     }
 
     func killWorkflow(ctx context.Context, core *b24.Core, workflowID string) error {
@@ -548,7 +586,7 @@ The example first prints all found workflows for review. To delete the workflows
 
 In the interface, open the list of running business processes and verify that the deleted processes are no longer present.
 
-Through REST, repeat the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) request with the same filter and verify that the deleted `ID` values are not returned.
+Through REST, repeat the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) request with the same filter and verify that the deleted `ID` values are not returned. The request below checks the first page. To check all pages, use the full example and decline deletion.
 
 {% list tabs %}
 
@@ -594,50 +632,50 @@ Through REST, repeat the [bizproc.workflow.instances](../../api-reference/bizpro
 - Go
 
     ```go
-    res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
+    checkRes, checkErr := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
         "select": []string{"ID"},
         "filter": b24.Params{"<STARTED": "2025-01-01T00:00:00Z"},
     }, b24.WithIdempotent())
-    if err != nil {
-        log.Fatal(err)
+    if checkErr != nil {
+        log.Fatal(checkErr)
     }
 
-    var instances []struct {
+    var checkInstances []struct {
         ID string `json:"ID"`
     }
-    if err := json.Unmarshal(res.Result, &instances); err != nil {
+    if err := json.Unmarshal(checkRes.Result, &checkInstances); err != nil {
         log.Fatal(err)
     }
 
-    for _, instance := range instances {
+    for _, instance := range checkInstances {
         log.Println(instance.ID)
     }
     ```
 
 {% endlist %}
 
-The scenario is complete if the response no longer contains the `ID` values that were passed to `bizproc.workflow.kill`.
+The scenario is complete if the results across all pages no longer contain the `ID` values that were passed to `bizproc.workflow.kill`.
 
-## Errors and Diagnostics
+## Errors and Diagnostics {#errors}
 
 If a method returns an error, verify the request data.
 
 #|
 || **Error code or text** | **Cause and action** ||
-|| `ACCESS_DENIED` | The method was not called by an administrator or the webhook does not have the `bizproc` scope ||
+|| `ACCESS_DENIED` | The method was called by a user without administrator permissions. Create a webhook as an administrator and repeat the request ||
+|| `insufficient_scope` | The webhook or application does not have the `bizproc` scope. Add the scope in the webhook or application settings ||
 || `ERROR_WRONG_WORKFLOW_ID` | `ID` is empty or has a non-string value ||
+|| Empty error code and `The business process is not found` | There is no workflow with this `ID`: it has already been deleted, for example during a repeated run of the scenario, or the `ID` was copied incorrectly. Skip this `ID` and continue processing the remaining workflows ||
 || Empty `result` array in step 1 | There are no running processes that match the `<STARTED` filter ||
-|| Errors with large volumes of data | Check the paging logic and the [Performance](../../settings/performance/index.md) recommendations ||
 |#
+
+If the request fails due to a connection or authorization error, check Bitrix24 availability and the webhook URL, then repeat the search and review the list again before confirming.
 
 Repeat the scenario from the step where the error occurred. If the error happens while deleting one process, verify its `ID` and continue processing the remaining processes.
 
 ## What to Consider
 
-- `bizproc.workflow.kill` deletes the process together with its process data
-- `bizproc.workflow.terminate` stops the process and keeps the record of its launch
-- the business process `ID` is a string like `660e559f34af10.95144732`; do not convert it to a number
-- `bizproc.workflow.instances` returns 50 records per request, so mass processing requires pagination
+- `bizproc.workflow.instances` returns 50 records per request, so mass processing requires pagination. By default, the list is sorted by `MODIFIED`, which changes for running workflows, so the examples sort by `ID`. The `callList.make()` method in b24jssdk is unsuitable for this list: it converts `ID` to a number, while the workflow `ID` is a string
 
 ## Continue Learning
 

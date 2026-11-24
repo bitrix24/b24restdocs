@@ -36,7 +36,7 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 
 You can obtain the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method. A group is a Scrum if its `SCRUM_MASTER_ID` field is filled ||
 || **name*** 
-[`string`](../../../data-types.md) | Name of the sprint ||
+[`string`](../../../data-types.md) | Name of the sprint. The method does not accept a name consisting only of spaces and returns the `Sprint name is required` error ||
 || **createdBy*** 
 [`integer`](../../../data-types.md) | Identifier of the user who creates the sprint.
 
@@ -471,6 +471,7 @@ HTTP status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | `Access denied` | No access to the Scrum ||
 || `400` | `0` | `Group id not found` | The `groupId` field is not passed ||
+|| `400` | `0` | `Sprint name is required` | A string consisting only of spaces was passed in `name` ||
 || `400` | `0` | `Unable to add sprint` | Failed to create the sprint, for example, the `name` or `createdBy` field is not passed ||
 || `400` | `0` | `Unable to add two active sprint` | The `active` status is passed, but the Scrum already has an active sprint ||
 || `400` | `0` | `Incorrect sprint status` | The `status` field is not passed or contains a value other than `planned`, `active`, `completed` ||

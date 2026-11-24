@@ -140,7 +140,9 @@ Default values:
 ||OTHER|Other||
 |#
 
-The list of all possible identifiers from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=SOURCE` ||
+The list of all possible identifiers from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=SOURCE`.
+
+If the parameter is not passed, the lead is created without a source ||
 || **STATUS_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the stage ||
 || **STATUS_ID**

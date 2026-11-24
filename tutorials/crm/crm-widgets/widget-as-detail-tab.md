@@ -200,7 +200,7 @@ PLACEMENT_OPTIONS={"ID":"3473"}
 [`string`](../../../api-reference/data-types.md) | OAuth token of the user who opened the tab. The PHP handler uses the token to call `crm.item.get` with this user's permissions ||
 |#
 
-The full set of request service parameters is described on the [Tabs in CRM Cards](../../../api-reference/widgets/crm/detail-tab.md#what-the-handler-receives) page.
+The full set of request service parameters is described on the [Tabs in CRM Cards](../../../api-reference/widgets/crm/detail-tab.md#handler-data) page.
 
 ## 4. Retrieve Deal Data
 

@@ -65,6 +65,7 @@ For `entityTypeId`, use the `entityTypeId` or `=entityTypeId` key.
 Features:
 - by default, the condition `isDeleted: "N"` is added if none of the `isDeleted`, `@isDeleted`, or `!isDeleted` keys is provided
 - the `moduleId` filter is forcibly limited to the value `crm`
+- the passed filter is combined with the module and access permission restrictions using `AND`. The `"logic": "OR"` condition applies only within the passed filter and does not extend the selection beyond the available templates
 - you can filter by `entityTypeId`, for example `["2","2_category_37"]`
 
 Main fields for `filter`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`, `entityTypeId` ||

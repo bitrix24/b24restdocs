@@ -87,7 +87,7 @@ The field for sorting can take the following values:
 - `PRIORITY` — priority
 - `FORUM_TOPIC_ID` — forum topic identifier
 - `RESPONSIBLE_ID` — Participant
-- `TITLE` — task title (can search by pattern [\%_])
+- `TITLE` — task title. A value without the `%` and `_` characters is searched as a substring: `"report"` finds the task "Quarterly report". A value with `%` or `_` works as a mask for the whole title: `%` matches any number of characters, `_` matches a single character. For example, `"Report%"` finds tasks whose title starts with "Report". With the `=` prefix — `"=TITLE"` — the method searches for an exact match, and `%` and `_` are treated as regular characters
 - `TAG` — task tag
 - `REAL_STATUS` — task status. Corresponds to the `status` field in the response.
     - `2` — waiting for execution

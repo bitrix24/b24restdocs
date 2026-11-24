@@ -68,7 +68,7 @@ You can add a prefix to the `field_n` keys to specify the filter operation. Poss
 
 By default, the method returns only templates that are not marked as deleted: the filter `isDeleted = "N"` is applied. To retrieve templates marked as deleted, pass `"isDeleted": "Y"`; to retrieve all templates, pass `"@isDeleted": ["Y", "N"]`.
 
-A filter by `moduleId` is ignored: the method always selects templates of the `rest` module ||
+A filter by `moduleId` is ignored: the method always selects templates of the `rest` module. The passed filter is combined with the module and access permission restrictions using `AND`, so the `"logic": "OR"` condition does not extend the selection beyond the available templates ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 

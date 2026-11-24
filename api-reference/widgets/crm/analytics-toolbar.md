@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 
-The widget adds its own button to the header of the CRM Analytics section.
+The widget adds an item to the split button menu in the CRM Analytics header.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -21,22 +21,38 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method: it passes a code from the [table](#codes) in `PLACEMENT` and the handler URL in `HANDLER`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. An item with the name from `TITLE` appears in the split button menu in the header of a CRM Analytics report. If no name is set, the application name is used
+3. When a user selects the item, Bitrix24 opens the handler in a frame. The handler receives a POST request with the [call data](#handler-data)
+4. The handler can call REST on behalf of the current user with the token from `AUTH_ID`
+
+## When to Use
+
+The placement suits cases when you need to:
+
+- open the integration settings from CRM Analytics
+- show a related application report from the section header
+
+Choose `CRM_ANALYTICS_TOOLBAR` for an action from the report header. To add an application report as a separate item in the left menu of CRM Analytics, use [CRM_ANALYTICS_MENU](./analytics-menu.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
-|| `CRM_ANALYTICS_TOOLBAR` | Button in the CRM Analytics header ||
+|| `CRM_ANALYTICS_TOOLBAR` | Split button menu item in the CRM Analytics header ||
 |#
 
 ### Where to Find It in the Interface
 
-Open the *CRM Analytics* section and select a report in the left menu. The application button appears on the right in the section header, next to the report settings.
+Open the *CRM Analytics* section and select a report in the left menu. A split button appears on the right in the section header, next to the report settings: click the arrow on it and select the application item. The button itself shows the item the user selects most often, or the *Extensions* label, as in the screenshot below.
 
 The button is not available on every report. For example, the *Individual performance* report has no settings of its own, and only the feedback button remains in the header.
 
 ![Button in the CRM Analytics header](./_images/CRM_ANALYTICS_TOOLBAR.png "Button in the CRM Analytics header")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -68,9 +84,7 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
-
-The placement has no keys of its own — the context carries only the universal `URI` key.
+The placement has no keys of its own. The common `URI` key is described in the standard data above.
 
 ## OPTIONS When Registering via placement.bind
 
@@ -91,13 +105,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
       -d '{
         "PLACEMENT": "CRM_ANALYTICS_TOOLBAR",
         "HANDLER": "https://your-domain.com/widgets/crm-analytics-toolbar-handler.php",
-        "TITLE": "My CRM analytics button",
+        "TITLE": "My CRM analytics item",
         "LANG_ALL": {
           "en": {
-            "TITLE": "My CRM analytics button"
+            "TITLE": "My CRM analytics item"
           },
           "de": {
-            "TITLE": "Meine CRM-Analyse-Schaltfläche"
+            "TITLE": "Mein CRM-Analyse-Menüpunkt"
           }
         },
         "auth": "**put_access_token_here**"
@@ -121,13 +135,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         params: {
           PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
           HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-          TITLE: 'My CRM analytics button',
+          TITLE: 'My CRM analytics item',
           LANG_ALL: {
             en: {
-              TITLE: 'My CRM analytics button',
+              TITLE: 'My CRM analytics item',
             },
             de: {
-              TITLE: 'Meine CRM-Analyse-Schaltfläche',
+              TITLE: 'Mein CRM-Analyse-Menüpunkt',
             },
           },
         },
@@ -163,13 +177,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
             params: {
               PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
               HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-              TITLE: 'My CRM analytics button',
+              TITLE: 'My CRM analytics item',
               LANG_ALL: {
                 en: {
-                  TITLE: 'My CRM analytics button',
+                  TITLE: 'My CRM analytics item',
                 },
                 de: {
-                  TITLE: 'Meine CRM-Analyse-Schaltfläche',
+                  TITLE: 'Mein CRM-Analyse-Menüpunkt',
                 },
               },
             },
@@ -205,13 +219,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
                 [
                     'PLACEMENT' => 'CRM_ANALYTICS_TOOLBAR',
                     'HANDLER' => 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-                    'TITLE' => 'My CRM analytics button',
+                    'TITLE' => 'My CRM analytics item',
                     'LANG_ALL' => [
                         'en' => [
-                            'TITLE' => 'My CRM analytics button',
+                            'TITLE' => 'My CRM analytics item',
                         ],
                         'de' => [
-                            'TITLE' => 'Meine CRM-Analyse-Schaltfläche',
+                            'TITLE' => 'Mein CRM-Analyse-Menüpunkt',
                         ],
                     ],
                 ]
@@ -233,10 +247,10 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         {
             PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
             HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-            TITLE: 'My CRM analytics button',
+            TITLE: 'My CRM analytics item',
             LANG_ALL: {
-                en: { TITLE: 'My CRM analytics button' },
-                de: { TITLE: 'Meine CRM-Analyse-Schaltfläche' }
+                en: { TITLE: 'My CRM analytics item' },
+                de: { TITLE: 'Mein CRM-Analyse-Menüpunkt' }
             }
         },
         function(result) {
@@ -259,13 +273,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
         [
             'PLACEMENT' => 'CRM_ANALYTICS_TOOLBAR',
             'HANDLER' => 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-            'TITLE' => 'My CRM analytics button',
+            'TITLE' => 'My CRM analytics item',
             'LANG_ALL' => [
                 'en' => [
-                    'TITLE' => 'My CRM analytics button',
+                    'TITLE' => 'My CRM analytics item',
                 ],
                 'de' => [
-                    'TITLE' => 'Meine CRM-Analyse-Schaltfläche',
+                    'TITLE' => 'Mein CRM-Analyse-Menüpunkt',
                 ],
             ],
         ]
@@ -283,13 +297,13 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
     	"PLACEMENT": "CRM_ANALYTICS_TOOLBAR",
     	"HANDLER":   "https://your-domain.com/widgets/crm-analytics-toolbar-handler.php",
-    	"TITLE":     "My CRM analytics button",
+    	"TITLE":     "My CRM analytics item",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My CRM analytics button",
-    		},
     		"en": b24.Params{
-    			"TITLE": "My CRM analytics button",
+    			"TITLE": "My CRM analytics item",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein CRM-Analyse-Menüpunkt",
     		},
     	},
     })

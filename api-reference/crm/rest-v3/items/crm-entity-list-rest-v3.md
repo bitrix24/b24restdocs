@@ -37,7 +37,7 @@ The list includes only the items the user can view. The method skips items the u
 || SPA | `crm.smartprocess<entityTypeId>.list`, for example, `crm.smartprocess1038.list` | [SPA fields](./fields-smart-process.md) ||
 |#
 
-For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+For an SPA, the method name includes the type ID `entityTypeId`. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 The method name is written in lowercase: `crm.smartinvoice.list`, not `crm.smartInvoice.list`. If the name is written in a different case or contains a nonexistent `entityTypeId`, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -165,7 +165,13 @@ Fields of employees, stages, pipelines, and other reference lists cannot be filt
 
 #### Empty Values and Multiple Fields
 
-The `null` value can be passed only with the `=` and `!=` operators and only for fields that can be empty, for example, `companyId`, `contactId`, `myCompanyId`. For other fields, `null` causes a type validation error.
+The `["field", "=", null]` condition finds items where the field is empty, and `["field", "!=", null]` finds items where it is filled in. You can filter this way by:
+- regular and custom fields. A string is considered empty if it is `null` or `""`, a number if it is `null` or `0`, and other types if they are `null`
+- the `contactId`, `contactsId`, and `observersId` bindings — items without contacts or observers
+- the `phone`, `email`, `web`, and `im` fields — items without a phone, email, website, or messenger
+- the `trackingSourceId` field — items without an end-to-end analytics source
+
+`null` can be passed only with the `=` and `!=` operators. For the `id` field and inside an array for the `in` operator, `null` causes the `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION` error.
 
 An empty link to a CRM item is stored in different ways: in the response, `companyId` is `null`, but the database may contain `0`. To find all items without a company, check both values:
 
@@ -649,7 +655,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `#FIELD#` | DTO `#DTO#` in field `#FIELD#` requires attribute `Filterable` to perform this request | The field cannot be used in a filter. Use fields whose `filterable` attribute is `true` in `crm.<type>.field.list` ||
 || `#FIELD#` | DTO `#DTO#` in field `#FIELD#` requires attribute `Sortable` to perform this request | The field cannot be used for sorting. Use fields whose `sortable` attribute is `true` in `crm.<type>.field.list` ||
-|| `#FIELD#` | This request requires data type `#TYPE#` in field `#FIELD#` | Pass a value of the field type: a number, `true` or `false`, or a date and time with a time zone. The error also occurs when `null` is passed for a field that cannot be empty ||
+|| `#FIELD#` | This request requires data type `#TYPE#` in field `#FIELD#` | Pass a value of the field type: a number, `true` or `false`, or a date and time with a time zone ||
 |#
 
 #### Filter Errors
@@ -658,7 +664,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Invalid filter `#FILTER#` | Check the condition from the error message. Common causes: a group inside an array without `"type": "filter"`, an invalid `logic` value, a condition that does not consist of two or three elements, an object such as `{"id": 17}` instead of an array of conditions, an operator not allowed for the field, `null` with an operator other than `=` and `!=`, a dot-notation path to an employee or reference list field ||
+|| `-` | Invalid filter `#FILTER#` | Check the condition from the error message. Common causes: a group inside an array without `"type": "filter"`, an invalid `logic` value, a condition that does not consist of two or three elements, an object such as `{"id": 17}` instead of an array of conditions, an operator not allowed for the field, `null` with an operator other than `=` and `!=` or for the `id` field, a dot-notation path to an employee or reference list field ||
 || `-` | Invalid filter `Filter node limit exceeded.` | Reduce the filter to 100 conditions and groups ||
 || `-` | Invalid filter `Filter depth limit exceeded.` | Reduce group nesting to 8 levels ||
 || `-` | Invalid filter `Filter collection operand limit exceeded.` | Pass no more than 1000 values in all `in` lists ||
@@ -715,13 +721,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.list`. For an SPA, check `entityTypeId` with the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, for example, `crm.smartinvoice.list`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](../history/crm-entity-history-list-rest-v3.md)
 - [{#T}](./index.md)
 - [{#T}](./crm-entity-add-rest-v3.md)
 - [{#T}](./crm-entity-update-rest-v3.md)

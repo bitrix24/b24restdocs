@@ -9,6 +9,8 @@ items:
     href: tasks-flow-flow-update.md
   - name: Get Flow
     href: tasks-flow-flow-get.md
+  - name: Get Flow Team
+    href: tasks-flow-team-list.md
   - name: Delete Flow
     href: tasks-flow-flow-delete.md
   - name: Check Flow name for uniqueness

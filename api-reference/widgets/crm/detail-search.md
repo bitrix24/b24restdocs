@@ -13,9 +13,9 @@ Choose a tool for developing with an AI agent:
 
 The `CRM_DETAIL_SEARCH` placement connects an application handler to the client search in the CRM form — to the *Contact* and *Company* fields of the *Client* block. Use it when the application searches for a client in an external source and fills the found option into the form.
 
-The application does not render an interface of its own: it receives the search query and returns a list of options, while Bitrix24 displays them.
+Register the handler with the [placement.bind](../placement-bind.md) method by passing `CRM_DETAIL_SEARCH` in the `PLACEMENT` parameter.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The application does not render an interface of its own: it receives the search query and returns a list of options, while Bitrix24 displays them.
 
 {% note info "" %}
 
@@ -23,7 +23,21 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers the handler with the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application; the placement cannot be registered with a webhook. The widget can be registered by an administrator or by an employee with the permission to create applications
+2. The user types a query into the *Contact* or *Company* field of the *Client* block. The application search is started from its item in the result list
+3. Bitrix24 opens the handler in a hidden frame and passes the [request data](#handler-data). The application returns the options with the `crmShowFoundEntities` command
+4. After an option is selected, the handler creates the client via REST with the token from `AUTH_ID` and passes the CRM identifier with the `crmShowCreatedEntity` command. REST calls run with the permissions of the current user
+
+## When to Use
+
+- search for a company in an external registry and create it in CRM to fill it into the form
+- find a contact in the application's client database and add it to CRM when the user selects it
+
+To search for and fill in requisites, use [CRM_REQUISITE_AUTOCOMPLETE](./requisites-autocomplete/requisite-autocomplete.md). The `CRM_DETAIL_SEARCH` placement selects the client itself, not its requisites.
+
+## Where the Widget Is Embedded {#codes}
 
 #|
 || **Placement Code** | **Location** ||
@@ -32,13 +46,13 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open a CRM entity form and start typing a query into the *Contact* or *Company* field of the *Client* block. The application item appears below the list of found clients once the query is at least three characters long. The item is displayed with the name from the `TITLE` parameter.
+Open a CRM entity form and start typing a query into the *Contact* or *Company* field of the *Client* block. Once the query is at least three characters long, the application item with the name from the `TITLE` parameter appears below the list of found clients.
 
 Click the item to make the application run the search. While the handler responds, a loading indicator is shown on the item. The options found by the application appear in the same list as the clients of Bitrix24.
 
 ![Application item in the client search of the deal form](./_images/CRM_DETAIL_SEARCH.png "Application item in the client search of the deal form")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
@@ -80,10 +94,6 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Besides the universal `URI` key, the context contains the keys of the placement itself.
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 #|
 || **Parameter** | **Description** ||
 || **entityTypeName***
@@ -97,7 +107,7 @@ Possible values:
 [`string`](../../data-types.md) | The string the user typed into the search field ||
 |#
 
-The identifier of the entity whose form the search was started from does not arrive as a separate key. It can be taken from the path in the universal `URI` key.
+The entity identifier is not passed as a separate key. Do not rely on it being present in `URI`.
 
 ## OPTIONS when registering via placement.bind
 
@@ -141,11 +151,13 @@ BX24.placement.call(
 );
 ```
 
+Return the list within 20 seconds after the handler opens in the frame. If the handler takes longer, the application search ends with an error and the item becomes inactive.
+
 If the application found nothing, pass an empty list. Bitrix24 will make the application item inactive.
 
 ## How to Fill the Selected Option into the Form
 
-If the user selects an option from the application response, Bitrix24 triggers the `onCrmEntityIsNeedToCreate` interface event. Subscribe to it with the [BX24.placement.bindEvent](../ui-interaction/bx24-placement-bind-event.md) method.
+If the user selects an option from the application response, Bitrix24 triggers the `onCrmEntityIsNeedToCreate` interface event. Subscribe to it with the [BX24.placement.bindEvent](../ui-interaction/bx24-placement-bind-event.md) method before you pass the found options.
 
 The event handler receives the data of the selected option.
 
@@ -155,23 +167,37 @@ The event handler receives the data of the selected option.
 || **appSid**
 [`string`](../../data-types.md) | Identifier of the application session in which the selected option was found ||
 || **data**
-[`object`](../../data-types.md) | Data of the selected option from the list the application passed via `crmShowFoundEntities` ||
+[`object`](../../data-types.md) | Data of the selected option prepared by Bitrix24: `id` is the identifier from the application result, `title` is the value of its `name` field, `type` is the client type: `CONTACT` or `COMPANY`. The phone, email, and website, if passed, are in `attributes` ||
 |#
 
 Create the entity in CRM with the [crm.company.add](../../crm/companies/crm-company-add.md) or [crm.contact.add](../../crm/contacts/crm-contact-add.md) method, and then pass its identifier with the `crmShowCreatedEntity` command. Bitrix24 fills this entity into the *Client* field of the form.
 
+Here `createdCrmId` is the CRM entity identifier from the successful response of the create method, and `selected.id` is the option identifier in the external source. Example for a company:
+
 ```javascript
 BX24.placement.bindEvent('onCrmEntityIsNeedToCreate', function (eventData) {
     const selected = eventData.data;
+    if (selected.type !== 'COMPANY') {
+        return;
+    }
 
-    BX24.placement.call(
-        'crmShowCreatedEntity',
-        {
-            entityType: 'company',
-            id: selected.id,
-            title: selected.title || selected.name
+    BX24.callMethod('crm.company.add', { fields: { TITLE: selected.title } }, function (result) {
+        if (result.error()) {
+            console.error(result.error());
+            return;
         }
-    );
+
+        const createdCrmId = Number(result.data());
+        if (!Number.isInteger(createdCrmId) || createdCrmId <= 0) {
+            return;
+        }
+
+        BX24.placement.call('crmShowCreatedEntity', {
+            entityType: selected.type,
+            id: createdCrmId,
+            title: selected.title
+        });
+    });
 });
 ```
 
@@ -181,9 +207,9 @@ Fields of the `crmShowCreatedEntity` command:
 || **Field**
 `type` | **Description** ||
 || **entityType**
-[`string`](../../data-types.md) | Type of the created entity. Pass `company` for a company and `contact` for a contact ||
+[`string`](../../data-types.md) | Type of the created entity. Pass `COMPANY` for a company and `CONTACT` for a contact ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the created entity in CRM ||
+[`integer`](../../data-types.md) | Positive numeric identifier of the created CRM entity from the successful response of the create method ||
 || **title**
 [`string`](../../data-types.md) | Name of the created entity ||
 |#
@@ -397,11 +423,11 @@ Fields of the `crmShowCreatedEntity` command:
     	"HANDLER":   "https://your-domain.com/widgets/crm-detail-search-handler.php",
     	"TITLE":     "Registry search",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "Registry search",
-    		},
     		"en": b24.Params{
     			"TITLE": "Registry search",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Registersuche",
     		},
     	},
     })

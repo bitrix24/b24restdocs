@@ -62,7 +62,7 @@ Requisites are related to their owner, their template, and the CRM items in whic
 || `crm.requisite.list` | No type, requisites of all contacts and companies ||
 |#
 
-SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field.
+SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method.
 
 ## Requisite Fields {#fields}
 

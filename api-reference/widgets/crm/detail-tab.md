@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 
-The widget adds its own tab to the card of a CRM object: a [lead](../../crm/leads/index.md), [contact](../../crm/contacts/index.md), [company](../../crm/companies/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), [order](../../sale/order/index.md), or [custom object type](../../crm/universal/index.md).
+The widget adds its own tab to the card of a [lead](../../crm/leads/index.md), [contact](../../crm/contacts/index.md), [company](../../crm/companies/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), [order](../../sale/order/index.md), or an item of a [custom CRM object type](../../crm/universal/index.md).
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -21,7 +21,25 @@ The widget is not displayed in the interface until the application installation 
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## How the Placement Works
+
+1. The application registers a handler with the [placement.bind](../placement-bind.md) method, passing a code from the [table](#codes) in `PLACEMENT`. The method works only on behalf of an application; the placement cannot be registered with a webhook. A widget can be registered by an administrator or by an employee with the permission to create applications
+2. A tab with the name from the `TITLE` parameter appears in the card tab row. If no name is passed, the application name is used
+3. The user selects the tab, and Bitrix24 loads the handler in a frame inside the card. The call context is described in the [What the Handler Receives](#handler-data) section
+4. The handler uses the object identifier from `PLACEMENT_OPTIONS` to retrieve data via REST with the `AUTH_ID` token of the current user
+
+When the user switches tabs, Bitrix24 shows or hides the application area; the handler is loaded when the tab is first opened. To change the frame height, use [BX24.resizeWindow](../../../sdk/bx24-js-sdk/additional-functions/bx24-resize-window.md).
+
+## When to Use
+
+The placement suits viewing and working with data inside the card. For example:
+
+- display data from an external service related to the open deal
+- edit additional client information in the application interface
+
+For a one-off action, use the [top menu item](./detail-toolbar.md); for an action next to activities, use the [button above the timeline](./detail-activity.md).
+
+## Where the Widget Is Embedded {#codes}
 
 #| 
 || **Placement Code** | **Location** ||
@@ -41,11 +59,11 @@ Open a CRM object card. The application tab appears in the card tab row. If ther
 
 ![Tab in the deal card](./_images/CRM_DEAL_DETAIL_TAB.png "Tab in the deal card")
 
-## What the Handler Receives
+## What the Handler Receives {#handler-data}
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the `CRM_DEAL_DETAIL_TAB` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
+The example is shown for the `CRM_DEAL_DETAIL_TAB` placement. For other placements, the `PLACEMENT` code and the object identifier in `PLACEMENT_OPTIONS` change.
 
 ```php
 
@@ -75,23 +93,18 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the object identifier.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the object identifier.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||
 || **ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+[`string`](../../data-types.md) | Identifier of the CRM object or order for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
+For a lead, deal, contact, company, estimate, new invoice, or custom object type item, use [crm.item.get](../../crm/universal/crm-item-get.md), specifying `entityTypeId` and `id`.
 
-- any entity type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+For an order, use [sale.order.get](../../sale/order/sale-order-get.md), specifying `id`. To call `sale.*` methods, the application needs the `sale` scope.
 
 The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_DETAIL_TAB` code, the type identifier is `183`
 
@@ -317,11 +330,11 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
     	"HANDLER":   "https://your-domain.com/widgets/crm-detail-tab-handler.php",
     	"TITLE":     "My deal tab",
     	"LANG_ALL": b24.Params{
-    		"ru": b24.Params{
-    			"TITLE": "My deal tab",
-    		},
     		"en": b24.Params{
     			"TITLE": "My deal tab",
+    		},
+    		"de": b24.Params{
+    			"TITLE": "Mein Deal-Tab",
     		},
     	},
     })
@@ -342,8 +355,6 @@ This placement does not support the `OPTIONS` parameters. The values passed are 
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
-|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The tab is not visible in the card tab row | If there are more tabs than fit in the row, the application tab moves under *More* ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.

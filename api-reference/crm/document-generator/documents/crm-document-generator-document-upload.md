@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view document generator documents
+> Who can execute the method: a user with permission to edit document generator documents and access to the CRM object
 
 The method `crm.documentgenerator.document.upload` uploads a prepared document and attaches it to a CRM object.
 
@@ -57,7 +57,7 @@ More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 |#
 
-Required fields must contain values other than an empty string or the string `0`. The `entityId` value must be greater than zero.
+Required fields must contain values other than an empty string or the string `0`. The `entityTypeId` and `entityId` values must be integers greater than zero. If they are not passed, are invalid, or the user has no access to the CRM object, the method returns the `ACCESS_DENIED` error.
 
 {% note info "Method specifics" %}
 
@@ -517,7 +517,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Empty required fields: entityTypeId, fileContent, region, entityId, title, number"
+    "error_description": "Empty required fields: fileContent, region, title, number"
 }
 ```
 
@@ -528,11 +528,12 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `400` | `0` | Empty required fields: entityTypeId, fileContent, region, entityId, title, number | Required fields are missing from the empty `fields` object ||
+|| `400` | `0` | Empty required fields: fileContent, region, title, number | Required fields are missing from the empty `fields` object ||
 || `400` | `0` | Empty required fields: fileContent | The required field `fields.fileContent` was not provided ||
-|| `400` | `0` | Wrong "entityTypeId" field value | An invalid `fields.entityTypeId` was provided ||
-|| `400` | `0` | No provider for entityTypeId | No suitable CRM provider found for `fields.entityTypeId` ||
-|| `400` | `0` | Wrong "entityId" field value | An invalid `fields.entityId` was provided ||
+|| `400` | `ACCESS_DENIED` | Access denied | Possible reasons:
+- the user has no permission to edit document generator documents
+- `fields.entityTypeId` or `fields.entityId` is not passed or is invalid, or the CRM object was not found
+- the user has no access to the CRM object ||
 || `400` | `0` | Could not save file | Failed to save the uploaded file ||
 || `400` | `0` | Module crm is not installed | The `crm` module is unavailable during DG processing ||
 || `400` | `0` | Wrong provider ... | Incorrect document provider defined ||

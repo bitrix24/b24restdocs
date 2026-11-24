@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Activities are calls, meetings, emails, tasks, and other actions employees perform with a client. An activity is bound to one or more CRM items and is shown in their cards. REST 3.0 methods read activities, complete and reopen them, delete them, change their bindings to items, and work with CRM emails: read the text and the thread, and send a reply.
+Activities are calls, meetings, emails, tasks, and other actions employees perform with a client. An activity is bound to one or more CRM items and is shown in their cards. REST 3.0 methods read activities, complete and reopen them, delete them, change their bindings to items, and work with CRM emails: read the text and the thread, and send a reply. Separate methods read an item's telephony calls and Open Channel chats together with call and session data.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -45,17 +45,21 @@ The object type is set by the `<type>` segment of the method name:
 || SPA | `smartprocess<entityTypeId>`, for example, `smartprocess1038` ||
 |#
 
-My company and B2E documents have no activity methods. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. Method names are written in lowercase: `crm.deal.activity.get`. The exception is the email methods `crm.activity.mail.getContent` and `crm.activity.mail.getThread`: their names contain capital letters, as in the method table.
+My company and B2E documents have no activity methods. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Method names are written in lowercase: `crm.deal.activity.get`. The exception is the email methods `crm.activity.mail.getContent` and `crm.activity.mail.getThread`: their names contain capital letters, as in the method table.
 
 ## Relationship with Other Objects
 
-An activity is linked to CRM items, employees, and mail.
+An activity is linked to CRM items, employees, mail, telephony, and Open Channels.
 
 **CRM items.** An activity is bound to one or more items: the bindings are returned in the `bindings` field as `entityTypeId` and `entityId` pairs. Permission for an activity follows from the permissions for the items it is bound to. Bindings are changed by the [crm.activity.binding.bind](./crm-activity-binding-bind-rest-v3.md), [unbind](./crm-activity-binding-unbind-rest-v3.md), and [move](./crm-activity-binding-move-rest-v3.md) methods. The last binding cannot be removed; it can only be moved to another item. Object type IDs are returned by the [crm.dictionary.entitytype.list](../dictionaries/crm-dictionary-list-rest-v3.md) method.
 
 **Employees.** `assignedById` contains the responsible person, `authorId` the author, and `editorId` the last person who changed the activity. Employee data can be retrieved with the [user.get](../../../user/user-get.md) method.
 
 **Mail.** CRM emails are activities with `providerId` equal to `CRM_EMAIL`. The email text is returned by [crm.activity.mail.getContent](./crm-activity-mail-get-content-rest-v3.md), the entire conversation by [crm.activity.mail.getThread](./crm-activity-mail-get-thread-rest-v3.md), and a reply is sent by [crm.activity.mail.reply](./crm-activity-mail-reply-rest-v3.md).
+
+**Telephony.** Calls are activities with `providerId` equal to `VOXIMPLANT_CALL`. In addition to activity fields, the [crm.&lt;type&gt;.activity.call.get](./crm-entity-activity-call-get-rest-v3.md) and [crm.&lt;type&gt;.activity.call.list](./crm-entity-activity-call-list-rest-v3.md) methods return the call direction, duration, outcome, recording, comment, rating, line, and number. The methods are read-only. My company and B2E documents do not have them.
+
+**Open Channels.** Open Channel chats are activities with `providerId` equal to `IMOPENLINES_SESSION`. The [crm.&lt;type&gt;.activity.openline.get](./crm-entity-activity-openline-get-rest-v3.md) and [crm.&lt;type&gt;.activity.openline.list](./crm-entity-activity-openline-list-rest-v3.md) methods also return the Open Channel, channel, session, `chatId`, and client rating. The methods are read-only. My company and B2E documents do not have them. The name is written in lowercase: `openline`, not `openLine`.
 
 ## Activity Fields {#fields}
 
@@ -146,6 +150,16 @@ The descriptions of fields with the `filterable` and `sortable` attributes are r
 || [crm.&lt;type&gt;.activity.uncomplete](./crm-entity-activity-uncomplete-rest-v3.md) | Reopens an activity ||
 || `crm.<type>.activity.field.list` | Returns the description of activity fields ||
 || `crm.<type>.activity.field.get` | Returns the description of an activity field by name ||
+|#
+
+### Item Calls and Open Channel Chats
+
+#|
+|| **Method** | **Description** ||
+|| [crm.&lt;type&gt;.activity.call.get](./crm-entity-activity-call-get-rest-v3.md) | Returns an item call with telephony data ||
+|| [crm.&lt;type&gt;.activity.call.list](./crm-entity-activity-call-list-rest-v3.md) | Returns the calls of a single item ||
+|| [crm.&lt;type&gt;.activity.openline.get](./crm-entity-activity-openline-get-rest-v3.md) | Returns an item Open Channel chat with session data ||
+|| [crm.&lt;type&gt;.activity.openline.list](./crm-entity-activity-openline-list-rest-v3.md) | Returns the Open Channel chats of a single item ||
 |#
 
 ### Activities Without an Object Type

@@ -758,6 +758,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](../../rest-v3/smart-process-types/crm-smart-process-update-rest-v3.md)
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-get.md)
 - [{#T}](./crm-type-get-by-entity-type-id.md)

@@ -519,6 +519,7 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `INVALID_ARG_VALUE` | No provider for entityTypeId | A non-numeric value was passed in `entityTypeId`, for example `deal`. A numeric string, for example `"2"`, is accepted ||
 || `400` | `0` | No provider for entityTypeId | No data provider found for the provided `entityTypeId` ||
 || `400` | `0` | Empty required parameter "value" | `entityId` not provided or is empty ||
 || `400` | `0` | Cannot create document on deleted template | Cannot create a document based on a deleted template ||

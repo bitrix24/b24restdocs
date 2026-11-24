@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: Create an Item
     href: crm-entity-add-rest-v3.md
+  - name: Copy an Item
+    href: crm-entity-copy-rest-v3.md
   - name: Update an Item
     href: crm-entity-update-rest-v3.md
   - name: Get an Item by ID

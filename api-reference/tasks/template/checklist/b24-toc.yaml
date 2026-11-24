@@ -5,25 +5,55 @@ items:
     href: index.md  
   - name: Add Checklist Item  
     href: tasks-template-checklist-add.md  
+  - name: Add Checklist Item v 3.0  
+    href: tasks-template-checklist-item-add-rest-v3.md  
   - name: Update Checklist Item  
     href: tasks-template-checklist-update.md  
+  - name: Update Checklist Item v 3.0  
+    href: tasks-template-checklist-item-update-rest-v3.md  
   - name: Retrieve Checklist Item  
     href: tasks-template-checklist-get.md  
   - name: Retrieve Checklist Item List  
     href: tasks-template-checklist-list.md  
+  - name: Get Task Template Checklist v 3.0  
+    href: tasks-template-checklist-get-rest-v3.md  
+  - name: Save Entire Task Template Checklist v 3.0  
+    href: tasks-template-checklist-save-rest-v3.md  
   - name: Delete Checklist Item  
     href: tasks-template-checklist-delete.md  
+  - name: Delete Checklist Item v 3.0  
+    href: tasks-template-checklist-item-delete-rest-v3.md  
   - name: Move Item After Another  
     href: tasks-template-checklist-move-after.md  
   - name: Move Item Before Another  
     href: tasks-template-checklist-move-before.md  
+  - name: Move Checklist Item v 3.0  
+    href: tasks-template-checklist-item-move-rest-v3.md  
   - name: Mark Item as Completed  
     href: tasks-template-checklist-complete.md  
+  - name: Mark Item as Completed v 3.0  
+    href: tasks-template-checklist-item-complete-rest-v3.md  
   - name: Mark Item as Incomplete  
     href: tasks-template-checklist-renew.md  
+  - name: Mark Item as Incomplete v 3.0  
+    href: tasks-template-checklist-item-renew-rest-v3.md  
+  - name: Mark All Checklist Items as Completed v 3.0  
+    href: tasks-template-checklist-complete-rest-v3.md  
+  - name: Mark All Items as Incomplete v 3.0  
+    href: tasks-template-checklist-renew-rest-v3.md  
+  - name: Collapse Checklist Item v 3.0  
+    href: tasks-template-checklist-item-collapse-rest-v3.md  
+  - name: Expand Checklist Item v 3.0  
+    href: tasks-template-checklist-item-expand-rest-v3.md  
   - name: Add Attachment from Content  
     href: tasks-template-checklist-add-attachment-by-content.md  
+  - name: Upload File to Item v 3.0  
+    href: tasks-template-checklist-item-attachment-upload-rest-v3.md  
   - name: Add Attachments from Drive  
     href: tasks-template-checklist-add-attachments-from-disk.md  
+  - name: Attach Drive Files to Item v 3.0  
+    href: tasks-template-checklist-item-attachment-attach-rest-v3.md  
   - name: Remove Attachments  
     href: tasks-template-checklist-remove-attachments.md  
+  - name: Detach Files from Item v 3.0  
+    href: tasks-template-checklist-item-attachment-detach-rest-v3.md  
