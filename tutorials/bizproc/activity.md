@@ -513,7 +513,7 @@ Get products using [crm.lead.productrow.list / crm.deal.productrow.list](../../a
 In the shortened `get` response, the customer and currency fields are in `result.item`. Save them to create the invoice. Prepare the products from `result.items` for copying. The following are shortened live responses with identifiers replaced.
 
 ```json
-{"result":{"item":{"companyId":null,"contactsId":[],"currencyId":"RUB"}}}
+{"result":{"item":{"companyId":null,"contactsId":[],"currencyId":"USD"}}}
 ```
 
 Shortened product page response with `select: ["productName", "price", "quantity"]`:
