@@ -2,10 +2,10 @@
 
 > Scope: [`imopenlines`](../../api-reference/scopes/permissions.md), [`crm`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute the methods:
-> - `imconnector.send.messages` — an application with access to Open Channels
-> - `imopenlines.dialog.get` — a user with permission to access the conversation
-> - `crm.item.list` — a user with permission to read CRM items
+> Who can execute the scenario: an application user who participates in the Open Channel chat or can join conversations of this channel, and has permission to read the required CRM items
+> - [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) — any user, called only with application authorization
+> - [imopenlines.dialog.get](../../api-reference/imopenlines/openlines/sessions/imopenlines-dialog-get.md) — a participant of the Open Channel chat or a user who can join conversations of this channel
+> - [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) — a user with permission to read CRM items
 
 {% note tip "" %}
 
@@ -16,9 +16,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The Open Channel connector passes customer messages from an external channel—such as a messenger, a website chat, or a helpdesk service—to Bitrix24. If the CRM tracker creates a lead, contact, or company based on an inquiry, the integration often needs to retrieve the identifier of the created CRM object.
+The Open Channel connector passes customer messages from an external channel—such as a messenger, a website chat, or a helpdesk service—to Bitrix24. If the CRM tracker creates a lead or a deal with a contact based on an inquiry, or finds an existing contact or company, the integration often needs to retrieve the identifier of the linked CRM object.
 
-Do not pass technical identifiers into the `email` field of the [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) method. In the CRM, this field is used as the customer's email address. An invalid value could be saved to a contact or company and interfere with scenarios requiring a valid email, such as sending a receipt to a customer.
+Do not pass technical identifiers into the `email` field of the [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) method. The CRM tracker saves a correctly formatted address to the customer card and uses it to search for existing contacts and companies. A marker formatted as an address ends up in the card, and inquiries from different customers with a matching marker can be linked to the same contact.
 
 ## How to Retrieve the Identifier of a Linked CRM Object
 
@@ -32,11 +32,15 @@ To find the lead, contact, or company that the CRM tracker linked to an Open Cha
 
 ## Requirements
 
-- An application with access to Open Channels and CRM
+- An application with the `imopenlines` and `crm` permissions. The `imconnector.send.messages` method works only in the application context, an inbound webhook is not suitable for it
+- An Open Channel with CRM integration enabled: its settings specify which CRM object to create from an inquiry
+- A connector registered and connected to the Open Channel. How to do this is described in the tutorial [{#T}](./example-connector.md)
 - A connector code from the `ID` parameter of the [imconnector.register](../../api-reference/imopenlines/imconnector/imconnector-register.md) method. The examples use `myconnector`
 - An Open Channel identifier. The examples use `107`
 - An external chat or channel identifier. The examples use `channel-123`
 - An external customer identifier. The examples use `ext-user-42`
+
+Run the JS examples on an application page where the `BX24` library is loaded. Run the PHP examples on the application server with the [CRest](../../sdk/crest-php-sdk/index.md) library configured. Replace the connector, line, customer, chat, and message identifiers, the phone number, the message text, and the chat URL in the examples with the data of your integration. The step 1 example sends a real message to the Open Channel, so test the scenario on a test channel.
 
 ## 1. Send a Customer Message
 
@@ -126,9 +130,7 @@ Send a message to an Open Channel using the [imconnector.send.messages](../../ap
        ]
    );
 
-   echo '<PRE>';
-   print_r($result);
-   echo '</PRE>';
+   echo '<pre>' . htmlspecialchars(print_r($result, true), ENT_QUOTES, 'UTF-8') . '</pre>';
    ```
 
 {% endlist %}
@@ -154,7 +156,7 @@ If the message is sent successfully, the method returns the Open Channel session
 }
 ```
 
-Save the following values:
+If the message is accepted, its result contains `SUCCESS: true` and the `session` block: `result.DATA.RESULT[0].session` for the first message in `MESSAGES`. If `SUCCESS` is `false`, the reasons are listed in the `ERRORS` array of this message. If `SUCCESS` is `false` or the `session` block is missing, do not proceed to step 2: check the message processing result and the connector connection to the line. Save the following values:
 
 - `session.ID` — the Open Channel session identifier
 
@@ -162,7 +164,7 @@ Save the following values:
 
 ## 2. Retrieve Dialog Data
 
-Retrieve the chat data using the [imopenlines.dialog.get](../../api-reference/imopenlines/openlines/sessions/imopenlines-dialog-get.md) method. Pass the value of `session.CHAT_ID` from the `imconnector.send.messages` method response to the `CHAT_ID` parameter.
+Retrieve the chat data using the [imopenlines.dialog.get](../../api-reference/imopenlines/openlines/sessions/imopenlines-dialog-get.md) method. Pass the value of `session.CHAT_ID` from the `imconnector.send.messages` method response to the `CHAT_ID` parameter. The step examples run separately: replace `1767` with your `session.CHAT_ID` value.
 
 {% list tabs %}
 
@@ -182,7 +184,12 @@ Retrieve the chat data using the [imopenlines.dialog.get](../../api-reference/im
            }
            else
            {
-               console.dir(result.data());
+               const dialog = result.data();
+               // Messenger field value for step 3
+               const imolValue = 'imol|' + dialog.entity_id;
+               console.log(imolValue);
+               // CRM links the dialog already has
+               console.log(dialog.entity_data_2);
            }
        }
    );
@@ -200,18 +207,24 @@ Retrieve the chat data using the [imopenlines.dialog.get](../../api-reference/im
        ]
    );
 
-   echo '<PRE>';
-   print_r($result);
-   echo '</PRE>';
+   if (isset($result['error'])) {
+       echo htmlspecialchars($result['error_description'], ENT_QUOTES, 'UTF-8');
+   } else {
+       // Messenger field value for step 3
+       $imolValue = 'imol|' . $result['result']['entity_id'];
+       echo htmlspecialchars($imolValue, ENT_QUOTES, 'UTF-8') . '<br>';
+       // CRM links the dialog already has
+       echo htmlspecialchars($result['result']['entity_data_2'], ENT_QUOTES, 'UTF-8');
+   }
    ```
 
 {% endlist %}
 
 Two fields in the response are important:
 
-- `entity_id` — the Open Channel user code. This can be used to construct the value for the Messenger field in the CRM
+- `entity_id` — the Open Channel user code in the `<connector code>|<line ID>|<external chat ID>|<user ID>` format. The last part is the ID of the user Bitrix24 created for the customer, not the external identifier from `user.id`. The value of the Messenger field in the CRM is built from `entity_id`
 
-- `entity_data_2` — a string containing the CRM links already associated with the dialog
+- `entity_data_2` — a string containing the CRM links already associated with the dialog: "type|identifier" pairs for the lead, company, contact, and deal, where `0` means there is no link. Take the deal only from here: a deal has no messenger field, and step 3 will not find it
 
 ```json
 {
@@ -225,7 +238,9 @@ Two fields in the response are important:
 }
 ```
 
-To obtain the value for the Messenger field in the CRM, add the `imol|` prefix to `entity_id`. In the example, this is:
+If `entity_data_2` contains a non-zero identifier for the required type, use it as the current dialog link: in the example, contact `42`. Step 3 finds objects with the same messenger value. You need it when there is no link or when you need to find an object of a different type. To make sure the found object is linked to this dialog, compare its identifier with `entity_data_2`.
+
+To obtain the value for the Messenger field in the CRM, add the `imol|` prefix to `entity_id`, as in the code examples above. In the example, this is:
 
 ```text
 imol|myconnector|107|channel-123|ext-user-42
@@ -239,32 +254,36 @@ Perform an exact search by the messenger field using the [crm.item.list](../../a
 - `3` — contact
 - `4` — company
 
-In universal CRM methods, the IMOL messenger value is available in the `imol` field. Field `fm` with multi-fields cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`.
+In universal CRM methods, the Open Channel messenger value is available in the `imol` field. All multi-fields of an object — phone numbers, email addresses, messengers — are returned in the `fm` field if you specify it in `select`.
 
-In the example, we will find a contact, so we will pass `entityTypeId = 3`.
+For a lead, contact, and company, the `imol` field contains only the first Open Channel messenger value. If the value of the current dialog differs from the first saved value, the search will not find this object. So check the link in `entity_data_2` first, and do not treat an empty search result as proof that the object does not exist.
+
+In the example, we will find a contact, so we will pass `entityTypeId = 3`. Replace the example `imolValue` with the value retrieved in step 2.
 
 - `entityTypeId` — the CRM object type. For a contact, specify `3`
 
-- `filter[=imol]` — the Messenger field value: the `imol|` prefix and `entity_id` from the `imopenlines.dialog.get` method response
+- `filter[=imol]` — the `imolValue` value from step 2: the `imol|` prefix and `entity_id` from the `imopenlines.dialog.get` method response
 
-- `select` — the list of fields to return. To search for an identifier, the `id` field is sufficient
+- `select` — the list of fields to return. To search for an identifier, the `id` field is sufficient; the example adds `imol` for verification
 
 {% list tabs %}
 
 - JS
 
    ```js
+   // imolValue — the value from step 2
+   const imolValue = 'imol|myconnector|107|channel-123|1571';
+
    BX24.callMethod(
        'crm.item.list',
        {
            entityTypeId: 3,
            select: [
                'id',
-               'title',
                'imol'
            ],
            filter: {
-               '=imol': 'imol|myconnector|107|channel-123|ext-user-42'
+               '=imol': imolValue
            }
        },
        function(result)
@@ -286,24 +305,24 @@ In the example, we will find a contact, so we will pass `entityTypeId = 3`.
    ```php
    require_once('crest.php');
 
+   // $imolValue — the value from step 2
+   $imolValue = 'imol|myconnector|107|channel-123|1571';
+
    $result = CRest::call(
        'crm.item.list',
        [
            'entityTypeId' => 3,
            'select' => [
                'id',
-               'title',
                'imol',
            ],
            'filter' => [
-               '=imol' => 'imol|myconnector|107|channel-123|ext-user-42',
+               '=imol' => $imolValue,
            ],
        ]
    );
 
-   echo '<PRE>';
-   print_r($result);
-   echo '</PRE>';
+   echo '<pre>' . htmlspecialchars(print_r($result, true), ENT_QUOTES, 'UTF-8') . '</pre>';
    ```
 
 {% endlist %}
@@ -316,8 +335,7 @@ If the contact is found, the method returns its data in the `items` array.
         "items": [
             {
                 "id": 42,
-                "title": "Klaus",
-                "imol": "imol|myconnector|107|channel-123|ext-user-42"
+                "imol": "imol|myconnector|107|channel-123|1571"
             }
         ]
     },
@@ -327,7 +345,11 @@ If the contact is found, the method returns its data in the `items` array.
 
 The value of `items[0].id` is the identifier of the found CRM object. In the example, a contact with identifier `42` was found.
 
-If the contact is not found, repeat the request with `entityTypeId = 1` for a lead and `entityTypeId = 4` for a company.
+If `items` is an empty array, no contact with this first messenger value was found. For a lead and a company, repeat the request with `entityTypeId = 1` and `entityTypeId = 4`.
+
+## Verify the Result
+
+Open the CRM card with the `items[0].id` identifier and check that the Messenger field contains the Open Channel. The current dialog link to the object is confirmed by the object's identifier in `entity_data_2` from step 2.
 
 ## If the CRM Object Is Not Found
 
@@ -336,15 +358,19 @@ Check the values that link the scenario steps:
 - the `imconnector.send.messages` response contains the `session` block with `CHAT_ID`
 - `CHAT_ID` from the `imconnector.send.messages` response is passed to the `imopenlines.dialog.get` request
 - the `imopenlines.dialog.get` response contains a non-empty `entity_id` field
-- a value with the `imol|` prefix is passed to the `crm.item.list` filter, for example `imol|myconnector|107|channel-123|ext-user-42`
-- `entityTypeId` specifies the CRM object type that the CRM tracker might have created: `1`, `3`, or `4`
+- a value with the `imol|` prefix is passed to the `crm.item.list` filter, for example `imol|myconnector|107|channel-123|1571`
+- `entityTypeId` specifies the CRM object type that the CRM tracker might have created or linked to the dialog: `1`, `3`, or `4`
+- CRM integration is enabled in the Open Channel settings, and the required type of object to create is set. After changing the settings, test the scenario on a new inquiry
 - the user on whose behalf `crm.item.list` is performed has permission to read the found CRM object
 
-If the `crm.item.list` method returns error `INVALID_ARG_VALUE`, check the field in the filter. To search by messenger use `=imol`.
+If a method returns an error, check the request data.
+
+- `NOT_ACTIVE_LINE` from `imconnector.send.messages` — the line with this `LINE` is inactive or the connector is not connected to it. Check the line identifier and the connector connection, then repeat step 1
+- `WRONG_AUTH_TYPE` from `imconnector.send.messages` — the request was not made in the application context. Call the method with application authorization and repeat step 1
+- `ACCESS_ERROR` from `imopenlines.dialog.get` — a chat with this `CHAT_ID` is not found or the user has no access to the dialog. Check `CHAT_ID` from step 1 and repeat step 2
+- `INVALID_ARG_VALUE` from `crm.item.list` — an invalid request parameter, for example, the filter contains a field that cannot be used for filtering. The error text names the field. The `=imol` filter works only for a lead, contact, and company: with `entityTypeId = 2`, the method returns this error. Check the field and `entityTypeId`, then repeat step 3
 
 ## Key Considerations
 
-- Do not use the `email` field for technical markers. Pass only the actual customer email address to it
-- Retain `session.CHAT_ID` and `session.ID` from the [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) response
-- Use `entity_id` from [imopenlines.dialog.get](../../api-reference/imopenlines/openlines/sessions/imopenlines-dialog-get.md) with the `imol|` prefix as the exact value for searching by messenger
-- Check multiple CRM object types if the CRM tracker configurations can create leads, contacts, or companies
+- Pass only the customer's real address in `email`: the CRM tracker uses it to search for existing contacts and companies
+- Check several CRM object types: the CRM tracker can create a lead or a contact, or link the dialog to an existing company
