@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 BIconnector is a Bitrix24 module that provides methods for connecting external data sources and adapting them for the "Analyst Workspace" section.
 
-The module combines three current method groups: connectors, sources, and tables. Together they form a data chain — from setting up a connection to an external service to delivering a dataset for reports. The fourth group, `biconnector.dataset.*`, is deprecated — what to use instead is described below.
+The module combines three current method groups: connectors, sources, and tables. Together they form a data chain — from setting up a connection to an external service to delivering a dataset for reports. The fourth group, `biconnector.dataset.*`, is deprecated — what to use instead is described below. The access key methods `biconnector.key.*` work separately from this chain: with a key, external analytics systems retrieve Bitrix24 data through the BI connector.
 
 {% note warning "" %}
 
-The methods work only in the context of an [application](../../settings/app-installation/index.md) and only with the objects that the application created itself. When called via a webhook, the methods return the `ACCESS_DENIED` error. The `*.fields` methods are an exception: they return the description of the object fields and are available to a webhook
+The methods work only in the context of an [application](../../settings/app-installation/index.md) and only with the objects that the application created itself. When called via a webhook, the methods return the `ACCESS_DENIED` error. The exceptions are the `*.fields` methods, which return the description of the object fields and are available to a webhook, and the `biconnector.key.*` methods, which return the `insufficient_auth_type` error when called via a webhook
 
 {% endnote %}
 
@@ -46,6 +46,12 @@ A table is the description of a dataset that the application delivers to the "An
 A table is linked to a source through `sourceId` and defines the data structure for analytics: which columns are available, what types they have, and which of them are visible in reports. Several tables can be created from a single source and used in different reports.
 
 To work with tables, use the [biconnector.table.*](./table/index.md) methods. For the set of fields, see the [table fields description](./table/index.md#table).
+
+## Access Keys
+
+An access key is a secret string that external analytics systems, such as Microsoft Power BI or Google Looker Studio, use to retrieve Bitrix24 data through the BI connector. An application can create keys, retrieve their values, enable, disable, and delete keys.
+
+To work with keys, use the [biconnector.key.*](./key/index.md) methods. They work differently from the connector, source, and table methods: different permissions, errors at the root of the response, and pagination through `limit` and `offset`. The differences are listed in the [access key methods overview](./key/index.md).
 
 {% note info "" %}
 
@@ -176,10 +182,23 @@ The methods return neither the total number of items nor a link to the next page
 || [biconnector.table.fields](./table/biconnector-table-fields.md) | Returns the description of the table fields ||
 |#
 
+### Access Keys
+
+> Who can execute the methods: a user with the permission to manage BI connector keys, for example an administrator
+
+#|
+|| **Method** | **Description** ||
+|| [biconnector.key.add](./key/biconnector-key-add.md) | Creates an access key ||
+|| [biconnector.key.update](./key/biconnector-key-update.md) | Enables or disables a key or changes its connection ||
+|| [biconnector.key.list](./key/biconnector-key-list.md) | Retrieves the list of the application's keys ||
+|| [biconnector.key.delete](./key/biconnector-key-delete.md) | Deletes a key ||
+|#
+
 ## Continue Learning
 
 - [{#T}](./connector/index.md)
 - [{#T}](./source/index.md)
 - [{#T}](./table/index.md)
+- [{#T}](./key/index.md)
 - [Example of creating a connector based on B24PHPSDK](https://github.com/bitrix24/b24sdk-examples/tree/main/php/special/biconnector)
 

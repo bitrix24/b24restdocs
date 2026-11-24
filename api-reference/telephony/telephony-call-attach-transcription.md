@@ -376,6 +376,7 @@ HTTP Status: **400**
 || `400` | Empty value | MESSAGES should be an array | Parameter `MESSAGES` not passed as an array ||
 || `400` | Empty value | MESSAGES[{N}] should be an array | The utterance with index `N` in `MESSAGES` is not passed as an object ||
 || `400` | Empty value | MESSAGES[{N}][SIDE] should be either Client or User | Invalid value for `SIDE` ||
+|| `400` | Empty value | MESSAGES[{N}][START_TIME] should be set | `START_TIME` is not passed in the message with index `N` ||
 || `400` | Empty value | MESSAGES[{N}][START_TIME] should be greater or equal to zero | Invalid `START_TIME` ||
 || `400` | Empty value | MESSAGES[{N}][STOP_TIME] should be greater than zero | Invalid `STOP_TIME` ||
 || `400` | Empty value | MESSAGES[{N}][MESSAGE] is empty | Empty text for the utterance ||

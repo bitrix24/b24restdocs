@@ -35,6 +35,18 @@ The `call.followup.get` method returns the follow-up of a single Bitrix24 call o
 - Sync call — `10000000000` plus the identifier of the detailed analysis page
 
 The [call.followup.list](./call-followup-list.md) method returns a ready-to-use identifier in the `callId` field, so you do not need to add anything to it ||
+|| **outcomeId**
+[`integer`](../../data-types.md) | Identifier of the call transcription whose analysis run results to return. This is the `OUTCOME_ID` value from the parameters of the Follow-up message in the call chat.
+
+If the identifier does not belong to a transcription of this call, the parameter is ignored. The parameter is also ignored for Sync calls.
+
+Default — the latest analysis results of the call ||
+|| **lastOutcomeId**
+[`integer`](../../data-types.md) | Identifier of the newest analysis result to take into account. Newer results are not returned. This is the `LAST_OUTCOME_ID` value from the parameters of the Follow-up message in the call chat. Use the parameter if the analysis was restarted without a new transcription: in this case, the runs share the same `outcomeId`.
+
+The parameter is ignored for Sync calls.
+
+Default — no limit ||
 || **select**
 [`array`](../../data-types.md) | Fields and nested paths to be returned in the response. All fields are listed in the [Call Follow-up Fields](./fields.md#select-paths) article.
 

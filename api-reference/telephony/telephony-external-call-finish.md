@@ -37,7 +37,7 @@ The user is also assigned as responsible for the CRM entities that were automati
 
 The identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **USER_PHONE_INNER***
-[`string`](../data-types.md) | The internal number of the user.
+[`string`](../data-types.md) or [`string[]`](../data-types.md) | The internal number of the user or an array of internal numbers. If an array is passed, the user is searched by any of the numbers.
 
 The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
@@ -48,6 +48,8 @@ At least one of the parameters must be specified: `USER_ID` or `USER_PHONE_INNER
 {% endnote %} ||
 || **DURATION**
 [`integer`](../data-types.md) | The duration of the call in seconds.
+
+Minimum value — `0`.
 
 Default is `0` ||
 || **COST**
@@ -511,6 +513,7 @@ HTTP Status: **400**, **403**
 || **Code** | **Description** | **Value** ||
 || `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the application context ||
 || `INVALID_ARGUMENT` | CALL_ID must be a string | Parameter `CALL_ID` must be a string ||
+|| `INVALID_ARGUMENT` | DURATION must be non-negative | Parameter `DURATION` is less than zero ||
 || `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set | `USER_ID` and `USER_PHONE_INNER` not provided ||
 || `ERROR_CORE` | Call is not found (call should be registered prior to finishing) | Call not found, it must be registered using the method `telephony.externalCall.register` before finishing ||
 || `ERROR_CORE` | User is not found or is not active | User not found or inactive ||

@@ -102,7 +102,9 @@ Possible values:
 || **CALL_DURATION**
 [`integer`](../../data-types.md) | Duration of the call in seconds ||
 || **CALL_START_DATE**
-[`datetime`](../../data-types.md) | Date and time of the call start in ISO-8601 format with timezone indication ||
+[`datetime`](../../data-types.md) | Date and time of the call start in ISO-8601 format with timezone indication.
+
+A condition with a value that is not recognized as a date is not applied. If some dates in an array of values are not recognized, the condition is applied to the rest. For the `><` and `!><` operators, the condition is not applied if at least one boundary of the range is not recognized ||
 || **CALL_LOG**
 [`string`](../../data-types.md) | Call log URL ||
 || **CALL_RECORD_URL**

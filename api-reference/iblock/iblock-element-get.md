@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`iblock`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the permission to read the information block element
 
 {% note info "" %}
 
@@ -34,10 +34,10 @@ The method works only with information blocks that have an "API symbolic code" s
 #|
 || **Name**
 `type` | **Description** ||
-|| **iblock***
+|| **iblockId***
 [`integer`](../data-types.md) | Identifier of the information block that contains the element. The value must be greater than `0`.
 
-Note that the parameter is named `iblock`, not `iblockId`. In information block validation errors, the field is named `iblockId` ||
+The method also accepts the identifier in the `iblock` parameter, the former name of this parameter. If both parameters are passed, `iblockId` is used ||
 || **id***
 [`integer`](../data-types.md) | Element identifier.
 
@@ -76,7 +76,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"iblock":14,"id":215,"select":["id","name","iblockSectionId","properties"]}' \
+    -d '{"iblockId":14,"id":215,"select":["id","name","iblockSectionId","properties"]}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/iblock.element.get
     ```
 
@@ -86,7 +86,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"iblock":14,"id":215,"select":["id","name","iblockSectionId","properties"],"auth":"**put_access_token_here**"}' \
+    -d '{"iblockId":14,"id":215,"select":["id","name","iblockSectionId","properties"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/iblock.element.get
     ```
 
@@ -117,7 +117,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
       const response = await $b24.actions.v3.call.make<ElementGetResult>({
         method: 'iblock.element.get',
         params: {
-          iblock: 14,
+          iblockId: 14,
           id: 215,
           select: ['id', 'name', 'iblockSectionId', 'properties'],
         },
@@ -148,7 +148,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           const response = await $b24.actions.v3.call.make({
             method: 'iblock.element.get',
             params: {
-              iblock: 14,
+              iblockId: 14,
               id: 215,
               select: ['id', 'name', 'iblockSectionId', 'properties'],
             },
@@ -179,7 +179,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     try:
         bitrix_response = client.iblock.element.get(
-            iblock=14,
+            iblockId=14,
             id=215,
             select=["id", "name", "iblockSectionId", "properties"],
         ).response
@@ -209,7 +209,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             ->call(
                 'iblock.element.get',
                 [
-                    'iblock' => 14,
+                    'iblockId' => 14,
                     'id' => 215,
                     'select' => ['id', 'name', 'iblockSectionId', 'properties'],
                 ]
@@ -233,7 +233,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     BX24.callMethod(
         'iblock.element.get',
         {
-            iblock: 14,
+            iblockId: 14,
             id: 215,
             select: ['id', 'name', 'iblockSectionId', 'properties'],
         },
@@ -256,7 +256,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     $result = CRest::call(
         'iblock.element.get',
         [
-            'iblock' => 14,
+            'iblockId' => 14,
             'id' => 215,
             'select' => ['id', 'name', 'iblockSectionId', 'properties'],
         ]
@@ -272,7 +272,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "iblock.element.get", b24.Params{
-    	"iblock": 14,
+    	"iblockId": 14,
     	"id":     215,
     	"select": []string{"id", "name", "iblockSectionId", "properties"},
     }, b24.WithIdempotent())
@@ -419,10 +419,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `iblock` | Required field `iblock` is missing | Pass the information block identifier in the `iblock` parameter ||
-|| `iblock` | Field value must be 1 or greater | Pass a positive information block identifier ||
+|| `iblockId` | Required field "iblockId" is missing | Pass the information block identifier in the `iblockId` parameter ||
+|| `iblockId` | iblockId must be a positive integer. | Pass a positive information block identifier. If the identifier is passed in the `iblock` parameter, the error names `iblock` ||
 || `id` | Required field `id` is missing | Pass the element identifier ||
-|| `iblockId` | Iblock not found. | There is no information block with this identifier. Check the `iblock` value ||
+|| `iblockId` | Iblock not found. | There is no information block with this identifier. Check the `iblockId` value ||
 || `iblockId` | Unable to compile iblock entity. | The information block has no API code. Set it in the admin panel. This is not possible in cloud Bitrix24 ||
 || `iblockId` | Restricted iblock ID:`#ID#` (`#API_CODE#`) | REST access is disabled for the information block. Enable it in the admin panel ||
 |#
@@ -433,7 +433,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Entity with ID `#ID#` was not found | There is no element with this identifier in the information block. Check `id` and `iblock` ||
+|| `-` | Entity with ID `#ID#` was not found | There is no element with this identifier in the information block, or the user does not have the permission to read it. Check `id` and `iblockId` ||
 |#
 
 #### Unknown Field Error

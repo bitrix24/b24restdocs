@@ -20,7 +20,7 @@ For Bitrix24 Sync calls, some fields are filled in differently, whichever set of
 In `select`, you can pass [root object](#root-object) fields and available nested paths for AI blocks:
 
 - `transcription`, `transcription.language`, `transcription.segments`
-- `overview`, `overview.topic`, `overview.detailedTakeaways`, `overview.meetingType`, `overview.agenda`, `overview.agreements`, `overview.actionItems`, `overview.meetings`
+- `overview`, `overview.topic`, `overview.detailedTakeaways`, `overview.meetingType`, `overview.agenda`, `overview.agreements`, `overview.actionItems`, `overview.meetings`, `overview.contextualSuggestions`
 - `summary`
 - `insights`, `insights.speakerEvaluationAvailable`, `insights.speakerAnalysis`, `insights.meetingStrengths`, `insights.meetingWeaknesses`, `insights.speechStyleInfluence`, `insights.engagementLevel`, `insights.areasOfResponsibility`, `insights.finalRecommendations`
 - `evaluation`, `evaluation.efficiencyValue`, `evaluation.calendar`, `evaluation.criteria`
@@ -234,13 +234,30 @@ For Bitrix24 Sync call Follow-ups, the field keys and types are the same as for 
 
 - `actionItem` — action with participant mentions
 - `actionItemMentionLess` — action without participant mentions
-- `quote` — quote from the call ||
+- `quote` — quote from the call
+- `quoteAuthorId` — identifier of the user who said the quote. If the speaker has no user account in Bitrix24 — `null`
+- `quoteAuthorName` — name of the speaker
+- `quoteStart` — start time of the transcription fragment with the quote relative to the start of the call in `HH:MM:SS` format
+
+The `quoteAuthorId`, `quoteAuthorName`, and `quoteStart` fields are returned only if the quote is found in the call transcription ||
 || **meetings**
 [`array`](../../data-types.md) | Scheduled follow-up meetings. Each item may contain:
 
 - `meeting` — meeting description with mentions of participants
 - `meetingMentionLess` — meeting description without mentions of participants
-- `quote` — a quote from the call ||
+- `quote` — a quote from the call
+- `quoteAuthorId` — identifier of the user who said the quote. If the speaker has no user account in Bitrix24 — `null`
+- `quoteAuthorName` — name of the speaker
+- `quoteStart` — start time of the transcription fragment with the quote relative to the start of the call in `HH:MM:SS` format
+
+The `quoteAuthorId`, `quoteAuthorName`, and `quoteStart` fields are returned only if the quote is found in the call transcription ||
+|| **contextualSuggestions**
+[`array`](../../data-types.md) | Actions that AI suggests performing after the meeting. If AI suggested nothing — an empty array. Each element contains:
+
+- `text` — action button text
+- `kind` — action type: `link` — open a link, `put` — insert text into the message input field
+- `link` — path in Bitrix24 or external link to open. Returned for `kind` = `link`
+- `inputDraft` — text for the message input field. Returned for `kind` = `put` ||
 |#
 
 ## Summary Object {#summary}

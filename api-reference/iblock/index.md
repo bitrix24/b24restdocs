@@ -40,7 +40,7 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 - The [iblock.element.field.list](./iblock-element-field-list.md) and [iblock.element.field.get](./iblock-element-field-get.md) methods do not access the information block and work in the cloud
 - The methods only read data. Information block elements cannot be created, updated, or deleted via `iblock.element.*`
 - An element is returned with the `id`, `iblockId`, `name`, `iblockSectionId`, and `properties` fields. For a property, only the value identifier, the value, and the description are returned
-- The methods do not check the user's permissions for the information block: access to elements is granted by the "Access via REST is enabled" setting
+- The `iblock.element.get` and `iblock.element.list` methods return only the elements the user has the permission to read. An administrator receives all elements. `iblock.element.get` does not find an element without the read permission, and `iblock.element.list` does not include it in the selection
 
 ## Connection with Other Objects
 

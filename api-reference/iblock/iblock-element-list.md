@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`iblock`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the permission to read the information block elements
 
 {% note info "" %}
 
@@ -19,7 +19,7 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 {% endnote %}
 
-The method `iblock.element.list` returns a list of information block elements with filtering, sorting, and pagination.
+The method `iblock.element.list` returns a list of information block elements with filtering, sorting, and pagination. The selection includes only the elements the user can read.
 
 {% note warning "" %}
 

@@ -35,7 +35,7 @@ The method works only in the context of an [application](../../settings/app-inst
 
 The identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **USER_PHONE_INNER*** 
-[`string`](../data-types.md) | The internal number of the user.
+[`string`](../data-types.md) or [`string[]`](../data-types.md) | The internal number of the user or an array of internal numbers. If an array is passed, the user is searched by any of the numbers.
 
 The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
