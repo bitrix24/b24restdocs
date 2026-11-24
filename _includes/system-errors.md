@@ -13,8 +13,12 @@ Internal server error | An internal server error has occurred. Retry the call, a
 Server returned an unexpected response | The server returned an unexpected response. Retry the call, and if the error persists, contact the server administrator or [Bitrix24 technical support](/bitrix-support.html) ||
 || `503` | `QUERY_LIMIT_EXCEEDED`
 Too many requests | The [request intensity limit](/limits.html) has been exceeded ||
+|| `503` | `BITRIX_REST_V3_EXCEPTION_LIMITER_QUERYTIMELIMITEXCEPTION`
+Request canceled: query time limit exceeded | The SQL query inside the method ran longer than the [SQL query time limit](/limits.html). The `Retry-After` header contains the limit in seconds ||
 || `429` | `OPERATION_TIME_LIMIT`
-Method is blocked due to operation time limit | The method is blocked because the [request resource intensity limit](/limits.html) has been exceeded. The block is lifted automatically once the accumulated execution time of the method no longer exceeds the limit ||
+Method is blocked due to operation time limit | The method is blocked because the [request resource intensity limit](/limits.html) has been exceeded. The block lasts 5 minutes, after which the accumulated execution time of the method is counted from zero ||
+|| `429` | `BITRIX_REST_V3_EXCEPTION_RATELIMITEXCEPTION`
+Request was blocked because the limit was exceeded | The same block in REST 3.0 methods. The `Retry-After` header contains the remaining block time in seconds ||
 || `401` | `NO_AUTH_FOUND`
 Wrong authorization data | The request contains no authorization data: neither an [access token](/settings/oauth/index.html) nor a [webhook code](/local-integrations/local-webhooks.html) was passed ||
 || `401` | `INVALID_REQUEST`
