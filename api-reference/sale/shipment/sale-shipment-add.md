@@ -438,7 +438,7 @@ HTTP status: **200**
          "dateInsert":"2024-04-11T14:17:52+02:00",
          "dateResponsibleId":"2024-04-11T14:17:52+02:00",
          "deducted":"Y",
-         "deliveryDocDate":"2024-02-13T13:05:48+02:00",
+         "deliveryDocDate":"2024-02-13T14:05:48+02:00",
          "deliveryDocNum":"DocumentNumber123456",
          "deliveryId":2,
          "deliveryName":"Courier Delivery",

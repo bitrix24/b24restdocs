@@ -25,6 +25,8 @@ The `note.file.add` method uploads a file to a document and returns a file objec
 
 The method does not automatically insert the attachment into the document content. It only saves the file and links it to the document.
 
+To insert the file into the text, add `assetMarkdown` from the response to the document Markdown using [note.document.content.edit](../document/note-document-content-edit.md). An HTML file is inserted as a link, for example, `[[file fileId=5001]]`. To display the HTML page directly in the document, use `[[file fileId=5001 view=full]]`.
+
 {% endnote %}
 
 ## Method Parameters {#parameters}
@@ -41,7 +43,7 @@ The identifier can be obtained using the [note.document.tree.list](../document/n
 || **fileName***
 [`string`](../../data-types.md) | File name with extension.
 
-Allowed extensions: `png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`, `txt`, `md`, `csv`, `doc`, `docx`, `xls`, `xlsx`, `ppt`, `pptx`, `mp4`, `webm`, `mov`.
+Allowed extensions: `png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`, `txt`, `md`, `html`, `htm`, `csv`, `doc`, `docx`, `xls`, `xlsx`, `ppt`, `pptx`, `mp4`, `webm`, `mov`.
 
 Extensions are case insensitive. A file with no extension or an unlisted extension is rejected with `NOTE_FILE_TYPE_NOT_ALLOWED` ||
 || **fileContent***
@@ -360,7 +362,7 @@ Possible values:
 - `video` — the MIME type starts with `video/`
 - `file` — all other MIME types ||
 || **assetMarkdown**
-[`string`](../../data-types.md) | Ready-to-use Markdown block for inserting the file into a document via [note.document.update](../document/note-document-update.md).
+[`string`](../../data-types.md) | Ready-to-use Markdown block for inserting the file into a document via [note.document.content.edit](../document/note-document-content-edit.md) or [note.document.update](../document/note-document-update.md). The block must be on a separate line.
 
 Before inserting an image or video, you can extend the block with scale and alignment parameters. For details, see the `markdown` field description in [note.document.update](../document/note-document-update.md) ||
 |#

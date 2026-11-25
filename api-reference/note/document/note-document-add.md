@@ -50,7 +50,9 @@ The document title must not exceed 255 characters. ||
 
 The identifier can be obtained using the [note.document.tree.list](./note-document-tree-list.md) method.
 
-Use this if you need to create a nested document. The parent document must belong to the same knowledge base as `collectionId`. ||
+Use this if you need to create a nested document. The parent document must belong to the same knowledge base as `collectionId`.
+
+A document template and a knowledge base system document cannot be parents. Templates are not returned by [note.document.list](./note-document-list.md), [note.document.tree.list](./note-document-tree-list.md), and [note.document.get](./note-document-get.md): via REST, they behave as nonexistent documents ||
 || **markdown**
 [`string`](../../data-types.md) | Initial document content in Markdown.
 
@@ -466,7 +468,7 @@ Error Code: `NOTE_INVALID_PARENT`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `parentId` | The parent document does not belong to the specified collection. | Specify the `fields.parentId` of the document from the same knowledge base as `fields.collectionId`, or do not pass `fields.parentId`. ||
+|| `parentId` | The parent document does not belong to the specified collection. | Specify the `fields.parentId` of the document from the same knowledge base as `fields.collectionId`, or do not pass `fields.parentId`. A template and a knowledge base system document cannot be a parent ||
 |#
 
 #### Access Errors

@@ -9,6 +9,10 @@ items:
     href: note-document-update.md
   - name: Retrieve Document
     href: note-document-get.md
+  - name: Retrieve Current Document Text
+    href: note-document-content-get.md
+  - name: Edit Document Text
+    href: note-document-content-edit.md
   - name: Move Document to Recycle Bin
     href: note-document-delete.md
   - name: Restore Document from Recycle Bin

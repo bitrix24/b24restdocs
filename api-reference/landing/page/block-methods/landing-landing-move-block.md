@@ -512,7 +512,7 @@ HTTP Status: **400 Bad Request**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | The page with identifier `lid` is not found or is not accessible to the current user ||
-|| `ACCESS_DENIED` | Insufficient permissions to call the method ||
+|| `ACCESS_DENIED` | The user does not have permission to call landing methods, edit the page `lid`, or edit the block's source page ||
 || `BLOCK_NOT_FOUND` | The source block with identifier `block` is not found, is not accessible to the current user, marked as deleted, provided from the published version of the page, or cannot be loaded from the source page ||
 || `BLOCK_INCOMPATIBLE_SITE_TYPE` | This block cannot be pasted onto the page: the block is not intended for the site type of the `lid` page. For example, a store block cannot be moved to a page of a `PAGE` site ||
 |#
@@ -523,6 +523,7 @@ HTTP Status: **400 Bad Request**
 
 - [{#T}](./landing-landing-add-block.md)
 - [{#T}](./landing-landing-copy-block.md)
+- [{#T}](./landing-landing-cut-block.md)
 - [{#T}](./landing-landing-delete-block.md)
 - [{#T}](./landing-landing-down-block.md)
 - [{#T}](./landing-landing-hide-block.md)

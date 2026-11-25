@@ -11,6 +11,8 @@ Choose a tool for developing with an AI agent:
 
 Shipments allow you to see which products have been sent, in what quantities, and when. This helps manage delivery statuses. An order can be shipped in parts, meaning as several independent shipments. Each shipment has its own delivery service, status, and contents.
 
+Date and time fields are returned in ISO 8601 format in the Bitrix24 server time zone, for example `2024-04-10T10:00:00+02:00`. The user's time zone does not affect the value. A value without an offset in a request is treated as server time, while a value with an offset is converted to the server time zone.
+
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Delivery Services](https://helpdesk.bitrix24.com/open/17297482/)

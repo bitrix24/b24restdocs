@@ -27,6 +27,7 @@ These methods modify blocks in the draft version of the page. If the page is alr
 
    - [landing.landing.addblock](./landing-landing-add-block.md) — add a new block from the repository. Available block codes are returned by [landing.block.getrepository](../../block/methods/landing-block-get-repository.md).
    - [landing.landing.copyblock](./landing-landing-copy-block.md) — copy a block.
+   - [landing.landing.cutblock](./landing-landing-cut-block.md) — record the block cut action in the history before moving it.
    - [landing.landing.moveblock](./landing-landing-move-block.md), [landing.landing.upblock](./landing-landing-up-block.md), [landing.landing.downblock](./landing-landing-down-block.md) — change the position of a block.
    - [landing.landing.hideblock](./landing-landing-hide-block.md) and [landing.landing.showblock](./landing-landing-show-block.md) — manage the visibility of a block.
    - [landing.landing.markdeletedblock](./landing-landing-mark-deleted-block.md), [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md), [landing.landing.deleteblock](./landing-landing-delete-block.md) — temporarily or permanently delete a block.
@@ -71,6 +72,7 @@ The `scope` parameter defines the internal type of the site or page. It is not r
 || **Method** | **Description** ||
 || [landing.landing.addblock](./landing-landing-add-block.md) | Adds a new block to the page ||
 || [landing.landing.copyblock](./landing-landing-copy-block.md) | Copies a block to the page ||
+|| [landing.landing.cutblock](./landing-landing-cut-block.md) | Records the block cut action in the history before moving it ||
 || [landing.landing.favoriteBlock](./landing-landing-favorite-block.md) | Saves a block to "My Blocks" ||
 || [landing.landing.unFavoriteBlock](./landing-landing-unfavorite-block.md) | Removes a block from "My Blocks" ||
 |#

@@ -442,7 +442,7 @@ HTTP status: **200**
          "dateMarked":null,
          "dateResponsibleId":"2024-04-12T10:01:23+02:00",
          "deducted":"N",
-         "deliveryDocDate":"2024-02-13T14:05:49+02:00",
+         "deliveryDocDate":"2024-02-13T15:05:49+02:00",
          "deliveryDocNum":"MyDocumentNumber",
          "deliveryId":3,
          "deliveryName":"Pickup",

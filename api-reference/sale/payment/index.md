@@ -36,6 +36,10 @@ Payments contain information about payments for orders: payment system, status a
 
 The `sale.payment.add`, `sale.payment.get`, and `sale.payment.update` methods return the payment in the `payment` object. The `sale.payment.list` method returns an array of payments in the `payments` field and the total number of records found in the `total` field.
 
+Date and time fields are returned in ISO 8601 format in the Bitrix24 server time zone, for example `2024-04-10T10:00:00+02:00`. The user's time zone does not affect the value. A value without an offset in a request is treated as server time. A value with an offset is converted to the server time zone: `2024-04-10T10:00:00+03:00` is returned as `2024-04-10T09:00:00+02:00`.
+
+The `date` field `payReturnDate` is also returned with a time and offset: the date `2024-04-10` is returned as `2024-04-10T02:00:00+02:00`. Use only the date from this value.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)

@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `note.document.search.list` method searches for documents by heading and content.
+The `note.document.search.list` method searches for documents by heading and content using the full-text index. Found documents must contain all query words in any word form. The full-text engine determines the result order and text fragments in the `snippet` field.
 
 {% note info "" %}
 

@@ -31,6 +31,7 @@ An order is a record of a purchase: the customer, products or services, their qu
 - The `lid`, `personTypeId`, `currency`, and `userId` fields can only be set when an order is created. The [sale.order.update](./sale-order-update.md) method does not change them and does not return an error
 - The [sale.order.list](./sale-order-list.md) method returns orders in the `result.orders` array, up to 50 per call. The add, update, and get methods return a single order in `result.order`
 - The [sale.order.list](./sale-order-list.md) method silently skips a `filter` condition with an unknown field name. The exact field names are returned by [sale.order.getFields](./sale-order-get-fields.md)
+- Date and time fields are returned in ISO 8601 format in the Bitrix24 server time zone, for example `2024-04-10T10:00:00+02:00`. The user's time zone does not affect the value. A value without an offset in a request is treated as server time, while a value with an offset is converted to the server time zone
 - An order that has a payment with `paid` = `Y` cannot be deleted: [sale.order.delete](./sale-order-delete.md) returns the `SALE_ORDER_CANCEL_PAYMENT_EXIST_ACTIVE` error
 
 Error codes are listed on the method pages, and the common REST errors are described in the [Error Codes](../../../error-codes.md) article.

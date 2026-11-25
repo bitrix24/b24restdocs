@@ -7,6 +7,8 @@ items:
     href: landing-landing-add-block.md  
   - name: Copy Block to Page  
     href: landing-landing-copy-block.md  
+  - name: Cut Block on Page
+    href: landing-landing-cut-block.md
   - name: Remove Block from Page  
     href: landing-landing-delete-block.md  
   - name: Move Block Down  

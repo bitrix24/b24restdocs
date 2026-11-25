@@ -511,6 +511,7 @@ HTTP Status: **400 Bad Request**
 ## Continue Learning
 
 - [{#T}](./landing-landing-add-block.md)
+- [{#T}](./landing-landing-cut-block.md)
 - [{#T}](./landing-landing-delete-block.md)
 - [{#T}](./landing-landing-down-block.md)
 - [{#T}](./landing-landing-move-block.md)

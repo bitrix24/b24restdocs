@@ -2,6 +2,11 @@
 
 ## 2026
 
+### November 25, 2026
+
+- Added the [landing.landing.cutblock](./api-reference/landing/page/block-methods/landing-landing-cut-block.md) method: records block cutting in the history for a subsequent move
+- Added Knowledge Base 2.0 methods in REST 3.0: [note.document.content.get](./api-reference/note/document/note-document-content-get.md) retrieves the current document text in Markdown, and [note.document.content.edit](./api-reference/note/document/note-document-content-edit.md) modifies it with targeted replacements or entirely
+
 ### November 24, 2026
 
 - Added the [biconnector.key.*](./api-reference/biconnector/key/index.md) methods: an application creates BI connector access keys, retrieves their values, enables, disables, and deletes keys

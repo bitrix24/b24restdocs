@@ -71,6 +71,8 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 || [note.document.add](./note-document-add.md) | Creates a document ||
 || [note.document.update](./note-document-update.md) | Updates the document title and content ||
 || [note.document.get](./note-document-get.md) | Returns the document with content in Markdown ||
+|| [note.document.content.get](./note-document-content-get.md) | Retrieves the current document text in Markdown ||
+|| [note.document.content.edit](./note-document-content-edit.md) | Modifies text using targeted replacements or replaces the entire Markdown content ||
 || [note.document.delete](./note-document-delete.md) | Moves the document and its child pages to the Recycle Bin ||
 || [note.document.restore](./note-document-restore.md) | Restores the document and its child pages from the Recycle Bin ||
 || [note.document.archive](./note-document-archive.md) | Archives the document and its child pages ||
