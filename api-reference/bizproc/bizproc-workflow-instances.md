@@ -13,17 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of running workflows.
+The `bizproc.workflow.instances` method retrieves a list of running workflows. The list includes only workflows that are currently running: once a workflow completes or is stopped, its record is deleted.
 
 {% note info "bizproc.workflow.instance.list" %}
 
-There is an old method `bizproc.workflow.instance.list` — an alias for the method `bizproc.workflow.instances`. It accepts the same parameters and returns the same results.
-
-Support for `bizproc.workflow.instance.list` is not guaranteed in the future, so we recommend using `bizproc.workflow.instances`.
+The method is also available under the name `bizproc.workflow.instance.list`. Both names call the same handler, accept the same parameters, and return the same result.
 
 {% endnote %}
 
 ## Method Parameters
+
+All parameters are optional.
 
 #|
 || **Name**
@@ -36,7 +36,7 @@ You can specify only the fields that are necessary.
 Available fields:
 - `ID` — identifier of the workflow
 - `MODIFIED` — date of the last modification
-- `OWNED_UNTIL` — time the workflow is locked. The process is considered stuck if the difference between the lock time and the current time is more than 5 minutes
+- `OWNED_UNTIL` — time the workflow is locked. The process is considered stuck if this time passed more than 5 minutes ago
 - `MODULE_ID` — module identifier by document
 - `ENTITY` — entity identifier by document
 - `DOCUMENT_ID` — document identifier
@@ -62,7 +62,7 @@ Without a prefix, the filter compares the value for equality. The field name can
 
 The field value is a string, a number, or an array of such values. An array matches records with any of the listed values, and with the `!` or `!=` prefix it excludes them.
 
-Fields and filter types that are not in the list are skipped without an error. Nested arrays and objects in the value are skipped as well. If nothing remains in the value after that, the condition for the field is not applied and the method returns records without this restriction ||
+Fields and filter types that are not in the list are skipped without an error. ||
 || **ORDER**
 [`object`](../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -71,7 +71,9 @@ The list of fields for sorting is the same as for the `SELECT` parameter.
 The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
-  
+
+The method treats any other value as `asc`.
+
 Default value: `{'MODIFIED': 'desc'}` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used for managing pagination.
@@ -82,8 +84,12 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the value of the `start` parameter:
 
-`start = (N - 1) * 50`, where `N` — the number of the desired page ||
+`start = (N - 1) * 50`, where `N` — the number of the desired page.
+
+Pass `start: -1` to retrieve the first page without counting the total number of records. In this mode, `total` is `0` and does not reflect the number of records found ||
 |#
+
+When paginating, keep in mind that `MODIFIED` changes while a workflow is running. To reduce the risk of skipping records or retrieving them twice due to a changed order, sort by `ID`.
 
 ## Code Examples
 
@@ -324,26 +330,28 @@ HTTP status: **200**
 
 ```json
 {
-    "result":[
+    "result": [
         {
             "DOCUMENT_ID": "LEAD_1",
             "ENTITY": "CCrmDocumentLead",
             "ID": "66e412fdc9bd44.36306599",
+            "MODIFIED": "2024-09-13T10:25:01+00:00",
             "STARTED": "2024-09-13T10:25:01+00:00",
             "MODULE_ID": "crm",
             "OWNED_UNTIL": null,
             "TEMPLATE_ID": "1",
-            "STARTED_BY": "0"
+            "STARTED_BY": "57"
         },
         {
-            "DOCUMENT_ID":"DEAL_1633",
-            "ENTITY":"CCrmDocumentDeal",
-            "ID":"658c4d3d6a2906.51542462",
-            "STARTED":"2023-12-27T19:13:49+02:00",
-            "MODULE_ID":"crm",
-            "OWNED_UNTIL":null,
-            "TEMPLATE_ID":"212",
-            "STARTED_BY":"57"
+            "DOCUMENT_ID": "DEAL_1633",
+            "ENTITY": "CCrmDocumentDeal",
+            "ID": "658c4d3d6a2906.51542462",
+            "MODIFIED": "2023-12-27T19:13:49+02:00",
+            "STARTED": "2023-12-27T19:13:49+02:00",
+            "MODULE_ID": "crm",
+            "OWNED_UNTIL": null,
+            "TEMPLATE_ID": "212",
+            "STARTED_BY": "57"
         }
     ],
     "total": 2,
@@ -366,19 +374,43 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. 
-
-Contains an array of objects with information about running workflows ||
+[`array`](../data-types.md) | An array of objects with the workflow fields specified in `SELECT` [(detailed description)](#result) ||
+|| **next**
+[`integer`](../data-types.md) | The `start` value for retrieving the next page. Returned if there is a next page. With `start: -1`, the field does not point to the next page ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
- 
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | Identifier of the workflow ||
+|| **MODIFIED**
+[`datetime`](../data-types.md) | Date of the last modification ||
+|| **OWNED_UNTIL**
+[`datetime`](../data-types.md) | Time the workflow is locked. If there is no lock, `null` ||
+|| **MODULE_ID**
+[`string`](../data-types.md) | Identifier of the document module, for example `crm` ||
+|| **ENTITY**
+[`string`](../data-types.md) | Identifier of the document object, for example `CCrmDocumentDeal` ||
+|| **DOCUMENT_ID**
+[`string`](../data-types.md) | Document identifier, for example `DEAL_1633` ||
+|| **STARTED**
+[`datetime`](../data-types.md) | Date the workflow was started ||
+|| **STARTED_BY**
+[`string`](../data-types.md) | Identifier of the user who started the workflow. For workflows started by automation rules and stage triggers, `0` ||
+|| **TEMPLATE_ID**
+[`string`](../data-types.md) | Identifier of the workflow template ||
+|#
+
 ## Error Handling
 
-HTTP status: **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -393,6 +425,7 @@ HTTP status: **403**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
+|| `400` | `ERROR_SELECT_VALIDATION_FAILURE` | Invalid data in SELECT parameter | An element of the `SELECT` array is not a scalar value ||
 || `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
 |#
 

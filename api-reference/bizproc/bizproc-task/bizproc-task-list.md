@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `bizproc.task.list` retrieves a list of workflow tasks.
 
-A portal administrator can request all tasks or tasks of any user. A regular user can only request their own tasks or those of their subordinates.
+A Bitrix24 administrator can request all tasks or tasks of any user. A regular user can only request their own tasks or those of their subordinates.
 
 To request their own tasks, the `USER_ID` filter does not need to be specified.
 
@@ -72,7 +72,9 @@ The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
-You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
+You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}`
+
+The default value is `{"ID": "DESC"}` ||
 || **START**
 [`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
@@ -161,41 +163,6 @@ The formula for calculating the `start` parameter value:
     
     // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
-    const parameters = {
-        select: [
-            'ID',
-            'WORKFLOW_ID',
-            'DOCUMENT_NAME',
-            'DESCRIPTION',
-            'NAME',
-            'MODIFIED',
-            'WORKFLOW_STARTED',
-            'WORKFLOW_STARTED_BY',
-            'OVERDUE_DATE',
-            'WORKFLOW_TEMPLATE_ID',
-            'WORKFLOW_TEMPLATE_NAME',
-            'WORKFLOW_STATE',
-            'STATUS',
-            'USER_ID',
-            'USER_STATUS',
-            'MODULE_ID',
-            'ENTITY',
-            'DOCUMENT_ID',
-            'ACTIVITY',
-            'ACTIVITY_NAME',
-            'DOCUMENT_URL',
-            'PARAMETERS'
-        ],
-        order: {
-            ID: 'DESC'
-        },
-        filter: {
-            'USER_ID': 1,
-            'STATUS': 0,
-            'ACTIVITY': 'RequestInformationOptionalActivity'
-        }
-    };
-    
     try {
         const generator = $b24.fetchListMethod('bizproc.task.list', parameters, 'ID');
         for await (const page of generator) {
@@ -206,41 +173,6 @@ The formula for calculating the `start` parameter value:
     }
     
     // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
-    
-    const parameters = {
-        select: [
-            'ID',
-            'WORKFLOW_ID',
-            'DOCUMENT_NAME',
-            'DESCRIPTION',
-            'NAME',
-            'MODIFIED',
-            'WORKFLOW_STARTED',
-            'WORKFLOW_STARTED_BY',
-            'OVERDUE_DATE',
-            'WORKFLOW_TEMPLATE_ID',
-            'WORKFLOW_TEMPLATE_NAME',
-            'WORKFLOW_STATE',
-            'STATUS',
-            'USER_ID',
-            'USER_STATUS',
-            'MODULE_ID',
-            'ENTITY',
-            'DOCUMENT_ID',
-            'ACTIVITY',
-            'ACTIVITY_NAME',
-            'DOCUMENT_URL',
-            'PARAMETERS'
-        ],
-        order: {
-            ID: 'DESC'
-        },
-        filter: {
-            'USER_ID': 1,
-            'STATUS': 0,
-            'ACTIVITY': 'RequestInformationOptionalActivity'
-        }
-    };
     
     try {
         const response = await $b24.callMethod('bizproc.task.list', parameters, 0);
@@ -778,7 +710,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **ENTITY**
 [`string`](../../data-types.md) | Symbolic identifier of the object by document ||
 || **DOCUMENT_ID**
-[`integer`](../../data-types.md) | Document identifier ||
+[`string`](../../data-types.md) | Document identifier, for example, `DEAL_1` for a CRM deal or `1:53` for an RPA item ||
 || **ACTIVITY**
 [`string`](../../data-types.md) | Task type identifier. Possible values:
 
@@ -786,11 +718,13 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `ReviewActivity` — document review
 - `RequestInformationActivity` — request for additional information
 - `RequestInformationOptionalActivity` — request for additional information (with rejection)
+
+The method returns tasks of all types, for example, `RpaRequestActivity` for RPA tasks. Only tasks of four types can be completed with the [bizproc.task.complete](./bizproc-task-complete.md) method: `ReviewActivity`, `ApproveActivity`, `RequestInformationActivity`, `RequestInformationOptionalActivity`
 ||
 || **ACTIVITY_NAME**
 [`string`](../../data-types.md) | Action identifier in the template ||
 || **PARAMETERS**
-[`object`](../../data-types.md) | An object describing the [task parameters](#parameters) ||
+[`object`](../../data-types.md) | An object describing the [task parameters](#parameters). For tasks without parameters, an empty array `[]` is returned instead of an object ||
 || **DOCUMENT_URL**
 [`string`](../../data-types.md) | Link to the document ||
 |#
@@ -810,7 +744,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `YR` — yes, upon rejection
 ||
 || **ShowComment**
-[`boolean`](../../data-types.md) | Show comment. Possible values:
+[`string`](../../data-types.md) | Show comment. Possible values:
 - `N` — no
 - `Y` — yes
 ||
@@ -820,8 +754,10 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 [`string`](../../data-types.md) | Text for the Approve button ||
 || **StatusNoLabel**
 [`string`](../../data-types.md) | Text for the Reject button ||
+|| **StatusCancelLabel**
+[`string`](../../data-types.md) | Text for the cancel button ||
 || **Fields**
-[`array`](../../data-types.md) | An array of objects. Each object contains a description of the [field in the task](#task-fields) ||
+[`array`](../../data-types.md) | An array of objects. Each object contains a description of the [field in the task](#task-fields). Present only in tasks that request information ||
 |#
 
 #### Fields Object {#task-fields}
@@ -845,9 +781,9 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 
 Other types depend on the document with which the workflow operates ||
 || **Name**
-[`string` \| `object`](../../data-types.md) | Name of the parameter ||
+[`string`](../../data-types.md) or [`object`](../../data-types.md) | Name of the parameter ||
 || **Description**
-[`string` \| `object`](../../data-types.md) | Description of the parameter ||
+[`string`](../../data-types.md) or [`object`](../../data-types.md) | Description of the parameter ||
 || **Multiple**
 [`boolean`](../../data-types.md) | Parameter multiplicity. Possible values:
 - `true` — yes
@@ -862,23 +798,27 @@ Other types depend on the document with which the workflow operates ||
 Values depend on the parameter type. Examples:
 - for the List type `select`, these are the options of the list
 ```json
-"Options": {
-    "1": "First Option",
-    "2": "Second Option",
-    "3": "Third Option"
-},
+{
+    "Options": {
+        "1": "First Option",
+        "2": "Second Option",
+        "3": "Third Option"
+    }
+}
 ```
 - for the CRM binding type `'E:ECrm'`, these are the available object types
 ```json
-"Options": {
-    "LEAD": "N",
-    "CONTACT": "Y",
-    "COMPANY": "Y",
-    "DEAL": "N",
-    "SMART_INVOICE": "N",
-    "DYNAMIC_136": "N",
-    "DYNAMIC_1038": "N"
-},
+{
+    "Options": {
+        "LEAD": "N",
+        "CONTACT": "Y",
+        "COMPANY": "Y",
+        "DEAL": "N",
+        "SMART_INVOICE": "N",
+        "DYNAMIC_136": "N",
+        "DYNAMIC_1038": "N"
+    }
+}
 ```
 ||
 || **Settings**
@@ -904,7 +844,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator or you cannot view the tasks of the specified employee ||
+|| `ACCESS_DENIED` | Access denied! | You cannot view the tasks of the specified employee ||
 || `ERROR_SELECT_VALIDATION_FAILURE` | Invalid data in SELECT parameter | Invalid data was passed in the `SELECT` parameter ||
 |#
 

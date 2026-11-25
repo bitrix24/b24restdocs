@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Workflows can create tasks for participants to gather additional information from them. For example, a task can be used to approve a document in accounting, authorize a vacation with a manager, or request a contract from a lawyer. Users can see their tasks in Bitrix24 and receive notifications.
+Workflows can create tasks for participants to obtain a decision or data from them. For example, a task can be used to approve a document in accounting, authorize a vacation with a manager, or request a contract from a lawyer. Users can see their tasks in Bitrix24 and receive notifications.
 
-There are four types of tasks:
+The [bizproc.task.complete](./bizproc-task-complete.md) method completes four types of tasks:
 
 - Document approval
 - Document review
@@ -24,32 +24,31 @@ There are four types of tasks:
 
 ## How to Get Started
 
-1. Retrieve the list of tasks using the [bizproc.task.list](./bizproc-task-list.md) method
-2. Find the identifier of the required task `TASK_ID`
-3. Complete the task using the [bizproc.task.complete](./bizproc-task-complete.md) method
-4. If needed, delegate the task to another employee using the [bizproc.task.delegate](./bizproc-task-delegate.md) method
+1. Retrieve the list of tasks using the [bizproc.task.list](./bizproc-task-list.md) method. The method returns an array of tasks; the default fields include `ID`, `WORKFLOW_ID`, `DOCUMENT_NAME`, and `NAME`
+2. Pick the identifier of the required task `ID`: to complete the task, pass it in `TASK_ID`; to delegate it, pass it in the `TASK_IDS` array
+3. Complete the task using the [bizproc.task.complete](./bizproc-task-complete.md) method or delegate it to another employee using the [bizproc.task.delegate](./bizproc-task-delegate.md) method. Both methods return `true` on success
 
 ## Task Fields
 
 Tasks that request additional information are completed using the [bizproc.task.complete](./bizproc-task-complete.md) method. Field values are passed in the `FIELDS` object in the format `{"field_1": "value_1", ... , "field_N": "value_N"}`:
 
-- `field_N` — symbolic identifier of the task field
+- `field_N` — the `Id` value of a field from `PARAMETERS.Fields`
 - `value_N` — value of the field
 
-You can find out which fields must be filled in from the response of the [bizproc.task.list](./bizproc-task-list.md) method. The `PARAMETERS.Fields` field contains descriptions of all task fields.
+You can find out which fields must be filled in using the [bizproc.task.list](./bizproc-task-list.md) method: specify `PARAMETERS` in the `SELECT` parameter, and the field descriptions are returned in `PARAMETERS.Fields`. For other task types, the response contains no `Fields`.
 
 ## What to Consider
 
 - You can complete only your own tasks
-- To complete a task, you need the `TASK_ID` identifier, which can be obtained using the [bizproc.task.list](./bizproc-task-list.md) method
-- Tasks that request additional information contain fields that the user must fill in
-- To delegate a task, you need the task identifier `TASK_IDS`, the current assignee identifier `FROM_USER_ID`, and the new assignee identifier `TO_USER_ID`
+- You can delegate your own tasks and the tasks of your subordinates; an administrator can delegate the tasks of any employee. Only a company employee can delegate and receive a task
+- The [bizproc.task.list](./bizproc-task-list.md) method returns tasks of all types, for example, RPA tasks. The task type is in the `ACTIVITY` field. For an unsupported type, the [bizproc.task.complete](./bizproc-task-complete.md) method returns the `ERROR_TASK_TYPE` error
+- The methods are available if the Bitrix24 plan includes workflows
 
 ## Relationship with Other Objects
 
-**User.** A task is linked to an assignee. To delegate it, pass the current assignee identifier `FROM_USER_ID` and the new assignee identifier `TO_USER_ID` to the [bizproc.task.delegate](./bizproc-task-delegate.md) method. You can get the user identifier using the [user.get](../../user/user-get.md) method.
+**User.** A task is linked to an assignee. You can retrieve employee identifiers for delegation using the [user.get](../../user/user-get.md) method.
 
-**Workflow.** A task is created while a workflow is running. You can retrieve the list of tasks available to the user and their parameters using the [bizproc.task.list](./bizproc-task-list.md) method.
+**Workflow.** A task is created while a workflow is running. The workflow identifier is returned in the task's `WORKFLOW_ID` field. You can use it to find the workflow with the [bizproc.workflow.instances](../bizproc-workflow-instances.md) method or to stop it with the [bizproc.workflow.terminate](../bizproc-workflow-terminate.md) method. Other methods of the section are listed in the [workflows overview](../index.md).
 
 ## Overview of Methods {#all-methods}
 

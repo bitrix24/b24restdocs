@@ -40,9 +40,16 @@ For new development, application automation rules are usually preferred. Automat
 4. Monitor active processes using [bizproc.workflow.instances](./bizproc-workflow-instances.md)
 5. Process user tasks using the [bizproc.task.*](./bizproc-task/index.md) method group if the scenario requires approval, acknowledgment, or additional information
 
-## Relationship with Other Objects
+Ready-made scenarios with code are collected in the [Workflows and Automation Rules: Typical Scenarios](../../tutorials/bizproc/index.md) section.
 
-Workflows are linked to Bitrix24 documents, templates, user tasks, and external application handlers.
+## Response Format
+
+- [bizproc.workflow.start](./bizproc-workflow-start.md) returns the string identifier of the started workflow
+- [bizproc.workflow.instances](./bizproc-workflow-instances.md), [bizproc.workflow.template.list](./template/bizproc-workflow-template-list.md), and [bizproc.task.list](./bizproc-task/bizproc-task-list.md) return an array of up to 50 objects per page
+- [bizproc.workflow.template.add](./template/bizproc-workflow-template-add.md) and [bizproc.workflow.template.update](./template/bizproc-workflow-template-update.md) return the template identifier
+- execution, stop, and registration methods — `bizproc.task.complete`, `bizproc.workflow.kill`, `bizproc.robot.add`, `bizproc.activity.add`, and others — return `true` on success. The exception is [bizproc.workflow.template.delete](./template/bizproc-workflow-template-delete.md), which returns `null`
+
+## Relationship with Other Objects
 
 **Document.** A process is started for a specific document: a lead, deal, list item, Drive file, or another supported object. The link is passed in the `DOCUMENT_ID` parameter of the [bizproc.workflow.start](./bizproc-workflow-start.md) method. The document type must match the type for which the template was created.
 
@@ -54,8 +61,11 @@ Workflows are linked to Bitrix24 documents, templates, user tasks, and external 
 
 ## What to Consider
 
-- Methods for managing templates, automation rules, and actions are executed by an administrator
-- Automation rule and action methods work only in the context of an installed application
+- Only an administrator can retrieve the list of started workflows, stop them, and delete them. A workflow can be started by an administrator or by a user with permission to start workflows for the document
+- An administrator can add, update, and delete templates and manage automation rules and actions. Only a template created by the same application can be updated or deleted
+- The list of templates is available to any user; its contents depend on permissions. A user retrieves their own tasks and the tasks of their subordinates; an administrator retrieves the tasks of any employee
+- The `bizproc.workflow.*` and `bizproc.task.*` methods and `bizproc.activity.add`, `update`, `delete`, `list` are available if the plan includes workflows. The `bizproc.robot.*`, `bizproc.event.send`, and `bizproc.activity.log` methods also work on plans that include only CRM or task automation rules
+- Registering, updating, deleting, and listing automation rules and actions work only in the context of an installed application
 - An automation rule or action that waits for a result receives `EVENT_TOKEN` during scenario execution. This key is required for the [bizproc.event.send](./bizproc-robot/bizproc-event-send.md) method
 - A started process uses a copy of the template as it was at the start time. Changes to the template do not affect an already active process
 

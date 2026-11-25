@@ -56,11 +56,7 @@ It allows you to remove templates that were created using the method [bizproc.wo
             }
         );
         
-        const result = response.getData().result;
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result);
+        console.log(response.getData().result);
     }
     catch( error )
     {
@@ -96,7 +92,7 @@ It allows you to remove templates that were created using the method [bizproc.wo
 
     ```php
     try {
-        $templateId = 123; // Identifier of the template to delete
+        $templateId = 525; // Identifier of the template to delete
         $result = $serviceBuilder
             ->getBizProcScope()
             ->template()
@@ -197,7 +193,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -212,9 +208,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Access token not from the application ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Access token not from the application ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 || `ERROR_TEMPLATE_NOT_FOUND` | Workflow template not found. | Template with the specified `ID` not found ||
+|| Empty value | You can delete ONLY templates created by current application | The template was created by another application ||
+|| Empty value | Cannot delete the workflow template because one or more active workflow(-s) exist using this template | There are running business processes based on the template. Stop or delete them first using the [bizproc.workflow.terminate](../bizproc-workflow-terminate.md) or [bizproc.workflow.kill](../bizproc-workflow-kill.md) methods ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

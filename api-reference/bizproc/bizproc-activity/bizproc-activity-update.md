@@ -536,7 +536,7 @@ HTTP Status: **400**
 || `ACCESS_DENIED` | Access denied! | Method executed by a non-administrator ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation rule not found! | Action or Automation rule not found ||
+|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Action or Automation rule not found ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||

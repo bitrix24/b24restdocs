@@ -39,7 +39,7 @@ You can only complete your own task.
 
 You can obtain the identifier using the [bizproc.task.list](./bizproc-task-list.md) method. ||
 || **STATUS***
-[`integer` \| `string`](../../data-types.md) | Target status of the task. Possible values:
+[`integer`](../../data-types.md) or [`string`](../../data-types.md) | Target status of the task. Possible values:
 
 - `1` or `yes` — yes, approved
 - `2` or `no` — no, rejected
@@ -64,20 +64,22 @@ The requirement for this parameter depends on the task settings. ||
 You can obtain field descriptions in the task using the [bizproc.task.list](./bizproc-task-list.md) method in the `PARAMETERS.Fields` field of the response. The structure of the field object description:
 
 ```json
-"PARAMETERS": {
-    "Fields": [
-        {
-            "Id": "field_id",
-            "Type": "type",
-            "Name": "name",
-            "Description": "description",
-            "Multiple": false,
-            "Required": true,
-            "Options": null,
-            "Settings": null,
-            "Default": "default_value"
-        }
-    ]
+{
+    "PARAMETERS": {
+        "Fields": [
+            {
+                "Id": "field_id",
+                "Type": "type",
+                "Name": "name",
+                "Description": "description",
+                "Multiple": false,
+                "Required": true,
+                "Options": null,
+                "Settings": null,
+                "Default": "default_value"
+            }
+        ]
+    }
 }
 ```
 
@@ -100,7 +102,7 @@ More about working with files can be found in the article [{#T}](../../files/how
 ||
 |#
 
-## Code example
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -161,7 +163,7 @@ More about working with files can be found in the article [{#T}](../../files/how
     try:
         bitrix_response = client.bizproc.task.complete(
             task_id=1501,
-            status=1,
+            status=3,
             comment="Added",
             fields={
                 "contractor": "C_607",
@@ -341,10 +343,10 @@ HTTP status: **400**
 || `ERROR_TASK_EXECUTION` | error text from the task | An error occurred during the execution of the task. ||
 |#
 
- {% include [system errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
- ## Continue learning
+## Continue Learning
 
- - [{#T}](./index.md)
- - [{#T}](./bizproc-task-list.md)
- - [{#T}](./bizproc-task-delegate.md)
+- [{#T}](./index.md)
+- [{#T}](./bizproc-task-list.md)
+- [{#T}](./bizproc-task-delegate.md)

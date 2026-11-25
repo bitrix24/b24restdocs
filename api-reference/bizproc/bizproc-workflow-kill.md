@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method deletes the running workflow along with all process data.
+The `bizproc.workflow.kill` method deletes a running workflow along with all workflow data.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ This method deletes the running workflow along with all process data.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../data-types.md) | Identifier of the workflow ||
+[`string`](../data-types.md) | Non-empty workflow identifier. Retrieve it with the [bizproc.workflow.instances](./bizproc-workflow-instances.md) method ||
 |#
 
 ## Code Examples
@@ -65,11 +65,7 @@ This method deletes the running workflow along with all process data.
     	);
     	
     	const result = response.getData().result;
-    	console.log('response', result.answer);
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		console.log(result);
+    	console.log(result);
     }
     catch( error )
     {
@@ -105,7 +101,7 @@ This method deletes the running workflow along with all process data.
 
     ```php     
     try {
-        $workflowId = 'your_workflow_id'; // Replace with your actual workflow ID
+        $workflowId = '65e5a449e8f135.21284909';
         $result = $serviceBuilder->getBizProcScope()
             ->workflow()
             ->kill($workflowId);
@@ -224,6 +220,8 @@ HTTP status: **400**, **403**
 || **Status** |**Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 || `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | Empty value was passed to the `ID` parameter ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Invalid workflow instance ID (string expected) | A non-empty value that is not a string was passed to the `ID` parameter ||
+|| `400` | Empty value | The business process is not found | A workflow with the specified `ID` was not found, has already completed, or was stopped ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

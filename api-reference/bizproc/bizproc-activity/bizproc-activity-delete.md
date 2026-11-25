@@ -17,15 +17,17 @@ The `bizproc.activity.delete` method deletes an action for workflows that was ad
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
-When the application is deleted or updated, Bitrix24 removes only the actions registered by this application from the list of available actions in the workflow designer. Actions of other applications and standard actions are not affected. If an action is already used in a workflow, it remains in the scheme as unavailable: it can be removed but cannot be configured or run as an available action. Here, update means updating the application, not calling the [bizproc.activity.update](./bizproc-activity-update.md) method. Upon reinstalling the application, an action with the same code becomes available again.
+When the application is deleted or [updated](../../../settings/app-update.md), the actions it registered are deleted automatically. Actions of other applications and standard actions are not affected. If an action is already used in a workflow, it remains in the scheme as unavailable: it can be removed but cannot be configured or run. Upon reinstalling the application, an action with the same code becomes available again.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description**||
 || **CODE***
-[`string`](../../data-types.md) | Symbolic identifier of the application action ||
+[`string`](../../data-types.md) | Symbolic identifier of the application action. A non-empty string of Latin letters, digits, periods, hyphens, and underscores. The value `0` is not allowed ||
 |#
 
 ## Code Examples
@@ -57,10 +59,7 @@ When the application is deleted or updated, Bitrix24 removes only the actions re
     	);
     	
     	const result = response.getData().result;
-    	if(result.error())
-    		alert('Error: ' + result.error());
-    	else
-    		alert("Success: " + result);
+    	alert('Success: ' + result);
     }
     catch( error )
     {
@@ -154,7 +153,7 @@ When the application is deleted or updated, Bitrix24 removes only the actions re
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "bizproc.activity.delete", b24.Params{
-    	"CODE": "md5_action",
+    	"code": "md5_action",
     })
     if err != nil {
     	return fmt.Errorf("bizproc.activity.delete: %w", err)
@@ -202,12 +201,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
     "error": "ERROR_ACTIVITY_NOT_FOUND",
-    "error_description": "Activity or Automation rule not found!"
+    "error_description": "Activity or Robot not found!"
 }
 ```
 
@@ -217,11 +216,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Application context is required ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Application context is required ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code is not specified, or the value `0` was passed ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation rule not found! | Activity or Automation rule not found ||
+|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | An activity with the specified `CODE` was not found for the current application ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

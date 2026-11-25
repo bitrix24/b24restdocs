@@ -27,9 +27,9 @@ An automation rule template modified in the workflow designer does not start on 
 || **Name**
 `type` | **Description** ||
 || **TEMPLATE_ID***
-[`integer`](../data-types.md) | Identifier of the business process template ||
+[`integer`](../data-types.md) | Identifier of the business process template. You can retrieve the identifier with the [bizproc.workflow.template.list](./template/bizproc-workflow-template-list.md) method ||
 || **DOCUMENT_ID***
-[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ELEMENT_ID`].
+[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ELEMENT_ID`]. The document must exist, and its type must match the document type the template was created for.
 
 Examples of entries for different document types:
 
@@ -47,21 +47,21 @@ Examples of entries for different document types:
 || **PARAMETERS**
 [`object`](../data-types.md) | Values for the parameters of the business process template.
 
-Used if the template has parameters.
+Used if the template has parameters. The object keys are template parameter identifiers: keys that are not among the parameters of the template version being started are not passed to the process.
 
 To pass a value to a parameter of the "User binding" type, use the format `user_ID`. For example:
 
 ```php
-PARAMETERS: {
-    'resp_employee': user_14 // Employee ID — 14
-}
+'PARAMETERS' => ['resp_employee' => 'user_14']
 ```
 
-For a parameter of the "File" type, pass an array of the file name and its contents in [Base64](../files/how-to-upload-files.md), for example `["report.txt", "SGVsbG8="]`. You can pass a file ID instead of the contents, but a user without administrator permissions can pass only the ID of the file set in the template as the parameter's default value. Any other ID causes the `ERROR_WRONG_FILE_PARAMETER` error, and the process does not start
+For a parameter of the "File" type, pass an array of the file name and its contents in [Base64](../files/how-to-upload-files.md), for example `["report.txt", "SGVsbG8="]`. Instead of the array with the name and contents, you can pass a file ID as a standalone value, but a user without administrator permissions can pass only the ID of the file set in the template as the parameter's default value. Any other ID causes the `ERROR_WRONG_FILE_PARAMETER` error, and the process does not start
 ||
 |#
 
 ## Code Examples
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -106,11 +106,7 @@ For a parameter of the "File" type, pass an array of the file name and its conte
     	);
     	
     	const result = response.getData().result;
-    	console.log('response', result.answer);
-    	if (result.error())
-    		alert("Error: " + result.error());
-    	else
-    		console.log(result);
+    	console.log('Business process ID:', result);
     }
     catch( error )
     {
@@ -286,9 +282,9 @@ HTTP Status: **200**
 || **result**
 [`string`](../data-types.md) | Root element of the response.
 
-Returns the identifier of the started business process ||
+Returns the identifier of the started business process. It is accepted by the [bizproc.workflow.terminate](./bizproc-workflow-terminate.md) and [bizproc.workflow.kill](./bizproc-workflow-kill.md) methods ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -306,17 +302,19 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+"Empty value" means that the server returns an error with an empty `error` field, and the reason is given in `error_description`. Other start errors not listed in the table are also returned with an empty code.
+
 #|
 || **Status** |**Code** | **Description** | **Value** ||
 || `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty TEMPLATE_ID | Empty input parameter `TEMPLATE_ID` was passed ||
-|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Template not found | Business process template not found for the provided `TEMPLATE_ID` ||
-|| `400` | Empty value | Wrong DOCUMENT_ID! | Incorrect `DOCUMENT_ID` was passed ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Running a smart script over REST is not supported | A smart script template ID was passed ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Cannot start workflow | The start completed without errors but did not return a process ID ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Template not found | A template with the provided `TEMPLATE_ID` was not found or is not available to the calling user ||
+|| `400` | Empty value | Wrong DOCUMENT_ID! | No document was found for the provided `DOCUMENT_ID`, or `DOCUMENT_ID` was passed in an invalid format ||
 || `400` | Empty value | Incorrect document type! | Unable to determine document type from the provided `DOCUMENT_ID` ||
-|| `400` | Empty value | Template type and DOCUMENT_ID mismatch! | The document type in the template does not match the type determined from `DOCUMENT_ID`.
-
-Attempting to start the template on an entity for which it was not created ||
+|| `400` | Empty value | Template type and DOCUMENT_ID mismatch! | The document type in the template does not match the type determined from `DOCUMENT_ID` ||
 || `400` | `ERROR_WRONG_FILE_PARAMETER` | Invalid value for a parameter of type "File". Pass the file name and its contents in base64, or the ID of the file set as this parameter's default value. | A user without administrator permissions passed to a "File" parameter the ID of a file that is not set in the template as the parameter's default value, or a value in the wrong format. This check is not performed for administrators ||
-|| `400` | `ERROR_WRONG_FILE_PARAMETER` | Cannot upload file. | The file could not be saved from the passed contents, for example, the contents are not in Base64 ||
+|| `400` | `ERROR_WRONG_FILE_PARAMETER` | Cannot upload file. | The contents could not be decoded into non-empty data, or the file could not be saved ||
 || `400` | `EXTERNAL_MODIFIED_TEMPLATE` | Workflow not started: the template was modified in the workflow designer, which is not available on your current plan | An automation rule template modified in the workflow designer was passed on the Free plan ||
 || `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to start business processes for the document ||
 |#
@@ -329,3 +327,4 @@ Attempting to start the template on an entity for which it was not created ||
 - [{#T}](./bizproc-workflow-instances.md)
 - [{#T}](./bizproc-workflow-terminate.md)
 - [{#T}](./bizproc-workflow-kill.md)
+- [{#T}](./template/bizproc-workflow-template-list.md)

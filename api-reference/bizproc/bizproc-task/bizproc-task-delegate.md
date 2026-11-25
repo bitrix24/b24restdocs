@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user responsible for the workflow task
+> Who can execute the method:
+> - employee — for their own tasks and the tasks of their subordinates
+> - administrator — for the tasks of any employee
 
-This method delegates a workflow task. You can only delegate your own task.
+This method delegates workflow tasks. The current user and the new assignee must be company employees (intranet users).
 
 {% note tip "User documentation" %}
 
@@ -262,8 +264,9 @@ HTTP status: **400**
 || `ERROR_TASK_VALIDATION` | Invalid TASK_IDS | Invalid task identifiers or the `TASK_IDS` parameter was not provided. ||
 || `ERROR_INVALID_USER_ID` | Invalid FROM_USER_ID | Invalid or missing user identifier from whom the delegation is made. ||
 || `ERROR_INVALID_USER_ID` | Invalid TO_USER_ID | Invalid or missing user identifier to whom the delegation is made. ||
-|| `ERROR_DELEGATION_NOT_ALLOWED` | User is not responsible for the task | The user specified in the `FROM_USER_ID` parameter is not responsible for the task. ||
-|| `ERROR_DELEGATION_NOT_ALLOWED` | Task delegation is only available for intranet users | The user specified in the `TO_USER_ID` parameter is not an intranet user. ||
+|| `ERROR_DELEGATION_NOT_ALLOWED` | The user is not responsible for this assigment | The task was not found, or the user specified in the `FROM_USER_ID` parameter is not responsible for the task. ||
+|| `ERROR_DELEGATION_NOT_ALLOWED` | You cannot delegate assignments of the selected employee because they are not your subordinate | The user specified in the `FROM_USER_ID` parameter is neither the current user nor their subordinate. ||
+|| `ERROR_DELEGATION_NOT_ALLOWED` | Assignments can only be delegated across intranet users | The current user or the user specified in the `TO_USER_ID` parameter is not a company employee. ||
 || `ERROR_DELEGATION_NOT_ALLOWED` | List of errors separated by `;` | The method can accept multiple tasks. If errors occur in multiple tasks, they will be returned as a list separated by `;`. ||
 |#
 

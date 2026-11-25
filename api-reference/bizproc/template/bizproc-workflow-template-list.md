@@ -11,13 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user, the contents of the list depend on the user's permissions
 
-This method retrieves a list of business process templates created in the workflow designer.
+The `bizproc.workflow.template.list` method retrieves a list of business process templates created in the workflow designer.
+
+The list is limited to the scope the user is allowed to edit and to template visibility. For a user without administrator permissions, the method returns only custom templates of the new workflow designer that have no system code.
 
 Templates of automation rules configured at the stages of CRM items and smart processes, or in tasks, are not returned by this method. Such templates are not available in the REST API.
 
 ## Method Parameters
+
+All parameters are optional.
 
 #|
 || **Name**
@@ -25,7 +29,7 @@ Templates of automation rules configured at the stages of CRM items and smart pr
 || **SELECT**
 [`array`](../../data-types.md) | The array contains a list of [fields](#fields) to select.
 
-You can specify only the fields that are necessary.
+Field names can be passed in any case. Unknown fields are skipped; if no valid field is selected, `ID` is returned.
 
 Default value — `['ID']` ||
 || **FILTER**
@@ -43,11 +47,11 @@ You can specify the type of filtering before the name of the filtered field:
 
 Without a prefix, the filter compares the value for equality. The field name can be passed in any case.
 
-The field value is a string, a number, or an array of such values. An array matches records with any of the listed values, and with the `!` or `!=` prefix it excludes them.
+The field value is a string, a number, or an array of such values. An array matches records with any of the listed values, and with the `!` or `!=` prefix it excludes them. Pass the value for the `MODIFIED` field in the [`datetime`](../../data-types.md) format, for example, `2026-01-01T00:00:00+01:00`.
 
-Fields and filter types that are not in the list are skipped without an error. Nested arrays and objects in the value are skipped as well. If nothing remains in the value after that, the condition for the field is not applied and the method returns records without this restriction ||
+Fields and filter types that are not in the list are skipped without an error. By default, no custom filter is set ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the list of launched business processes in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../data-types.md) | An object for sorting the list of business process templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the template for sorting
 - `value_N` — sorting direction
 
@@ -57,9 +61,11 @@ Sorting direction can take the values:
   
 You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}`.
 
+Unknown fields are skipped. The `DESC` direction is case-insensitive; any other value means `ASC`.
+
 Default value — `{ID: 'ASC'}` ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | Offset for pagination. Default — `0`.
 
 The page size of results is always static — 50 records.
 
@@ -67,7 +73,9 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the number of the desired page ||
+`start = (N - 1) * 50`, where `N` — the number of the desired page.
+
+To get the next page, pass the `next` value from the response. With `start = -1`, the method returns the first page without counting the total: `total` equals `0`, and `next` is not returned if at least one record is found ||
 |#
 
 ### Template Fields {#fields}
@@ -78,12 +86,12 @@ The formula for calculating the `start` parameter value:
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the business process template ||
 || **MODULE_ID**
-[`string`](../../data-types.md) | Identifier of the module by document. Possible values:
+[`string`](../../data-types.md) | Identifier of the module by document. Example values:
 - `crm` — CRM
 - `lists` — universal lists
 - `disk` — drive ||
 || **ENTITY**
-[`string`](../../data-types.md) | Identifier of the object by document. Possible values:
+[`string`](../../data-types.md) | Identifier of the object by document. Example values:
 
 CRM
 - `CCrmDocumentLead` — leads
@@ -101,7 +109,7 @@ Lists
 Drive
 - `Bitrix\Disk\BizProcDocument` ||
 || **DOCUMENT_TYPE**
-[`string`](../../data-types.md) | Document type. Possible values:
+[`array`](../../data-types.md) | Document type in the format `[MODULE_ID, ENTITY, document_type]`, for example, `["crm", "CCrmDocumentDeal", "DEAL"]`. For filtering, pass the string from the third element of the array. The first two elements are filled only if `MODULE_ID` and `ENTITY` are also passed in `SELECT`; otherwise, `null` is returned in their place. Example values of the third element:
 crm:
 - `LEAD` — leads
 - `CONTACT` — contacts
@@ -118,27 +126,31 @@ drive:
 - `STORAGE_XXX` — drive storage, where XXX — identifier of the storage
  ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execute flag. Can take values:
+[`integer`](../../data-types.md) | Auto-execute bitmask:
 
 - `0` — no auto-execute
 - `1` — execute on creation
 - `2` — execute on modification
-- `3` — execute on creation and modification
+- `4` — execute on deletion
+
+The flags are added together: for example, `3` — execute on creation and modification
 ||
 || **NAME**
 [`string`](../../data-types.md) | Template name ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Description of the business process template ||
 || **TEMPLATE**
 [`array`](../../data-types.md) | Array with the description of the template's action structure ||
 || **PARAMETERS**
-[`array`](../../data-types.md) | Template parameters ||
+[`array`](../../data-types.md) or [`object`](../../data-types.md) | Template parameters ||
 || **VARIABLES**
-[`array`](../../data-types.md) | Template variables ||
+[`array`](../../data-types.md) or [`object`](../../data-types.md) | Template variables ||
 || **CONSTANTS**
-[`array`](../../data-types.md) | Template constants ||
+[`array`](../../data-types.md) or [`object`](../../data-types.md) | Template constants ||
 || **MODIFIED**
 [`datetime`](../../data-types.md) | Date of last modification ||
 || **IS_MODIFIED**
-[`boolean`](../../data-types.md) | Whether the template has been modified. Possible values:
+[`string`](../../data-types.md) | Whether the template has been modified. Possible values:
 - `Y` — yes, it has been modified
 - `N` — no
 
@@ -150,6 +162,8 @@ This option is needed for [typical templates](https://helpdesk.bitrix24.com/open
 
 Needed for identifying typical business process templates or templates created by the application ||
 |#
+
+In JSON, empty `PARAMETERS`, `VARIABLES`, and `CONSTANTS` may be returned as arrays, and filled values with named elements as objects.
 
 ## Code Examples
 
@@ -347,22 +361,12 @@ Needed for identifying typical business process templates or templates created b
 			->getBizProcScope()
 			->template()
 			->list(
-				['ID', 'MODULE_ID', 'ENTITY', 'DOCUMENT_TYPE', 'AUTO_EXECUTE', 'NAME', 'TEMPLATE', 'PARAMETERS', 'VARIABLES', 'CONSTANTS', 'MODIFIED', 'IS_MODIFIED', 'USER_ID', 'SYSTEM_CODE'],
-				[]
+				['ID', 'NAME', 'USER_ID', 'SYSTEM_CODE'],
+				['MODULE_ID' => 'lists', 'AUTO_EXECUTE' => 0]
 			);
 		foreach ($result->getTemplates() as $template) {
 			print("ID: " . $template->ID . "\n");
-			print("MODULE_ID: " . $template->MODULE_ID . "\n");
-			print("ENTITY: " . $template->ENTITY . "\n");
-			print("DOCUMENT_TYPE: " . json_encode($template->DOCUMENT_TYPE) . "\n");
-			print("AUTO_EXECUTE: " . ($template->AUTO_EXECUTE ? $template->AUTO_EXECUTE->value : 'null') . "\n");
 			print("NAME: " . $template->NAME . "\n");
-			print("TEMPLATE: " . json_encode($template->TEMPLATE) . "\n");
-			print("PARAMETERS: " . json_encode($template->PARAMETERS) . "\n");
-			print("VARIABLES: " . json_encode($template->VARIABLES) . "\n");
-			print("CONSTANTS: " . json_encode($template->CONSTANTS) . "\n");
-			print("MODIFIED: " . ($template->MODIFIED ? $template->MODIFIED->format(DATE_ATOM) : 'null') . "\n");
-			print("IS_MODIFIED: " . ($template->IS_MODIFIED ? 'true' : 'false') . "\n");
 			print("USER_ID: " . $template->USER_ID . "\n");
 			print("SYSTEM_CODE: " . $template->SYSTEM_CODE . "\n");
 			print("\n");
@@ -476,7 +480,7 @@ HTTP status: **200**
            "SYSTEM_CODE": "rest_app_5"
         }
     ],
-    "total": 34,
+    "total": 2,
     "time": {
         "start": 1737535822.539526,
         "finish": 1737535822.564579,
@@ -501,6 +505,8 @@ HTTP status: **200**
 Contains an array of objects with information about business process templates.
 
 Each object contains [fields](#fields) of the template specified in the `SELECT` parameter ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for retrieving the next page. The field is present when the next page is available ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -513,8 +519,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "ACCESS_DENIED",
-    "error_description": "Access denied!"
+    "error": "ERROR_SELECT_VALIDATION_FAILURE",
+    "error_description": "Invalid data in SELECT parameter"
 }
 ```
 
@@ -524,7 +530,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
+|| `ERROR_SELECT_VALIDATION_FAILURE` | Invalid data in SELECT parameter | An element of the `SELECT` array is not a scalar value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -535,3 +541,4 @@ HTTP status: **400**
 - [{#T}](./bizproc-workflow-template-add.md)
 - [{#T}](./bizproc-workflow-template-update.md)
 - [{#T}](./bizproc-workflow-template-delete.md)
+- [{#T}](../bizproc-workflow-start.md)

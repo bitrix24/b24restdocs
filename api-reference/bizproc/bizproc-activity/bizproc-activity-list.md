@@ -13,13 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The `bizproc.activity.list` method retrieves a list of actions set by the application.
+The `bizproc.activity.list` method retrieves a list of actions installed by the current application. Application automation rules are not included in the list; they are returned by the [bizproc.robot.list](../bizproc-robot/bizproc-robot-list.md) method.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
 ## Method Parameters
 
-No parameters.
+No parameters. Pagination is not supported.
 
 ## Code Examples
 
@@ -40,39 +40,12 @@ No parameters.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
-    
     try {
-      const response = await $b24.callListMethod(
-        'bizproc.activity.list',
-        {},
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
+        const response = await $b24.callMethod('bizproc.activity.list', {});
+        const codes = response.getData().result || [];
+        console.log('Action codes:', codes);
     } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
-    
-    try {
-      const generator = $b24.fetchListMethod('bizproc.activity.list', {}, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('bizproc.activity.list', {}, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+        console.error('Request failed:', error);
     }
     ```
 
@@ -196,19 +169,19 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of application action identifiers ||
+[`array`](../../data-types.md) | An array of strings with the `CODE` values of the actions installed by the application. If there are no actions, an empty array is returned ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **403**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied!"
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -218,13 +191,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Application context is required ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Application context is required ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-activity-add.md)

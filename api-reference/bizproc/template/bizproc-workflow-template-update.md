@@ -25,7 +25,7 @@ It allows you to update templates that were created using the [bizproc.workflow.
 || **Name**
 `type` | **Description**||
 || **ID***
-[`string`](../../data-types.md) | Identifier of the template to be updated ||
+[`integer`](../../data-types.md) | Identifier of the template to be updated ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process template. 
 
@@ -46,14 +46,14 @@ You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE
 
 More details on how to transfer files can be found in the article [{#T}](../../files/how-to-update-files.md) ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the following values:
+[`string`](../../data-types.md) | Auto-execution settings for the template. Pass the value as a string, for example, `"0"`. The method rejects a number in the JSON request body with the `Incorrect field AUTO_EXECUTE!` error. Can have the following values:
 
 - `0` — no auto-execution
 - `1` — execute on creation
 - `2` — execute on modification
 - `3` — execute on creation and modification
 
-Default is `0` ||
+If not passed, the current value is retained ||
 |#
 
 ## Code Examples
@@ -68,7 +68,7 @@ Default is `0` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":525,"FIELDS":{"NAME":"Display Time","DESCRIPTION":"Template shows a message with local and server time","AUTO_EXECUTE":0},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":525,"FIELDS":{"NAME":"Display Time","DESCRIPTION":"Template shows a message with local and server time","AUTO_EXECUTE":"0"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/bizproc.workflow.template.update
     ```
 
@@ -84,7 +84,7 @@ Default is `0` ||
     			FIELDS: {
     				NAME: 'Display Time',
     				DESCRIPTION: 'Template shows a message with local and server time',
-    				AUTO_EXECUTE: 0,
+    				AUTO_EXECUTE: '0',
     			}
     		}
     	);
@@ -109,7 +109,7 @@ Default is `0` ||
             fields={
                 "NAME": "Display the time",
                 "DESCRIPTION": "The template displays a message with the local and server time",
-                "AUTO_EXECUTE": 0,
+                "AUTO_EXECUTE": "0",
             },
         ).response
         result = bitrix_response.result
@@ -140,7 +140,7 @@ Default is `0` ||
                     'FIELDS' => [
                         'NAME'        => 'Display Time',
                         'DESCRIPTION' => 'Template shows a message with local and server time',
-                        'AUTO_EXECUTE' => 0,
+                        'AUTO_EXECUTE' => '0',
                     ],
                 ]
             );
@@ -165,7 +165,7 @@ Default is `0` ||
             FIELDS: {
                 NAME: 'Display Time',
                 DESCRIPTION: 'Template shows a message with local and server time',
-                AUTO_EXECUTE: 0,
+                AUTO_EXECUTE: '0',
             }
         },
         function(result)
@@ -190,7 +190,7 @@ Default is `0` ||
             'FIELDS' => [
                 'NAME' => 'Display Time',
                 'DESCRIPTION' => 'Template shows a message with local and server time',
-                'AUTO_EXECUTE' => 0
+                'AUTO_EXECUTE' => '0'
             ]
         ]
     );
@@ -209,7 +209,7 @@ Default is `0` ||
     	"FIELDS": b24.Params{
     		"NAME":         "Display Time",
     		"DESCRIPTION":  "Template shows a message with local and server time",
-    		"AUTO_EXECUTE": 0,
+    		"AUTO_EXECUTE": "0",
     	},
     })
     if err != nil {
@@ -273,7 +273,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Access token not from the application ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Access token not from the application ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 || `ERROR_TEMPLATE_VALIDATION_FAILURE` | No fields to update. | No fields specified for update ||
 || `ERROR_TEMPLATE_NOT_FOUND` | Workflow template not found. | Template with the specified `ID` not found ||
