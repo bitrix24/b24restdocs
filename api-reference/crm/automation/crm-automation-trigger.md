@@ -13,17 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with access permission to modify the target object `target`
 
-Bitrix24 allows users to create a special custom trigger "Track Inbound Webhook." The user is provided with a ready-made URL of the form
+The `crm.automation.trigger` method launches a CRM automation webhook trigger for an object. The "Track Inbound Webhook" trigger is configured in CRM automation, and Bitrix24 provides a ready-made URL for it of the form
 
 ```bash
 https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/?target=DEAL_not_var{{ID}}&code=nwly5
 ```
 
-A call to this URL from an external source will trigger the automation and transition the CRM object to another stage in the Sales Funnel.
+A call to this URL from an external source passes the call to CRM automation. If a matching trigger fires, the CRM object moves to the stage the trigger is bound to.
 
-As you can see from the format of this URL, a [local inbound webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the `crm.automation.trigger` method, specifying a specific CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
+The URL works through a [local inbound webhook](../../../local-integrations/local-webhooks.md) that Bitrix24 creates for the trigger.
 
-You can use the method not only via the inbound webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md)
+The method can be called via an inbound webhook and from [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. An application's own triggers, registered with the [crm.automation.trigger.add](./triggers/crm-automation-trigger-add.md) method, are launched with the [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md) method.
 
 ## Method Parameters
 
@@ -33,21 +33,22 @@ You can use the method not only via the inbound webhook but also in the context 
 || **Name**
 `type` | **Description** ||
 || **target***
-[`string`](../../data-types.md) | Target object for automation, specified in the form of [`TYPENAME_ID`](../data-types.md#object_type) (for example, `LEAD_25`)
-||
+[`string`](../../data-types.md) | Target object for automation in the form of [`TYPENAME_ID`](../data-types.md#object_type), for example, `LEAD_25` or `DEAL_57`. For an SPA item, use `DYNAMIC_<entityTypeId>_<ID>`, for example, `DYNAMIC_174_1` ||
 || **code**
-[`string`](../../data-types.md) | Unique symbolic code of the trigger configured in Automation for a specific status/stage of the document. The `code` parameter can be obtained from the trigger settings ||
+[`string`](../../data-types.md) | Symbolic code of the trigger configured in CRM automation for a specific stage or status. The value is taken from the `code` parameter in the trigger URL in its settings. A trigger with a code matches the call only if `code` matches. A trigger without a code matches any `code` value or no value at all ||
 |#
 
 {% note info %}
 
 In rare cases, multiple triggers may be detected for the specified `target` object. This happens if:
 
-- `code` is not passed in the request and there are old triggers on the account that do not have a `code`
+- `code` is not passed in the request and there are old triggers in Bitrix24 that do not have a `code`
 - a `code` is passed that turns out to be the same for multiple triggers
-In this case, the first trigger that sets an earlier status for the CRM object will be activated.
+- a `code` is passed while, besides the trigger with this `code`, a trigger without a code is configured for the object
 
-It is also worth noting that triggers have "Conditions" and the option "Allow transitioning to the previous status," which affect whether the trigger will work or not.
+In this case, the first matching trigger in stage order fires, provided its conditions are met and the transition to its stage is allowed.
+
+Whether a trigger fires also depends on its "Conditions" and the "Allow transitioning to the previous status" option.
 
 {% endnote %}
 
@@ -102,7 +103,7 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Trigger activated:', result)
+        console.info('Request accepted:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -137,7 +138,7 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
           }
 
           const result = response.getData().result
-          console.info('Trigger activated:', result)
+          console.info('Request accepted:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -251,7 +252,7 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
     if err := json.Unmarshal(res.Result, &ok); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println("request accepted:", ok)
     ```
 
 {% endlist %}
@@ -280,9 +281,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of trigger activation ||
+[`boolean`](../../data-types.md) | `true` means the request has been accepted. The value does not confirm that the object has changed its stage: `true` is returned, for example, if there is no trigger with this `code` or no object with this `ID`. To check the transition, use the object's stage field, for example, with the [crm.&lt;type&gt;.get](../rest-v3/items/crm-entity-get-rest-v3.md) method ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -301,17 +302,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Target is not set. | The required parameter `target` was not provided ||
-|| Empty string | Incorrect target format. | The `target` parameter was not provided in the required format (Required format `TYPENAME_ID`) ||
-|| Empty string | Target is not found. | An incorrect `TYPENAME` was provided in the `target` parameter ||
-|| `ACCESS_DENIED` | Access denied! There are no permissions to update the entity. | The user did not pass the permission check to trigger the automation. ||
-|| Empty string | Access denied. | The user did not pass the preliminary permission check for CRM access ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Target is not set. | The required parameter `target` was not provided ||
+|| `400` | Empty value | Incorrect target format. | `target` has no `_` separator between the type and the ID. The required format is `TYPENAME_ID` ||
+|| `400` | Empty value | Target is not found. | `target` contains an unknown `TYPENAME` type or an ID that equals zero after conversion to an integer, for example, `DEAL_abc` or `DEAL_0` ||
+|| `403` | `ACCESS_DENIED` | Access denied! There is no permissions to update the entity. | The user does not have permission to modify the object from `target` ||
+|| `400` | Empty value | Access denied. | The user does not have access to CRM ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./triggers/index.md)
+- [{#T}](../rest-v3/items/crm-entity-get-rest-v3.md)

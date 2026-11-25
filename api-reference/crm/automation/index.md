@@ -1,6 +1,6 @@
 # CRM Automation: Overview of Methods
 
-The methods in this section allow external events to be transmitted to CRM automation through triggers. When a trigger is configured for an object, it transitions the object to another stage or status.
+The methods in this section allow external events to be transmitted to CRM automation through triggers. A configured trigger can move an object to another stage or status if its conditions are met.
 
 A trigger is launched in one of two ways. A pre-configured webhook trigger is set up in the Bitrix24 interface and called using the [crm.automation.trigger](./crm-automation-trigger.md) method. A custom trigger is registered and launched by the application through the [crm.automation.trigger.*](./triggers/index.md) group of methods.
 
@@ -26,17 +26,19 @@ Choose a tool for developing with an AI agent:
 1. Retrieve the `code` value from the URL of the "Track Inbound Webhook" trigger in the CRM automation settings.
 2. Construct the `target` for the target object, for example, `DEAL_25`.
 3. Call [crm.automation.trigger](./crm-automation-trigger.md), passing the `target` and `code`.
-4. If necessary, check the result using the [crm.item.get](../universal/crm-item-get.md) method.
+4. Check the object's stage using the [crm.&lt;type&gt;.get](../rest-v3/items/crm-entity-get-rest-v3.md) method.
+
+The method returns `true` as soon as it has checked the permissions for the object and passed the call to automation. A `true` response does not mean the object has changed its stage: the call has no effect if, for example, there is no matching trigger, no object with this ID exists, or the trigger conditions are not met.
 
 **If you need to manage triggers from the application:**
 
-The complete procedure is outlined in the [CRM Automation Triggers](./triggers/index.md) section: registration, binding to a stage, and execution.
+The complete procedure is outlined in the [CRM Automation Triggers](./triggers/index.md) section: registration, binding to a stage, and execution. Application trigger methods are called by an administrator and only in the application context: they do not work via an inbound webhook.
 
 ## Interaction with Other Objects
 
 **CRM Automation.** In both scenarios, the trigger must be pre-bound to a stage or status in the Bitrix24 automation settings.
 
-**CRM Objects.** The trigger is initiated for a specific CRM object. In the webhook scenario, the `target` parameter passes the string identifier of the object in the format [`TYPENAME_ID`](../data-types.md#object_type), for example, `DEAL_25`, where `DEAL` is the CRM object type and `25` is its numeric identifier from [crm.item.list](../universal/crm-item-list.md). In the application scenario, the object type `OWNER_TYPE_ID` is obtained using the [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) method, and the object identifier `OWNER_ID` is retrieved using the [crm.item.list](../universal/crm-item-list.md) method.
+**CRM Objects.** The trigger is initiated for a specific CRM object. In the webhook scenario, the `target` parameter is passed in the format [`TYPENAME_ID`](../data-types.md#object_type): the CRM object type and its numeric ID. The ID is retrieved using the [crm.&lt;type&gt;.list](../rest-v3/items/crm-entity-list-rest-v3.md) method. In the application scenario, the object type `OWNER_TYPE_ID` is obtained using the [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) method, and the object identifier `OWNER_ID` is retrieved using the [crm.&lt;type&gt;.list](../rest-v3/items/crm-entity-list-rest-v3.md) method.
 
 ## Overview of Methods {#all-methods}
 
@@ -57,6 +59,6 @@ The complete procedure is outlined in the [CRM Automation Triggers](./triggers/i
 || **Method** | **Description** ||
 || [crm.automation.trigger.add](./triggers/crm-automation-trigger-add.md) | Adds an application trigger ||
 || [crm.automation.trigger.list](./triggers/crm-automation-trigger-list.md) | Retrieves the list of application triggers ||
-|| [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md) | Executes the trigger for a CRM object ||
 || [crm.automation.trigger.delete](./triggers/crm-automation-trigger-delete.md) | Deletes an application trigger ||
+|| [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md) | Executes an application trigger for a CRM object ||
 |#
