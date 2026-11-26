@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.add` adds a page or folder to the specified site and returns the identifier of the created object. The new object is created as inactive (`ACTIVE = N`).
+The method `landing.landing.add` adds a page or folder to the specified site and returns the identifier of the created object. The new object is created as inactive (`ACTIVE = N`). Additional fields of the page, such as meta tags and the color theme, are set after creation with the [landing.landing.update](./landing-landing-update.md) method.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `landing.landing.add` adds a page or folder to the specified site and
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base site and returns the `SITE_NOT_FOUND` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of fields for the new page or folder [(detailed description)](#fields) ||
 |#
@@ -44,13 +44,13 @@ The value of `scope` must correspond to the type of site [(detailed description)
 
 The site identifier can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) or from the result of the method [landing.site.add](../../site/landing-site-add.md) ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the page. It must not contain the character `/` and must not be in the format `<characters>_<number>_<number>`, for example `code_12_34`.
+[`string`](../../../data-types.md) | Symbolic code of the page, part of its URL. The code must not contain `/` or [forbidden characters](#errors): quotes, `$`, brackets, and others. The code cannot be passed in the format `<letters, digits or _>_<number>_<number>`, for example `code_12_34`.
 
 If the field is not provided or a string consisting only of spaces is passed, the code will be generated from `TITLE`. If the transliterated code turns out to be empty, a string of 12 characters will be generated.
 
-An empty string `''` without the `FOLDER` parameter cannot be passed — the method will return an error. If the `FOLDER` parameter is passed with any value, an empty string is allowed, and the code will be generated from `TITLE`.
+An empty string `''` without the `FOLDER` parameter cannot be passed — the method will return the `CANT_BE_EMPTY` error. If the `FOLDER` parameter is passed with any value, an empty string is allowed, and the code will be generated from `TITLE`.
 
-If such a code is already used within the site or folder after creation, a suffix of the form `_<4 random characters>` will be added to it ||
+If the code is already taken within the site or folder, a suffix of the form `_<4 random characters>` will be added to it ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Arbitrary description of the page ||
 || **XML_ID**
@@ -58,7 +58,9 @@ If such a code is already used within the site or folder after creation, a suffi
 || **SITEMAP**
 [`string`](../../../data-types.md) | Flag to include the page in the sitemap. Supported values are `Y` and `N`, default is `N` ||
 || **FOLDER**
-[`string`](../../../data-types.md) | Used if a folder needs to be created instead of a page. Supported values are `Y` and `N`, default is `N` ||
+[`string`](../../../data-types.md) | Create a folder together with the page. Supported values are `Y` and `N`, default is `N`.
+
+With `Y` and without `FOLDER_ID`, Bitrix24 creates a folder with the title and code of the page in the same call and makes the new page its index page. The response contains the page identifier; the page has `FOLDER = N`, and `FOLDER_ID` contains the identifier of the new folder. If you pass `FOLDER_ID` together with `Y`, the new page has `FOLDER = Y`, the flag of a folder page [(detailed description)](../fields.md) ||
 || **FOLDER_ID**
 [`integer`](../../../data-types.md) | Identifier of the folder where the page should be created. The folder must belong to the same site as `SITE_ID`.
 
@@ -68,7 +70,7 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
 
 The identifier of the view template can be obtained using the method [landing.template.getlist](../../template/landing-template-get-list.md) ||
 || **ADDITIONAL_FIELDS**
-[`object`](../../../data-types.md) | Additional fields of the page. Available codes and values are described in the article [Additional Page Fields](../additional-fields.md) ||
+[`object`](../../../data-types.md) | Additional fields of the page. They are set after creation with the [landing.landing.update](./landing-landing-update.md) method: pass the identifier of the new page in `lid`, and the field codes and values from the article [Additional Page Fields](../additional-fields.md) in `fields.ADDITIONAL_FIELDS` ||
 || **BLOCK_ID**
 [`integer`](../../../data-types.md) | Used together with `MENU_CODE` to add a link to the menu of the block with the specified identifier after the page is created ||
 || **MENU_CODE**
@@ -91,13 +93,10 @@ The identifier of the view template can be obtained using the method [landing.te
           "TITLE": "Spring Promotion",
           "SITE_ID": 292,
           "CODE": "spring-sale",
-          "DESCRIPTION": "Page for seasonal promotion",
-          "ADDITIONAL_FIELDS": {
-            "THEME_CODE": "wedding"
-          }
+          "DESCRIPTION": "Page for seasonal promotion"
         }
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.add.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.add.json"
     ```
 
 - cURL (OAuth)
@@ -110,14 +109,11 @@ The identifier of the view template can be obtained using the method [landing.te
           "TITLE": "Spring Promotion",
           "SITE_ID": 292,
           "CODE": "spring-sale",
-          "DESCRIPTION": "Page for seasonal promotion",
-          "ADDITIONAL_FIELDS": {
-            "THEME_CODE": "wedding"
-          }
+          "DESCRIPTION": "Page for seasonal promotion"
         },
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.add.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.add.json"
     ```
 
 - JS (TS)
@@ -135,13 +131,10 @@ The identifier of the view template can be obtained using the method [landing.te
         method: 'landing.landing.add',
         params: {
           fields: {
-            TITLE: 'Spring Sale',
+            TITLE: 'Spring Promotion',
             SITE_ID: 292,
             CODE: 'spring-sale',
             DESCRIPTION: 'Page for seasonal promotion',
-            ADDITIONAL_FIELDS: {
-              THEME_CODE: 'wedding',
-            },
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -175,13 +168,10 @@ The identifier of the view template can be obtained using the method [landing.te
             method: 'landing.landing.add',
             params: {
               fields: {
-                TITLE: 'Spring Sale',
+                TITLE: 'Spring Promotion',
                 SITE_ID: 292,
                 CODE: 'spring-sale',
                 DESCRIPTION: 'Page for seasonal promotion',
-                ADDITIONAL_FIELDS: {
-                  THEME_CODE: 'wedding',
-                },
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -213,13 +203,10 @@ The identifier of the view template can be obtained using the method [landing.te
     try:
         bitrix_response = client.landing.landing.add(
             fields={
-                "TITLE": "Spring Sale",
+                "TITLE": "Spring Promotion",
                 "SITE_ID": 292,
                 "CODE": "spring-sale",
                 "DESCRIPTION": "Page for seasonal promotion",
-                "ADDITIONAL_FIELDS": {
-                    "THEME_CODE": "wedding",
-                },
             },
         ).response
         result = bitrix_response.result
@@ -250,9 +237,6 @@ The identifier of the view template can be obtained using the method [landing.te
                         'SITE_ID' => 292,
                         'CODE' => 'spring-sale',
                         'DESCRIPTION' => 'Page for seasonal promotion',
-                        'ADDITIONAL_FIELDS' => [
-                            'THEME_CODE' => 'wedding',
-                        ],
                     ],
                 ]
             );
@@ -279,9 +263,6 @@ The identifier of the view template can be obtained using the method [landing.te
                 SITE_ID: 292,
                 CODE: 'spring-sale',
                 DESCRIPTION: 'Page for seasonal promotion',
-                ADDITIONAL_FIELDS: {
-                    THEME_CODE: 'wedding'
-                }
             }
         },
         function(result)
@@ -311,9 +292,6 @@ The identifier of the view template can be obtained using the method [landing.te
                 'SITE_ID' => 292,
                 'CODE' => 'spring-sale',
                 'DESCRIPTION' => 'Page for seasonal promotion',
-                'ADDITIONAL_FIELDS' => [
-                    'THEME_CODE' => 'wedding',
-                ],
             ],
         ]
     );
@@ -340,9 +318,6 @@ The identifier of the view template can be obtained using the method [landing.te
     		"SITE_ID":     292,
     		"CODE":        "spring-sale",
     		"DESCRIPTION": "Page for seasonal promotion",
-    		"ADDITIONAL_FIELDS": b24.Params{
-    			"THEME_CODE": "wedding",
-    		},
     	},
     })
     if err != nil {
@@ -408,7 +383,7 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible Error Codes {#errors}
 
 #| 
 || **Code** | **Description** ||
@@ -417,8 +392,9 @@ HTTP Status: **400**
 || `SITE_NOT_FOUND` | Site not found: a non-existent site identifier is passed in `fields.SITE_ID` ||
 || `FOLDER_NOT_FOUND` | Folder not found: a folder that does not belong to the specified site or does not exist is passed in `fields.FOLDER_ID` ||
 || `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the landing address: a character `/` is passed in `fields.CODE` ||
-|| `CANT_BE_EMPTY` | The page address cannot be empty: an empty string `''` is passed in `fields.CODE` ||
-|| `WRONG_CODE_FORMAT` | Invalid page address: a value in the format `<characters>_<number>_<number>` is passed in `fields.CODE`, for example `code_12_34` ||
+|| `CANT_BE_EMPTY` | The page address cannot be empty: an empty string `''` is passed in `fields.CODE`, and `fields.FOLDER` is not passed ||
+|| `WRONG_CODE_CHARS` | The page address contains forbidden characters: `fields.CODE` contains single, double, or back quotes, `$`, `\`, `<`, `>`, parentheses or curly brackets, as well as control characters, for example, a line break ||
+|| `WRONG_CODE_FORMAT` | Invalid page address: a value in the format `<letters, digits or _>_<number>_<number>` is passed in `fields.CODE`, for example `code_12_34` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

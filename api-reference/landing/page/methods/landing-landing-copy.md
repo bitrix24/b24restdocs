@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.copy` copies a page and returns the identifier of the new page. This method can also copy a page marked as deleted and located in the trash.
+The method `landing.landing.copy` copies a page and returns the identifier of the new page. You can also copy a page from the trash.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `landing.landing.copy` copies a page and returns the identifier of th
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Identifier of the source page.
 
@@ -35,9 +35,9 @@ The page identifier can be obtained using the method [landing.landing.getList](.
 
 The site identifier can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
 || **toFolderId**
-[`integer`](../../../data-types.md) | Identifier of the target folder. If this parameter is provided, the copy is created in the specified folder. The folder must belong to the target site `toSiteId`.
+[`integer`](../../../data-types.md) | Identifier of the folder to place the copy in. The folder must be on the target site `toSiteId`.
 
-If this parameter is not provided or set to `0`, the copy is created in the root of the target site. If the folder is not found or belongs to another site, the method does not return an error and creates the copy in the root of the target site.
+If the parameter is not provided or set to `0`, the copy is placed in the root of the target site. The copy is also placed there, without an error, if the folder is not found or is on another site.
 
 The folder identifier can be obtained using the method [landing.site.getFolders](../../site/landing-site-get-folders.md) ||
 || **skipSystem**
@@ -63,7 +63,7 @@ If set to `true`, the new page is created as non-system (`SYS = N`)
         "toSiteId": 305,
         "toFolderId": 95
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.copy.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.copy.json"
     ```
 
 - cURL (OAuth)
@@ -77,7 +77,7 @@ If set to `true`, the new page is created as non-system (`SYS = N`)
         "toFolderId": 95,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.copy.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.copy.json"
     ```
 
 - JS (TS)
@@ -302,14 +302,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Identifier of the created copy of the page ||
+[`integer`](../../../data-types.md) | Identifier of the created copy of the page. If the source page is published, the copy is also published. If the destination already has a page with the same title, the suffix "(copy)" is added to the title of the copy: "Promotion (copy)" ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400 Bad Request**
+HTTP Status: **400**
 
 ```json
 {
@@ -324,9 +324,12 @@ HTTP Status: **400 Bad Request**
 
 #|
 || **Code** | **Description** ||
-|| `LANDING_NOT_EXIST` | Landing not found. If the source page does not exist or is not accessible to the current user. Being in the trash does not trigger this error by itself ||
-|| `SITE_NOT_FOUND` | Site not found. If `toSiteId` points to a non-existent site ||
-|| `ACCESS_DENIED` | Access to create the page is denied. If the user does not have "edit" access permission for the site ||
+|| `MISSING_PARAMS` | The required parameter `lid` is not provided ||
+|| `LANDING_NOT_EXIST` | Page not found: the source page does not exist, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
+|| `SITE_NOT_FOUND` | Site not found: `toSiteId` contains a non-existent site ||
+|| `ACCESS_DENIED` | Access to create the page is denied: the user does not have the "edit" access permission for the site ||
+|| `TYPE_ERROR` | Data type error in the method call parameters, for example, `lid` is passed as an array ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.removeEntities` removes specified blocks and their associated images from the page. It can also clear file bindings for individual images without deleting the blocks themselves.
+The method `landing.landing.removeEntities` removes specified blocks from the page together with their images. The method also clears file bindings: internal records that remain after an image has been removed from a block. The method does not change the content of such a block.
 
 ## Method Parameters
 
@@ -23,17 +23,17 @@ The method `landing.landing.removeEntities` removes specified blocks and their a
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Page identifier.
 
 The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) ||
 || **data*** 
-[`object`](../../../data-types.md) | Set of objects to be deleted [(detailed description)](#data).
+[`object`](../../../data-types.md) | Blocks and images to delete [(detailed description)](#data).
 
-If no blocks or images are specified for deletion, the page will remain unchanged. However, the method will still return `true` if the page exists ||
+If `data` contains neither blocks nor images, the method changes nothing. For an existing page, it still returns `true` ||
 |#
 
 ### Parameter data {#data}
@@ -42,15 +42,13 @@ If no blocks or images are specified for deletion, the page will remain unchange
 || **Name**
 `type` | **Description** ||
 || **blocks**
-[`integer[]`](../../../data-types.md) | Identifiers of the page blocks to be completely removed.
+[`integer[]`](../../../data-types.md) | Identifiers of the blocks to delete. Together with a block, the method deletes all images associated with it.
 
-For each block, the method also deletes all associated images.
-
-If the list includes blocks that are not on the page or blocks that the user cannot delete, the method will skip them. For an existing accessible page, it may return `true` even if some or all blocks from the list were not deleted ||
+The method skips blocks that are not on the page or that the user cannot delete. If the page exists and is accessible, the method returns `true` even if some or all blocks from the list remain on the page ||
 || **images**
-[`object[]`](../../../data-types.md) | Pairs of block and image identifiers for deleting file bindings. The content of the block remains unchanged — use this when the image has already been removed from the block and you need to clear the remaining service record. [(detailed description)](#images).
+[`object[]`](../../../data-types.md) | "Block — image" pairs whose file binding needs to be cleared [(detailed description)](#images). The method does not change the content of the block.
 
-The method will not return a separate error in three cases: if the block is not found, if it is already specified in the `blocks` parameter, or if the image is not associated with this block ||
+The method does not return an error if the block is not found, is already specified in `blocks`, or the image is not associated with it ||
 |#
 
 ### Parameter images {#images}
@@ -63,7 +61,7 @@ The method will not return a separate error in three cases: if the block is not 
 || **block*** 
 [`integer`](../../../data-types.md) | Identifier of the block associated with the image file binding ||
 || **image*** 
-[`integer`](../../../data-types.md) | Internal identifier of the image file binding (`FILE_ID`) associated with the block `block`.
+[`integer`](../../../data-types.md) | Identifier of the image file `FILE_ID` associated with the block `block`. This is the same `id` that the [landing.block.uploadfile](../../block/methods/landing-block-upload-file.md) method returns.
 
 For existing images, `FILE_ID` can be obtained using the method [landing.block.getcontent](../../block/methods/landing-block-get-content.md). In the response, you need to find the HTML of the block in the `content` field and check the value of the `data-fileid` attribute for the required image
 ||
@@ -73,7 +71,7 @@ For existing images, `FILE_ID` can be obtained using the method [landing.block.g
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-This example demonstrates a mixed scenario: blocks from `blocks` are completely removed, while `images` elements clear file bindings for images in other blocks.
+The example removes the blocks from `blocks` entirely and clears the image bindings in other blocks from `images`.
 
 {% list tabs %}
 
@@ -98,7 +96,7 @@ This example demonstrates a mixed scenario: blocks from `blocks` are completely 
           ]
         }
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.removeEntities.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.removeEntities.json"
     ```
 
 - cURL (OAuth)
@@ -123,7 +121,7 @@ This example demonstrates a mixed scenario: blocks from `blocks` are completely 
         },
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.removeEntities.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.removeEntities.json"
     ```
 
 - JS (TS)
@@ -428,7 +426,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the deletion, returns `true` on success ||
+[`boolean`](../../../data-types.md) | `true` if the page is found and accessible. The response does not show which blocks the method skipped. Bitrix24 deletes files later, and only the files that are not used anywhere else ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -450,8 +448,9 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameters are not set: `lid`, `data`, or both parameters are missing in the request ||
-|| `LANDING_NOT_EXIST` | Page not found, deleted, or inaccessible to the current user ||
+|| `MISSING_PARAMS` | The required parameter `lid` or `data` is not provided ||
+|| `LANDING_NOT_EXIST` | Page not found: there is no page with this `lid`, the page is in the trash, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
+|| `ACCESS_DENIED` | Access denied: `data.images` contains images, and the user does not have the "edit" access permission for the site. Without this permission, the method does not delete the blocks from `data.blocks`, but does not return an error ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" and "delete" permissions on the site
 
-The method `landing.landing.move` moves a page to another site or folder.
+The method `landing.landing.move` moves a page to another site or to a folder.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `landing.landing.move` moves a page to another site or folder.
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page to be moved.
 
@@ -37,11 +37,11 @@ If the parameter is not provided or equals `0`, the current site of the page is 
 
 The site identifier can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
 || **toFolderId**
-[`integer`](../../../data-types.md) | Identifier of the destination folder in the target site.
+[`integer`](../../../data-types.md) | Identifier of the destination folder.
 
 If the parameter is not provided or equals `0`, the page is moved to the root of the target site.
 
-If you are moving the page to a folder, that folder must belong to the same site. You cannot move a page to another site and to a folder of that site in one go — the method will return an error. In such a case, first move the page to the desired site, and then in a separate call — to the desired folder.
+The folder must be on the current site of the page. You cannot move a page to another site and into a folder of that site in one call: the method returns the `FOLDER_NOT_FOUND` error. First move the page to the site, then move it to the folder in a separate call.
 
 The folder identifier can be obtained using the method [landing.site.getFolders](../../site/landing-site-get-folders.md) ||
 |#
@@ -59,10 +59,9 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
       -H "Content-Type: application/json" \
       -d '{
         "lid": 2227,
-        "toSiteId": 157,
-        "toFolderId": 95
+        "toSiteId": 157
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.move.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.move.json"
     ```
 
 - cURL (OAuth)
@@ -73,10 +72,9 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
       -d '{
         "lid": 2227,
         "toSiteId": 157,
-        "toFolderId": 95,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.move.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.move.json"
     ```
 
 - JS (TS)
@@ -95,7 +93,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
         params: {
           lid: 2227,
           toSiteId: 157,
-          toFolderId: 95,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -129,7 +126,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
             params: {
               lid: 2227,
               toSiteId: 157,
-              toFolderId: 95,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -161,7 +157,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
         bitrix_response = client.landing.landing.move(
             lid=2227,
             to_site_id=157,
-            to_folder_id=95,
         ).response
         result = bitrix_response.result
         print(result)
@@ -188,7 +183,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
                 [
                     'lid' => 2227,
                     'toSiteId' => 157,
-                    'toFolderId' => 95,
                 ]
             );
 
@@ -211,7 +205,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
         {
             lid: 2227,
             toSiteId: 157,
-            toFolderId: 95
         },
         function(result)
         {
@@ -237,7 +230,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
         [
             'lid' => 2227,
             'toSiteId' => 157,
-            'toFolderId' => 95,
         ]
     );
 
@@ -260,7 +252,6 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
     res, err := client.Core().Call(ctx, "landing.landing.move", b24.Params{
     	"lid":        2227,
     	"toSiteId":   157,
-    	"toFolderId": 95,
     })
     if err != nil {
     	return fmt.Errorf("landing.landing.move: %w", err)
@@ -301,7 +292,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the move. Returns `true` on success ||
+[`boolean`](../../../data-types.md) | Result of the move. Returns `true` on success.
+
+The move does not unpublish the page. After the page is moved to another site, it gets a URL on the new site and is no longer accessible at the old URL. The [landing.landing.getpublicurl](./landing-landing-get-public-url.md) method returns the new URL. If the destination site is not published, the page is not accessible at the new URL ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -324,7 +317,7 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is not provided ||
-|| `LANDING_NOT_EXIST` | Page not found, deleted, or unavailable to the current user ||
+|| `LANDING_NOT_EXIST` | Page not found: there is no page with this `lid`, the page is in the trash, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
 || `ACCESS_DENIED` | Insufficient permissions to modify the target site ||
 || `DELETE_ACCESS_DENIED` | Insufficient permissions to delete the source page ||
 || `FOLDER_NOT_FOUND` | Target folder not found or inaccessible for verification. This error also occurs if you attempt to change the page's site and provide a folder from another site in one call ||

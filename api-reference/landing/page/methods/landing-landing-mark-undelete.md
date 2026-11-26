@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with "delete" access permission for the site
 
-The method `landing.landing.markUnDelete` restores a page from the recycle bin and removes the deletion flag. After restoration, the page remains unpublished (`ACTIVE = "N"`).
+The method `landing.landing.markUnDelete` restores a page from the recycle bin. The restored page is unpublished (`ACTIVE = "N"`): you can publish it with the [landing.landing.publication](./landing-landing-publication.md) method.
+
+You can also call the method for a page that is not in the recycle bin: the method unpublishes the page and returns its identifier.
 
 ## Method Parameters
 
@@ -23,13 +25,13 @@ The method `landing.landing.markUnDelete` restores a page from the recycle bin a
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal landing scope. It is not related to the REST `landing` scope in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The parameter is not required for pages of the `PAGE`, `STORE`, and `SMN` site types. For pages of the `GROUP`, `KNOWLEDGE`, and `MAINPAGE` site types, pass the corresponding `scope` value [(see details)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `ACCESS_DENIED` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+[`integer`](../../../data-types.md) | Identifier of the page in the recycle bin.
 
-The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
+The [landing.landing.getList](./landing-landing-get-list.md) method with the `DELETED: "Y"` filter returns pages from the recycle bin. The identifier is also available in the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
 ## Code Examples
@@ -46,7 +48,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
       -d '{
         "lid": 2227
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.markUnDelete.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.markUnDelete.json"
     ```
 
 - cURL (OAuth)
@@ -58,7 +60,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
         "lid": 2227,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.markUnDelete.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.markUnDelete.json"
     ```
 
 - JS (TS)
@@ -269,7 +271,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Identifier of the page that was restored from the recycle bin ||
+[`integer`](../../../data-types.md) | The page identifier passed in `lid` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -281,7 +283,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access to delete the page is denied."
+    "error_description": "Access denied"
 }
 ```
 
@@ -292,7 +294,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `ACCESS_DENIED` | Insufficient permissions to modify the `DELETED` field of the page ||
+|| `ACCESS_DENIED` | The user does not have the "delete" access permission for the site of the page, there is no page with this `lid`, or `scope` is not passed for a Knowledge Base page ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

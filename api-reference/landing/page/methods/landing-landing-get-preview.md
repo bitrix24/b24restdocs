@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "view" access permission for the site
 
-The method `landing.landing.getpreview` returns the URL or relative path to the preview image of the page.
+The method `landing.landing.getpreview` returns a link to the preview image of the page.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `landing.landing.getpreview` returns the URL or relative path to the 
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
@@ -46,7 +46,7 @@ The page identifier can be obtained using the method [landing.landing.getList](.
       -d '{
         "lid": 351
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.getpreview.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.getpreview.json"
     ```
 
 - cURL (OAuth)
@@ -58,7 +58,7 @@ The page identifier can be obtained using the method [landing.landing.getList](.
         "lid": 351,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.getpreview.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.getpreview.json"
     ```
 
 - JS (TS)
@@ -267,9 +267,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`string`](../../../data-types.md) | URL or relative path to the preview image of the page.
-
-The method returns the URL of the page preview, the path to the image, or `"/bitrix/images/landing/nopreview.jpg"` if no preview is set ||
+[`string`](../../../data-types.md) | Link to the preview image of the page, for example `https://example.bitrix24.site/preview.jpg` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -291,8 +289,10 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Insufficient parameters for the call, missing: `lid` ||
-|| `LANDING_NOT_EXIST` | Landing not found. The method returns this code if the page is not found or the current user does not have permission to view it ||
+|| `MISSING_PARAMS` | The required parameter `lid` is not provided ||
+|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains an identifier of a non-existent page, or the user does not have the "view" access permission for the site, the page is in the trash, or `scope` is not passed for a Knowledge Base page ||
+|| `TYPE_ERROR` | Data type error in the method call parameters, for example, `lid` is passed as an array ||
+|| `SYSTEM_ERROR` | Internal error while executing the method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

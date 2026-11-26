@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.addByTemplate` creates a page in the specified site based on the template code and returns the identifier of the created page. The new page is created as inactive (`ACTIVE = N`).
+The method `landing.landing.addByTemplate` creates a page on a site based on the template code and returns its identifier. The new page is created unpublished (`ACTIVE = "N"`). The exception is when a published page is passed in `fields.ID`: then the new page is published immediately. You can publish the page later with the [landing.landing.publication](./landing-landing-publication.md) method.
 
 If you need to fully manage the fields of the created page, use [landing.landing.add](./landing-landing-add.md).
 
@@ -25,17 +25,17 @@ If you need to fully manage the fields of the created page, use [landing.landing
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base site and returns the `SITE_ERROR` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **siteId***
 [`integer`](../../../data-types.md) | Identifier of the site where the page needs to be created.
 
 The site identifier can be obtained using the [landing.site.getList](../../site/landing-site-get-list.md) method or from the result of the [landing.site.add](../../site/landing-site-add.md) method ||
 || **code***
-[`string`](../../../data-types.md) | Template code for the page.
+[`string`](../../../data-types.md) | Template code for the page, for example `krayt.monotovar@KraytPetShop`. The [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md) method returns the list of templates available in Bitrix24.
 
-A list of available templates can be obtained using the [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md) method. The code depends on the templates available in Bitrix24. For example, the value might look like `krayt.monotovar@KraytPetShop` ||
+If there is no template with this code, the page is not created, and `result` contains `null` without an error ||
 || **fields**
 [`object`](../../../data-types.md) | Additional parameters for creating the page [(detailed description)](#fields) ||
 |#
@@ -56,27 +56,29 @@ If not provided, values from the template will be used ||
 
 The value is recorded in the additional fields `METAOG_DESCRIPTION` and `METAMAIN_DESCRIPTION`, but not in the `DESCRIPTION` field of the page itself ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of an existing page or folder in the same site.
+[`integer`](../../../data-types.md) | Identifier of an existing page in the same site. The new page takes the folder and the publication state from it.
 
-If a folder is provided, the new page will be created within it. If a page from a folder is provided, the new page will be created in the same folder. For an item without a folder, the method will take the value from `fields.FOLDER_ID`, if this parameter is specified.
+If the page is in a folder, the new page will be created in the same folder, and the `fields.FOLDER_ID` parameter is ignored. For a page without a folder, the method will take the value from `fields.FOLDER_ID`, if this parameter is specified.
 
-If an active item is provided, the new page will be published automatically after creation. If `ID` points to a folder or an item with a filled `FOLDER_ID`, the `fields.FOLDER_ID` parameter is ignored.
+If a published page is provided, the new page will be published automatically after creation.
 
-The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, and the folder identifier can be obtained using the [landing.site.getFolders](../../site/landing-site-get-folders.md) method ||
+The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method.
+
+A folder identifier from [landing.site.getFolders](../../site/landing-site-get-folders.md) does not work here: the method looks for a page in `fields.ID` and usually returns the `LANDING_ERROR` error. Pass the folder in `fields.FOLDER_ID` ||
 || **FOLDER_ID**
-[`integer`](../../../data-types.md) | Identifier of the folder where the page needs to be created. The folder must belong to the same site as `siteId`, otherwise the method will return an error.
+[`integer`](../../../data-types.md) | Identifier of the folder where the page needs to be created. The folder must be on the site specified by `siteId`, otherwise the method will return the `FOLDER_NOT_FOUND` error.
 
 The folder identifier can be obtained using the [landing.site.getFolders](../../site/landing-site-get-folders.md) method.
 
-This parameter is used if the creation folder is not determined by `fields.ID` ||
+If the page specified by `fields.ID` is in a folder, the parameter is ignored ||
 || **SITE_TYPE**
 [`string`](../../../data-types.md) | Type of templates from which the page is created. Site types from the article [Working with Site Types and Scopes](../../types.md) are used.
 
 If not provided, the site type is taken. For sites of types `STORE` and `SMN`, the default value is `PAGE` ||
 || **ADD_IN_MENU**
-[`string`](../../../data-types.md) | Flag for adding the created page to the site menu. Supported values are `Y` and `N`.
+[`string`](../../../data-types.md) | Whether to add the created page to the site menu: `Y` to add, `N` not to add. The default is `N`.
 
-The logic triggers only when the value is `Y`, if the page is not already added to the menu through `BLOCK_ID` and `MENU_CODE`, and if `TITLE` is provided ||
+The page is added to the menu only if `TITLE` is provided and the page is not being added to a block menu through `BLOCK_ID` and `MENU_CODE` ||
 || **BLOCK_ID**
 [`integer`](../../../data-types.md) | Together with `MENU_CODE`, adds a link to the created page in the menu of the block with the specified identifier ||
 || **MENU_CODE**
@@ -103,7 +105,7 @@ The logic triggers only when the value is `Y`, if the page is not already added 
           "FOLDER_ID": 95
         }
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.addByTemplate.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.addByTemplate.json"
     ```
 
 - cURL (OAuth)
@@ -121,7 +123,7 @@ The logic triggers only when the value is `Y`, if the page is not already added 
         },
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.addByTemplate.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.addByTemplate.json"
     ```
 
 - JS (TS)
@@ -135,14 +137,14 @@ The logic triggers only when the value is `Y`, if the page is not already added 
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<number>({
+      const response = await $b24.actions.v2.call.make<number | null>({
         method: 'landing.landing.addByTemplate',
         params: {
           siteId: 157,
           code: 'krayt.monotovar@KraytPetShop',
           fields: {
-            TITLE: 'Spring sale',
-            DESCRIPTION: 'SEO page description',
+            TITLE: 'Spring Promotion',
+            DESCRIPTION: 'SEO description of the promotion page',
             FOLDER_ID: 95,
           },
         },
@@ -179,8 +181,8 @@ The logic triggers only when the value is `Y`, if the page is not already added 
               siteId: 157,
               code: 'krayt.monotovar@KraytPetShop',
               fields: {
-                TITLE: 'Spring sale',
-                DESCRIPTION: 'SEO page description',
+                TITLE: 'Spring Promotion',
+                DESCRIPTION: 'SEO description of the promotion page',
                 FOLDER_ID: 95,
               },
             },
@@ -215,8 +217,8 @@ The logic triggers only when the value is `Y`, if the page is not already added 
             site_id=157,
             code="krayt.monotovar@KraytPetShop",
             fields={
-                "TITLE": "Spring sale",
-                "DESCRIPTION": "SEO page description",
+                "TITLE": "Spring Promotion",
+                "DESCRIPTION": "SEO description of the promotion page",
                 "FOLDER_ID": 95,
             },
         ).response
@@ -374,7 +376,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Identifier of the created page ||
+[`integer`](../../../data-types.md) \| `null` | Identifier of the created page. If there is no template with the code from `code`, the method returns `null` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -385,10 +387,12 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "SITE_ERROR",
-    "error_description": "Site not found or access denied"
+    "error": "Site was not found or access was denied",
+    "error_description": "SITE_ERROR"
 }
 ```
+
+For the errors in the table, the code is returned in `error_description`, and the text in `error`, as in the example above. The exception is `MISSING_PARAMS`: its code is returned in `error`, as with system errors such as `TYPE_ERROR` and with other methods.
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
@@ -397,8 +401,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameters are missing: `siteId`, `code`, or both parameters are absent in the request ||
-|| `SITE_ERROR` | Site not found or access denied: a non-existent site is provided in `siteId` or the user does not have access to it ||
-|| `LANDING_ERROR` | Page or folder not found: an identifier of an element that does not exist in the specified site is provided in `fields.ID` ||
+|| `SITE_ERROR` | Site was not found or access was denied: the required `scope` is not passed, a non-existent site is provided in `siteId`, or the user does not have access to it ||
+|| `LANDING_ERROR` | Page not found: `fields.ID` contains an identifier that does not match any page on the site specified by `siteId`. This happens if you pass a folder identifier from [landing.site.getFolders](../../site/landing-site-get-folders.md) ||
 || `ACCESS_DENIED` | Access to create the page is denied: the user does not have "edit" permission for the specified site ||
 || `FOLDER_NOT_FOUND` | Folder not found: a folder that does not belong to the specified site or does not exist is provided in `fields.FOLDER_ID` ||
 || `WRONG_DATA` | Invalid template data: unable to retrieve template data for the provided `code` ||

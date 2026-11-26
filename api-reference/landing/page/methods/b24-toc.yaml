@@ -11,23 +11,23 @@ items:
     href: landing-landing-copy.md
   - name: Deleting a Page
     href: landing-landing-delete.md
-  - name: Retrieving Additional Fields
+  - name: Get Additional Fields of the Page
     href: landing-landing-get-additional-fields.md
   - name: Retrieving a List of Pages
     href: landing-landing-get-list.md
-  - name: Getting the Path to the Page Preview
+  - name: Get the Page Preview URL
     href: landing-landing-get-preview.md
-  - name: Returning the Web Address of the Page
+  - name: Get Public URL of the Page
     href: landing-landing-get-public-url.md
   - name: Marking a Page as Deleted
     href: landing-landing-mark-delete.md
-  - name: Marking a Page as Not Deleted
+  - name: Restore Page from Recycle Bin
     href: landing-landing-mark-undelete.md
   - name: Moving a Page
     href: landing-landing-move.md
   - name: Publishing a Page
     href: landing-landing-publication.md
-  - name: Remove Page Blocks and Images
+  - name: Remove Blocks and Clear Image File Bindings on Page
     href: landing-landing-remove-entities.md
   - name: Get Page ID by Public URL
     href: landing-landing-resolve-id-by-public-url.md

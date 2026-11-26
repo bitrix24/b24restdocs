@@ -17,7 +17,7 @@ The method `landing.landing.getList` retrieves a list of pages based on the sele
 
 {% note warning %}
 
-By default, the method returns only pages on non-deleted sites with `DELETED = "N"`. To retrieve deleted pages, pass `DELETED` or `=DELETED` in the filter. This only works for pages on non-deleted sites: the method does not return pages from deleted sites.
+By default, the method does not return pages from the trash. To retrieve only these pages, pass `DELETED: "Y"` in the filter; to retrieve all pages, pass `DELETED: ["Y", "N"]`. The method does not return pages of sites that are in the trash.
 
 {% endnote %}
 
@@ -29,9 +29,9 @@ By default, the method returns only pages on non-deleted sites with `DELETED = "
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landings. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-For regular pages, this parameter is not needed. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the corresponding `scope`. More about selecting values can be found in the article [Working with Site Types and Scopes](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, Knowledge Base pages are not included in the response. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **params**
 [`object`](../../../data-types.md) | Parameters for selecting pages [(detailed description)](#params) ||
 |#
@@ -44,7 +44,9 @@ For regular pages, this parameter is not needed. For `GROUP`, `KNOWLEDGE`, and `
 || **select**
 [`string[]`](../../../data-types.md) | List of fields to select from [Page Object Fields](../fields.md). If the parameter is not passed or is equal to `null`, `["*"]` is used.
 
-The method only accepts simple field names of the page. Elements with `.` are ignored. ||
+The method only accepts simple field names of the page. Elements with `.` are ignored.
+
+If you list fields in `select`, add `ID`: without it, the method returns only one page, and the `get_preview`, `get_urls`, and `check_area` flags do not work. ||
 || **filter**
 [`object`](../../../data-types.md) | Filter by fields from [Page Object Fields](../fields.md). If the parameter is not passed or is in an incorrect format, the selection is performed without custom conditions. Keys with `.` and `CHECK_PERMISSIONS` are ignored.
 
@@ -56,15 +58,17 @@ The site identifier can be obtained using the method [landing.site.getList](../.
 || **group**
 [`array`](../../../data-types.md) | Grouping in ORM format. The method does not have a default value. ||
 || **limit**
-[`integer`](../../../data-types.md) | Limit on the number of rows in the selection at the ORM level. The method does not set its own default limit. ||
+[`integer`](../../../data-types.md) | How many pages to return. Without `limit`, the method returns all matching pages in one call. ||
 || **offset**
-[`integer`](../../../data-types.md) | Offset for the selection at the ORM level. ||
+[`integer`](../../../data-types.md) | How many pages to skip. With `limit` and `offset`, you can retrieve the list in parts: for example, `limit: 50` and `offset: 50` skip the first 50 pages and return the next 50.
+
+The method has no standard REST pagination: it ignores the `start` parameter, and the response contains no `next` or `total`. ||
 || **get_preview**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes a `PREVIEW` field with a link to the page preview. ||
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes a `PREVIEW` field with a link to the page preview. The flag works only if `select` is not passed, equals `["*"]`, or contains `ID`. ||
 || **get_urls**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes a `PUBLIC_URL` field with the public address of the page. ||
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes a `PUBLIC_URL` field with the public address of the page. The flag works only if `select` is not passed, equals `["*"]`, or contains `ID`. ||
 || **check_area**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes an `IS_AREA` field indicating whether the page is an included area. ||
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes an `IS_AREA` field indicating whether the page is an included area. The flag works only if `select` is not passed, equals `["*"]`, or contains `ID`. ||
 |#
 
 ## Code Examples
@@ -98,7 +102,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
           "check_area": true
         }
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.getList.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.getList.json"
     ```
 
 - cURL (OAuth)
@@ -127,7 +131,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
         },
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.getList.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.getList.json"
     ```
 
 - JS (TS)
@@ -153,11 +157,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
     }
 
     try {
-      // landing.landing.getList returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // landing.landing.getList returns all matching pages in one call; use params.limit and params.offset to get them in parts
       const response = await $b24.actions.v2.call.make<LandingItem[]>({
         method: 'landing.landing.getList',
         params: {
@@ -179,7 +179,6 @@ The site identifier can be obtained using the method [landing.site.getList](../.
             get_preview: true,
             check_area: true,
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -208,11 +207,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // landing.landing.getList returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // landing.landing.getList returns all matching pages in one call; use params.limit and params.offset to get them in parts
           const response = await $b24.actions.v2.call.make({
             method: 'landing.landing.getList',
             params: {
@@ -234,7 +229,6 @@ The site identifier can be obtained using the method [landing.site.getList](../.
                 get_preview: true,
                 check_area: true,
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -461,16 +455,22 @@ HTTP Status: **200**
         {
             "ID": "985",
             "TITLE": "Detailed News",
-            "SITE_ID": "3",
+            "SITE_ID": "205",
             "DATE_MODIFY": "10/10/2022 03:25:30 pm",
-            "DOMAIN_ID": "5"
+            "DOMAIN_ID": "5",
+            "PUBLIC_URL": "https://mysite.bitrix24site.com/news-detail/",
+            "PREVIEW": "https://mysite.bitrix24site.com/news-detail/preview.jpg",
+            "IS_AREA": false
         },
         {
             "ID": "573",
-            "TITLE": "Page Video",
-            "SITE_ID": "3",
+            "TITLE": "Home",
+            "SITE_ID": "205",
             "DATE_MODIFY": "10/10/2022 03:25:30 pm",
-            "DOMAIN_ID": "5"
+            "DOMAIN_ID": "5",
+            "PUBLIC_URL": "https://mysite.bitrix24site.com/",
+            "PREVIEW": "https://mysite.bitrix24site.com/preview.jpg",
+            "IS_AREA": false
         }
     ],
     "time": {
@@ -505,7 +505,7 @@ HTTP Status: **200**
 || **FIELD**
 [`string`](../../../data-types.md) \| `null` | Any field of the page from [Page Object Fields](../fields.md), if it is requested in `params.select` or if `params.select` is not passed. ||
 || **DOMAIN_ID**
-[`string`](../../../data-types.md) \| `null` | Identifier of the domain of the site to which the page is linked. Present in the response even if it is not specified in `params.select`. ||
+[`string`](../../../data-types.md) \| `null` | Identifier of the domain of the site to which the page is linked. Returned even if the field is not in `params.select`. ||
 || **PUBLIC_URL**
 [`string`](../../../data-types.md) \| `null` | Public address of the page. Returned only if the `get_urls` flag is enabled. ||
 || **PREVIEW**
@@ -521,7 +521,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "Insufficient permission."
 }
 ```
 

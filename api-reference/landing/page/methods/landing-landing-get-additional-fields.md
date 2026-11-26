@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "view" access permission for the site
 
-The method `landing.landing.getadditionalfields` retrieves [additional fields](../additional-fields.md) of the page.
+The method `landing.landing.getadditionalfields` retrieves non-empty [additional fields](../additional-fields.md) of the page, such as meta tags and the color theme.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `landing.landing.getadditionalfields` retrieves [additional fields](.
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Identifier of the page.
 
@@ -46,7 +46,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
       -d '{
         "lid": 349
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.getadditionalfields.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.getadditionalfields.json"
     ```
 
 - cURL (OAuth)
@@ -58,7 +58,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
         "lid": 349,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.getadditionalfields.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.getadditionalfields.json"
     ```
 
 - JS (TS)
@@ -72,7 +72,8 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type AdditionalFieldsResult = Record<string, string | number | boolean | string[]>
+    // result is an empty array [] when the page has no filled fields, e.g. a Knowledge Base page without meta tags
+    type AdditionalFieldsResult = Record<string, unknown> | []
 
     try {
       const response = await $b24.actions.v2.call.make<AdditionalFieldsResult>({
@@ -237,6 +238,12 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
     	return fmt.Errorf("landing.landing.getadditionalfields: %w", err)
     }
 
+    // For a page without filled fields, for example, a Knowledge Base page without meta tags, result is an empty array []
+    if string(res.Result) == "[]" {
+    	fmt.Println("no additional fields")
+    	return nil
+    }
+
     var item struct {
     	FontsCode     string `json:"FONTS_CODE"`
     	GacounterUse  string `json:"GACOUNTER_USE"`
@@ -281,8 +288,8 @@ Below is a shortened example of a response. The actual set of fields depends on 
         "finish": 1773722096.682451,
         "duration": 0.6824510097503662,
         "processing": 0,
-        "date_start": "2026-03-17T12:34:56+01:00",
-        "date_finish": "2026-03-17T12:34:56+01:00",
+        "date_start": "2026-03-17T05:34:56+01:00",
+        "date_finish": "2026-03-17T05:34:56+01:00",
         "operating_reset_at": 1773722696,
         "operating": 0.11843705177307129
     }
@@ -295,22 +302,38 @@ Below is a shortened example of a response. The actual set of fields depends on 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | A set of additional fields of the page in the format `{"<FIELD_CODE>": "<VALUE>"}`.
-
-If the page has no available non-empty additional fields, the method returns an empty array `[]` [(detailed description)](#result) ||
+[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Additional fields of the page in the format `{"<FIELD_CODE>": "<VALUE>"}`. Empty fields are not included in the response: if there are no non-empty fields, the method returns an empty array `[]` [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Object result {#result}
 
+The object key is the field code. The table lists frequently used fields; all codes and values are described in the article [Additional Fields of the Page](../additional-fields.md).
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **<FIELD_CODE>**
-[`string`](../../../data-types.md) \| [`integer`](../../../data-types.md) \| [`boolean`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`object`](../../../data-types.md) | Pair "field code → field value". The method returns only fields with non-empty values.  
-
-Available field codes are listed in the section [Additional Fields of the Page](../additional-fields.md) ||
+|| **METAMAIN_USE**
+[`string`](../../../data-types.md) | Whether custom meta tags of the page are enabled: `Y` or `N` ||
+|| **METAMAIN_TITLE**
+[`string`](../../../data-types.md) | Value of the `title` tag ||
+|| **METAMAIN_DESCRIPTION**
+[`string`](../../../data-types.md) | Value of the `description` tag ||
+|| **METAOG_TITLE**
+[`string`](../../../data-types.md) | Title of the page preview in social networks and messengers, Open Graph tag `og:title` ||
+|| **METAOG_DESCRIPTION**
+[`string`](../../../data-types.md) | Description of the page preview in social networks and messengers, Open Graph tag `og:description` ||
+|| **METAOG_IMAGE**
+[`string`](../../../data-types.md) | Image for Open Graph, tag `og:image`. If the field contains a file identifier, an application receives a link to the file, and a webhook receives the identifier itself ||
+|| **METAROBOTS_INDEX**
+[`string`](../../../data-types.md) | Whether indexing of the page is allowed: `Y` or `N` ||
+|| **THEME_CODE**
+[`string`](../../../data-types.md) | The color theme code of the page from the section [Page Color Themes](../color-themes.md) ||
+|| **VIEW_TYPE**
+[`string`](../../../data-types.md) | Type of view of the page: `no`, `ltr`, `all`, `mobile`, or `adaptive` ||
+|| **SETTINGS_\***
+[`string`](../../../data-types.md) \| [`integer`](../../../data-types.md) \| [`array`](../../../data-types.md) | Catalog and store settings. If the catalog module is installed in Bitrix24, these fields are returned for pages of sites and stores with default values, even if they were not set. Fields with an empty default value are not returned. Knowledge Base pages have no `SETTINGS_*` fields. The type depends on the field, for example, `SETTINGS_PRICE_CODE` is an array of price type codes, and `SETTINGS_SHOW_PRICE_COUNT` is a number ||
 |#
 
 ## Error Handling

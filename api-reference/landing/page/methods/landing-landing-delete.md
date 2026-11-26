@@ -13,9 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "delete" access permission for the site
 
-The method `landing.landing.delete` removes a page along with its blocks and associated files.
+The method `landing.landing.delete` removes a page along with its blocks. Bitrix24 deletes the page files later, and only the files that are not used anywhere else.
 
-The method also deletes pages of sites moved to the Recycle Bin. The deletion permission is checked the same way as for pages of active sites.
+Deletion is permanent. If you may need the page later, move it to the Recycle Bin with the [landing.landing.markDelete](./landing-landing-mark-delete.md) method.
+
+You can delete both a page in the Recycle Bin and a page of a site moved to the Recycle Bin. This requires the same "delete" access permission for the site as for pages of active sites.
 
 ## Method Parameters
 
@@ -25,9 +27,9 @@ The method also deletes pages of sites moved to the Recycle Bin. The deletion pe
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Page identifier.
 
@@ -48,7 +50,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
       -d '{
         "lid": 350
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.delete.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.delete.json"
     ```
 
 - cURL (OAuth)
@@ -60,7 +62,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
         "lid": 350,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.delete.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.delete.json"
     ```
 
 - JS (TS)
@@ -283,7 +285,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access to delete the page is denied."
+    "error_description": "You don't have permission to delete current page"
 }
 ```
 
@@ -294,9 +296,9 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | Page not found or not accessible to the current user ||
+|| `LANDING_NOT_EXIST` | Page not found: there is no page with this `lid`, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
 || `ACCESS_DENIED` | Insufficient permissions to delete the page ||
-|| `LANDING_IS_LOCK` | Page is locked for deletion ||
+|| `LANDING_IS_LOCK` | The page is protected from deletion. Bitrix24 sets this protection when it creates a site from a template with protected pages. It cannot be removed via REST ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

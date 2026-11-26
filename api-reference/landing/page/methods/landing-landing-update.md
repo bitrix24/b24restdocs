@@ -23,15 +23,17 @@ The method `landing.landing.update` updates the parameters of the page.
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal landing scope. It is not related to the REST `landing` scope in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The parameter is not required for pages of the `PAGE`, `STORE`, and `SMN` site types. For pages of the `GROUP`, `KNOWLEDGE`, and `MAINPAGE` site types, pass the corresponding `scope` value [(see details)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | The identifier of the page to be updated.
 
 The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods. ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields for the page to be updated [(detailed description)](#fields) ||
+[`object`](../../../data-types.md) | A set of fields for the page to be updated [(detailed description)](#fields).
+
+The `ACTIVE`, `RULE`, `TPL_CODE`, `INITIATOR_APP_CODE`, and `VIEWS` fields cannot be changed with this method: the method skips them without an error and returns `true`. To publish or unpublish a page, use the [landing.landing.publication](./landing-landing-publication.md) and [landing.landing.unpublic](./landing-landing-unpublic.md) methods ||
 |#
 
 ### Parameter fields {#fields}
@@ -42,7 +44,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
 || **TITLE**
 [`string`](../../../data-types.md) | The title of the page. ||
 || **CODE**
-[`string`](../../../data-types.md) | The symbolic code of the page. The code cannot contain the character `/` and must not be in the format `<letters, digits or _>_<number>_<number>`, for example `code_12_34`.
+[`string`](../../../data-types.md) | The symbolic code of the page. The code cannot contain `/` or [forbidden characters](#errors): quotes, `$`, brackets, and others. The code cannot be in the format `<letters, digits or _>_<number>_<number>`, for example `code_12_34`.
 
 If an empty string is passed and the `FOLDER` field is not specified, the method will return an error. If the `FOLDER` field is passed with any value, there will be no error. ||
 || **DESCRIPTION**
@@ -68,12 +70,11 @@ The folder identifier can be obtained using the [landing.site.getFolders](../../
 
 The template identifier can be obtained using the [landing.template.getlist](../../template/landing-template-get-list.md) method. ||
 || **DELETED**
-[`string`](../../../data-types.md) | Manages the state of the page in the trash. When this field is passed, the page becomes inactive.
+[`string`](../../../data-types.md) | Moves the page to the trash. With any value of the field, the page becomes inactive:
+`Y` — the page is moved to the trash
+`N` — the page stays out of the trash
 
-`Y` — the page is moved to the trash and becomes inactive.
-`N` — the page is restored from the trash but remains inactive until it is published separately.
-
-For deleting and restoring the page, it is better to use the methods [landing.landing.markDelete](./landing-landing-mark-delete.md) and [landing.landing.markUnDelete](./landing-landing-mark-undelete.md).
+You cannot restore a page from the trash with this method: the method does not find the page and returns the `LANDING_NOT_EXIST` error. To delete and restore a page, use the [landing.landing.markDelete](./landing-landing-mark-delete.md) and [landing.landing.markUnDelete](./landing-landing-mark-undelete.md) methods.
 
 If the page is set as the main page in the site settings and there are other undeleted pages in this site, the method will return the error `CANT_DELETE_MAIN`. ||
 || **DATE_PUBLIC**
@@ -106,7 +107,7 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
           "XML_ID": "promo-2026-landing"
         }
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.update.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.update.json"
     ```
 
 - cURL (OAuth)
@@ -124,7 +125,7 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
         },
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.update.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.update.json"
     ```
 
 - JS (TS)
@@ -143,9 +144,9 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
         params: {
           lid: 349,
           fields: {
-            TITLE: 'Spring Promo 2026',
+            TITLE: 'Spring Sale 2026',
             CODE: 'spring-sale-2026',
-            DESCRIPTION: 'Updated promo page description',
+            DESCRIPTION: 'Updated description of the promotion page',
             XML_ID: 'promo-2026-landing',
           },
         },
@@ -181,9 +182,9 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
             params: {
               lid: 349,
               fields: {
-                TITLE: 'Spring Promo 2026',
+                TITLE: 'Spring Sale 2026',
                 CODE: 'spring-sale-2026',
-                DESCRIPTION: 'Updated promo page description',
+                DESCRIPTION: 'Updated description of the promotion page',
                 XML_ID: 'promo-2026-landing',
               },
             },
@@ -217,9 +218,9 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
         bitrix_response = client.landing.landing.update(
             lid=349,
             fields={
-                "TITLE": "Spring Promo 2026",
+                "TITLE": "Spring Sale 2026",
                 "CODE": "spring-sale-2026",
-                "DESCRIPTION": "Updated promo page description",
+                "DESCRIPTION": "Updated description of the promotion page",
                 "XML_ID": "promo-2026-landing",
             },
         ).response
@@ -395,11 +396,12 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible Error Codes {#errors}
 
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | The required parameter `lid` or `fields` is missing. ||
+|| `LANDING_NOT_EXIST` | The page with the identifier `lid` does not exist or is inaccessible. The same error is returned if `scope` is not passed for a Knowledge Base page. ||
 || `ACCESS_DENIED` | Insufficient permissions to modify the page or a specific field. For example, for `fields.DELETED`, the "delete" permission on the site is required, and for `fields.DATE_PUBLIC`, the "publication" permission on the site is required.
 
 If another site is passed in `fields.SITE_ID` and the user does not have the "delete" permission on the current site or the "edit" permission on the new one, the error text is "You don't have permission to move this page to another site." ||
@@ -407,6 +409,7 @@ If another site is passed in `fields.SITE_ID` and the user does not have the "de
 || `FOLDER_NOT_FOUND` | A folder that does not belong to the current site of the page or does not exist is passed in `fields.FOLDER_ID`. ||
 || `SLASH_IS_NOT_ALLOWED` | The character `/` is passed in `fields.CODE`. ||
 || `CANT_BE_EMPTY` | An empty string `''` is passed in `fields.CODE`, and the `fields.FOLDER` key is absent in the same request. ||
+|| `WRONG_CODE_CHARS` | `fields.CODE` contains forbidden characters: single, double, or back quotes, `$`, `\`, `<`, `>`, parentheses or curly brackets, as well as control characters, for example, a line break. ||
 || `WRONG_CODE_FORMAT` | A value in the format `<letters, digits or _>_<number>_<number>` is passed in `fields.CODE`, for example `code_12_34` or `my_page_1_2`. ||
 || `CANT_DELETE_MAIN` | Cannot mark the main page of the site as deleted if there are other undeleted pages in the site. ||
 || `TYPE_ERROR` | Data type error in the method call parameters. ||

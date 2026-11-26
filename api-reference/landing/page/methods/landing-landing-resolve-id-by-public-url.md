@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with access to the "Sites and Stores" section
 
-The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on its public URL within the specified site.
+The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on its public URL on the `siteId` site. The method also finds unpublished pages, but not pages in the trash.
 
 ## Method Parameters
 
@@ -23,13 +23,13 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on i
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns `null`. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **landingUrl*** 
-[`string`](../../../data-types.md) | Relative public URL of the page within the site `siteId`, for example `/catalog/sale/`.
+[`string`](../../../data-types.md) | Public URL of the page without the domain: the path from the root of the `siteId` site, for example `/catalog/sale/`. The path of the main page is `/`. Leading and trailing slashes and letter case do not matter: `/catalog/sale/`, `/catalog/sale`, and `catalog/sale` find the same page.
 
-Provide the path from the root of the site without the domain ||
+A full URL with the domain from the [landing.landing.getpublicurl](./landing-landing-get-public-url.md) method works only for pages of a `VIBE` site, except the main page of that site. For other pages, the method returns `null` for such a URL ||
 || **siteId*** 
 [`integer`](../../../data-types.md) | The ID of the site within which to find the page.
 
@@ -51,7 +51,7 @@ The site ID can be obtained using the method [landing.site.getList](../../site/l
         "landingUrl": "/catalog/sale/",
         "siteId": 1817
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.resolveIdByPublicUrl.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.resolveIdByPublicUrl.json"
     ```
 
 - cURL (OAuth)
@@ -64,7 +64,7 @@ The site ID can be obtained using the method [landing.site.getList](../../site/l
         "siteId": 1817,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.resolveIdByPublicUrl.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.resolveIdByPublicUrl.json"
     ```
 
 - JS (TS)
@@ -306,7 +306,7 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameters `landingUrl`, `siteId` or one of them are not provided ||
+|| `MISSING_PARAMS` | The required parameter `landingUrl` or `siteId` is not provided ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error while executing the method ||

@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `landing.landing.publication` publishes the page and makes it active.
 
-If the page is located in a folder, the method will publish that folder and all parent folders. After this, the site will become active.
+If the page is located in a folder, the method will publish that folder and all parent folders. The method also activates the site that contains the page.
 
 For Knowledge Base pages, the method manages the visibility of the page: making it available or hidden from users.
 
@@ -27,9 +27,9 @@ For Knowledge Base pages, the method manages the visibility of the page: making 
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Page identifier.
 
@@ -50,7 +50,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
       -d '{
         "lid": 351
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.publication.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.publication.json"
     ```
 
 - cURL (OAuth)
@@ -62,7 +62,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
         "lid": 351,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.publication.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.publication.json"
     ```
 
 - JS (TS)
@@ -296,7 +296,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains the identifier of a non-existent, deleted, or inaccessible page. For Knowledge Base pages, groups, and vibes, ensure that the `scope` parameter is provided ||
+|| `LANDING_NOT_EXIST` | Page not found: there is no page with this `lid`, the page is in the trash, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
 || `PUBLIC_PAGE_REACHED` | The tariff plan has a limit on the number of published pages ||
 || `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24 Marketplace is required for publication ||
 || `LANDING_PAYMENT_FAILED_BLOCK` | The page contains a block from an application; a subscription to Bitrix24 Marketplace is required for publication ||

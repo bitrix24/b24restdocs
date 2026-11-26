@@ -25,9 +25,9 @@ The page remains in the database. To restore it, use the [landing.landing.markUn
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `ACCESS_DENIED` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Identifier of the page.
 
@@ -52,7 +52,7 @@ If `false` is passed, the method restores the page from the trash. This scenario
       -d '{
         "lid": 350
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.markDelete.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.markDelete.json"
     ```
 
 - cURL (OAuth)
@@ -64,7 +64,7 @@ If `false` is passed, the method restores the page from the trash. This scenario
         "lid": 350,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.markDelete.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.markDelete.json"
     ```
 
 - JS (TS)
@@ -255,7 +255,7 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": 2255,
+    "result": 350,
     "time": {
         "start": 1773785858,
         "finish": 1773785858.434948,
@@ -287,7 +287,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access to delete the page is denied."
+    "error_description": "Access denied"
 }
 ```
 
@@ -298,11 +298,11 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `ACCESS_DENIED` | Insufficient permissions to delete the page ||
-|| `CANT_DELETE_MAIN` | Cannot mark the main page of the site as deleted if there are other undeleted pages on the site ||
-|| `UNABLE_DELETE_INCLUDE` | Cannot mark a template area of the site as deleted ||
-|| `TYPE_ERROR` | Text depends on the PHP `TypeError` message that occurs with an incorrect parameter type ||
-|| `SYSTEM_ERROR` | Text depends on the internal exception that occurred during method execution ||
+|| `ACCESS_DENIED` | Insufficient permissions to delete the page. The same error is returned if `scope` is not passed for a Knowledge Base page ||
+|| `CANT_DELETE_MAIN` | The home page cannot be moved to the trash while the site has other pages that are not in the trash ||
+|| `UNABLE_DELETE_INCLUDE` | The page is used as an included area of the site template and cannot be moved to the trash ||
+|| `TYPE_ERROR` | Data type error in the method call parameters, for example, `lid` is passed as an array ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

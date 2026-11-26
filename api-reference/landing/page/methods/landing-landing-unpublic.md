@@ -23,9 +23,9 @@ The method `landing.landing.unpublic` unpublishes a page.
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal landing parameter: the type of sites the method works with. It is not related to the REST scope `landing`.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For Knowledge Base pages, pass `KNOWLEDGE`; for group knowledge base pages, pass `GROUP`. The value is case-insensitive. Without `scope`, the method cannot find a Knowledge Base page and returns the `LANDING_NOT_EXIST` error. For sites of the `PAGE`, `STORE`, `SMN`, and `VIBE` types, the parameter is not needed [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
@@ -46,7 +46,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
       -d '{
         "lid": 351
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.unpublic.json"
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/landing.landing.unpublic.json"
     ```
 
 - cURL (OAuth)
@@ -58,7 +58,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
         "lid": 351,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.landing.unpublic.json"
+      "https://**put_your_bitrix24_address**/rest/landing.landing.unpublic.json"
     ```
 
 - JS (TS)
@@ -292,7 +292,7 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | The required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | The page was not found: the `lid` provided refers to a non-existent, deleted, or inaccessible page. For knowledge base, group, and vibe pages, ensure that the `scope` parameter is provided ||
+|| `LANDING_NOT_EXIST` | The page was not found: there is no page with this `lid`, the page is in the trash, the current user cannot access it, or `scope` is not passed for a Knowledge Base page ||
 || `ACCESS_DENIED` | Insufficient permissions to change the `ACTIVE` field of the page ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
