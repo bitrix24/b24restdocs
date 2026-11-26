@@ -23,7 +23,7 @@ The method `sale.paymentitembasket.update` updates the binding of the cart item 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_payment_item_basket.id`](../data-types.md) | Identifier of the binding of the cart item to the payment ||
+[`sale_payment_item_basket.id`](../data-types.md#sale_payment_item_basket) | Binding identifier. You can get the identifier using the method [sale.paymentitembasket.list](./sale-payment-item-basket-list.md) ||
 || **fields***
 [`object`](../../data-types.md) | Field values for updating the binding of the cart item to the payment ||
 |#
@@ -36,10 +36,14 @@ The method `sale.paymentitembasket.update` updates the binding of the cart item 
 || **Name**
 `type` | **Description** ||
 || **quantity***
-[`double`](../../data-types.md) | Quantity of the product ||
+[`double`](../../data-types.md) | Quantity of the product in the payment. Required in every call, even if only `xmlId` is changed. Must not exceed the quantity of the cart item.
+
+The method does not check the sign or type: a negative value is saved, and a string is saved as `0` ||
 || **xmlId**
-[`string`](../../data-types.md) | External identifier of the record ||
+[`string`](../../data-types.md) | External identifier of the binding ||
 |#
+
+The `paymentId` and `basketId` fields cannot be changed: the method silently ignores them. To move an item to another payment, delete the binding and create a new one.
 
 ## Code Examples
 
@@ -202,15 +206,15 @@ The method `sale.paymentitembasket.update` updates the binding of the cart item 
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating payment item basket: ' . $e->getMessage();
@@ -330,11 +334,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Object with information about the updated binding of the cart item to the payment ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `paymentItemBasket` key — the updated binding [(detailed description)](#paymentitembasket) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object paymentItemBasket {#paymentitembasket}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Binding identifier ||
+|| **paymentId**
+[`integer`](../../data-types.md) | Payment identifier ||
+|| **basketId**
+[`integer`](../../data-types.md) | Cart item identifier ||
+|| **quantity**
+[`double`](../../data-types.md) | Quantity of the product in the payment ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier of the binding ||
+|| **dateInsert**
+[`datetime`](../../data-types.md) | Binding creation date ||
 |#
 
 ## Error Handling
@@ -344,7 +365,7 @@ HTTP status: **400**
 ```json
 {
     "error": 201240400001,
-    "error_description": "payment item does not exist"
+    "error_description": "payment item is not exists"
 }
 ```
 
@@ -353,13 +374,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201240400001` | The updated binding of the cart item to the payment was not found ||
-|| `200040300020` | Insufficient permissions to update the binding of the cart item to the payment ||
-|| `100` | The `id` parameter is not specified ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields in the `fields` structure are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201240400001` | payment item is not exists | The binding with the specified `id` is not found ||
+|| `400` | `0` | Required fields: quantity | The `quantity` field is not provided ||
+|| `400` | `0` | Insufficient item quantity in shopping cart | `quantity` exceeds the quantity of the cart item ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `200040300020` | Access Denied | No permission to modify data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

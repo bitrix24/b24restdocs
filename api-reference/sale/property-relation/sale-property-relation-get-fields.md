@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.getFields` allows access to the available fields of property binding.
+The method `sale.propertyRelation.getFields` returns a description of the property binding fields.
 
 ## Method Parameters
 
@@ -154,7 +154,7 @@ No parameters.
                 'sale.propertyRelation.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -263,9 +263,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyRelation**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_property_relation`](../data-types.md), and `value` is an object of type [`rest_field_description`](../../data-types.md) ||
+[`object`](../../data-types.md) | Description of the binding fields in the format `{"field": description}`. Fields: `entityId`, `entityType`, `propertyId`. A field description is a [rest_field_description](../data-types.md#rest_field_description) object with the keys `type`, `isRequired`, `isReadOnly`, `isImmutable` ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -274,8 +274,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -284,14 +284,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available property binding fields ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No permission to read data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-property-relation-add.md)
 - [{#T}](./sale-property-relation-list.md)

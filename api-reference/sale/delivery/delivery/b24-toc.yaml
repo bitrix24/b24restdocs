@@ -7,11 +7,11 @@ items:
     href: sale-delivery-add.md
   - name: Update Delivery Service
     href: sale-delivery-update.md
+  - name: Get List of Available Delivery Services
+    href: sale-delivery-get-list.md
   - name: Delete Delivery Service
     href: sale-delivery-delete.md
   - name: Update Delivery Service Settings
     href: sale-delivery-config-update.md
   - name: Get Delivery Service Settings
     href: sale-delivery-config-get.md
-  - name: Get List of Available Delivery Services
-    href: sale-delivery-get-list.md

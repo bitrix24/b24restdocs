@@ -47,6 +47,13 @@ Each binding is defined by a set of fields:
 
 **Landing Pages.** For binding with `entityType = L`, the landing page identifier is required in `entityId`. You can obtain the identifier using the [landing.landing.getList](../../landing/page/methods/landing-landing-get-list.md) method.
 
+## Limitations and Specifics
+
+- A binding cannot be modified: delete it and create a new one
+- The `add` method does not check `entityType` or whether the `entityId` object exists: validate the values before the call
+- When a property is deleted with the [sale.property.delete](../property/sale-property-delete.md) method, its bindings are deleted automatically
+- Pass field names in camelCase: `propertyId`, `entityType`, `entityId`
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)

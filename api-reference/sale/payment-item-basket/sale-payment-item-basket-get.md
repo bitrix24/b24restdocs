@@ -23,7 +23,7 @@ The method `sale.paymentitembasket.get` retrieves the values of all fields for t
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_payment_item_basket.id`](../data-types.md) | Identifier of the basket item binding to payment ||
+[`sale_payment_item_basket.id`](../data-types.md#sale_payment_item_basket) | Binding identifier. You can get the identifier using the method [sale.paymentitembasket.list](./sale-payment-item-basket-list.md) ||
 |#
 
 ## Code Examples
@@ -169,15 +169,15 @@ The method `sale.paymentitembasket.get` retrieves the values of all fields for t
                     'id' => 1186,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting payment item basket: ' . $e->getMessage();
@@ -284,11 +284,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Information about the basket item binding to payment ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `paymentItemBasket` key — the binding [(detailed description)](#paymentitembasket) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object paymentItemBasket {#paymentitembasket}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Binding identifier ||
+|| **paymentId**
+[`integer`](../../data-types.md) | Payment identifier ||
+|| **basketId**
+[`integer`](../../data-types.md) | Basket item identifier ||
+|| **quantity**
+[`double`](../../data-types.md) | Quantity of the product in the payment ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier of the binding ||
+|| **dateInsert**
+[`datetime`](../../data-types.md) | Binding creation date ||
 |#
 
 ## Error Handling
@@ -298,7 +315,7 @@ HTTP status: **400**
 ```json
 {
     "error": 201240400001,
-    "error_description": "payment item does not exist"
+    "error_description": "payment item is not exists"
 }
 ```
 
@@ -307,11 +324,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201240400001` | Basket item binding to payment not found ||
-|| `200040300010` | Insufficient permissions to read data about the basket item binding to payment ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201240400001` | payment item is not exists | The binding with the specified `id` is not found ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `200040300010` | Access Denied | No permission to read data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

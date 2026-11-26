@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "View product catalog" access permission
+> Who can execute the method: any user
 
-The method `sale.tradePlatform.getFields` retrieves the available fields of order sources.
+The method `sale.tradePlatform.getFields` returns the description of order source fields: the type and the flags showing whether a field is required and whether it can be changed.
+
+{% note info "" %}
+
+Order sources are read-only via REST. The `isRequired` and `isReadOnly` flags describe the fields in the database; you do not need to take them into account when calling [sale.tradePlatform.list](./sale-trade-platform-list.md).
+
+{% endnote %}
 
 No parameters.
 
@@ -35,7 +41,7 @@ No parameters.
 
 - cURL (OAuth)
 
-    ```
+    ```http
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -219,34 +225,75 @@ No parameters.
 HTTP Status: **200**
 
 ```json
-{ 
-    "result": { 
-        "tradePlatform": { 
-            "catalogSectionTabClassName": { 
+{
+    "result": {
+        "tradePlatform": {
+            "active": {
                 "isImmutable": false,
-                "isReadOnly": false, 
-                "isRequired": false, 
-                "type": "string" 
-            }, 
-            "class": { 
-                "isImmutable": false, 
-                "isReadOnly": false, 
-                "isRequired": false, 
-                "type": "string" 
-            } 
-            // ... other fields 
-        } 
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "char"
+            },
+            "catalogSectionTabClassName": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "class": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "code": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "description": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "settings": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            }
+        }
     },
-    "time": {  
-        "start": 1712135957.057659,  
-        "finish": 1712135957.407821,  
-        "duration": 0.3501620292663574,  
-        "processing": 0.011919021606445312,  
-        "date_start": "2024-04-03T11:19:17+02:00",  
-        "date_finish": "2024-04-03T11:19:17+02:00",  
-        "operating_reset_at": 1705765533,  
-        "operating": 3.3076241016387939  
-    }  
+    "time": {
+        "start": 1712135957.057659,
+        "finish": 1712135957.407821,
+        "duration": 0.3501620292663574,
+        "processing": 0.011919021606445312,
+        "date_start": "2024-04-03T09:19:17+01:00",
+        "date_finish": "2024-04-03T09:19:17+01:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
 }
 ```
 
@@ -256,32 +303,25 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **tradePlatform**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **tradePlatform**
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is a field of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object, and `value` is a [rest_field_description](../data-types.md#rest_field_description) object.
+
+The method returns the fields `active`, `catalogSectionTabClassName`, `class`, `code`, `description`, `id`, `name`, `settings`, `xmlId` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
-
-```json
-{
-    "error":200040300010,
-    "error_description":"Access Denied"
-}
-```
-
 {% include notitle [error handling](../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to execute the method ||
-|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

@@ -17,18 +17,25 @@ The method `sale.paymentitembasket.list` retrieves a list of bindings of basket 
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array with the list of fields to be selected (see fields of the [sale_payment_item_basket](../data-types.md) object).
+[`array`](../../data-types.md) | An array of fields to return. Available fields:
+- `id` — binding identifier
+- `paymentId` — payment identifier
+- `basketId` — basket item identifier
+- `quantity` — quantity
+- `xmlId` — external identifier
+- `dateInsert` — creation date
 
-If the array is not provided or an empty array is passed, all available fields of the bindings of basket items to payments will be selected.
-||
+Unknown fields are silently skipped. If the parameter is not provided or an empty array is passed, all fields are returned ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected bindings of basket items to payments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_payment_item_basket](../data-types.md) object.
+The available fields are the same as in `select`. Unknown fields are silently skipped, and the method returns bindings without this condition.
 
 An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -54,7 +61,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected bindings of basket items to payments in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_payment_item_basket](../data-types.md) object.
+The available fields are the same as in `select`. By default, sorting is by `id` in ascending order.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -285,13 +292,13 @@ The formula for calculating the value of the `start` parameter:
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching payment items from basket: ' . $e->getMessage();
@@ -438,13 +445,32 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **paymentItemBasket**
-[`sale_payment_item_basket[]`](../data-types.md) | Array of objects with information about the selected bindings of basket items to payments ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `paymentItemsBasket` key — an array of bindings [(detailed description)](#paymentitemsbasket) ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Element of the paymentItemsBasket Array {#paymentitemsbasket}
+
+The element contains the fields from `select`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Binding identifier ||
+|| **paymentId**
+[`integer`](../../data-types.md) | Payment identifier ||
+|| **basketId**
+[`integer`](../../data-types.md) | Basket item identifier ||
+|| **quantity**
+[`double`](../../data-types.md) | Quantity of the product in the payment ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier of the binding ||
+|| **dateInsert**
+[`datetime`](../../data-types.md) | Binding creation date ||
 |#
 
 ## Error Handling
@@ -453,8 +479,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -463,9 +489,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read bindings of basket items to payments ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No permission to read data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

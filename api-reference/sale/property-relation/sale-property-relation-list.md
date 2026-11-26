@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.list` allows you to retrieve a list of property bindings.
+The method `sale.propertyRelation.list` returns a list of order property bindings.
 
 ## Method Parameters
 
@@ -23,13 +23,16 @@ The method `sale.propertyRelation.list` allows you to retrieve a list of propert
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | The array contains a list of fields to select (see fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation)).
+[`array`](../../data-types.md) | An array of fields to return. Available fields:
+- `entityId` — identifier of the binding object
+- `entityType` — type of the binding object
+- `propertyId` — property identifier
 
-If not provided or an empty array is passed, all available fields of property bindings will be selected. ||
+Unknown fields are silently skipped. If the parameter is not provided or an empty array is passed, all fields are returned ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected property bindings in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation).
+The available fields are the same as in `select`. Pass field names in camelCase: unknown fields and fields in uppercase, such as `PROPERTY_ID`, are silently skipped, and the method returns bindings without this condition.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -37,7 +40,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
+- `!@` — NOT IN (an array is passed as the value)
 - `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
@@ -62,7 +65,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected property bindings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation).
+The available fields are the same as in `select`. By default, sorting is by `propertyId` in ascending order.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -272,7 +275,7 @@ The formula for calculating the `start` parameter value:
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -287,7 +290,7 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        'sale.propertyRelation.list', 
+        'sale.propertyRelation.list',
         {
             select:[
                 'entityId',
@@ -300,7 +303,7 @@ The formula for calculating the `start` parameter value:
             order:{
                 entityId: 'asc',
             },
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -384,7 +387,7 @@ HTTP status: **200**
                 "entityId": 6,
                 "entityType": "L",
                 "propertyId": 40
-            },
+            }
         ]
     },
     "total": 3,
@@ -405,13 +408,26 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
-|| **propertyRelations**
-[`sale_order_property_relation`](../data-types.md) | An array of objects with information about the selected property bindings ||
+[`object`](../../data-types.md) | The root element of the response. Contains the `propertyRelations` key — an array of bindings [(detailed description)](#propertyrelations) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Element of the propertyRelations Array {#propertyrelations}
+
+The element contains the fields from `select`. The `entityId` value can be `null` if a non-numeric value was passed when the binding was created.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **entityId**
+[`integer`](../../data-types.md) | Identifier of the binding object ||
+|| **entityType**
+[`string`](../../data-types.md) | Type of the binding object: `P`, `D`, `L`, or `T` ||
+|| **propertyId**
+[`integer`](../../data-types.md) | Order property identifier ||
 |#
 
 ## Error Handling
@@ -420,8 +436,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -430,14 +446,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields of property bindings ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No permission to read data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-property-relation-add.md)
 - [{#T}](./sale-property-relation-delete-by-filter.md)

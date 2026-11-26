@@ -40,7 +40,7 @@ Available fields:
 - `avatar` — avatar link
 - `url` — profile link ||
 || **select**
-[`array`](../../data-types.md) | List of description fields to return in the response.
+[`array`](../../data-types.md) | List of description fields to return in the response, for example `["name","type"]`. If the parameter is not passed, all description fields are returned.
 
 Available fields:
 
@@ -53,6 +53,7 @@ Available fields:
 - `filterable` — filter availability indicator
 - `sortable` — sort availability indicator
 - `editable` — editability indicator
+- `editableGroups` — editability groups
 - `multiple` — multiple value indicator
 - `elementType` — element type for composite fields ||
 |#
@@ -211,6 +212,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
@@ -330,17 +332,26 @@ HTTP status: **200**
         "item": {
             "name": "userId",
             "type": "int",
-            "title": "userId"
+            "title": "userId",
+            "description": null,
+            "validationRules": [],
+            "requiredGroups": null,
+            "filterable": false,
+            "sortable": false,
+            "editable": false,
+            "editableGroups": null,
+            "multiple": false,
+            "elementType": null
         }
     },
     "time": {
-        "start": 1780407000,
-        "finish": 1780407000.094214,
-        "duration": 0.09421396255493164,
+        "start": 1795686061,
+        "finish": 1795686061.955936,
+        "duration": 0.9559359550476074,
         "processing": 0,
-        "date_start": "2026-06-02T16:30:00+03:00",
-        "date_finish": "2026-06-02T16:30:00+03:00",
-        "operating_reset_at": 1780407600,
+        "date_start": "2026-11-26T10:41:01+01:00",
+        "date_finish": "2026-11-26T10:41:01+01:00",
+        "operating_reset_at": 1795686660,
         "operating": 0
     }
 }
@@ -354,12 +365,77 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+[`object`](../../data-types.md) | Object with participant field description. [Object Description](#field) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Field Description Object {#field}
+
+The object keys depend on `select`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Name of the participant field, for example `userId` ||
+|| **type**
+[`string`](../../data-types.md) | Data type of the field, for example `int` or `string` ||
+|| **title**
+[`string`](../../data-types.md) | Field title. For participant fields, it matches the field name ||
+|| **description**
+[`string`](../../data-types.md) | Field description. For participant fields, `null` is returned ||
+|| **validationRules**
+[`array`](../../data-types.md) | Value validation rules. For participant fields, an empty array is returned ||
+|| **requiredGroups**
+[`array`](../../data-types.md) | Groups in which the field is required. For participant fields, `null` is returned ||
+|| **filterable**
+[`boolean`](../../data-types.md) | Whether the field can be used in a filter ||
+|| **sortable**
+[`boolean`](../../data-types.md) | Whether the field can be used for sorting ||
+|| **editable**
+[`boolean`](../../data-types.md) | Whether the field value can be changed ||
+|| **editableGroups**
+[`array`](../../data-types.md) | Groups in which the field can be changed. For participant fields, `null` is returned ||
+|| **multiple**
+[`boolean`](../../data-types.md) | Whether the field is multiple ||
+|| **elementType**
+[`string`](../../data-types.md) | Element type for composite fields. For participant fields, `null` is returned ||
+|#
+
+#### Participant Fields {#member-fields}
+
+These fields are returned in the `members` array of the [humanresources.node.get](../node/humanresources-node-get.md) method. None of them can be used in a filter or for sorting, or changed: `filterable`, `sortable`, and `editable` are `false` for all of them.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **userId**
+[`integer`](../../data-types.md) | User identifier ||
+|| **name**
+[`string`](../../data-types.md) | Participant name ||
+|| **workPosition**
+[`string`](../../data-types.md) | Position ||
+|| **role**
+[`string`](../../data-types.md) | Participant role code, for example `MEMBER_HEAD`. [Role Codes](./index.md#roles) ||
+|| **avatar**
+[`string`](../../data-types.md) | Avatar link ||
+|| **url**
+[`string`](../../data-types.md) | User profile link ||
+|#
+
 ## Error Handling
+
+HTTP status: **404**
+
+```json
+{
+    "error": {
+        "code": "BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION",
+        "message": "Field \"foo\" was not found."
+    }
+}
+```
 
 {% include notitle [Error handling](../../../_includes/error-info-v3.md) %}
 
@@ -371,7 +447,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Mandatory field `name` is not specified | Provide the field name ||
+|| `name` | Required field "name" is missing | Provide the `name` parameter with the field name ||
 |#
 
 #### Errors in the `select` Parameter
@@ -380,14 +456,23 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for object `DtoFieldDto` | Provide only description fields from the list ||
+|| `-` | Unknown field "foo" found in entity "DtoFieldDto" | Provide only description fields from the list of the `select` parameter. A number in `select`, for example `[1]`, also returns this error ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Provide `select` as an array of strings ||
+|| `-` | Invalid field in "select": `["name"]` | A `select` element is passed as an array or an object. Provide `select` as an array of strings, for example `["name","type"]` ||
+|#
+
+#### Access Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `-` | Insufficient access permissions: required scope is missing | Add the `humanresources` scope to the webhook or application ||
 |#
 
 #### Data Not Found Errors
@@ -396,7 +481,7 @@ Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` not found | Specify an existing field name ||
+|| `-` | Field "foo" was not found | The error is returned with HTTP status `404`. Pass one of the participant fields in `name`: `userId`, `name`, `workPosition`, `role`, `avatar`, `url` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

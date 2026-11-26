@@ -11,58 +11,68 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "View product catalog" access permission.
+> Who can execute the method: user with access to the Online Store
 
-The method `sale.tradePlatform.list` retrieves a list of order sources.
+The method `sale.tradePlatform.list` returns a list of order sources.
 
 ## Method Parameters
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object) ||
+[`array`](../../data-types.md) | The list of fields to return. If not passed or empty, the method returns all fields.
+
+Possible values:
+- `id` — order source ID
+- `code` — order source code, see [Source Codes](#codes) for the values
+- `active` — whether the source is active
+- `name` — order source name
+- `description` — order source description
+- `settings` — order source settings
+- `catalogSectionTabClassName` — tab class in the catalog section settings
+- `class` — order source handler class
+- `xmlId` — external ID
+
+The fields are described in the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object ||
 || **filter**
-[`object`](../../data-types.md) | A list of fields for filtering. When specifying multiple fields, AND logic is applied.
+[`object`](../../data-types.md) | An object for filtering in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The fields are the same as in `select`. Multiple conditions are combined with AND logic.
 
-The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object.
-
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
-- `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `>` — greater than
-- `<` — less than
+You can add a prefix to a field name:
+- no prefix or `=` — equals
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search is conducted from both sides.
-- `>=` — greater than or equal to
-- `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol must be passed in the value. Examples: 
-    - `"mol%"` — searching for values starting with "mol"
-    - `"%mol"` — searching for values ending with "mol"
-    - `"%mol%"` — searching for values where "mol" can be in any position
-- `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol must be passed in the value. Examples:
-    - `"mol%"` — searching for values not starting with "mol"
-    - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is absent in any position
-- `!%=` — NOT LIKE (see description above)
- ||
+- `>`, `>=`, `<`, `<=` — greater than, greater than or equal to, less than, less than or equal to
+- `@` — in the list, the value is passed as an array
+- `!@` — not in the list, the value is passed as an array
+- `%` — contains a substring, no `%` character is needed in the value
+- `!%` — does not contain a substring
+- `=%` or `%=` — LIKE by pattern, the `%` character is passed in the value: `"web%"` — starts with `web`
+- `!=%` or `!%=` — NOT LIKE by pattern ||
 || **order**
-[`object`](../../data-types.md) | Sorting parameters. Format: `{field: direction (ASC, DESC)}`. 
+[`object`](../../data-types.md) | An object for sorting in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. The fields are the same as in `select`.
 
-The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object. ||
+Possible values for `order`:
+- `asc` — in ascending order
+- `desc` — in descending order
+
+By default, the list is sorted by `id` in ascending order ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used for pagination control.
- 
+
 The page size of results is always static: 50 records.
- 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
- 
+
+To select the second page of results, pass the value `50`. To select the third page of results, pass `100`, and so on.
+
 The formula for calculating the `start` parameter value:
- 
-`start = (N-1) * 50`, where `N` is the desired page number.
-||
+
+`start = (N-1) * 50`, where `N` is the desired page number ||
 |#
+
+{% note warning "" %}
+
+Pass field names in `select`, `filter`, and `order` in camelCase, as in the list above. The method silently skips fields with an unknown name or in uppercase: `select` returns all fields, and the filter condition and sorting are not applied.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -344,21 +354,21 @@ HTTP Status: **200**
         "tradePlatforms": [
             {
                 "code": "smart_invoice",
-                "id": 2
+                "id": 31
             }
         ]
     },
     "total": 1,
-    "time": { 
-        "start": 1712135957.057659, 
-        "finish": 1712135957.407821, 
-        "duration": 0.3501620292663574, 
-        "processing": 0.011919021606445312, 
-        "date_start": "2024-04-03T11:19:17+02:00", 
-        "date_finish": "2024-04-03T11:19:17+02:00", 
-        "operating_reset_at": 1705765533, 
-        "operating": 3.3076241016387939 
-    } 
+    "time": {
+        "start": 1712135957.057659,
+        "finish": 1712135957.407821,
+        "duration": 0.3501620292663574,
+        "processing": 0.011919021606445312,
+        "date_start": "2024-04-03T09:19:17+01:00",
+        "date_finish": "2024-04-03T09:19:17+01:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
 }
 ```
 
@@ -368,14 +378,39 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **tradePlatforms**
-[`sale_order_trade_platform[]`](../data-types.md#sale_order_trade_platform) | An array of objects containing information about order sources ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **tradePlatforms**
+[`sale_order_trade_platform[]`](../data-types.md#sale_order_trade_platform) | Order sources that match the filter. Each item contains the fields from `select` ||
+|#
+
+#### Source Codes {#codes}
+
+The source type is determined by the `code` field.
+
+#|
+|| **Code** | **Source** ||
+|| `deal` | Deal ||
+|| `smart_invoice` | Invoice ||
+|| `dynamic_{id}` | SPA with payments enabled, `{id}` — SPA type ID ||
+|| `activity` | Activity ||
+|| `realization_document` | Sales order ||
+|| `terminal` | Terminal ||
+|| `landing_{id}` | Landing page or online store on Sites, `{id}` — site ID ||
+|| `webform_{id}` | CRM form, `{id}` — form ID ||
+|#
+
+A landing page or CRM form source is created separately for each site or form. To find all sources of one type, use the `%=` prefix in `filter`, for example `{"%=code": "landing_%"}`.
 
 ## Error Handling
 
@@ -383,8 +418,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "100",
+    "error_description": "Invalid value {x} to match with parameter {filter}. Should be value of type array."
 }
 ```
 
@@ -393,8 +428,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to execute the method ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Invalid value {id} to match with parameter {select}. Should be value of type array. | A value that is not an array or object was passed in `select`, `filter`, or `order`. The error text contains the passed value and the parameter name ||
+|| `400` | `200040300010` | Access Denied | The user has no access to the Online Store ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

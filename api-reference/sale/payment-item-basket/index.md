@@ -33,6 +33,12 @@ A binding connects a payment and a cart item of the same order. The fields of th
 4. Check which cart items are bound to payments using [sale.paymentitembasket.list](./sale-payment-item-basket-list.md).
 5. Pass the binding ID `id` from the response of the add or list method to the methods [sale.paymentitembasket.get](./sale-payment-item-basket-get.md), [sale.paymentitembasket.update](./sale-payment-item-basket-update.md), and [sale.paymentitembasket.delete](./sale-payment-item-basket-delete.md).
 
+## Limitations and Specifics
+
+- `quantity` is required in [sale.paymentitembasket.add](./sale-payment-item-basket-add.md) and in every call to [sale.paymentitembasket.update](./sale-payment-item-basket-update.md)
+- The payment and the cart item of an existing binding cannot be changed: `update` silently ignores `paymentId` and `basketId`. Delete the binding and create a new one
+- When an order is deleted with the method [sale.order.delete](../order/sale-order-delete.md), its bindings are deleted automatically
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)

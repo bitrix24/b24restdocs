@@ -1341,6 +1341,8 @@ Possible values:
 
 - `Y` — active
 - `N` — inactive ||
+|| **LOGOTYPE**
+[`integer`](../data-types.md) | Logo file identifier or `null` ||
 |#
 
 ### sale_delivery_config_value_item

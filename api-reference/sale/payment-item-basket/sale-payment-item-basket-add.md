@@ -34,14 +34,20 @@ The method `sale.paymentitembasket.add` adds a binding of a basket item to a pay
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../data-types.md) | Payment identifier ||
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Payment identifier. You can get the identifier using the method [sale.payment.list](../payment/sale-payment-list.md) ||
 || **basketId***
-[`sale_basket_item.id`](../data-types.md) | Basket item identifier ||
-|| **quantity**
-[`double`](../../data-types.md) | Quantity of the product ||
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Identifier of a basket item from the same order as the payment. You can get the identifier using the method [sale.basketitem.list](../basket-item/sale-basket-item-list.md) ||
+|| **quantity***
+[`double`](../../data-types.md) | Quantity of the product in the payment. Must not exceed the quantity of the basket item ||
 || **xmlId**
-[`string`](../../data-types.md) | External record identifier ||
+[`string`](../../data-types.md) | External identifier of the binding. If not provided, it is generated automatically in the format `bx_6b0805611d92c` ||
 |#
+
+{% note info "" %}
+
+When a payment is added with the method [sale.payment.add](../payment/sale-payment-add.md), Bitrix24 may bind basket items to it automatically. Check the bindings with the method [sale.paymentitembasket.list](./sale-payment-item-basket-list.md): binding the same pair again returns the error `201250000001`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -208,15 +214,15 @@ The method `sale.paymentitembasket.add` adds a binding of a basket item to a pay
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding payment item to basket: ' . $e->getMessage();
@@ -339,11 +345,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Object with information about the added binding of the basket item to the payment ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `paymentItemBasket` key — the created binding [(detailed description)](#paymentitembasket) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object paymentItemBasket {#paymentitembasket}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Binding identifier ||
+|| **paymentId**
+[`integer`](../../data-types.md) | Payment identifier ||
+|| **basketId**
+[`integer`](../../data-types.md) | Basket item identifier ||
+|| **quantity**
+[`double`](../../data-types.md) | Quantity of the product in the payment ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier of the binding ||
+|| **dateInsert**
+[`datetime`](../../data-types.md) | Binding creation date ||
 |#
 
 ## Error Handling
@@ -362,14 +385,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201250000001` | An item with the specified field values `paymentId` and `basketId` already exists ||
-|| `201240400002` | Payment not found. Incorrect value for the provided parameter `paymentId` ||
-|| `201240400003` | Basket item not found. Incorrect value for the provided parameter `basketId` ||
-|| `200040300020` | Insufficient permissions to add a binding of the basket item to the payment ||
-|| `100` | The parameter `fields` is not specified or is empty ||
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201250000001` | Duplicate entry for key [basketId, paymentId] | The basket item is already bound to this payment ||
+|| `400` | `201240400002` | payment not exists | The payment is not found or belongs to another order ||
+|| `400` | `201240400003` | basket item not exists | The basket item is not found ||
+|| `400` | `201240400004` | basket item is not linked to the order | The basket item is not linked to the order ||
+|| `400` | `0` | Required fields: paymentId, basketId, quantity | Required fields are not provided; the text lists the missing ones ||
+|| `400` | `0` | Insufficient item quantity in shopping cart | `quantity` exceeds the quantity of the basket item ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `200040300020` | Access Denied | No permission to modify data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

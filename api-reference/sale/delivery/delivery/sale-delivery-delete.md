@@ -9,11 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sale`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-The method `sale.delivery.delete` deletes a delivery service.
+The method `sale.delivery.delete` deletes a delivery service or its profile.
+
+{% note info "" %}
+
+The method works only with services and profiles created from REST handlers. For other services, the method returns the `ACCESS_DENIED` error.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,8 +29,12 @@ The method `sale.delivery.delete` deletes a delivery service.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service   ||
+[`sale_delivery_service.ID`](../../data-types.md#sale_delivery_service) | Identifier of the delivery service or profile.
+
+You can retrieve the identifier using the [sale.delivery.getlist](./sale-delivery-get-list.md) method or from the [sale.delivery.add](./sale-delivery-add.md) response ||
 |#
+
+All profiles of the service are deleted along with it. To delete only one profile, pass its identifier.
 
 ## Code Examples
 
@@ -157,15 +167,15 @@ The method `sale.delivery.delete` deletes a delivery service.
                     'ID' => 196,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting delivery: ' . $e->getMessage();
@@ -238,8 +248,8 @@ HTTP status: **200**
       "finish":1714133231.954504,
       "duration":0.7541449069976807,
       "processing":0.4400501251220703,
-      "date_start":"2024-04-26T15:07:11+03:00",
-      "date_finish":"2024-04-26T15:07:11+03:00"
+      "date_start":"2024-04-26T13:07:11+01:00",
+      "date_finish":"2024-04-26T13:07:11+01:00"
    }
 }
 ```
@@ -250,9 +260,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the delivery service ||
+[`boolean`](../../../data-types.md) | `true` if the delivery service is deleted ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -261,8 +271,8 @@ HTTP status: **400**, **403**
 
 ```json
 {
-   "error":"ERROR_DELIVERY_NOT_FOUND",
-   "error_description":"Delivery not found"
+    "error": "ERROR_DELIVERY_NOT_FOUND",
+    "error_description": "Delivery not found"
 }
 ```
 
@@ -271,11 +281,11 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ERROR_DELIVERY_NOT_FOUND` | Delivery service with the specified identifier (ID) not found | 400 ||
-|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ERROR_DELIVERY_DELETE` | Error when attempting to delete the delivery service | 400 ||
-|| `ACCESS_DENIED` | Insufficient permissions to delete the delivery service | 403 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter ID is not defined | The `ID` parameter is not passed ||
+|| `400` | `ERROR_DELIVERY_NOT_FOUND` | Delivery not found | The delivery service with the specified `ID` is not found ||
+|| `400` | `ERROR_DELIVERY_DELETE` | Deletion error text | The delivery service could not be deleted; the error text is in `error_description` ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have CRM administrator permissions, the service is not created from a REST handler, or the handler was created by another application ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -284,6 +294,6 @@ HTTP status: **400**, **403**
 
 - [{#T}](./sale-delivery-add.md)
 - [{#T}](./sale-delivery-update.md)
+- [{#T}](./sale-delivery-get-list.md)
 - [{#T}](./sale-delivery-config-update.md)
 - [{#T}](./sale-delivery-config-get.md)
-- [{#T}](./sale-delivery-get-list.md)

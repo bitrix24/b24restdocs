@@ -9,11 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sale`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-The method `sale.delivery.config.update` updates the delivery service settings.
+The method `sale.delivery.config.update` sets the values of the delivery service settings.
+
+{% note info "" %}
+
+The method works only with services and profiles created from REST handlers. For other services, the method returns the `ACCESS_DENIED` error.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,16 +29,24 @@ The method `sale.delivery.config.update` updates the delivery service settings.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service.
- ||
+[`sale_delivery_service.ID`](../../data-types.md#sale_delivery_service) | Identifier of the delivery service or profile.
+
+You can retrieve the identifier using the [sale.delivery.getlist](./sale-delivery-get-list.md) method or from the [sale.delivery.add](./sale-delivery-add.md) response ||
 || **CONFIG**
-[`object[]`](../../../data-types.md) | Values of the delivery service settings (detailed description provided [below](#config-parameter)).
-The structure of the settings (code, name, data type) is defined when creating or updating the delivery service handler using the methods:
-- [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md)
-- [sale.delivery.handler.update](../handler/sale-delivery-handler-update.md)||
+[`object[]`](../../../data-types.md) | The complete set of service settings values. [Element description](#config).
+
+The set of settings is declared in the handler's `SETTINGS.CONFIG`. You can retrieve it using the [sale.delivery.handler.list](../handler/sale-delivery-handler-list.md) method, and the current values using the [sale.delivery.config.get](./sale-delivery-config-get.md) method ||
 |#
 
-### CONFIG Parameter
+{% note warning "" %}
+
+The method replaces the entire set of settings. Settings not passed in `CONFIG` are deleted. If `CONFIG` is not passed, all values are deleted. To change one setting, retrieve the current values using the [sale.delivery.config.get](./sale-delivery-config-get.md) method and pass them together with the new value.
+
+For a profile, also pass the `PROFILE_TYPE` setting with the handler profile code; otherwise, it will be deleted.
+
+{% endnote %}
+
+### CONFIG Element {#config}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -40,9 +54,13 @@ The structure of the settings (code, name, data type) is defined when creating o
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Symbolic code of the setting ||
+[`string`](../../../data-types.md) | Symbolic code of the setting — the `CODE` field of an element of the handler's `SETTINGS.CONFIG`, for example, `SETTING_1`.
+
+The method does not match the code against the handler settings and saves any code passed ||
 || **VALUE***
-[`any`](../../../data-types.md) | Value of the setting ||
+[`any`](../../../data-types.md) | Value of the setting. An empty string is not allowed.
+
+The method does not validate the value against the setting type; for example, any value is saved for `ENUM` ||
 |#
 
 ## Code Examples
@@ -246,13 +264,13 @@ The structure of the settings (code, name, data type) is defined when creating o
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating delivery config: ' . $e->getMessage();
@@ -408,8 +426,8 @@ HTTP status: **400**, **403**
 
 ```json
 {
-   "error":"ERROR_DELIVERY_NOT_FOUND",
-   "error_description":"Delivery not found"
+    "error": "ERROR_CHECK_FAILURE",
+    "error_description": "Config item VALUE is not specified"
 }
 ```
 
@@ -418,11 +436,14 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ERROR_DELIVERY_NOT_FOUND` | Delivery service with the specified identifier (ID) not found | 400 ||
-|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ERROR_DELIVERY_CONFIG_UPDATE` | Error while attempting to update the delivery service settings values | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to update the delivery service settings | 403 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter ID is not defined | The `ID` parameter is not passed ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter CONFIG must be of array type | The `CONFIG` parameter is not passed as an array ||
+|| `400` | `ERROR_CHECK_FAILURE` | Config item CODE is not specified | A `CONFIG` element has no `CODE` or it is an empty string ||
+|| `400` | `ERROR_CHECK_FAILURE` | Config item VALUE is not specified | A `CONFIG` element has no `VALUE` or it is an empty string ||
+|| `400` | `ERROR_DELIVERY_NOT_FOUND` | Delivery not found | The delivery service with the specified `ID` is not found ||
+|| `400` | `ERROR_DELIVERY_CONFIG_UPDATE` | Save error text | The settings could not be saved; the error text is in `error_description` ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have CRM administrator permissions, the service is not created from a REST handler, or the handler was created by another application ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -430,7 +451,7 @@ HTTP status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./sale-delivery-add.md)
-- [{#T}](./sale-delivery-delete.md)
 - [{#T}](./sale-delivery-update.md)
-- [{#T}](./sale-delivery-config-get.md)
 - [{#T}](./sale-delivery-get-list.md)
+- [{#T}](./sale-delivery-delete.md)
+- [{#T}](./sale-delivery-config-get.md)

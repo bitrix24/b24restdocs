@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sale`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
@@ -23,47 +23,48 @@ The method `sale.delivery.getlist` retrieves a list of delivery services.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../../data-types.md) | An array containing the list of fields to select (see fields of the object [`sale_delivery_service`](../../data-types.md)).
- 
-If not provided or an empty array is passed, all available fields of delivery services will be selected.
-||
+[`array`](../../../data-types.md) | An array of fields to return. Available fields:
+- `ID` — service identifier
+- `PARENT_ID` — parent service identifier
+- `NAME` — name
+- `ACTIVE` — activity
+- `DESCRIPTION` — description
+- `SORT` — sorting
+- `CURRENCY` — currency code
+- `LOGOTYPE` — logo file identifier
+
+Pass field names in uppercase; any other field causes the `ERROR_CHECK_FAILURE` error.
+
+If the parameter is not passed, all fields are returned. If an empty array is passed, the list elements are returned empty: `[[]]` ||
 || **FILTER**
-[`object`](../../../data-types.md) | An object for filtering the selected delivery services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
- 
-Possible values for `field` correspond to the fields of the object [`sale_delivery_service`](../../data-types.md).
+[`object`](../../../data-types.md) | An object for filtering in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`. The available fields are the same as in `SELECT`. To filter by logo, use the name `LOGOTIP`: the `LOGOTYPE` field in the filter causes the `100` error.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+You can add a prefix to the field name:
+- no prefix or `=` — equals. An array value works as "one of"
+- `@` — one of the array values
+- `!` or `!=` — not equal
+- `>`, `>=`, `<`, `<=` — greater than, greater than or equal to, less than, less than or equal to
+- `%` — contains a substring, case-insensitive. The `%` character is not needed in the value
+- `!%` — does not contain a substring
+- `=%` or `%=` — LIKE by pattern. Pass the `%` character in the value: `"Courier%"` — starts with "Courier"
+- `!=%` or `!%=` — NOT LIKE by pattern
 
-- `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring at any position in the string.
-- `>` — greater than
-- `<` — less than
-- `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
-- `>=` — greater than or equal to
-- `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
-    - `"mol%"` — searching for values starting with "mol"
-    - `"%mol"` — searching for values ending with "mol"
-    - `"%mol%"` — searching for values where "mol" can be at any position
-- `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
-    - `"mol%"` — searching for values not starting with "mol"
-    - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is not present at any position
-- `!%=` — NOT LIKE (see description above)
-||
+The `><` prefix is not supported ||
 || **ORDER**
-[`object`](../../../data-types.md) | An object for sorting the selected delivery services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
- 
-Possible values for `field` correspond to the fields of the object [`sale_delivery_service`](../../data-types.md).
- 
-Possible values for `order`:
+[`object`](../../../data-types.md) | An object for sorting in the format `{"field_1": "direction_1", ..., "field_N": "direction_N"}`. The available fields are the same as in `SELECT`.
 
-- `asc` — in ascending order
-- `desc` — in descending order
- ||
+Possible direction values:
+- `asc` — ascending
+- `desc` — descending
+
+The direction is case-insensitive. Any other value causes the `ERROR_ARGUMENT` error ||
 |#
+
+{% note info "" %}
+
+The method returns all delivery services without pagination, including services not created via REST, and profiles. Pass the `SELECT`, `FILTER`, and `ORDER` parameter names in uppercase: the method does not recognize lowercase parameters and returns the entire list.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -267,13 +268,13 @@ Possible values for `order`:
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting delivery list: ' . $e->getMessage();
@@ -428,9 +429,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_delivery_service[]`](../../data-types.md) | An array of objects containing information about the selected delivery services ||
+[`object[]`](../../../data-types.md) | An array of delivery services. If nothing is found, an empty array is returned [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Result Element {#result}
+
+The element contains the fields from `SELECT`. Without `SELECT`, all fields are returned.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Delivery service identifier ||
+|| **PARENT_ID**
+[`integer`](../../../data-types.md) | Identifier of the parent service. For a profile — the service identifier, for a top-level service — `null` or `0` ||
+|| **NAME**
+[`string`](../../../data-types.md) | Name ||
+|| **ACTIVE**
+[`string`](../../../data-types.md) | Activity: `Y` — active, `N` — inactive ||
+|| **DESCRIPTION**
+[`string`](../../../data-types.md) | Description. Can be `null` ||
+|| **CURRENCY**
+[`string`](../../../data-types.md) | Symbolic code of the currency ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sorting ||
+|| **LOGOTYPE**
+[`integer`](../../../data-types.md) | Logo file identifier or `null` ||
 |#
 
 ## Error Handling
@@ -439,8 +465,8 @@ HTTP status: **400**, **403**
 
 ```json
 {
-   "error":"ACCESS_DENIED",
-   "error_description":"Access denied!"
+    "error": "ERROR_CHECK_FAILURE",
+    "error_description": "FOO not allowed for select"
 }
 ```
 
@@ -449,9 +475,13 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of delivery services | 403 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CHECK_FAILURE` | FOO not allowed for select | `SELECT` contains an unavailable field or a field not in uppercase ||
+|| `400` | `ERROR_CHECK_FAILURE` | FOO not allowed for filter | `FILTER` contains an unavailable field or an unsupported prefix ||
+|| `400` | `ERROR_CHECK_FAILURE` | FOO not allowed for order | `ORDER` contains an unavailable field ||
+|| `400` | `ERROR_ARGUMENT` | Invalid order "BAD" | `ORDER` contains a direction other than `asc` or `desc` ||
+|| `400` | `100` | Unknown field definition `LOGOTYPE` (LOGOTYPE) for \Bitrix\Sale\Delivery\Services\ Entity. | `FILTER` contains the `LOGOTYPE` field. To filter by logo, use `LOGOTIP` ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have CRM administrator permissions ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -459,8 +489,8 @@ HTTP status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./sale-delivery-add.md)
-- [{#T}](./sale-delivery-delete.md)
 - [{#T}](./sale-delivery-update.md)
+- [{#T}](./sale-delivery-delete.md)
 - [{#T}](./sale-delivery-config-update.md)
 - [{#T}](./sale-delivery-config-get.md)
 

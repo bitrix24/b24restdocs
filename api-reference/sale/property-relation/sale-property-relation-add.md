@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.add` adds a property binding.
+The method `sale.propertyRelation.add` binds an order property to a payment system, delivery service, landing page, or trading platform.
 
 ## Method Parameters
 
@@ -23,27 +23,33 @@ The method `sale.propertyRelation.add` adds a property binding.
 || **Name**
 `type` | **Description** ||
 || **fields*** 
-[`object`](../../data-types.md) | Field values for creating a property binding ||
+[`object`](../../data-types.md) | Fields of the new binding [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **entityId*** 
-[`integer`](../../data-types.md) | Identifier of the object ||
+[`integer`](../../data-types.md) | Identifier of the binding object. Where to get it depends on `entityType`.
+
+The method does not check whether the object exists. A non-numeric value is saved as `null` ||
 || **entityType*** 
-[`string`](../../data-types.md) | Type of the object:
-- `P` — payment system
-- `D` — delivery
-- `L` — landing
-- `T` — trading platform ||
+[`string`](../../data-types.md) | Type of the binding object:
+- `P` — payment system, identifier from [sale.paysystem.list](../../pay-system/sale-pay-system-list.md)
+- `D` — delivery service, identifier from [sale.delivery.getlist](../delivery/delivery/sale-delivery-get-list.md)
+- `L` — landing page, identifier from [landing.landing.getList](../../landing/page/methods/landing-landing-get-list.md)
+- `T` — trading platform, identifier from [sale.tradePlatform.list](../trade-platform/sale-trade-platform-list.md)
+
+The method does not validate the value: any character is saved, only the first character of a longer string is saved, and the response contains an empty array `[]` ||
 || **propertyId*** 
-[`sale_order_property.id`](../data-types.md) | Identifier of the property ||
+[`sale_order_property.id`](../data-types.md#sale_order_property) | Order property identifier. You can get the identifier using the [sale.property.list](../property/sale-property-list.md) method ||
 |#
+
+The combination of `entityType`, `entityId`, and `propertyId` must be unique. A binding cannot be modified: delete it using the [sale.propertyRelation.deleteByFilter](./sale-property-relation-delete-by-filter.md) method and create a new one.
 
 ## Code Examples
 
@@ -203,7 +209,7 @@ The method `sale.propertyRelation.add` adds a property binding.
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -309,8 +315,8 @@ HTTP Status: **200**
         "finish": 1712244476.402808,
         "duration": 0.9075310230255127,
         "processing": 0.08538603782653809,
-        "date_start": "2024-04-04T18:27:55+03:00",
-        "date_finish": "2024-04-04T18:27:56+03:00"
+        "date_start": "2024-04-04T16:27:55+01:00",
+        "date_finish": "2024-04-04T16:27:56+01:00"
     }
 }
 ```
@@ -318,14 +324,25 @@ HTTP Status: **200**
 ### Returned Data
 
 #| 
-|| **Value** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response
- ||
-|| **propertyRelation**
-[`sale_order_property_relation`](../data-types.md) | Object containing information about the created binding ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `propertyRelation` key — the created binding [(detailed description)](#propertyrelation) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object propertyRelation {#propertyrelation}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **entityId**
+[`integer`](../../data-types.md) | Identifier of the binding object ||
+|| **entityType**
+[`string`](../../data-types.md) | Type of the binding object: `P`, `D`, `L`, or `T` ||
+|| **propertyId**
+[`integer`](../../data-types.md) | Order property identifier ||
 |#
 
 ## Error Handling
@@ -334,8 +351,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Required fields: entityId"
+    "error": "201650000001",
+    "error_description": "Duplicate entry for key [propertyId, entityId, entityType]"
 }
 ```
 
@@ -344,19 +361,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `201650000001` | Binding with the specified values `entityId`, `entityType`, `propertyId` already exists
- ||
-|| `201650000002` | Property does not exist. Invalid value for the provided parameter `propertyId` || 
-|| `200040300020` | Insufficient permissions to create property binding || 
-|| `100` | Parameter `fields` is not specified or is empty || 
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201650000001` | Duplicate entry for key [propertyId, entityId, entityType] | Such a binding already exists ||
+|| `400` | `201650000002` | property id is not exists | The property with the specified `propertyId` is not found ||
+|| `400` | `0` | Required fields: entityId, entityType | Required fields are not provided; the text lists the missing ones ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `200040300020` | Access Denied | No permission to modify data in the Online Store module ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-property-relation-list.md)
 - [{#T}](./sale-property-relation-delete-by-filter.md)

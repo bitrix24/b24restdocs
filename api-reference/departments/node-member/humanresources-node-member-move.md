@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.node.member.move` transfers users to the specified department or team.
+The method `humanresources.node.member.move` transfers employees to the specified department or team: it removes them from all departments they belong to and keeps them only in the target one.
 
 ## Method Parameters
 
@@ -31,11 +31,13 @@ The method `humanresources.node.member.move` transfers users to the specified de
 || **nodeId*** 
 [`integer`](../../data-types.md) | Identifier of the target department or team.
 
-The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method. ||
+The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method ||
 || **userIds*** 
-[`array`](../../data-types.md) | Array of user identifiers to be transferred.
+[`array`](../../data-types.md) | A non-empty array of user identifiers to be transferred, for example `[12, 18]`.
 
-User identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
+The method works only with employees — users who already belong to at least one department. The method skips identifiers of other users, such as non-existent users or extranet users without a department, without an error.
+
+User identifiers can be obtained using the [user.get](../../user/user-get.md) method ||
 || **role** 
 [`string`](../../data-types.md) | Role to be assigned to the transferred participants.
 
@@ -49,10 +51,16 @@ Possible values for team:
 
 - `MEMBER_TEAM_HEAD` — team leader
 - `MEMBER_TEAM_DEPUTY_HEAD` — deputy team leader
-- `MEMBER_TEAM_EMPLOYEE` — team member 
+- `MEMBER_TEAM_EMPLOYEE` — team member
 
-Default: `MEMBER_EMPLOYEE` for department and `MEMBER_TEAM_EMPLOYEE` for team. ||
+Default: `MEMBER_EMPLOYEE` for department and `MEMBER_TEAM_EMPLOYEE` for team. A role of the other type returns the `INVALID_ROLE` error ||
 |#
+
+{% note warning "" %}
+
+The method removes the employee from all their departments, even if the target object is a team. To add an employee to a team or another department while keeping their current departments, use the [humanresources.node.member.add](./humanresources-node-member-add.md) method
+
+{% endnote %}
 
 ## Code Examples
 
@@ -194,6 +202,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
@@ -315,11 +324,11 @@ HTTP Status: **200**
 || **Name** 
 `type` | **Description** ||
 || **result** 
-[`object`](../../data-types.md) | Object containing the operation result. ||
+[`object`](../../data-types.md) | Object containing the operation result ||
 || **success** 
-[`boolean`](../../data-types.md) | Value `true` if users were successfully transferred. ||
+[`boolean`](../../data-types.md) | Value `true` if the request passed validation and the method saved the changes. The method returns `true` even if some identifiers are skipped because the users are not employees ||
 || **time** 
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -330,7 +339,7 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION",
-        "message": "Record with ID = `28` not found."
+        "message": "Entity with ID `28` was not found."
     }
 }
 ```
@@ -339,15 +348,19 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+Errors are checked in the following order: required parameters, existence of the department or team, user permissions, role validity.
+
 #### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+The `field` key of the `validation` object contains a reason code, not the parameter name.
+
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Parameter `"nodeId"` is required. | Provide the identifier of the department or team. ||
-|| `userIds` | Parameter `"userIds"` is required and must be a non-empty array. | Provide a non-empty array of user identifiers. ||
-|| `role` | Invalid role `#ROLE#`. Allowed: `#ROLE_LIST#`. | Provide a role that is supported for the selected type of department or team. ||
+|| `MISSING_NODEID` | Parameter "nodeId" is required. | Provide the identifier of the department or team ||
+|| `MISSING_USERIDS` | Parameter "userIds" is required and must be a non-empty array. | Provide a non-empty array of user identifiers ||
+|| `INVALID_ROLE` | Invalid role "MEMBER_TEAM_HEAD". Allowed: MEMBER_HEAD, MEMBER_DEPUTY_HEAD, MEMBER_EMPLOYEE. | The role does not match the object type in `nodeId`. Provide one of the roles listed after `Allowed`, or do not pass `role` ||
 |#
 
 #### Access Errors
@@ -356,14 +369,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied. | Ensure the user has permission to add participants to the target department or team. ||
+|| `-` | Access denied | Ensure the user has permission to add participants to the target department or team ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Insufficient access rights: required scope is missing. | Check the `humanresources` scope. ||
+|| `-` | Insufficient access permissions: required scope is missing | Add the `humanresources` scope to the webhook or application ||
 |#
 
 #### Data Not Found Errors
@@ -372,7 +385,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Record with the specified identifier not found. | Provide the identifier of an existing department or team. ||
+|| `-` | Entity with ID `28` was not found | Provide the identifier of an existing department or team. A string instead of a number in `nodeId` is converted to `0`, and the method returns this error as well ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

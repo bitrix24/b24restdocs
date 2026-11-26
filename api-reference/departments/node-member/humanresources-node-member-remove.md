@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.node.member.remove` removes users from the specified department or team.
+The method `humanresources.node.member.remove` removes users from the specified department or team. The result for each user is returned in the `removed` and `failed` arrays.
 
 ## Method Parameters
 
@@ -31,11 +31,13 @@ The method `humanresources.node.member.remove` removes users from the specified 
 || **nodeId***
 [`integer`](../../data-types.md) | Identifier of the department or team.
 
-The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method. ||
+The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method ||
 || **userIds***
-[`array`](../../data-types.md) | Array of user identifiers to be removed.
+[`array`](../../data-types.md) | A non-empty array of user identifiers to be removed, for example `[18, 25, 31]`.
 
-User identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
+An employee cannot be removed from a department if it is their only department. If at least one user cannot be removed, the method removes no one: all found users are added to `failed`.
+
+User identifiers can be obtained using the [user.get](../../user/user-get.md) method ||
 |#
 
 ## Code Examples
@@ -182,6 +184,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
@@ -307,15 +310,25 @@ HTTP Status: **200**
 || **removed**
 [`array`](../../data-types.md) | Array of user identifiers that were successfully removed ||
 || **failed**
-[`array`](../../data-types.md) | Array of users that could not be removed ||
-|| **failed[]**
-[`object`](../../data-types.md) | Object describing the removal error ||
+[`array`](../../data-types.md) | Array of objects with users that could not be removed. [Object Description](#failed) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object failed {#failed}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **userId**
 [`integer`](../../data-types.md) | Identifier of the user that could not be removed ||
 || **reason**
-[`string`](../../data-types.md) | Reason why the user was not removed ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`string`](../../data-types.md) | Reason. Possible values:
+- `Not found in this node` — the user is not a member of this department or team
+- `Cannot remove employee from their only department.` — this is the employee's only department. Add the employee to another department using the [humanresources.node.member.add](./humanresources-node-member-add.md) method or move them using the [humanresources.node.member.move](./humanresources-node-member-move.md) method
+- `Could not remove the employee because their data is being updated. Please try again later.` — another operation is changing the employee's data, repeat the request later
+
+The last two reasons are returned for all found users from the request because the method cancels the entire removal ||
 |#
 
 ## Error Handling
@@ -326,11 +339,11 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating the request object",
+        "message": "Error validating request object.",
         "validation": [
             {
                 "message": "Parameter \"userIds\" is required and must be a non-empty array.",
-                "field": "userIds"
+                "field": "MISSING_USERIDS"
             }
         ]
     }
@@ -341,14 +354,18 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+Errors are checked in the following order: required parameters, existence of the department or team, user permissions.
+
 #### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+The `field` key of the `validation` object contains a reason code, not the parameter name.
+
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Parameter `"nodeId"` is required. | Provide the identifier of the department or team. ||
-|| `userIds` | Parameter `"userIds"` is required and must be a non-empty array. | Provide a non-empty array of user identifiers. ||
+|| `MISSING_NODEID` | Parameter "nodeId" is required. | Provide the identifier of the department or team ||
+|| `MISSING_USERIDS` | Parameter "userIds" is required and must be a non-empty array. | Provide a non-empty array of user identifiers ||
 |#
 
 #### Access Errors
@@ -357,14 +374,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Ensure the user has permission to remove participants from this department or team. ||
+|| `-` | Access denied | Ensure the user has permission to remove participants from this department or team ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Insufficient access rights: required scope is missing | Check the `humanresources` scope. ||
+|| `-` | Insufficient access permissions: required scope is missing | Add the `humanresources` scope to the webhook or application ||
 |#
 
 #### Data Not Found Errors
@@ -373,7 +390,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Record with the specified identifier not found | Provide the identifier of an existing department or team. ||
+|| `-` | Entity with ID `15` was not found | Provide the identifier of an existing department or team. A string instead of a number in `nodeId` is converted to `0`, and the method returns this error as well ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

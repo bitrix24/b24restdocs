@@ -9,11 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sale`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-The method `sale.delivery.config.get` retrieves the settings of the delivery service.
+The method `sale.delivery.config.get` returns the values of the delivery service settings.
+
+{% note info "" %}
+
+The method works only with services and profiles created from REST handlers. For other services, the method returns the `ACCESS_DENIED` error.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,8 +29,9 @@ The method `sale.delivery.config.get` retrieves the settings of the delivery ser
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service.
- ||
+[`sale_delivery_service.ID`](../../data-types.md#sale_delivery_service) | Identifier of the delivery service or profile.
+
+You can retrieve the identifier using the [sale.delivery.getlist](./sale-delivery-get-list.md) method or from the [sale.delivery.add](./sale-delivery-add.md) response ||
 |#
 
 ## Code Examples
@@ -164,15 +171,15 @@ The method `sale.delivery.config.get` retrieves the settings of the delivery ser
                     'ID' => 196,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting delivery config: ' . $e->getMessage();
@@ -287,23 +294,22 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../../data-types.md) | Values of the delivery service settings.
-The structure of the settings (code, name, data type) is defined when creating or updating the delivery service handler using the methods:
-- [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md)
-- [sale.delivery.handler.update](../handler/sale-delivery-handler-update.md) ||
+[`object[]`](../../../data-types.md) | Array of saved settings values [(detailed description)](#result).
+
+Only the settings set in [sale.delivery.config.update](./sale-delivery-config-update.md) or [sale.delivery.add](./sale-delivery-add.md) are returned. If there are no values, an empty array is returned. For a profile, the `PROFILE_TYPE` setting with the handler profile code is returned ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Key result
+#### Result Element {#result}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the setting ||
+[`string`](../../../data-types.md) | Symbolic code of the setting. Setting names and types are described in the handler's `SETTINGS.CONFIG`; you can retrieve them using the [sale.delivery.handler.list](../handler/sale-delivery-handler-list.md) method ||
 || **VALUE**
-[`any`](../../../data-types.md) | Value of the setting ||
+[`any`](../../../data-types.md) | Value of the setting as it was saved. Numbers and dates passed as strings are returned as strings ||
 |#
 
 ## Error Handling
@@ -312,8 +318,8 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-   "error":"ERROR_DELIVERY_NOT_FOUND",
-   "error_description":"Delivery not found"
+    "error": "ERROR_DELIVERY_NOT_FOUND",
+    "error_description": "Delivery not found"
 }
 ```
 
@@ -322,10 +328,10 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ERROR_DELIVERY_NOT_FOUND` | Delivery service with the specified identifier (ID) not found | 400 ||
-|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to retrieve delivery service settings | 403 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter ID is not defined | The `ID` parameter is not passed ||
+|| `400` | `ERROR_DELIVERY_NOT_FOUND` | Delivery not found | The delivery service with the specified `ID` is not found ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have CRM administrator permissions, the service is not created from a REST handler, or the handler was created by another application ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -333,7 +339,7 @@ HTTP Status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./sale-delivery-add.md)
-- [{#T}](./sale-delivery-delete.md)
 - [{#T}](./sale-delivery-update.md)
-- [{#T}](./sale-delivery-config-update.md)
 - [{#T}](./sale-delivery-get-list.md)
+- [{#T}](./sale-delivery-delete.md)
+- [{#T}](./sale-delivery-config-update.md)

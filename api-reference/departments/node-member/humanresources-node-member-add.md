@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.node.member.add` adds users to a department or team.
+The method `humanresources.node.member.add` adds users to a department or team with a single role for all of them. Other participants of the department or team remain unchanged, and the added users stay in their current departments.
 
 ## Method Parameters
 
@@ -31,13 +31,15 @@ The method `humanresources.node.member.add` adds users to a department or team.
 || **nodeId*** 
 [`integer`](../../data-types.md) | Identifier of the department or team.
 
-The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method. ||
+The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method ||
 || **userIds*** 
-[`array`](../../data-types.md) | An array of user identifiers to be added to the department or team. If a user is already part of this department or team, the method will update their role.
+[`array`](../../data-types.md) | A non-empty array of user identifiers to be added to the department or team, for example `[7, 12, 18]`. If a user is already part of this department or team, the method replaces their role with `role`.
 
-User identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
+The method works only with employees — users who already belong to at least one department. The method skips identifiers of other users, such as non-existent users or extranet users without a department, without an error.
+
+User identifiers can be obtained using the [user.get](../../user/user-get.md) method ||
 || **role*** 
-[`string`](../../data-types.md) | The role to be assigned to all users in `userIds`.
+[`string`](../../data-types.md) | The role to be assigned to all users in `userIds`. The set of roles depends on the object type in `nodeId`: a team role for a department or a department role for a team returns the `INVALID_ROLE` error.
 
 Possible values for the department:
 
@@ -193,6 +195,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
@@ -316,7 +319,9 @@ HTTP Status: **200**
 || **result** 
 [`object`](../../data-types.md) | Object containing the result of the operation ||
 || **success** 
-[`boolean`](../../data-types.md) | Value `true` if users were successfully added to the department or team ||
+[`boolean`](../../data-types.md) | Value `true` if the request passed validation and the method saved the changes.
+
+The method returns `true` even if some identifiers from `userIds` are skipped because the users are not employees. To make sure that an employee was added to the department, check the `UF_DEPARTMENT` field using the [user.get](../../user/user-get.md) method ||
 || **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -329,11 +334,11 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
                 "message": "Parameter \"role\" is required.",
-                "field": "role"
+                "field": "MISSING_ROLE"
             }
         ]
     }
@@ -344,17 +349,21 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+Errors are checked in the following order: required parameters, existence of the department or team, user permissions, role validity.
+
 #### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+The `field` key of the `validation` object contains a reason code, not the parameter name.
+
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Parameter `"nodeId"` is required. | Provide the identifier of the department or team in the `nodeId` parameter. ||
-|| `userIds` | Parameter `"userIds"` is required and must be a non-empty array. | Provide a non-empty array of user identifiers. ||
-|| `role` | Parameter `"role"` is required. | Provide the participant's role in the `role` parameter. ||
-|| `role` | Role `#ROLE#` not found. | Provide an existing role for the selected type of department or team. ||
-|| `role` | Invalid role `#ROLE#`. Allowed: `#ROLE_LIST#`. | Provide a role that is supported for the selected type of department or team. ||
+|| `MISSING_NODEID` | Parameter "nodeId" is required. | Provide the identifier of the department or team in the `nodeId` parameter ||
+|| `MISSING_USERIDS` | Parameter "userIds" is required and must be a non-empty array. | Provide a non-empty array of user identifiers ||
+|| `MISSING_ROLE` | Parameter "role" is required. | Provide the participant's role in the `role` parameter ||
+|| `INVALID_ROLE` | Invalid role "MEMBER_TEAM_HEAD". Allowed: MEMBER_HEAD, MEMBER_DEPUTY_HEAD, MEMBER_EMPLOYEE. | The role does not match the object type in `nodeId`. Provide one of the roles listed after `Allowed` ||
+|| `ROLE_NOT_FOUND` | Role "MEMBER_HEAD" not found. | The role matches the object type but was not found in Bitrix24. Repeat the request later, and if the error persists, contact technical support ||
 |#
 
 #### Access Errors
@@ -363,14 +372,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Check that the user has permission to add participants to this department or team. ||
+|| `-` | Access denied | Check that the user has permission to add participants to this department or team ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Insufficient permissions: required scope is missing | Check the `humanresources` scope. ||
+|| `-` | Insufficient access permissions: required scope is missing | Add the `humanresources` scope to the webhook or application ||
 |#
 
 #### Data Not Found Errors
@@ -379,7 +388,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #| 
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Record with the specified identifier not found | Provide the identifier of an existing department or team. ||
+|| `-` | Entity with ID `15` was not found | Provide the identifier of an existing department or team. A string instead of a number in `nodeId` is converted to `0`, and the method returns this error as well ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

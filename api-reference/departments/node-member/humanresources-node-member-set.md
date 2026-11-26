@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.node.member.set` updates the composition of participants in a department or team by roles.
+The method `humanresources.node.member.set` sets the full composition of participants in a department or team by roles: it adds new participants, changes roles, and removes those not included in the request.
 
 ## Method Parameters
 
@@ -31,35 +31,45 @@ The method `humanresources.node.member.set` updates the composition of participa
 || **nodeId***
 [`integer`](../../data-types.md) | Identifier of the department or team.
 
-The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method. ||
+The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method ||
 || **userIds***
-[`object`](../../data-types.md) | An object containing lists of user identifiers in the format `{"User_Role": [User_Identifier]}`. [Description of the object structure](#userids)
+[`object`](../../data-types.md) | An object where the key is a role code and the value is an array of user identifiers, for example `{"MEMBER_HEAD": [7], "MEMBER_EMPLOYEE": [18, 25]}`. [Description of the object structure](#userids)
 
-The method adds new participants, updates roles of existing ones, and removes users from the department who are not present in the input `userIds` object.
+The method adds new participants, updates roles of existing ones, and removes users from the department or team who are not present in the input `userIds` object. If a role is not passed, participants with this role are removed as well. Users are not removed from other departments and teams.
+
+The method works only with employees — users who already belong to at least one department. The method skips identifiers of other users, such as non-existent users or extranet users without a department, without an error.
 
 An employee cannot be removed from a department if it is their only department. In this case, the method returns the `MEMBER_DELETE_FAILED` error and removes no one. New participants and changed roles are still retained.
 
-User identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
+User identifiers can be obtained using the [user.get](../../user/user-get.md) method ||
 |#
 
 ### Parameter userIds {#userids}
+
+Pass roles that match the object type in `nodeId`: for a department — `MEMBER_HEAD`, `MEMBER_DEPUTY_HEAD`, `MEMBER_EMPLOYEE`; for a team — `MEMBER_TEAM_HEAD`, `MEMBER_TEAM_DEPUTY_HEAD`, `MEMBER_TEAM_EMPLOYEE`. A role of the other type returns the `INVALID_ROLE` error. Each key is optional, and its value is an array of user identifiers.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **MEMBER_HEAD**
-[`array`](../../data-types.md) | Identifiers of department heads. ||
+[`array`](../../data-types.md) | Identifiers of department heads ||
 || **MEMBER_DEPUTY_HEAD**
-[`array`](../../data-types.md) | Identifiers of deputy department heads. ||
+[`array`](../../data-types.md) | Identifiers of deputy department heads ||
 || **MEMBER_EMPLOYEE**
-[`array`](../../data-types.md) | Identifiers of department employees. ||
+[`array`](../../data-types.md) | Identifiers of department employees ||
 || **MEMBER_TEAM_HEAD**
-[`array`](../../data-types.md) | Identifiers of team leaders. ||
+[`array`](../../data-types.md) | Identifiers of team leaders ||
 || **MEMBER_TEAM_DEPUTY_HEAD**
-[`array`](../../data-types.md) | Identifiers of deputy team leaders. ||
+[`array`](../../data-types.md) | Identifiers of deputy team leaders ||
 || **MEMBER_TEAM_EMPLOYEE**
-[`array`](../../data-types.md) | Identifiers of team participants. ||
+[`array`](../../data-types.md) | Identifiers of team participants ||
 |#
+
+{% note warning "" %}
+
+If no employees remain in `userIds` after validation — for example, all arrays are empty or contain only non-existent users — the method removes all participants from the department or team. Before calling the method, make sure the request includes everyone who should remain
+
+{% endnote %}
 
 ## Code Examples
 
@@ -217,6 +227,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
@@ -350,11 +361,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the result of the operation. ||
+[`object`](../../data-types.md) | Object containing the result of the operation ||
 || **success**
-[`boolean`](../../data-types.md) | Value `true` if the composition of participants was successfully updated. ||
+[`boolean`](../../data-types.md) | Value `true` if the request passed validation and the method saved the changes. The method returns `true` even if some identifiers are skipped because the users are not employees ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -365,11 +376,11 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
                 "message": "Invalid roles: MEMBER_OWNER. Allowed: MEMBER_HEAD, MEMBER_DEPUTY_HEAD, MEMBER_EMPLOYEE.",
-                "field": "userIds"
+                "field": "INVALID_ROLE"
             }
         ]
     }
@@ -380,17 +391,21 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+Errors are checked in the following order: required parameters, existence of the department or team, user permissions, role validity.
+
 #### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+The `field` key of the `validation` object contains a reason code, not the parameter name.
+
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Parameter `"nodeId"` is required. | Provide the identifier of the department or team. ||
-|| `userIds` | Parameter `"userIds"` is required and must be a non-empty array. | Provide an object with non-empty user lists by roles. ||
-|| `userIds` | Invalid roles: `#ROLE#`. Allowed: `#ROLE_LIST#`. | Provide only roles that are supported for the selected type of department or team. ||
-|| `MEMBER_DELETE_FAILED` | Cannot remove employee from their only department. | This department is the only one for an employee who is not listed in `userIds`. Add the employee to another department using the [humanresources.node.member.add](./humanresources-node-member-add.md) method or move them using the [humanresources.node.member.move](./humanresources-node-member-move.md) method, then repeat the request. New participants and changed roles from the first request are already retained, and the repeated request will not change them. ||
-|| `MEMBER_DELETE_FAILED` | Could not remove the employee because their data is being updated. Please try again later. | Another operation is changing the employee's data at the moment. Repeat the request later. ||
+|| `MISSING_NODEID` | Parameter "nodeId" is required. | Provide the identifier of the department or team ||
+|| `MISSING_USERIDS` | Parameter "userIds" is required and must be a non-empty array. | Provide an object with roles and user lists ||
+|| `INVALID_ROLE` | Invalid roles: MEMBER_OWNER. Allowed: MEMBER_HEAD, MEMBER_DEPUTY_HEAD, MEMBER_EMPLOYEE. | A key of the `userIds` object does not match the object type in `nodeId`. Provide only the roles listed after `Allowed` ||
+|| `MEMBER_DELETE_FAILED` | Cannot remove employee from their only department. | This department is the only one for an employee who is not listed in `userIds`. Add the employee to another department using the [humanresources.node.member.add](./humanresources-node-member-add.md) method or move them using the [humanresources.node.member.move](./humanresources-node-member-move.md) method, then repeat the request. New participants and changed roles from the first request are already retained, and the repeated request will not change them ||
+|| `MEMBER_DELETE_FAILED` | Could not remove the employee because their data is being updated. Please try again later. | Another operation is changing the employee's data at the moment. Repeat the request later ||
 |#
 
 #### Access Errors
@@ -399,14 +414,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied. | Check that the user has permission to modify the composition of participants in this department or team. ||
+|| `-` | Access denied | Check that the user has permission to modify the composition of participants in this department or team ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Insufficient permissions: required scope is missing. | Check the `humanresources` scope. ||
+|| `-` | Insufficient access permissions: required scope is missing | Add the `humanresources` scope to the webhook or application ||
 |#
 
 #### Data Not Found Errors
@@ -415,7 +430,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `nodeId` | Record with the specified identifier not found. | Provide the identifier of an existing department or team. ||
+|| `-` | Entity with ID `15` was not found | Provide the identifier of an existing department or team. A string instead of a number in `nodeId` is converted to `0`, and the method returns this error as well ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

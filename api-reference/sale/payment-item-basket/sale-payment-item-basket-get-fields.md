@@ -152,7 +152,7 @@ No parameters.
                 'sale.paymentitembasket.getfields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -278,9 +278,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemBasket**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [sale_payment_item_basket](../data-types.md) object, and `value` is an object of type [rest_field_description](../../data-types.md) ||
+[`object`](../../data-types.md) | Description of the binding fields in the format `{"field": description}`. Fields: `id`, `paymentId`, `basketId`, `quantity`, `xmlId`, `dateInsert`. A field description is a [rest_field_description](../data-types.md#rest_field_description) object with the keys `type`, `isRequired`, `isReadOnly`, `isImmutable` ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -289,8 +289,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -299,9 +299,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields for payment item basket bindings ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No permission to read data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

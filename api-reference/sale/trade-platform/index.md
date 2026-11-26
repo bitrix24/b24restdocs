@@ -9,24 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Orders can be created manually using the [sale.order.add](../order/sale-order-add.md) method or obtained from internal sources:
-- invoice,
-- sales document,
-- deal,
-- activity,
-- landing page.
-
-To view all order sources in your Bitrix24, use the [sale.tradePlatform.list](./sale-trade-platform-list.md) method.
+An order source shows where an order came from: a deal, an invoice, a landing page, a CRM form, or another Bitrix24 tool. Bitrix24 creates order sources, and the methods in this section only read them. Source codes are described on the [sale.tradePlatform.list](./sale-trade-platform-list.md#codes) method page.
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Online Store in Bitrix24: Getting Started](https://helpdesk.bitrix24.com/open/25809723/)
-
-## Linking Order Sources to Other Objects
-
-**Binding orders to sources.** A binding references a source through the `tradingPlatformId` field, which holds the source `id`. The [sale.tradeBinding.list](../trade-binding/sale-trade-binding-list.md) method retrieves the order bindings of a source.
-
-**Order.** Retrieve all information about an order using the [sale.order.get](../order/sale-order-get.md) method.
 
 ## How to Get Started
 
@@ -34,11 +21,22 @@ To view all order sources in your Bitrix24, use the [sale.tradePlatform.list](./
 2. Retrieve the description of source fields using [sale.tradePlatform.getFields](./sale-trade-platform-get-fields.md)
 3. Use the source ID in the filter of [sale.tradeBinding.list](../trade-binding/sale-trade-binding-list.md) to retrieve the order bindings of that source
 
+## Linking Order Sources to Other Objects
+
+**Binding orders to sources.** A binding references a source through the `tradingPlatformId` field, which holds the source `id`. The [sale.tradeBinding.list](../trade-binding/sale-trade-binding-list.md) method retrieves the order bindings of a source.
+
+**Order.** Retrieve all information about an order using the [sale.order.get](../order/sale-order-get.md) method.
+
+## Limitations and Specifics
+
+- The methods in this section are read-only: you cannot create, update, or delete an order source via REST
+- The list also includes inactive sources. The `active` field shows whether a source is active; filter by it: `{"active": "Y"}`
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "View product catalog" access permission
+> Who can execute the methods: `list` — user with access to the Online Store, `getFields` — any user
 
 #|
 || **Method** | **Description** ||

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.deleteByFilter` removes the property relation.
+The method `sale.propertyRelation.deleteByFilter` removes an order property relation.
 
 ## Method Parameters
 
@@ -23,27 +23,29 @@ The method `sale.propertyRelation.deleteByFilter` removes the property relation.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for removing the property relation ||
+[`object`](../../data-types.md) | Fields of the relation to remove [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../data-types.md) | Entity identifier ||
+[`integer`](../../data-types.md) | Identifier of the binding object ||
 || **entityType***
-[`string`](../../data-types.md) | Entity type:
+[`string`](../../data-types.md) | Type of the binding object:
 - `P` — payment system
-- `D` — delivery
+- `D` — delivery service
 - `L` — landing
 - `T` — trading platform ||
 || **propertyId***
-[`sale_order_property.id`](../data-types.md) | Property identifier ||
+[`sale_order_property.id`](../data-types.md#sale_order_property) | Order property identifier ||
 |#
+
+The method removes one relation that exactly matches all three fields. You can get the relations using the [sale.propertyRelation.list](./sale-property-relation-list.md) method. When a property is deleted with the [sale.property.delete](../property/sale-property-delete.md) method, its relations are deleted automatically.
 
 ## Code Examples
 
@@ -194,7 +196,7 @@ The method `sale.propertyRelation.deleteByFilter` removes the property relation.
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -209,14 +211,14 @@ The method `sale.propertyRelation.deleteByFilter` removes the property relation.
 
     ```js
     BX24.callMethod(
-        'sale.propertyRelation.deleteByFilter', 
+        'sale.propertyRelation.deleteByFilter',
         {
             fields: {
                 entityId: 6,
                 entityType: 'D',
                 propertyId: 40
             }
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -296,9 +298,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the property relation removal ||
+[`boolean`](../../data-types.md) | `true` if the relation is removed ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -307,8 +309,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201640400004,
-    "error_description":"property relation does not exist"
+    "error": "201640400004",
+    "error_description": "property relation is not exists"
 }
 ```
 
@@ -317,17 +319,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201640400004` | Property relation with the specified parameters not found ||
-|| `200040300010` | Insufficient permissions to delete the property relation ||
-|| `100` | Parameter `fields` is not specified or is empty ||
-|| `0` | Required parameter not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201640400004` | property relation is not exists | The relation with the specified fields is not found ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `200040300020` | Access Denied | No permission to modify data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-property-relation-add.md)
 - [{#T}](./sale-property-relation-list.md)

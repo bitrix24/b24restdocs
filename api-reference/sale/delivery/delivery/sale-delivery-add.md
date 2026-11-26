@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`sale`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
@@ -23,32 +23,42 @@ The method `sale.delivery.add` adds a delivery service.
 || **Name**
 `type` | **Description** ||
 || **REST_CODE***
-[`string`](../../../data-types.md) | Symbolic code of the delivery service handler (see the `CODE` field of the [`sale_delivery_handler`](../../data-types.md) object). ||
+[`string`](../../../data-types.md) | Symbolic code of the REST handler of the delivery service — the `CODE` field of the [sale_delivery_handler](../../data-types.md#sale_delivery_handler) object.
+
+You can retrieve handler codes using the [sale.delivery.handler.list](../handler/sale-delivery-handler-list.md) method and create a handler using the [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md) method ||
 || **NAME***
 [`string`](../../../data-types.md) | Name of the delivery service ||
 || **CURRENCY***
-[`crm_currency.CURRENCY`](../../../crm/data-types.md) | Symbolic code of the delivery service currency ||
-|| **DESCRIPTION**
-[`string`](../../../data-types.md) | Description of the delivery service ||
-|| **SORT**
-[`integer`](../../../data-types.md) | Sorting ||
-|| **ACTIVE**
-[`string`](../../../data-types.md) | Indicator of the delivery service's activity.
-Possible values:
-- `Y` — yes
-- `N` — no
+[`crm_currency.CURRENCY`](../../../crm/data-types.md#crm_currency) | Symbolic code of the delivery service currency, for example, `USD`.
 
-If not provided, defaults to `Y` ||
+You can retrieve currency codes using the [crm.currency.list](../../../crm/currency/crm-currency-list.md) method. The method does not check whether the currency exists and saves any code passed ||
+|| **DESCRIPTION**
+[`string`](../../../data-types.md) | Description of the delivery service.
+
+The default value is an empty string ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sorting. A non-numeric value is saved as `0`.
+
+The default value is `100` ||
+|| **ACTIVE**
+[`string`](../../../data-types.md) | Activity of the delivery service. Possible values:
+- `Y` — active
+- `N` — inactive
+
+Any other value causes the `ERROR_DELIVERY_ADD` error.
+
+The default value is `Y` ||
 || **CONFIG**
-[`object[]`](../../../data-types.md) | Values of the delivery service settings (detailed description provided [below](#parameter-config)).
-The structure of the settings (code, name, data type) is defined when creating or updating the delivery service handler using the methods:
-- [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md)
-- [sale.delivery.handler.update](../handler/sale-delivery-handler-update.md)||
+[`object[]`](../../../data-types.md) | Array of delivery service settings values. [Element description](#config).
+
+The set of settings is declared in the handler's `SETTINGS.CONFIG`. You can retrieve it using the [sale.delivery.handler.list](../handler/sale-delivery-handler-list.md) method ||
 || **LOGOTYPE**
-[`string`](../../../data-types.md) | Logo of the delivery service (base64-encoded string) ||
+[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) | Logo of the delivery service. Pass the file content in Base64 as a string or as an array `["file_name.png", "Base64 content"]` ||
 |#
 
-### Parameter CONFIG
+Service profiles are created automatically: for each handler profile, the method creates a child delivery service with the same currency. The profile name and description are taken from the handler.
+
+### CONFIG Element {#config}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -56,9 +66,13 @@ The structure of the settings (code, name, data type) is defined when creating o
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Symbolic code of the setting ||
+[`string`](../../../data-types.md) | Symbolic code of the setting — the `CODE` field of an element of the handler's `SETTINGS.CONFIG`, for example, `SETTING_1`.
+
+The method does not match the code against the handler settings and saves any code passed ||
 || **VALUE***
-[`any`](../../../data-types.md) | Value of the setting ||
+[`any`](../../../data-types.md) | Value of the setting. An empty string is not allowed.
+
+The method does not validate the value against the setting type; for example, any value is saved for `ENUM` ||
 |#
 
 ## Code Examples
@@ -73,7 +87,7 @@ The structure of the settings (code, name, data type) is defined when creating o
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"REST_CODE":"uber","NAME":"Uber Taxi","CURRENCY":"USD","DESCRIPTION":"Uber Taxi Description","SORT":"500","ACTIVE":"Y","CONFIG":[{"CODE":"SETTING_1","VALUE":"SETTING_1 string value"},{"CODE":"SETTING_2","VALUE":"Y"},{"CODE":"SETTING_3","VALUE":199.99},{"CODE":"SETTING_4","VALUE":"Option3Code"},{"CODE":"SETTING_5","VALUE":"10.04.2024"},{"CODE":"SETTING_6","VALUE":"0000144961"}],"LOGOTYPE":"iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"}' \
+    -d '{"REST_CODE":"uber","NAME":"Uber Taxi","CURRENCY":"USD","DESCRIPTION":"Uber Taxi Description","SORT":"500","ACTIVE":"Y","CONFIG":[{"CODE":"SETTING_1","VALUE":"SETTING_1 string value"},{"CODE":"SETTING_2","VALUE":"Y"},{"CODE":"SETTING_3","VALUE":199.99},{"CODE":"SETTING_4","VALUE":"Option3Code"},{"CODE":"SETTING_5","VALUE":"10.04.2024"},{"CODE":"SETTING_6","VALUE":"0000144961"}],"LOGOTYPE":"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.delivery.add
     ```
 
@@ -83,7 +97,7 @@ The structure of the settings (code, name, data type) is defined when creating o
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"REST_CODE":"uber","NAME":"Uber Taxi","CURRENCY":"USD","DESCRIPTION":"Uber Taxi Description","SORT":"500","ACTIVE":"Y","CONFIG":[{"CODE":"SETTING_1","VALUE":"SETTING_1 string value"},{"CODE":"SETTING_2","VALUE":"Y"},{"CODE":"SETTING_3","VALUE":199.99},{"CODE":"SETTING_4","VALUE":"Option3Code"},{"CODE":"SETTING_5","VALUE":"10.04.2024"},{"CODE":"SETTING_6","VALUE":"0000144961"}],"LOGOTYPE":"iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC","auth":"**put_access_token_here**"}' \
+    -d '{"REST_CODE":"uber","NAME":"Uber Taxi","CURRENCY":"USD","DESCRIPTION":"Uber Taxi Description","SORT":"500","ACTIVE":"Y","CONFIG":[{"CODE":"SETTING_1","VALUE":"SETTING_1 string value"},{"CODE":"SETTING_2","VALUE":"Y"},{"CODE":"SETTING_3","VALUE":199.99},{"CODE":"SETTING_4","VALUE":"Option3Code"},{"CODE":"SETTING_5","VALUE":"10.04.2024"},{"CODE":"SETTING_6","VALUE":"0000144961"}],"LOGOTYPE":"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.delivery.add
     ```
 
@@ -139,7 +153,7 @@ The structure of the settings (code, name, data type) is defined when creating o
             { CODE: 'SETTING_5', VALUE: '10.04.2024' },
             { CODE: 'SETTING_6', VALUE: '0000144961' },
           ],
-          LOGOTYPE: 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
+          LOGOTYPE: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -185,7 +199,7 @@ The structure of the settings (code, name, data type) is defined when creating o
                 { CODE: 'SETTING_5', VALUE: '10.04.2024' },
                 { CODE: 'SETTING_6', VALUE: '0000144961' },
               ],
-              LOGOTYPE: 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
+              LOGOTYPE: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -249,7 +263,7 @@ The structure of the settings (code, name, data type) is defined when creating o
             sort=500,
             active=True,
             config=config,
-            logotype='iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/\xad///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV\xadKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3\xad+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ\xadib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ\xadSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT\xadqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN\xadTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9\xadiDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3\xadVl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+\xadFaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX\xad99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf\xadAAAAAElFTkSuQmCC',
+            logotype='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
         ).response
         result = bitrix_response.result
         print(result)
@@ -307,16 +321,16 @@ The structure of the settings (code, name, data type) is defined when creating o
                             'VALUE' => "0000144961",
                         ],
                     ],
-                    'LOGOTYPE'     => "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC",
+                    'LOGOTYPE'     => "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding delivery method: ' . $e->getMessage();
@@ -359,7 +373,7 @@ The structure of the settings (code, name, data type) is defined when creating o
                     VALUE: "0000144961",
                 },
             ],
-    LOGOTYPE: "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC",
+    LOGOTYPE: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
         },
         function(result) {
             if (result.error()) {
@@ -393,7 +407,7 @@ The structure of the settings (code, name, data type) is defined when creating o
                 ['CODE' => "SETTING_5", 'VALUE' => "10.04.2024"],
                 ['CODE' => "SETTING_6", 'VALUE' => "0000144961"],
             ],
-            'LOGOTYPE' => "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"
+            'LOGOTYPE' => "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
         ]
     );
 
@@ -409,7 +423,7 @@ The structure of the settings (code, name, data type) is defined when creating o
     res, err := client.Core().Call(ctx, "sale.delivery.add", b24.Params{
     	"REST_CODE":   "uber",
     	"NAME":        "Uber Taxi",
-    	"CURRENCY":    "EUR",
+    	"CURRENCY":    "USD",
     	"DESCRIPTION": "Uber Taxi Description",
     	"SORT":        "500",
     	"ACTIVE":      "Y",
@@ -439,7 +453,7 @@ The structure of the settings (code, name, data type) is defined when creating o
     			"VALUE": "0000144961",
     		},
     	},
-    	"LOGOTYPE": "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC",
+    	"LOGOTYPE": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
     })
     if err != nil {
     	return fmt.Errorf("sale.delivery.add: %w", err)
@@ -508,13 +522,45 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **parent**
-[`sale_delivery_service`](../../data-types.md) | Object containing information about the added delivery service ||
-|| **profiles**
-[`sale_delivery_service[]`](../../data-types.md) | Array of objects with information about the added child delivery services (delivery profiles) ||
+[`object`](../../../data-types.md) | The created delivery service and its profiles [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **parent**
+[`object`](../../../data-types.md) | The created delivery service [(detailed description)](#delivery) ||
+|| **profiles**
+[`object[]`](../../../data-types.md) | Delivery service profiles created from the handler profiles. The element structure is the same as for `parent` [(detailed description)](#delivery).
+
+If the handler has no profiles, an empty array is returned ||
+|#
+
+#### Delivery Service Object {#delivery}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Delivery service identifier ||
+|| **PARENT_ID**
+[`integer`](../../../data-types.md) | Identifier of the parent service. For a top-level service — `null`, for a profile — the identifier of the service from `parent` ||
+|| **NAME**
+[`string`](../../../data-types.md) | Name ||
+|| **ACTIVE**
+[`string`](../../../data-types.md) | Activity: `Y` — active, `N` — inactive ||
+|| **DESCRIPTION**
+[`string`](../../../data-types.md) | Description ||
+|| **CURRENCY**
+[`string`](../../../data-types.md) | Symbolic code of the currency ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sorting ||
+|| **LOGOTYPE**
+[`integer`](../../../data-types.md) | Logo file identifier or `null` if no logo is set ||
 |#
 
 ## Error Handling
@@ -523,8 +569,8 @@ HTTP status: **400**, **403**
 
 ```json
 {
-   "error":"ERROR_CHECK_FAILURE",
-   "error_description":"Parameter NAME is not defined"
+    "error": "ERROR_HANDLER_NOT_FOUND",
+    "error_description": "Handler \"nosuch\" not exists"
 }
 ```
 
@@ -533,11 +579,16 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ERROR_DELIVERY_ADD` | Error when trying to add a delivery service | 400 ||
-|| `ERROR_HANDLER_NOT_FOUND` | Delivery service handler with the specified `REST_CODE` not found | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to add a delivery service | 403 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter REST_CODE is not defined | The `REST_CODE` parameter is not passed, or the parameter name is not in uppercase ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter NAME is not defined | The `NAME` parameter is not passed ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter CURRENCY is not defined | The `CURRENCY` parameter is not passed ||
+|| `400` | `ERROR_CHECK_FAILURE` | Parameter CONFIG must be of array type | The `CONFIG` parameter is not passed as an array ||
+|| `400` | `ERROR_CHECK_FAILURE` | Config item CODE is not specified | A `CONFIG` element has no `CODE` or it is an empty string ||
+|| `400` | `ERROR_CHECK_FAILURE` | Config item VALUE is not specified | A `CONFIG` element has no `VALUE` or it is an empty string ||
+|| `400` | `ERROR_HANDLER_NOT_FOUND` | Handler "nosuch" not exists | The handler with the code from `REST_CODE` is not found ||
+|| `400` | `ERROR_DELIVERY_ADD` | The value of "Active" is invalid | `ACTIVE` contains a value other than `Y` or `N`. The code is also returned for other errors when saving the service; the error text is in `error_description` ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have CRM administrator permissions, or the handler was created by another application ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -545,8 +596,8 @@ HTTP status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./sale-delivery-update.md)
+- [{#T}](./sale-delivery-get-list.md)
 - [{#T}](./sale-delivery-delete.md)
 - [{#T}](./sale-delivery-config-update.md)
 - [{#T}](./sale-delivery-config-get.md)
-- [{#T}](./sale-delivery-get-list.md)
 - [{#T}](../../../../tutorials/sale/delivery-in-crm.md)

@@ -23,19 +23,22 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 ## Working With Participants
 
-1. Retrieve field descriptions using the [humanresources.node.member.field.list](./humanresources-node-member-field-list.md) and [humanresources.node.member.field.get](./humanresources-node-member-field-get.md) methods if you need to verify the available participant fields in advance
-2. Identify the required department or team and retrieve `nodeId` using the [humanresources.node.list](../node/humanresources-node-list.md) method. If the identifier is already known, verify the department or team data using the [humanresources.node.get](../node/humanresources-node-get.md) method
-3. Retrieve user identifiers using the [user.get](../../user/user-get.md) method if you need to prepare `userIds` for adding, moving, or removing participants
-4. Add users to the required department or team using the [humanresources.node.member.add](./humanresources-node-member-add.md) method
-5. Use [humanresources.node.member.set](./humanresources-node-member-set.md) if you need to set the full composition of participants by roles in a single request
-6. Move participants to a different department or team using the [humanresources.node.member.move](./humanresources-node-member-move.md) method if you need to change their position in the structure
-7. Remove participants using the [humanresources.node.member.remove](./humanresources-node-member-remove.md) method if they should no longer be part of the department or team
+1. Retrieve the `nodeId` of the department or team using the [humanresources.node.list](../node/humanresources-node-list.md) method
+2. Retrieve user identifiers using the [user.get](../../user/user-get.md) method
+3. Choose the method for your task:
+   - add employees or change their role — [humanresources.node.member.add](./humanresources-node-member-add.md). Other participants remain unchanged, and the employees stay in their current departments
+   - set the full composition by roles — [humanresources.node.member.set](./humanresources-node-member-set.md). Participants not included in the request are removed from the department or team
+   - transfer employees to another place — [humanresources.node.member.move](./humanresources-node-member-move.md). The employees are removed from all their departments and remain only in the target one
+   - remove users — [humanresources.node.member.remove](./humanresources-node-member-remove.md). Other participants remain unchanged
+4. Verify the composition of the department or team using the [humanresources.node.get](../node/humanresources-node-get.md) method: pass `members` in `select`. The `add`, `set`, and `move` methods skip unsuitable identifiers without an error, so `success: true` does not guarantee that all users were added
 
 
 ## Section Limitations
 
-- Access to view and modify participants depends on the permissions of the current user.
+- The `add`, `set`, and `move` methods work only with employees — users who already belong to at least one department. Other identifiers are skipped without an error, and the method still returns `success: true`
+- An employee cannot be removed from their only department: the `set` and `remove` methods return an error or a reason for the refusal
 - The [humanresources.node.member.add](./humanresources-node-member-add.md) method assigns a single role for all users from `userIds`.
+- Permissions depend on the object type: a department requires the "Add employees to department" and "Remove employees from department" permissions, and a team requires "Add team members" and "Remove team members". The field methods are available to any user
 
 {% note tip "User Documentation" %}
 
@@ -50,7 +53,21 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 **Users.** To add, transfer, and remove participants, `userIds` — user identifiers — are used. These can be obtained using the [user.get](../../user/user-get.md) method. In the [humanresources.node.member.add](./humanresources-node-member-add.md) method, `userIds` are passed as a single list, while in [humanresources.node.member.set](./humanresources-node-member-set.md), they are provided as an object with lists by roles.
 
-**Participant Roles.** A role defines a user's position in a department or team: leader, deputy, or employee. Role codes are passed in the `role` parameter of the [humanresources.node.member.add](./humanresources-node-member-add.md) method and in the keys of the `userIds` object in the [humanresources.node.member.set](./humanresources-node-member-set.md) method.
+**Participant Roles.** A role defines a user's position in a department or team: leader, deputy, or employee. Role codes are passed in the `role` parameter of the [humanresources.node.member.add](./humanresources-node-member-add.md) and [humanresources.node.member.move](./humanresources-node-member-move.md) methods and in the keys of the `userIds` object in the [humanresources.node.member.set](./humanresources-node-member-set.md) method. The set of roles depends on the object type: a team role for a department or a department role for a team returns the `INVALID_ROLE` error.
+
+### Role Codes {#roles}
+
+#|
+|| **Code** | **Object Type** | **Role** ||
+|| `MEMBER_HEAD` | Department | Department head ||
+|| `MEMBER_DEPUTY_HEAD` | Department | Deputy department head ||
+|| `MEMBER_EMPLOYEE` | Department | Employee ||
+|| `MEMBER_TEAM_HEAD` | Team | Team leader ||
+|| `MEMBER_TEAM_DEPUTY_HEAD` | Team | Deputy team leader ||
+|| `MEMBER_TEAM_EMPLOYEE` | Team | Team member ||
+|#
+
+Example of `role` in the `add` method: `"role": "MEMBER_EMPLOYEE"`. Example of `userIds` in the `set` method: `{"MEMBER_HEAD": [7], "MEMBER_EMPLOYEE": [18, 25]}`.
 
 
 ## Overview of Methods {#all-methods}

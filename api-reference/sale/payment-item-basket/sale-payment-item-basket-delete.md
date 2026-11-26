@@ -23,8 +23,7 @@ The method `sale.paymentitembasket.delete` removes the binding of a cart item to
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_payment_item_basket.id`](../data-types.md) | Identifier of the binding of the cart item to the payment
-||
+[`sale_payment_item_basket.id`](../data-types.md#sale_payment_item_basket) | Binding identifier. You can get the identifier using the method [sale.paymentitembasket.list](./sale-payment-item-basket-list.md) ||
 |#
 
 ## Code Examples
@@ -158,15 +157,15 @@ The method `sale.paymentitembasket.delete` removes the binding of a cart item to
                     'id' => 1186,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting payment item basket: ' . $e->getMessage();
@@ -251,9 +250,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of removing the binding of the cart item to the payment ||
+[`boolean`](../../data-types.md) | `true` if the binding is deleted ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -263,7 +262,7 @@ HTTP status: **400**
 ```json
 {
     "error":201240400001,
-    "error_description":"payment item does not exist"
+    "error_description":"payment item is not exists"
 }
 ```
 
@@ -272,11 +271,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201240400001` | Binding of the cart item to the payment not found ||
-|| `200040300020` | Insufficient permissions to delete the binding of the cart item to the payment ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201240400001` | payment item is not exists | The binding with the specified `id` is not found ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `200040300020` | Access Denied | No permission to modify data in the Online Store module ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
