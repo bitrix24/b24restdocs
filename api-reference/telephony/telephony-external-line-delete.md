@@ -13,13 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `telephony.externalLine.delete` removes an external line from the application.
-
-{% note info "" %}
-
-The method works only in the context of the [application](../../settings/app-installation/index.md).
-
-{% endnote %}
+The method `telephony.externalLine.delete` removes an external line.
 
 ## Method Parameters
 
@@ -31,7 +25,11 @@ The method works only in the context of the [application](../../settings/app-ins
 || **NUMBER***
 [`string`](../data-types.md) | The number of the external line.
 
-The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method. ||
+The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method. Leading and trailing spaces are removed.
+
+An application deletes only its own lines, and a webhook only the lines added via an inbound webhook.
+
+If the line was created automatically by the [telephony.externalCall.register](./telephony-external-call-register.md) method based on the `LINE_NUMBER` parameter, the line is created again the next time a call with this number is registered ||
 |#
 
 ## Code Examples
@@ -39,6 +37,16 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"NUMBER":"14151234567"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalLine.delete
+    ```
 
 - cURL (OAuth)
 
@@ -64,7 +72,7 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
       const response = await $b24.actions.v2.call.make<never[]>({
         method: 'telephony.externalLine.delete',
         params: {
-          NUMBER: '74951234567',
+          NUMBER: '14151234567',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -96,7 +104,7 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
           const response = await $b24.actions.v2.call.make({
             method: 'telephony.externalLine.delete',
             params: {
-              NUMBER: '74951234567',
+              NUMBER: '14151234567',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -126,7 +134,7 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
 
     try:
         bitrix_response = client.telephony.external_line.delete(
-            number="74951234567",
+            number="14151234567",
         ).response
         result = bitrix_response.result
         print(result)
@@ -213,7 +221,7 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "telephony.externalLine.delete", b24.Params{
-    	"NUMBER": "74951234567",
+    	"NUMBER": "14151234567",
     })
     if err != nil {
     	return fmt.Errorf("telephony.externalLine.delete: %w", err)
@@ -272,10 +280,10 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of the application ||
-|| `ERROR_CORE` | NUMBER should not be empty | Required parameter `NUMBER` not provided ||
-|| `ERROR_CORE` | Could not find line with number {NUMBER} | Line with the specified number not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called neither with an application OAuth token nor via an inbound webhook, for example, from a browser session ||
+|| `400` | Empty value | NUMBER should not be empty | Required parameter `NUMBER` not provided ||
+|| `400` | Empty value | Could not find line with number {NUMBER} | Line with the specified number not found ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -82,7 +82,7 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
       const response = await $b24.actions.v2.call.make<CrmEntityResult[]>({
         method: 'telephony.externalCall.searchCrmEntities',
         params: {
-          PHONE_NUMBER: '79062195047',
+          PHONE_NUMBER: '14155550123',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -114,7 +114,7 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
           const response = await $b24.actions.v2.call.make({
             method: 'telephony.externalCall.searchCrmEntities',
             params: {
-              PHONE_NUMBER: '79062195047',
+              PHONE_NUMBER: '14155550123',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -144,7 +144,7 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
 
     try:
         bitrix_response = client.telephony.external_call.search_crm_entities(
-            phone_number="79062195047",
+            phone_number="14155550123",
         ).response
         result = bitrix_response.result
         print(result)
@@ -231,7 +231,7 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "telephony.externalCall.searchCrmEntities", b24.Params{
-    	"PHONE_NUMBER": "79062195047",
+    	"PHONE_NUMBER": "14155550123",
     })
     if err != nil {
     	return fmt.Errorf("telephony.externalCall.searchCrmEntities: %w", err)
@@ -308,7 +308,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | An array of found CRM entities ||
+[`array`](../data-types.md) | An array of found CRM objects [(detailed description)](#result).
+
+Order of elements: contacts, lead, companies. If no objects are found, an empty array is returned ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Array Element {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **CRM_ENTITY_TYPE**
 [`string`](../data-types.md) | Type of the CRM object.
 
@@ -321,11 +332,9 @@ Possible values:
 || **ASSIGNED_BY_ID**
 [`integer`](../data-types.md) | Identifier of the responsible employee ||
 || **NAME**
-[`string`](../data-types.md) | Name or full name of the found CRM object ||
+[`string`](../data-types.md) | Name or full name of the found CRM object. Returned if the name could be retrieved ||
 || **ASSIGNED_BY**
-[`object`](../data-types.md) | Data of the [responsible employee](#result-assigned-by) ||
-|| **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`object`](../data-types.md) | Data of the responsible employee [(detailed description)](#result-assigned-by) ||
 |#
 
 #### ASSIGNED_BY Object {#result-assigned-by}
@@ -334,7 +343,7 @@ Possible values:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the employee ||
+[`string`](../data-types.md) | Identifier of the employee. The number is returned as a string ||
 || **TIMEMAN_STATUS**
 [`string`](../data-types.md) | Status of the employee's working time.
 
@@ -346,13 +355,13 @@ Possible values:
 - `UNAVAILABLE` — time tracking is disabled for the employee
 - `NOT_INSTALLED` — time tracking module is not installed ||
 || **USER_PHONE_INNER**
-[`string`](../data-types.md) | Employee's internal number ||
+[`string`](../data-types.md) | Employee's internal number. `null` if not filled in ||
 || **WORK_PHONE**
-[`string`](../data-types.md) | Employee's work phone ||
+[`string`](../data-types.md) | Employee's work phone. `null` if not filled in ||
 || **PERSONAL_PHONE**
-[`string`](../data-types.md) | Employee's personal phone ||
+[`string`](../data-types.md) | Employee's personal phone. `null` if not filled in ||
 || **PERSONAL_MOBILE**
-[`string`](../data-types.md) | Employee's mobile phone ||
+[`string`](../data-types.md) | Employee's mobile phone. `null` if not filled in ||
 |#
 
 ## Error Handling
@@ -361,7 +370,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
+    "error": "",
     "error_description": "PHONE_NUMBER is empty"
 }
 ```
@@ -371,9 +380,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | PHONE_NUMBER is empty | The required parameter `PHONE_NUMBER` was not provided ||
-|| `ERROR_CORE` | CRM is not installed. | The CRM module is not installed on the account ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | PHONE_NUMBER is empty | The required parameter `PHONE_NUMBER` was not provided ||
+|| `400` | Empty value | CRM is not installed. | The CRM module is not installed on the account ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

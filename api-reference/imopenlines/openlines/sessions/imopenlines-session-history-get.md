@@ -452,6 +452,7 @@ HTTP Status: **200**
                 "departments": [1, 7],
                 "absent": false,
                 "type": "user",
+                "eventLog": "N",
                 "services": null,
                 "botData": null
             },
@@ -623,7 +624,7 @@ The structure of the object is described in detail [below](#message) ||
 
 The structure of the object is described in detail [below](#users-message) ||
 || **users**
-[`object`](../../../data-types.md) | Object of chat participants, where the key is the user identifier.
+[`object`](../../../data-types.md) | Object of the authors of messages on the current page, where the key is the user identifier. Session participants who have no messages on this page are not included in the object. If the page has no messages, an empty array `[]` is returned.
 
 The structure of the object is described in detail [below](#users) ||
 || **openlines**
@@ -723,20 +724,34 @@ The structure of the user object is described in detail [below](#user-item) ||
 [`string`](../../../data-types.md) | Identifier of the user ||
 || **name**
 [`string`](../../../data-types.md) | User's full name ||
+|| **active**
+[`boolean`](../../../data-types.md) | Active user flag ||
 || **firstName**
 [`string`](../../../data-types.md) | User's first name ||
 || **lastName**
 [`string`](../../../data-types.md) | User's last name ||
 || **workPosition**
 [`string`](../../../data-types.md) | Position or `null` ||
+|| **color**
+[`string`](../../../data-types.md) | User's color in the chat in HEX format, for example `#4ba984` ||
 || **avatar**
 [`string`](../../../data-types.md) | Link to the user's avatar ||
 || **avatarId**
 [`integer`](../../../data-types.md) | Identifier of the avatar file or `null` ||
+|| **birthday**
+[`string`](../../../data-types.md) | Birthday in the `dd-mm` format, for example `08-03`. If the date is not specified, `false` is returned ||
 || **gender**
-[`string`](../../../data-types.md) | User's gender ||
+[`string`](../../../data-types.md) | User's gender: `M` or `F` ||
+|| **phoneDevice**
+[`boolean`](../../../data-types.md) | User's SIP phone flag. The value is `true` if telephony is enabled in Bitrix24 and the user has a SIP phone ||
+|| **phones**
+[`boolean`](../../../data-types.md) | In this method, matches `phoneDevice`. The method does not return the user's phone numbers ||
 || **extranet**
 [`boolean`](../../../data-types.md) | Extranet user flag ||
+|| **network**
+[`boolean`](../../../data-types.md) | Bitrix24.Network user flag ||
+|| **bot**
+[`boolean`](../../../data-types.md) | Chatbot flag ||
 || **connector**
 [`boolean`](../../../data-types.md) | Connector user flag ||
 || **profile**
@@ -744,13 +759,27 @@ The structure of the user object is described in detail [below](#user-item) ||
 || **externalAuthId**
 [`string`](../../../data-types.md) | External authentication type ||
 || **status**
-[`string`](../../../data-types.md) | Online status or `null` ||
+[`string`](../../../data-types.md) | In this method, always `online`; the actual online status is not returned ||
+|| **idle**
+[`boolean`](../../../data-types.md) | In this method, always `false` ||
 || **lastActivityDate**
-[`datetime`](../../../data-types.md) | Date and time of the last activity in ISO 8601 format (RFC3339) ||
+[`datetime`](../../../data-types.md) | Date and time of the last activity in ISO 8601 format (RFC3339). If there is no data, `false` is returned ||
+|| **mobileLastDate**
+[`boolean`](../../../data-types.md) | In this method, always `false` ||
+|| **desktopLastDate**
+[`boolean`](../../../data-types.md) | In this method, always `false` ||
 || **departments**
 [`array`](../../../data-types.md) | Identifiers of departments ||
+|| **absent**
+[`datetime`](../../../data-types.md) | Date and time when the user returns from vacation, in ISO 8601 format (RFC3339). If the user is not on vacation, `false` is returned ||
 || **type**
-[`string`](../../../data-types.md) | Type of user ||
+[`string`](../../../data-types.md) | Type of user: `user`, `extranet`, `bot`, `collaber`, or `guest` ||
+|| **eventLog**
+[`string`](../../../data-types.md) | Flag indicating whether the user is subscribed to the messenger event log: `Y` or `N` ||
+|| **services**
+[`object`](../../../data-types.md) | Links to the user's external services: the `zoom` and `skype` keys. If there are no links, `null` is returned ||
+|| **botData**
+[`object`](../../../data-types.md) | Chatbot data. For users who are not bots, `null` is returned ||
 |#
 
 ### Open Lines Object {#openlines}

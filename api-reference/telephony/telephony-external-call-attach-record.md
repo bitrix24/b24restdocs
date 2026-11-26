@@ -54,6 +54,8 @@ If `FILE_CONTENT` is provided, possible extensions:
 - `wav`
 - `mp3`
 
+If `FILE_CONTENT` is not provided, the extension is checked when the file is uploaded via `uploadUrl`: only `wav` and `mp3` are allowed
+
 If `RECORD_URL` is provided:
 - if `FILENAME` is not provided, the name is taken from the URL
 - if the extension is not `mp3`, `wav`, or `flac`, it is replaced based on the file content type ||
@@ -360,15 +362,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response ||
-|| **FILE_ID**
-[`integer`](../data-types.md) | The identifier of the attached file ||
-|| **uploadUrl**
-[`string`](../data-types.md) | The URL for uploading the file if `FILE_CONTENT` was not provided ||
-|| **fieldName**
-[`string`](../data-types.md) | The field name for uploading the file ||
+[`object`](../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **FILE_ID**
+[`integer`](../data-types.md) | The identifier of the attached file. Returned if `RECORD_URL` is provided or if `FILENAME` and `FILE_CONTENT` are provided ||
+|| **uploadUrl**
+[`string`](../data-types.md) | The URL for uploading the file in a separate request. Returned if `FILENAME` is provided without `FILE_CONTENT` ||
+|| **fieldName**
+[`string`](../data-types.md) | The name of the file field in the upload request to `uploadUrl`. Returned together with `uploadUrl` ||
 |#
 
 ## Error Handling
@@ -387,22 +396,31 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Required parameters are not set. Request should contain or URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
-|| Empty value | Call is not found in the statistic table. Looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
-|| Empty value | File name is empty | Empty `FILENAME` ||
-|| Empty value | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension in `FILENAME` when `FILE_CONTENT` is provided ||
-|| Empty value | File content is empty. | Empty `FILE_CONTENT` ||
-|| Empty value | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
-|| Empty value | Record URL could not be parsed. | Invalid `RECORD_URL` ||
-|| Empty value | Record URL scheme must be http or https. | `RECORD_URL` uses a scheme other than `http` or `https` ||
-|| Empty value | Record URL host is empty. | `RECORD_URL` does not contain a domain name ||
-|| Empty value | Record URL host could not be resolved to any address. | The domain in `RECORD_URL` could not be resolved to an IP address. Check the URL and retry the request later ||
-|| Empty value | Record URL resolves to a non-public address and was blocked. | At least one IP address of the domain in `RECORD_URL` or in a redirect is non-public, for example a local network address. Check the domain's A and AAAA records and the redirect addresses. To attach a record stored on an internal network, pass it in `FILE_CONTENT` or upload it via `uploadUrl` ||
-|| Empty value | The record URL uses an IPv6 literal host, which is not supported by this environment. | `RECORD_URL` contains an IPv6 address in place of a domain name ||
-|| Empty value | Maximum number of redirects has been reached. | The URL in `RECORD_URL` redirects more than 5 times ||
-|| Empty value | Server returns HTTP error code {N} | The server in `RECORD_URL` returned an HTTP status other than `200` ||
-|| Empty value | Invalid file type | The file at `RECORD_URL` or in `FILE_CONTENT` is not an audio file. The error message depends on the account language ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Required parameters are not set. Request should contain or URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
+|| `400` | Empty value | Call is not found in the statistic table. Looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. Checked before the other parameters ||
+|| `400` | Empty value | File name is empty | Empty `FILENAME` ||
+|| `400` | Empty value | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension in `FILENAME` when `FILE_CONTENT` is provided ||
+|| `400` | Empty value | File content is empty. | Empty `FILE_CONTENT` ||
+|| `400` | Empty value | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
+|| `400` | Empty value | Record URL could not be parsed. | Invalid `RECORD_URL` ||
+|| `400` | Empty value | Record URL scheme must be http or https. | `RECORD_URL` uses a scheme other than `http` or `https` ||
+|| `400` | Empty value | Record URL host is empty. | `RECORD_URL` does not contain a domain name ||
+|| `400` | Empty value | Record URL host could not be converted to punycode. | The domain in `RECORD_URL` could not be converted to punycode ||
+|| `400` | Empty value | Record URL host could not be resolved to any address. | The domain in `RECORD_URL` could not be resolved to an IP address. Check the URL and retry the request later ||
+|| `400` | Empty value | The record URL host did not resolve to a usable address. | No address suitable for connection could be obtained for the domain in `RECORD_URL` ||
+|| `400` | Empty value | Record URL resolves to a non-public address and was blocked. | At least one IP address of the domain in `RECORD_URL` or in a redirect is non-public, for example a local network address. Check the domain's A and AAAA records and the redirect addresses. To attach a record stored on an internal network, pass it in `FILE_CONTENT` or upload it via `uploadUrl` ||
+|| `400` | Empty value | The record URL uses an IPv6 literal host, which is not supported by this environment. | `RECORD_URL` contains an IPv6 address in place of a domain name ||
+|| `400` | Empty value | The record URL host resolves only to IPv6 addresses; downloading from IPv6-only hosts is not supported by this environment. | The domain in `RECORD_URL` has only IPv6 addresses ||
+|| `400` | Empty value | Maximum number of redirects has been reached. | The URL in `RECORD_URL` redirects more than 5 times ||
+|| `400` | Empty value | {code}: {message} | The file at `RECORD_URL` could not be downloaded, for example, the server is unavailable or the request timed out. The code and message are passed by the HTTP client ||
+|| `400` | Empty value | Server returns HTTP error code {N} | The server in `RECORD_URL` returned an HTTP status other than `200` ||
+|| `400` | Empty value | Invalid file type | The file at `RECORD_URL` or in `FILE_CONTENT` is not an audio file. The error message depends on the account language ||
+|| `400` | Empty value | Unknown error encountered while saving file. | The file from `FILE_CONTENT` could not be saved ||
+|| `400` | Empty value | Could not create temporary directory | A temporary folder for the file from `RECORD_URL` could not be created ||
+|| `400` | Empty value | Disk module is not installed | The Drive module is not installed on the account ||
+|| `400` | Empty value | Could not create shared folder for call records | A folder for call recordings could not be created on Drive ||
+|| `400` | Empty value | CRM is not installed | The CRM module is not installed on the account ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

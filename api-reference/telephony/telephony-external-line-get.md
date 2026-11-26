@@ -13,13 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `telephony.externalLine.get` returns a list of external lines for the application.
-
-{% note info "" %}
-
-The method works only in the context of the [application](../../settings/app-installation/index.md).
-
-{% endnote %}
+The method `telephony.externalLine.get` returns a list of external lines.
 
 ## Method Parameters
 
@@ -30,6 +24,16 @@ No parameters.
 {% include [Example Note](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalLine.get
+    ```
 
 - cURL (OAuth)
 
@@ -54,7 +58,7 @@ No parameters.
     // Shape of each ExternalLine returned in result[]
     type ExternalLine = {
       NUMBER: string
-      NAME: string
+      NAME: string | null
       CRM_AUTO_CREATE: string
     }
 
@@ -257,15 +261,28 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Array of external lines for the application ||
+[`array`](../data-types.md) | Array of external lines [(detailed description)](#result).
+
+An application receives only its own lines, and a webhook only the lines added via an inbound webhook. The array also includes lines created automatically by the [telephony.externalCall.register](./telephony-external-call-register.md) method based on the `LINE_NUMBER` parameter. If there are no lines, an empty array is returned ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Array Element {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **NUMBER**
 [`string`](../data-types.md) | External line number ||
 || **NAME**
-[`string`](../data-types.md) | Name of the external line ||
+[`string`](../data-types.md) | Name of the external line. `null` for lines created automatically by the `telephony.externalCall.register` method ||
 || **CRM_AUTO_CREATE**
-[`string`](../data-types.md) | Flag for automatic CRM object creation ||
-|| **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`string`](../data-types.md) | Auto-creation of a CRM object when an employee calls a number from a CRM card through this line.
+
+Possible values:
+- `Y` — enabled
+- `N` — disabled ||
 |#
 
 ## Error Handling
@@ -284,8 +301,8 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of the application ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called neither with an application OAuth token nor via an inbound webhook, for example, from a browser session ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

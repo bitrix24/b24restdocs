@@ -4,8 +4,8 @@
 >
 > Who can execute methods: to complete the full scenario, you need an installed application with OAuth authorization
 >
-> - [telephony.externalLine.add](../../api-reference/telephony/telephony-external-line-add.md), [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md), [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md), and [event.bind](../../api-reference/events/event-bind.md) — the user under whom the application received OAuth authorization
-> - [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md), [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md), [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md), [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md), and [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) — any user
+> - [event.bind](../../api-reference/events/event-bind.md) — only in the application context; when called via a webhook, the method returns the `WRONG_AUTH_TYPE` error
+> - [telephony.externalLine.add](../../api-reference/telephony/telephony-external-line-add.md), [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md), [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md), [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md), [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md), [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md), [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md), and [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) — any user
 
 {% note tip "" %}
 
@@ -20,9 +20,9 @@ External telephony transmits call data from the PBX to Bitrix24: client number, 
 
 The scenario consists of six steps.
 
-1. Assemble the application and handlers for the PBX and Bitrix24
+1. Assemble the application
 2. Register an incoming call
-3. Display the call card to an employee group
+3. Display the call to an employee group
 4. Route the call to the customer's responsible person
 5. Process an outgoing call from the CRM
 6. Finish the call and retain the result
@@ -31,7 +31,7 @@ We will separately examine a scenario where a call must be recorded without disp
 
 {% note info "" %}
 
-The `telephony.externalLine.add`, `telephony.externalCall.register`, and `telephony.externalCall.finish` methods work only in the application context. An inbound webhook is not suitable for them. The [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event (step 5) is received by your web server.
+The scenario requires an application: subscribing to the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event with the `event.bind` method works only in the application context, and the event (step 5) is received by a handler on your web server.
 
 In PHP, telephony methods are called directly through the core (`$b24->core->call(...)`). Typed analogs are available in `getTelephonyScope()->externalCall()` (`show`, `hide`, `register`, `finishForUserId`) and `->externalLine()`, but they require value objects (`CallType`, `TelephonyCallStatusCode`, `Money`, `CarbonImmutable`).
 
@@ -43,6 +43,7 @@ Before you begin, make sure you have:
 
 - a local or mass-market application with the `telephony` scope and retained OAuth authorization
 - a public HTTPS application handler if you need to receive the `ONEXTERNALCALLSTART` event. An inbound webhook does not receive this event
+- the application is selected in the Default number for outgoing calls field in the telephony settings or set as the default application in the user settings; otherwise, the `ONEXTERNALCALLSTART` event is not sent
 - the employee identifier `USER_ID` to whom the call card will be shown
 - the external line number `LINE_NUMBER`, for example `line-1`
 - the unique call identifier on the PBX side, `EXTERNAL_CALL_ID`
@@ -295,7 +296,7 @@ In the example, the card is shown to three employees, and then, when employee `1
     ```
 {% endlist %}
 
-The `show` and `hide` methods return `true` if the command to show or hide the card was sent.
+The `show` and `hide` methods return `true` if the command to show or hide the card was sent, and `false` if `CALL_ID` is not passed or the call is not found.
 
 ```json
 {
@@ -423,7 +424,7 @@ Store `CALL_ID` from the `register` response. You need it to finish the call and
 
 When an employee clicks on a number in the CRM, Bitrix24 registers the call and sends the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event to the application with fields `CALL_ID`, `PHONE_NUMBER`, `USER_ID`, `LINE_NUMBER`, `CRM_ENTITY_TYPE`, `CRM_ENTITY_ID`, and `CALL_LIST_ID`.
 
-Your web server receives the event. After initiating the call on the PBX, complete the same `CALL_ID` using the `finish` method. The `CALL_ID` field arrives in the event, so you do not need to call `register` again for an outgoing call.
+Your web server receives the event. Before processing it, compare `auth.application_token` from the event with the retained value to make sure the request was sent by Bitrix24. For more details, see the article [Security in Handlers](../../api-reference/events/safe-event-handlers.md). After initiating the call on the PBX, complete the same `CALL_ID` using the `finish` method. The `CALL_ID` field arrives in the event, so you do not need to call `register` again for an outgoing call.
 
 {% list tabs %}
 
@@ -434,7 +435,13 @@ Your web server receives the event. After initiating the call on the PBX, comple
     const app = express()
     app.use(express.urlencoded({ extended: true }))
 
+    // application_token retained during application installation
+    const APP_TOKEN = process.env.B24_APP_TOKEN
+
     app.post('/events', async (req, res) => {
+        if (req.body.auth?.application_token !== APP_TOKEN) {
+            return res.status(403).send('forbidden')
+        }
         if (req.body.event === 'ONEXTERNALCALLSTART') {
             const data = req.body.data
             // ... initiate call to PBX via data.PHONE_NUMBER ...
@@ -452,11 +459,17 @@ Your web server receives the event. After initiating the call on the PBX, comple
 - Python
 
     ```python
+    import os
     from flask import Flask, request
     app = Flask(__name__)
 
+    # application_token retained during application installation
+    APP_TOKEN = os.environ["B24_APP_TOKEN"]
+
     @app.post("/events")
     def events():
+        if request.form.get("auth[application_token]") != APP_TOKEN:
+            return "forbidden", 403
         if request.form.get("event") == "ONEXTERNALCALLSTART":
             data = request.form  # fields arrive as data[CALL_ID] etc..
             # ... initiate call to PBX ...
@@ -469,12 +482,17 @@ Your web server receives the event. After initiating the call on the PBX, comple
         return "ok"
     ```
 
-
 - PHP
 
     ```php
     <?php
     // ONEXTERNALCALLSTART event handler
+    // application_token retained during application installation
+    $appToken = getenv('B24_APP_TOKEN');
+    if (($_REQUEST['auth']['application_token'] ?? '') !== $appToken) {
+        http_response_code(403);
+        exit;
+    }
     if (($_REQUEST['event'] ?? '') === 'ONEXTERNALCALLSTART') {
         $data = $_REQUEST['data'];
         // ... initiate call to PBX via $data['PHONE_NUMBER'] ...
@@ -494,7 +512,7 @@ The handler must return the HTTP response `200`. After that, Bitrix24 treats the
 
 After the conversation, call [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md): the method hides the card, retains the call in statistics, and creates a CRM activity. Pass `CALL_ID`, `USER_ID`, `DURATION` (sec), and `STATUS_CODE` (`200` — successful, `304` — missed).
 
-If the recording is not yet ready, call `finish` without a recording, and attach it later using the [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md) method. Once the recording is available, you can add a transcription using the [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) method.
+In the example, `callId` is the identifier from step 2 or from the `ONEXTERNALCALLSTART` event. If the recording is not yet ready, call `finish` without a recording, and attach it later using the [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md) method. Once the recording is available, you can add a transcription using the [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) method.
 
 {% list tabs %}
 
@@ -706,16 +724,17 @@ If the method returns an error, check the request data and the authorization con
 
 #|
 || **Error Code or Message** | **Cause and action** ||
-|| `WRONG_AUTH_TYPE` | The method was called outside the application context. Verify the application's OAuth authorization and the `telephony` scope ||
+|| `WRONG_AUTH_TYPE` | The `event.bind` method was called via a webhook. Subscribe to the event with the application's OAuth token ||
 || `USER_ID or USER_PHONE_INNER should be set` | No employee was passed to `register` or `finish`. Pass an active `USER_ID` or the employee's internal number ||
 || `Unknown TYPE` | An invalid call type was passed to `register`. For an incoming call, use `TYPE = 2` ||
-|| `Unsupported phone number format` | The customer number was not recognized. Pass the phone number in international format without letters ||
+|| `Unsupported phone number format` | The customer number in `PHONE_NUMBER` was passed in an invalid format. Check the number ||
+|| `User is not found or is not active` | A nonexistent or inactive employee was passed to `register` or `finish`. Check `USER_ID` ||
 || `Line already exists` | A line with this `NUMBER` is already registered. Use an existing `LINE_NUMBER` or change the line number ||
 || `CALL_ID must be a string` | An invalid `CALL_ID` type was passed to `finish`. Pass the string returned by `register` or the `ONEXTERNALCALLSTART` event ||
-|| `Call is not found` | The call was not found or is already finished. Verify that `CALL_ID` was stored from the current call ||
+|| `Call is not found (call should be registered prior to finishing` | `finish` received the `CALL_ID` of an unregistered call. Register the call with the `register` method and pass the `CALL_ID` from its response or from the `ONEXTERNALCALLSTART` event ||
 || `Call is not found in the statistic table. Looks like it is not finished yet.` | The recording is being attached before the call is finished. Call `finish` first, then `attachRecord` ||
-|| `Required parameters are not set. Request should contain or URL or FILENAME parameter` | `RECORD_URL` or `FILENAME` was not passed to `attachRecord` ||
-|| `Wrong file extension. Only wav and mp3 are allowed` | The recording was passed in an unsupported format. Use a `wav` or `mp3` file ||
+|| `Required parameters are not set. Request should contain or URL or FILENAME parameter` | `RECORD_URL` or `FILENAME` was not passed to `attachRecord`. Pass the recording URL in `RECORD_URL` or the file name in `FILENAME` ||
+|| `Wrong file extension. Only wav and mp3 are allowed` | `FILE_CONTENT` was passed to `attachRecord` with a `FILENAME` whose extension is not `wav` or `mp3`. Specify the `wav` or `mp3` extension in `FILENAME` ||
 || `ERROR_EVENT_NOT_FOUND` | An invalid event was passed to `event.bind`. Pass `ONEXTERNALCALLSTART` ||
 |#
 

@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md)
+> Scope: [`call`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with Outgoing Call — Execute permission
 
@@ -25,15 +25,19 @@ The method `voximplant.callback.start` initiates a callback between an employee 
 || **FROM_LINE***
 [`string`](../../data-types.md) | Identifier of the outgoing line from which the callback is initiated.
 
-A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method. ||
+A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method.
+
+You can also pass an application line of the form `REST_APP:<APP_ID>` or the number of an application's external line. In this case, the call is not started in Bitrix24: the [OnExternalCallBackStart](../events/on-external-call-back-start.md) event is sent to the application ||
 || **TO_NUMBER***
-[`string`](../../data-types.md) | The client's number to call. ||
+[`string`](../../data-types.md) | The client's number to call.
+
+All characters except digits and `+`, `#`, `*`, `,`, `;` are removed from the number. If the resulting number is empty, the method returns the `Phone number is not correct` error ||
 || **TEXT_TO_PRONOUNCE***
 [`string`](../../data-types.md) | The text that the system will pronounce to the employee before connecting with the client. ||
 || **VOICE**
 [`string`](../../data-types.md) | Identifier of the voice for speech synthesis.
 
-If not provided, the default voice for the account's language will be used.
+If not provided, the default voice for the request language is used: `ruinternalfemale` for `ru`, `usenglishmale` for `en`, `eurgermanfemale` for `de`. For languages without a voice of their own, `usenglishmale` is used.
 
 A list of available voices can be obtained using the [voximplant.tts.voices.get](./voximplant-tts-voices-get.md) method. ||
 |#
@@ -77,7 +81,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type CallbackStartResult = {
       RESULT: boolean
-      CALL_ID: string
+      CALL_ID: string | null
     }
 
     try {
@@ -171,6 +175,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -258,13 +263,15 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     }
 
     var item struct {
-    	Result bool   `json:"RESULT"`
-    	CallID string `json:"CALL_ID"`
+    	Result bool    `json:"RESULT"`
+    	CallID *string `json:"CALL_ID"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Result, item.CallID)
+    if item.CallID != nil {
+    	fmt.Println(item.Result, *item.CallID)
+    }
     ```
 
 {% endlist %}
@@ -298,24 +305,33 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the result of the callback initiation. ||
+[`object`](../../data-types.md) | Object containing the result of the callback initiation [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **RESULT**
 [`boolean`](../../data-types.md) | Indicator of successful initiation.
 
 `true` — callback successfully initiated. ||
 || **CALL_ID**
-[`string`](../../data-types.md) | Identifier of the call. ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`string`](../../data-types.md) | Identifier of the call.
+
+For an application line, `null` is returned: the call is handled by the application ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
+    "error": "",
     "error_description": "Could not find line reg000000"
 }
 ```
@@ -325,18 +341,20 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | `Could not find line <LINE_ID>` | The line with the specified identifier was not found. ||
-|| `ERROR_CORE` | `Could not find config for number <LINE_ID>` | Configuration for the specified line was not found. ||
-|| `ERROR_CORE` | `Phone number is not correct` | Incorrect number in `TO_NUMBER`. ||
-|| `ACCESS_DENIED` | `Access denied` | Insufficient permissions to make outgoing calls. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Could not find line <LINE_ID>` | The line with the specified identifier was not found ||
+|| `400` | Empty value | `Could not find config for number <LINE_ID>` | Configuration for the specified line was not found ||
+|| `400` | Empty value | `Phone number is not correct` | Incorrect number in `TO_NUMBER` ||
+|| `400` | Empty value | Telephony server error text | The telephony server failed to start the callback ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to make outgoing calls ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./voximplant-callback-start.md)
+- [{#T}](./lines/voximplant-line-get.md)
 - [{#T}](./voximplant-infocall-start-with-sound.md)
 - [{#T}](./voximplant-infocall-start-with-text.md)
 - [{#T}](./voximplant-tts-voices-get.md)
+- [{#T}](../events/on-external-call-back-start.md)

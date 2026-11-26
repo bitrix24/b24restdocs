@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md), [`call`](../../scopes/permissions.md) 
+> Scope: [`call`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with Outgoing Call — Execute permission
 
@@ -25,9 +25,13 @@ The method `voximplant.infocall.startwithsound` initiates an auto-call and plays
 || **FROM_LINE***
 [`string`](../../data-types.md) | Identifier of the outgoing line from which the call is initiated.
 
-A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method. ||
+A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method.
+
+Application lines of the form `REST_APP:<APP_ID>` and external application lines are not supported: the method returns the `Could not find config for number` error. The `LINK_BASE_NUMBER` line cannot be used ||
 || **TO_NUMBER***
-[`string`](../../data-types.md) | The number to which the call should be made. ||
+[`string`](../../data-types.md) | The number to which the call should be made.
+
+For a SIP line, the number is passed unchanged. For other lines, all characters except digits and `+`, `#`, `*`, `,`, `;` are removed from the number. If the resulting number is empty, the method returns the `Phone number is not correct` error ||
 || **URL***
 [`string`](../../data-types.md) | Link to the MP3 file that should be played during the call. ||
 |#
@@ -162,6 +166,7 @@ A list of available lines can be obtained using the [voximplant.line.get](./line
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -285,24 +290,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the result of the auto-call initiation. ||
+[`object`](../../data-types.md) | Object containing the result of the auto-call initiation [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **RESULT**
 [`boolean`](../../data-types.md) | Indicator of successful initiation.
 
 `true` — auto-call successfully initiated. ||
 || **CALL_ID**
-[`string`](../../data-types.md) | Identifier of the call. ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`string`](../../data-types.md) | Identifier of the call ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
+    "error": "",
     "error_description": "Could not find config for number reg000000"
 }
 ```
@@ -312,20 +324,20 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | `Making infocall using LINK_BASE_NUMBER is not allowed` | Auto-call cannot be initiated through a service line. ||
-|| `ERROR_CORE` | `Could not find config for number <LINE_ID>` | Configuration for the specified line not found. ||
-|| `ERROR_CORE` | `Infocall limit for this month is exceeded` | Monthly limit for auto-calls exceeded. ||
-|| `ERROR_CORE` | `Phone number is not correct` | Incorrect number in `TO_NUMBER`. ||
-|| `ERROR_CORE` | `Infocall failure` | Error occurred while initiating the auto-call. ||
-|| `ACCESS_DENIED` | `Access denied` | Insufficient permissions to make outgoing calls. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Making infocall using LINK_BASE_NUMBER is not allowed` | Auto-call cannot be initiated through a service line ||
+|| `400` | Empty value | `Could not find config for number <LINE_ID>` | Configuration for the specified line not found ||
+|| `400` | Empty value | `Infocall limit for this month is exceeded` | Monthly limit for auto-calls exceeded. The limit applies on the free telephony plan; SIP lines with an active SIP connector have no limit ||
+|| `400` | Empty value | `Phone number is not correct` | Incorrect number in `TO_NUMBER` ||
+|| `400` | Empty value | `Infocall failure` | Error occurred while initiating the auto-call ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to make outgoing calls ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./lines/voximplant-line-get.md)
 - [{#T}](./voximplant-callback-start.md)
-- [{#T}](./voximplant-infocall-start-with-sound.md)
 - [{#T}](./voximplant-infocall-start-with-text.md)
 - [{#T}](./voximplant-tts-voices-get.md)

@@ -13,13 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `telephony.externalLine.add` adds an external line to the application.
-
-{% note info "" %}
-
-The method works only in the context of the [application](../../settings/app-installation/index.md).
-
-{% endnote %}
+The method `telephony.externalLine.add` adds an external line.
 
 ## Method Parameters
 
@@ -29,17 +23,22 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **NUMBER***
-[`string`](../data-types.md) | External line number ||
+[`string`](../data-types.md) | External line number. Leading and trailing spaces are removed.
+
+The line is bound to the application that added it. Lines added via an inbound webhook are shared by all webhooks, and a second line with the same number can be added via a webhook ||
 || **NAME**
-[`string`](../data-types.md) | Name of the external line ||
+[`string`](../data-types.md) | Name of the external line.
+
+Default — an empty string ||
 || **CRM_AUTO_CREATE**
-[`string`](../data-types.md) | Auto-creation of a CRM object for outgoing calls.
+[`string`](../data-types.md) | Auto-creation of a CRM object when an employee calls a number from a CRM card through this line. The flag does not affect the [telephony.externalCall.register](./telephony-external-call-register.md) method, where a CRM object is created based on the `CRM_CREATE` parameter.
 
 Possible values:
+- `Y` — enabled
+- `N` — disabled
 
- `Y` — enabled
- `N` — disabled
- 
+Any value other than `Y` is saved as `N`.
+
 Default — `Y` ||
 |#
 
@@ -48,6 +47,16 @@ Default — `Y` ||
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"NUMBER":"14151234567","NAME":"Main External Line","CRM_AUTO_CREATE":"Y"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalLine.add
+    ```
 
 - cURL (OAuth)
 
@@ -78,7 +87,7 @@ Default — `Y` ||
       const response = await $b24.actions.v2.call.make<ExternalLineAddResult>({
         method: 'telephony.externalLine.add',
         params: {
-          NUMBER: '74951234567',
+          NUMBER: '14151234567',
           NAME: 'Main external line',
           CRM_AUTO_CREATE: 'Y',
         },
@@ -112,7 +121,7 @@ Default — `Y` ||
           const response = await $b24.actions.v2.call.make({
             method: 'telephony.externalLine.add',
             params: {
-              NUMBER: '74951234567',
+              NUMBER: '14151234567',
               NAME: 'Main external line',
               CRM_AUTO_CREATE: 'Y',
             },
@@ -144,7 +153,7 @@ Default — `Y` ||
 
     try:
         bitrix_response = client.telephony.external_line.add(
-            number="74951234567",
+            number="14151234567",
             name="Main external line",
             crm_auto_create=True,
         ).response
@@ -239,7 +248,7 @@ Default — `Y` ||
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "telephony.externalLine.add", b24.Params{
-    	"NUMBER":          "74951234567",
+    	"NUMBER":          "14151234567",
     	"NAME":            "Main External Line",
     	"CRM_AUTO_CREATE": "Y",
     })
@@ -286,11 +295,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
-|| **ID**
-[`integer`](../data-types.md) | Identifier of the created external line ||
+[`object`](../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../data-types.md) | Identifier of the created external line ||
 |#
 
 ## Error Handling
@@ -309,11 +325,11 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of the application ||
-|| `ERROR_CORE` | NUMBER should not be empty | Required parameter `NUMBER` not provided ||
-|| `ERROR_CORE` | Line already exists | A line with the specified number already exists ||
-|| `ERROR_CORE` | DB error | Database error while adding the line ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called neither with an application OAuth token nor via an inbound webhook, for example, from a browser session ||
+|| `400` | Empty value | NUMBER should not be empty | Required parameter `NUMBER` not provided ||
+|| `400` | Empty value | Line already exists | A line with the specified number already exists for the application. For a webhook, this check is not performed, and a repeated call adds a second line with the same number ||
+|| `400` | Empty value | DB error | Database error while adding the line ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

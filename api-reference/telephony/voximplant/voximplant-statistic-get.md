@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with Call Statistics — View permission
+> Who can execute the method: user with Call statistics — View permission
 
 The method `voximplant.statistic.get` returns a list of calls from telephony statistics.
 
@@ -28,6 +28,7 @@ The method `voximplant.statistic.get` returns a list of calls from telephony sta
 See the [list of available fields for filtering](#filterable) below.
 
 Supported operators in the filter key:
+
 - `!` — not equal
 - `>=` — greater than or equal
 - `>` — greater than
@@ -41,20 +42,26 @@ Supported operators in the filter key:
 - `%` — LIKE, substring search
 - `!%` — NOT LIKE, substring search
 
-By default — no filtering
-||
+Keys are case-insensitive. Conditions with an unknown field or operator are not applied, and no error occurs.
+
+By default — no filtering ||
 || **SORT**
 [`string`](../../data-types.md) | Sorting field.
 
-The same fields as in the [list of fields for filtering](#filterable) are used, except for `CALL_TYPE`.
+The same fields as in the [list of fields for filtering](#filterable) are used, except for `CALL_TYPE` and `CRM_BINDINGS.*`. To sort by call type, pass `INCOMING`.
+
+Sorting is applied only if both `SORT` and `ORDER` are passed.
 
 By default — no sorting ||
 || **ORDER**
 [`string`](../../data-types.md) | Sorting direction.
 
 Possible values:
+
 - `ASC` — ascending order
 - `DESC` — descending order
+
+The value is case-sensitive: `asc` and `desc` are not applied.
 
 By default — no sorting ||
 || **start**
@@ -94,6 +101,7 @@ The identifier can be obtained using the [user.get](../../user/user-get.md) meth
 [`integer`](../../data-types.md) | Type of call.
 
 Possible values:
+
 - `1` — outgoing
 - `2` — incoming
 - `3` — incoming with redirection
@@ -113,6 +121,7 @@ A condition with a value that is not recognized as a date is not applied. If som
 [`integer`](../../data-types.md) | Call rating.
 
 Possible values:
+
 - `1`, `2`, `3`, `4`, `5`
 
 If the rating is absent — `0` or `null` ||
@@ -124,6 +133,7 @@ If the rating is absent — `0` or `null` ||
 [`string`](../../data-types.md) | Call result code.
 
 Possible values:
+
 - `200` — successful call
 - `304` — missed call
 - `603` — declined
@@ -143,9 +153,10 @@ Possible values:
 [`string`](../../data-types.md) | Type of CRM object.
 
 Possible values:
+
 - `CONTACT` — contact
 - `COMPANY` — company
-- `LEAD` — lead  ||
+- `LEAD` — lead ||
 || **CRM_ENTITY_ID**
 [`integer`](../../data-types.md) | Identifier of the CRM object from `CRM_ENTITY_TYPE` ||
 || **CRM_ACTIVITY_ID**
@@ -160,6 +171,7 @@ Possible values:
 [`string`](../../data-types.md) | Indicator of pending transcription.
 
 Possible values:
+
 - `Y` — transcription pending
 - `N` — transcription available or absent ||
 || **SESSION_ID**
@@ -170,6 +182,12 @@ Possible values:
 [`string`](../../data-types.md) | Comment on the call ||
 || **RECORD_DURATION**
 [`integer`](../../data-types.md) | Duration of the call recording file ||
+|| **CRM_BINDINGS.ENTITY_TYPE**
+[`string`](../../data-types.md) | Type of the CRM object the call is linked to, such as `DEAL` or `CONTACT`.
+
+If the call is linked to several matching objects, the record may be returned several times ||
+|| **CRM_BINDINGS.ENTITY_ID**
+[`integer`](../../data-types.md) | Identifier of the CRM object the call is linked to ||
 |#
 
 ## Code Examples
@@ -252,7 +270,7 @@ Possible values:
         params: {
           FILTER: {
             ID: [1, 7],
-            '>=CALL_START_DATE': '2025-01-01T00:00:00+03:00',
+            '>=CALL_START_DATE': '2025-01-01T00:00:00+01:00',
           },
           SORT: 'ID',
           ORDER: 'ASC',
@@ -295,7 +313,7 @@ Possible values:
             params: {
               FILTER: {
                 ID: [1, 7],
-                '>=CALL_START_DATE': '2025-01-01T00:00:00+03:00',
+                '>=CALL_START_DATE': '2025-01-01T00:00:00+01:00',
               },
               SORT: 'ID',
               ORDER: 'ASC',
@@ -332,7 +350,7 @@ Possible values:
             1,
             7,
         ],
-        ">=CALL_START_DATE": "2025-01-01T00:00:00+03:00",
+        ">=CALL_START_DATE": "2025-01-01T00:00:00+01:00",
     }
 
     try:
@@ -443,7 +461,7 @@ Possible values:
     res, err := client.Core().Call(ctx, "voximplant.statistic.get", b24.Params{
     	"FILTER": b24.Params{
     		"ID":                []int{1, 7},
-    		">=CALL_START_DATE": "2025-01-01T00:00:00+03:00",
+    		">=CALL_START_DATE": "2025-01-01T00:00:00+01:00",
     	},
     	"SORT":  "ID",
     	"ORDER": "ASC",
@@ -560,7 +578,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of statistics records. The composition of records depends on the `FILTER` conditions.
+[`object[]`](../../data-types.md) | Array of statistics records [(detailed description)](#result).
+
+If the Call statistics — View permission is limited to the user's own calls or department calls, only calls of accessible users are returned.
 
 An empty array means there are no records matching the `FILTER` conditions ||
 || **total**
@@ -569,6 +589,17 @@ An empty array means there are no records matching the `FILTER` conditions ||
 [`integer`](../../data-types.md) | Offset for the next page (if any) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+A record contains the fields from the [list of fields for filtering](#filterable), except for `CRM_BINDINGS.*`, plus the `RECORD_FILE_ID` field. Values of all fields except `RECORD_FILE_ID` are returned as strings or `null`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **RECORD_FILE_ID**
+[`integer`](../../data-types.md) | Identifier of the call recording file on Drive. `null` if there is no recording ||
 |#
 
 ## Error Handling
@@ -587,14 +618,16 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions to view call statistics ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to view call statistics ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./voximplant-callback-start.md)
+- [{#T}](./voximplant-url-get.md)
 - [{#T}](../telephony-external-call-register.md)
 - [{#T}](../telephony-external-call-finish.md)
 - [{#T}](../telephony-external-call-attach-record.md)

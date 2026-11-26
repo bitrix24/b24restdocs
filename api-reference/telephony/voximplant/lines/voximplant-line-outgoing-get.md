@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with the Management of Numbers — modification access permission
+> Who can execute the method: user with the Manage numbers — Update access permission
 
 The method `voximplant.line.outgoing.get` returns the identifier of the current default outgoing line.
 
@@ -131,6 +131,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -260,8 +261,8 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient rights to obtain the default outgoing line ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient rights to obtain the default outgoing line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -269,6 +270,5 @@ HTTP Status: **403**
 ## Continue Learning
 
 - [{#T}](./voximplant-line-get.md)
-- [{#T}](./voximplant-line-outgoing-get.md)
 - [{#T}](./voximplant-line-outgoing-set.md)
 - [{#T}](./voximplant-line-outgoing-sip-set.md)

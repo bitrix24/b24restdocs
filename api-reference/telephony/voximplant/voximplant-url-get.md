@@ -139,6 +139,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -252,26 +253,53 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object containing links to telephony pages ||
+[`object`](../../data-types.md) | An object containing links to telephony pages [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **detail_statistics**
 [`string`](../../data-types.md) | Link to the detailed statistics page ||
 || **buy_connector**
 [`string`](../../data-types.md) | Link to the page for purchasing the SIP connector ||
 || **edit_config**
-[`string`](../../data-types.md) | Link to the page for editing the connected line. Replace `#CONFIG_ID#` with the configuration ID ||
+[`string`](../../data-types.md) | Link to the page for editing the connected line. Replace `#CONFIG_ID#` with the configuration ID from [voximplant.sip.get](./sip/voximplant-sip-get.md) ||
 || **lines**
 [`string`](../../data-types.md) | Link to the list of lines page ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no parameters, so it has no errors of its own. It returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `telephony` scope ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./voximplant-callback-start.md)
-- [{#T}](./voximplant-infocall-start-with-sound.md)
-- [{#T}](./voximplant-infocall-start-with-text.md)
-- [{#T}](./voximplant-tts-voices-get.md)
+- [{#T}](./voximplant-statistic-get.md)
+- [{#T}](./lines/voximplant-line-get.md)
+- [{#T}](./sip/voximplant-sip-get.md)

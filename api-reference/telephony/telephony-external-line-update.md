@@ -13,13 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `telephony.externalLine.update` modifies the parameters of the application's external line.
-
-{% note info "" %}
-
-This method works only in the context of the [application](../../settings/app-installation/index.md).
-
-{% endnote %}
+The method `telephony.externalLine.update` modifies the parameters of an external line.
 
 ## Method Parameters
 
@@ -31,21 +25,26 @@ This method works only in the context of the [application](../../settings/app-in
 || **NUMBER***
 [`string`](../data-types.md) | The number of the external line.
 
-The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method. ||
+The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method. Leading and trailing spaces are removed.
+
+An application modifies only its own lines, and a webhook only the lines added via an inbound webhook ||
 || **NAME**
-[`string`](../data-types.md) | The new name of the external line. ||
+[`string`](../data-types.md) | The new name of the external line.
+
+If the parameter is not provided, the name does not change ||
 || **CRM_AUTO_CREATE**
-[`string`](../data-types.md) | Auto-creation of a CRM object for outgoing calls.
+[`string`](../data-types.md) | Auto-creation of a CRM object when an employee calls a number from a CRM card through this line. The flag does not affect the [telephony.externalCall.register](./telephony-external-call-register.md) method, where a CRM object is created based on the `CRM_CREATE` parameter.
 
 Possible values:
+- `Y` — enabled
+- `N` — disabled
 
- `Y` — enabled
- `N` — disabled ||
+Any value other than `Y` is saved as `N`. If the parameter is not provided, the value does not change ||
 |#
 
 {% note info "" %}
 
-At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE`. Otherwise, you will receive an `ERROR_CORE` error.
+At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE`. Otherwise, you will receive the `There are no fields to update` error
 
 {% endnote %}
 
@@ -54,6 +53,16 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"NUMBER":"14151234567","NAME":"Support Line","CRM_AUTO_CREATE":"N"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalLine.update
+    ```
 
 - cURL (OAuth)
 
@@ -84,7 +93,7 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
       const response = await $b24.actions.v2.call.make<ExternalLineUpdateResult>({
         method: 'telephony.externalLine.update',
         params: {
-          NUMBER: '74951234567',
+          NUMBER: '14151234567',
           NAME: 'Support line',
           CRM_AUTO_CREATE: 'N',
         },
@@ -118,7 +127,7 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
           const response = await $b24.actions.v2.call.make({
             method: 'telephony.externalLine.update',
             params: {
-              NUMBER: '74951234567',
+              NUMBER: '14151234567',
               NAME: 'Support line',
               CRM_AUTO_CREATE: 'N',
             },
@@ -150,7 +159,7 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
 
     try:
         bitrix_response = client.telephony.external_line.update(
-            number="74951234567",
+            number="14151234567",
             name="Support line",
             crm_auto_create=False,
         ).response
@@ -245,7 +254,7 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "telephony.externalLine.update", b24.Params{
-    	"NUMBER":          "74951234567",
+    	"NUMBER":          "14151234567",
     	"NAME":            "Support Line",
     	"CRM_AUTO_CREATE": "N",
     })
@@ -292,11 +301,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. ||
-|| **ID**
-[`integer`](../data-types.md) | The identifier of the updated external line. ||
+[`object`](../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time. ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | The identifier of the updated external line. The number is returned as a string ||
 |#
 
 ## Error Handling
@@ -315,11 +331,11 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of the application. ||
-|| `ERROR_CORE` | There are no fields to update | No fields provided for modification `NAME` or `CRM_AUTO_CREATE`. ||
-|| `ERROR_CORE` | NUMBER should not be empty | Required parameter `NUMBER` not provided. ||
-|| `ERROR_CORE` | Could not find line with number {NUMBER} | Line with the specified number not found. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called neither with an application OAuth token nor via an inbound webhook, for example, from a browser session ||
+|| `400` | Empty value | There are no fields to update | No fields provided for modification `NAME` or `CRM_AUTO_CREATE` ||
+|| `400` | Empty value | NUMBER should not be empty | Required parameter `NUMBER` not provided ||
+|| `400` | Empty value | Could not find line with number {NUMBER} | Line with the specified number not found ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

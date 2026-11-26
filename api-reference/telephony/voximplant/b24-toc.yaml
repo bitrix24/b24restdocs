@@ -13,6 +13,8 @@ items:
     href: voximplant-tts-voices-get.md  
   - name: Retrieve Call History  
     href: voximplant-statistic-get.md  
+  - name: Get Links for Navigating Telephony Pages  
+    href: voximplant-url-get.md  
   - name: Events  
     include:  
       path: events/b24-toc.yaml  
@@ -29,5 +31,3 @@ items:
     include:  
       path: users/b24-toc.yaml  
       mode: link  
-  - name: Get Links for Navigating Telephony Pages  
-    href: voximplant-url-get.md  

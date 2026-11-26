@@ -50,7 +50,7 @@ Some methods work only in the application context. When a webhook calls such a m
 || **bizproc** | [Business Processes](../bizproc/index.md) | Business processes, RPA, CRM robots ||
 || **booking** | [Online Booking](../booking/index.md) | Online Booking ||
 || **calendar** | [Calendar](../calendar/index.md) | Calendar ||
-|| **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
+|| **call** | Telephony (making calls). The scope includes methods: [voximplant.callback.start](../telephony/voximplant/voximplant-callback-start.md), [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md), and the [Call Follow-up](../telephony/follow-up/index.md) methods | Telephony ||
 || **cashbox** | [Cash Registers](../sale/cashbox/index.md) | Cash Registers ||
 || **catalog** | [Product Catalog](../catalog/index.md) | Product catalog, inventory management ||
 || **contact_center** | [Contact Center Widget](../widgets/contact-center.md) | Contact Center ||

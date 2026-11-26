@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the Management of Numbers — modification access permission
+> Who can execute the method: a user with the Manage numbers — Update access permission
 
 The method `voximplant.line.get` returns a list of available outgoing lines.
 
-The response keys are `LINE_ID` values for [voximplant.line.outgoing.set](./voximplant-line-outgoing-set.md). The list may include SIP lines.
+The response keys are `LINE_ID` values for [voximplant.line.outgoing.set](./voximplant-line-outgoing-set.md) and for the `FROM_LINE` parameter of call methods.
 
 ## Method Parameters
 
@@ -136,6 +136,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -247,8 +248,10 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | An object of the form `LINE_ID: LINE_NAME`, where:
 
-- `LINE_ID` — line identifier
-- `LINE_NAME` — line name ||
+- `LINE_ID` — line identifier: the phone number for a rented or verified number, `regXXX` or `sipXXX` for a SIP connection
+- `LINE_NAME` — line name, with HTML special characters escaped
+
+Application lines of the form `REST_APP:<APP_ID>` and `LINK_BASE_NUMBER` are not included in the list ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -269,15 +272,14 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the list of outgoing lines ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the list of outgoing lines ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./voximplant-line-get.md)
 - [{#T}](./voximplant-line-outgoing-get.md)
 - [{#T}](./voximplant-line-outgoing-set.md)
 - [{#T}](./voximplant-line-outgoing-sip-set.md)

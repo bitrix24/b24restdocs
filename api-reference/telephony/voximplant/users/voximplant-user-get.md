@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with User Settings — Modify access permission
+> Who can execute the method: user with User settings — Update access permission
 
 The method `voximplant.user.get` returns user settings.
 
-For applications, calling the method requires [administrator confirmation](../../../scopes/confirmation.md).
+The method works only in the application context. Calling the method requires [administrator confirmation](../../../scopes/confirmation.md).
 
 ## Method Parameters
 
@@ -27,6 +27,8 @@ For applications, calling the method requires [administrator confirmation](../..
 || **USER_ID***
 [```integer | integer[]```](../../../data-types.md#compound-types) | User ID or an array of user IDs.
 
+IDs of users you cannot access under the User settings — Update permission are excluded from the request without an error. The `ACCESS_DENIED` error occurs only if all IDs are excluded. No records are returned for non-existent users, and no error occurs either.
+
 You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
 |#
 
@@ -35,16 +37,6 @@ You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"USER_ID":[1269, 1271]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.user.get
-    ```
 
 - cURL (OAuth)
 
@@ -162,6 +154,7 @@ You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -237,11 +230,13 @@ You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
     }
 
     var items []struct {
-    	ID           b24.ID `json:"ID"`
-    	PhoneEnabled string `json:"PHONE_ENABLED"`
-    	SipServer    string `json:"SIP_SERVER"`
-    	SipLogin     string `json:"SIP_LOGIN"`
-    	SipPassword  string `json:"SIP_PASSWORD"`
+    	ID           b24.ID  `json:"ID"`
+    	DefaultLine  *string `json:"DEFAULT_LINE"`
+    	PhoneEnabled string  `json:"PHONE_ENABLED"`
+    	SipServer    string  `json:"SIP_SERVER"`
+    	SipLogin     string  `json:"SIP_LOGIN"`
+    	SipPassword  *string `json:"SIP_PASSWORD"`
+    	InnerNumber  *string `json:"INNER_NUMBER"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -298,15 +293,27 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../../data-types.md) | Array of user settings ||
+[`object[]`](../../../data-types.md) | Array of user settings [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **ID**
 [`string`](../../../data-types.md) | User ID ||
 || **DEFAULT_LINE**
-[`string`](../../../data-types.md) | Default outgoing line number. May be `null` ||
+[`string`](../../../data-types.md) | The user's outgoing line. Usually this is a line ID in the format of the [voximplant.line.get](../lines/voximplant-line-get.md) keys or `LINK_BASE_NUMBER`.
+
+The method returns the value exactly as it is stored in the user settings, so older settings may contain text here, such as `Default number`. `null` if no line is selected ||
 || **PHONE_ENABLED**
 [`string`](../../../data-types.md) | Indicator of SIP device availability.
 
 Possible values:
+
 - `Y` — SIP device is activated for the user
 - `N` — SIP device is not activated for the user ||
 || **SIP_SERVER**
@@ -314,16 +321,14 @@ Possible values:
 || **SIP_LOGIN**
 [`string`](../../../data-types.md) | Login for connecting the SIP device ||
 || **SIP_PASSWORD**
-[`string`](../../../data-types.md) | Password for connecting the SIP device. May be `null` ||
+[`string`](../../../data-types.md) | Password for connecting the SIP device. `null` if no password is set ||
 || **INNER_NUMBER**
 [`string`](../../../data-types.md) | User's internal number. May be `null` ||
-|| **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **401**, **403**
+HTTP Status: **401**
 
 ```json
 {
@@ -337,11 +342,12 @@ HTTP Status: **400**, **401**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Parameter USER_ID is not set` | Required parameter `USER_ID` is not specified ||
-|| `METHOD_CONFIRM_WAITING` | `Waiting for confirmation` | Confirmation from a Bitrix24 administrator is pending for the method call ||
-|| `METHOD_CONFIRM_DENIED` | `Method call denied` | Administrator has denied the method call for the current token ||
-|| `ACCESS_DENIED` | `Access denied! You have no permission to query selected users` | Insufficient permissions to retrieve user settings ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter USER_ID is not set` | Required parameter `USER_ID` is not specified ||
+|| `401` | `METHOD_CONFIRM_WAITING` | `Waiting for confirmation` | Confirmation from a Bitrix24 administrator is pending for the method call ||
+|| `403` | `METHOD_CONFIRM_DENIED` | `Method call denied` | Administrator has denied the method call for the current token ||
+|| `403` | `ACCESS_DENIED` | `Access denied! You have no permission to query selected users` | Insufficient permissions to retrieve user settings ||
+|| `403` | `ACCESS_DENIED` | `Access denied! Application context required` | The method is called outside an application, for example, via a webhook ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

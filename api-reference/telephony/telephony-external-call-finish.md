@@ -15,12 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The method `telephony.externalCall.finish` ends an external call, saves it in the statistics, and logs it in the CRM activity.
 
-{% note info "" %}
-
-The method works only in the context of the [application](../../settings/app-installation/index.md)
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -29,7 +23,9 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **CALL_ID***
-[`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
+[`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md).
+
+After a successful call, the call is no longer active. A repeated call with the same `CALL_ID` returns the `Call is not found` error, and the [telephony.externalCall.show](./telephony-external-call-show.md) and [telephony.externalCall.hide](./telephony-external-call-hide.md) methods return `false` ||
 || **USER_ID***
 [`integer`](../data-types.md) | The identifier of the user who ends the call.
 
@@ -92,7 +88,9 @@ Default is an empty string ||
 
 This parameter is deprecated and retained for backward compatibility. It is recommended to use [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md).
 
-If this parameter is provided, Bitrix24 downloads and attaches the recording within the same request, so the method returns a response only after the file is downloaded. If the file cannot be downloaded, the method still completes the call and does not return an error ||
+If this parameter is provided, Bitrix24 downloads and attaches the recording within the same request, so the method returns a response only after the file is downloaded. If the file cannot be downloaded, the method still completes the call and does not return an error.
+
+If the URL contains characters not encoded in UTF-8, the method completes the call but returns an error ||
 || **VOTE**
 [`integer`](../data-types.md) | Rating of the call.
 
@@ -107,7 +105,7 @@ Possible values:
 - `0` — do not add
 - `1` — add
 
-Default is `1` ||
+Default is `0` ||
 |#
 
 ## Code Examples
@@ -115,6 +113,16 @@ Default is `1` ||
 {% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CALL_ID":"externalCall.716f1cb73def9700a23842adf9c4c568.1773130779","USER_ID":1269,"DURATION":95,"STATUS_CODE":"200","VOTE":5,"ADD_TO_CHAT":0}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalCall.finish
+    ```
 
 - cURL (OAuth)
 
@@ -132,7 +140,7 @@ Default is `1` ||
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
@@ -146,19 +154,21 @@ Default is `1` ||
       PORTAL_NUMBER: string
       INCOMING: string
       CALL_DURATION: number
-      CALL_START_DATE: ISODate | null
+      CALL_START_DATE: Record<string, never>
       CALL_STATUS: number
       CALL_VOTE: number
       COST: number
       COST_CURRENCY: string
       CALL_FAILED_CODE: string
       CALL_FAILED_REASON: string
-      REST_APP_ID: string
+      REST_APP_ID: string | null
       REST_APP_NAME: string
-      CRM_ACTIVITY_ID: number
+      CRM_ACTIVITY_ID: number | null
       COMMENT: string | null
-      CRM_ENTITY_TYPE: string
-      CRM_ENTITY_ID: number
+      CRM_ENTITY_TYPE?: string
+      CRM_ENTITY_ID?: number
+      CALL_RECORD_URL?: string
+      ERRORS?: { ACTIVITY_CREATION?: string }
     }
 
     try {
@@ -419,13 +429,22 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Data of the saved call record ||
+[`object`](../data-types.md) | Data of the saved call record [(detailed description)](#result) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **ID**
 [`integer`](../data-types.md) | Identifier of the record in the statistics ||
 || **CALL_ID**
 [`string`](../data-types.md) | Identifier of the call ||
 || **EXTERNAL_CALL_ID**
-[`string`](../data-types.md) | External identifier of the call on the integration side ||
+[`string`](../data-types.md) | External identifier of the call on the integration side. `null` if it was not provided during registration ||
 || **PORTAL_USER_ID**
 [`integer`](../data-types.md) | Identifier of the Bitrix24 user on behalf of whom the call was finished ||
 || **PHONE_NUMBER**
@@ -444,13 +463,13 @@ Possible values:
 || **CALL_DURATION**
 [`integer`](../data-types.md) | Duration of the call in seconds ||
 || **CALL_START_DATE**
-[`datetime`](../data-types.md) | Date and time when the call started ||
+[`object`](../data-types.md) | Date and time when the call started. Currently returned as an empty object `{}`. You can retrieve the call start date using the [voximplant.statistic.get](./voximplant/voximplant-statistic-get.md) method ||
 || **CALL_STATUS**
 [`integer`](../data-types.md) | Completion status.
 
 Possible values:
-- `1` — successful conversation
-- `0` — unsuccessful/missed ||
+- `1` — `DURATION` is greater than `0`
+- `0` — `DURATION` equals `0` ||
 || **CALL_VOTE**
 [`integer`](../data-types.md) | Rating of the call ||
 || **COST**
@@ -477,21 +496,30 @@ Possible values:
 || **CALL_FAILED_REASON**
 [`string`](../data-types.md) | Text reason for the call completion ||
 || **REST_APP_ID**
-[`integer`](../data-types.md) | Identifier of the application ||
+[`string`](../data-types.md) | Identifier of the application. For a call registered via a webhook — `null` ||
 || **REST_APP_NAME**
 [`string`](../data-types.md) | Name of the application ||
 || **CRM_ACTIVITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM activity for the call ||
+[`integer`](../data-types.md) | Identifier of the CRM activity for the call. If the activity was not created, the error text is returned in `ERRORS` ||
 || **COMMENT**
 [`string`](../data-types.md) | Comment on the call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | Type of the CRM object associated with the call ||
+[`string`](../data-types.md) | Type of the CRM object associated with the call. Returned if the call is linked to a CRM object ||
 || **CRM_ENTITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM object associated with the call ||
+[`integer`](../data-types.md) | Identifier of the CRM object associated with the call. Returned if the call is linked to a CRM object ||
+|| **CALL_RECORD_URL**
+[`string`](../data-types.md) | The recording URL from the `RECORD_URL` parameter. Returned if the parameter is provided ||
 || **ERRORS**
-[`object`](../data-types.md) | Additional processing errors (if any) ||
-|| **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`object`](../data-types.md) | Additional processing errors. Returned if errors occurred [(detailed description)](#result-errors) ||
+|#
+
+#### ERRORS Object {#result-errors}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ACTIVITY_CREATION**
+[`string`](../data-types.md) | The error text if the CRM activity for the call was not created ||
 |#
 
 ## Error Handling
@@ -510,14 +538,15 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the application context ||
-|| `INVALID_ARGUMENT` | CALL_ID must be a string | Parameter `CALL_ID` must be a string ||
-|| `INVALID_ARGUMENT` | DURATION must be non-negative | Parameter `DURATION` is less than zero ||
-|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set | `USER_ID` and `USER_PHONE_INNER` not provided ||
-|| `ERROR_CORE` | Call is not found (call should be registered prior to finishing) | Call not found, it must be registered using the method `telephony.externalCall.register` before finishing ||
-|| `ERROR_CORE` | User is not found or is not active | User not found or inactive ||
-|| `ERROR_CORE` | Unexpected database error | Error saving statistics ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called neither with an application OAuth token nor via an inbound webhook, for example, from a browser session ||
+|| `400` | `INVALID_ARGUMENT` | CALL_ID must be a string | Parameter `CALL_ID` is not provided or is not a string ||
+|| `400` | `INVALID_ARGUMENT` | DURATION must be non-negative | Parameter `DURATION` is less than zero ||
+|| `400` | Empty value | USER_ID or USER_PHONE_INNER should be set | `USER_ID` and `USER_PHONE_INNER` not provided ||
+|| `400` | Empty value | Call is not found (call should be registered prior to finishing | Call not found, it must be registered using the method `telephony.externalCall.register` before finishing ||
+|| `400` | Empty value | User is not found or is not active | User not found or inactive ||
+|| `400` | Empty value | Unexpected database error | Error saving statistics ||
+|| `400` | Empty value | RECORD_URL contains invalid symbols for UTF-8 encoding | `RECORD_URL` contains characters not encoded in UTF-8. The call has already been completed and saved in the statistics ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

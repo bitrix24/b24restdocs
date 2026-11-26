@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md), [`call`](../../scopes/permissions.md) 
+> Scope: [`call`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with Outgoing Call — Execute access permission
 
@@ -25,15 +25,21 @@ The method `voximplant.infocall.startwithtext` initiates an auto-call and plays 
 || **FROM_LINE***
 [`string`](../../data-types.md) | Identifier of the outgoing line from which the call is initiated.
 
-A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method. ||
+A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method.
+
+Application lines of the form `REST_APP:<APP_ID>` and external application lines are not supported: the method returns the `Could not find config for number` error. The `LINK_BASE_NUMBER` line cannot be used ||
 || **TO_NUMBER***
-[`string`](../../data-types.md) | The number to which the call should be made. ||
+[`string`](../../data-types.md) | The number to which the call should be made.
+
+For a SIP line, the number is passed unchanged. For other lines, all characters except digits and `+`, `#`, `*`, `,`, `;` are removed from the number. If the resulting number is empty, the method returns the `Phone number is not correct` error ||
 || **TEXT_TO_PRONOUNCE***
 [`string`](../../data-types.md) | The text that will be spoken to the recipient. ||
 || **VOICE**
 [`string`](../../data-types.md) | Identifier of the voice for speech synthesis.
 
-If not provided, the default voice for the portal's language will be used.
+If not provided, the default voice for the request language is used: `ruinternalfemale` for `ru`, `usenglishmale` for `en`, `eurgermanfemale` for `de`. For languages without a voice of their own, `usenglishmale` is used.
+
+Speech synthesis uses medium rate and volume; they cannot be configured via the REST API
 
 A list of available voices can be obtained using the [voximplant.tts.voices.get](./voximplant-tts-voices-get.md) method. ||
 |#
@@ -50,7 +56,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment."}' \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment.","VOICE":"usenglishmale"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.infocall.startwithtext
     ```
 
@@ -60,7 +66,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment.","auth":"**put_access_token_here**"}' \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment.","VOICE":"usenglishmale","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/voximplant.infocall.startwithtext
     ```
 
@@ -86,7 +92,8 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
         params: {
           FROM_LINE: 'reg151083',
           TO_NUMBER: '79991234567',
-          TEXT_TO_PRONOUNCE: 'Good afternoon. Reminder about your appointment',
+          TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.',
+          VOICE: 'usenglishmale',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -120,7 +127,8 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
             params: {
               FROM_LINE: 'reg151083',
               TO_NUMBER: '79991234567',
-              TEXT_TO_PRONOUNCE: 'Good afternoon. Reminder about your appointment',
+              TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.',
+              VOICE: 'usenglishmale',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -153,6 +161,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
             from_line='reg151083',
             to_number='79991234567',
             text_to_pronounce='Good afternoon. This is a reminder about your appointment',
+            voice='usenglishmale',
         ).response
         result = bitrix_response.result
         print(result)
@@ -168,6 +177,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -180,6 +190,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
                     'FROM_LINE' => 'reg151083',
                     'TO_NUMBER' => '+19991234567',
                     'TEXT_TO_PRONOUNCE' => 'Good afternoon. This is a reminder for your appointment.',
+                    'VOICE' => 'usenglishmale',
                 ]
             );
 
@@ -202,7 +213,8 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
         {
             FROM_LINE: 'reg151083',
             TO_NUMBER: '+19991234567',
-            TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.'
+            TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.',
+            VOICE: 'usenglishmale'
         },
         function(result)
         {
@@ -229,6 +241,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
             'FROM_LINE' => 'reg151083',
             'TO_NUMBER' => '+19991234567',
             'TEXT_TO_PRONOUNCE' => 'Good afternoon. This is a reminder for your appointment.',
+            'VOICE' => 'usenglishmale',
         ]
     );
 
@@ -245,6 +258,7 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     	"FROM_LINE":         "reg151083",
     	"TO_NUMBER":         "79991234567",
     	"TEXT_TO_PRONOUNCE": "Good afternoon. This is a reminder for your appointment.",
+    	"VOICE":             "usenglishmale",
     })
     if err != nil {
     	return fmt.Errorf("voximplant.infocall.startwithtext: %w", err)
@@ -291,24 +305,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the result of the auto-call initiation. ||
+[`object`](../../data-types.md) | Object containing the result of the auto-call initiation [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **RESULT**
 [`boolean`](../../data-types.md) | Indicator of successful initiation.
 
 `true` — auto-call successfully initiated. ||
 || **CALL_ID**
-[`string`](../../data-types.md) | Identifier of the call. ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`string`](../../data-types.md) | Identifier of the call ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
+    "error": "",
     "error_description": "Infocall limit for this month is exceeded"
 }
 ```
@@ -318,20 +339,20 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | `Making infocall using LINK_BASE_NUMBER is not allowed` | Auto-call cannot be initiated through a service line. ||
-|| `ERROR_CORE` | `Could not find config for number <LINE_ID>` | Configuration for the specified line not found. ||
-|| `ERROR_CORE` | `Infocall limit for this month is exceeded` | Monthly limit for auto-calls exceeded. ||
-|| `ERROR_CORE` | `Phone number is not correct` | Invalid number in `TO_NUMBER`. ||
-|| `ERROR_CORE` | `Infocall failure` | Error while initiating the auto-call. ||
-|| `ACCESS_DENIED` | `Access denied` | Insufficient permissions to make outgoing calls. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Making infocall using LINK_BASE_NUMBER is not allowed` | Auto-call cannot be initiated through a service line ||
+|| `400` | Empty value | `Could not find config for number <LINE_ID>` | Configuration for the specified line not found ||
+|| `400` | Empty value | `Infocall limit for this month is exceeded` | Monthly limit for auto-calls exceeded. The limit applies on the free telephony plan; SIP lines with an active SIP connector have no limit ||
+|| `400` | Empty value | `Phone number is not correct` | Invalid number in `TO_NUMBER` ||
+|| `400` | Empty value | `Infocall failure` | Error while initiating the auto-call ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to make outgoing calls ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./lines/voximplant-line-get.md)
 - [{#T}](./voximplant-callback-start.md)
 - [{#T}](./voximplant-infocall-start-with-sound.md)
-- [{#T}](./voximplant-infocall-start-with-text.md)
 - [{#T}](./voximplant-tts-voices-get.md)

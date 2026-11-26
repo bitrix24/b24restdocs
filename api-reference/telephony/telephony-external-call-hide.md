@@ -23,11 +23,13 @@ The method `telephony.externalCall.hide` hides the call card for a user or a lis
 || **Name**
 `type` | **Description** ||
 || **CALL_ID***
-[`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md). ||
+[`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
 || **USER_ID**
 [```integer | integer[]```](../data-types.md#compound-types) | Identifier of the user or an array of user identifiers.
 
-Use the identifiers specified in the method [telephony.externalCall.show](./telephony-external-call-show.md)  ||
+Use the identifiers specified in the method [telephony.externalCall.show](./telephony-external-call-show.md).
+
+By default — the user specified during the call registration ||
 |#
 
 ## Code Examples
@@ -267,14 +269,33 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | `true` — call card hidden, `false` — call not found ||
+[`boolean`](../data-types.md) | `true` — the command to hide the call card was sent to the users, `false` — a call with this `CALL_ID` was not found or has already been finished with the [telephony.externalCall.finish](./telephony-external-call-finish.md) method ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-The method does not have specific error codes. If `CALL_ID` is not found, the method will return `result = false`.
+HTTP status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no errors of its own. If `CALL_ID` is not provided or a call with this `CALL_ID` is not found, the method returns HTTP status `200` and `result: false`. In addition, the method returns system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `telephony` scope ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with the Manage Numbers — modify access permission
+> Who can execute the method: user with the Manage numbers — Update access permission
 
 The method `voximplant.line.outgoing.set` sets the default outgoing line.
 
@@ -154,6 +154,7 @@ The method changes the outgoing line only if the provided `LINE_ID` exists among
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -266,6 +267,7 @@ HTTP Status: **200**
 [`integer`](../../../data-types.md) | Result of the method execution.
 
 `1` — request processed.
+
 Check the actual line using [voximplant.line.outgoing.get](./voximplant-line-outgoing-get.md), as an invalid `LINE_ID` will also return `1` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
@@ -287,8 +289,8 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to modify the default outgoing line ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to modify the default outgoing line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -297,5 +299,4 @@ HTTP Status: **403**
 
 - [{#T}](./voximplant-line-get.md)
 - [{#T}](./voximplant-line-outgoing-get.md)
-- [{#T}](./voximplant-line-outgoing-set.md)
 - [{#T}](./voximplant-line-outgoing-sip-set.md)

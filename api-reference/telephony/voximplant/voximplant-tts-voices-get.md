@@ -136,6 +136,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -204,18 +205,13 @@ No parameters.
     	return fmt.Errorf("voximplant.tts.voices.get: %w", err)
     }
 
-    var item struct {
-    	Auenglishfemale    string `json:"auenglishfemale"`
-    	Brportuguesefemale string `json:"brportuguesefemale"`
-    	Caenglishfemale    string `json:"caenglishfemale"`
-    	Cafrenchfemale     string `json:"cafrenchfemale"`
-    	Cafrenchmale       string `json:"cafrenchmale"`
-    	Chchinesefemale    string `json:"chchinesefemale"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var voices map[string]string
+    if err := json.Unmarshal(res.Result, &voices); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Auenglishfemale, item.Brportuguesefemale)
+    for id, name := range voices {
+    	fmt.Printf("%s: %s\n", id, name)
+    }
     ```
 
 {% endlist %}
@@ -289,12 +285,35 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object containing a list of available voices for text-to-speech synthesis, where the key is the voice identifier and the value is the voice name ||
+[`object`](../../data-types.md) | An object containing a list of available voices for text-to-speech synthesis, where the key is the voice identifier and the value is the voice name.
+
+Names are returned in the request language, with the speech synthesis provider in parentheses: `Amazon` or `Default`. The set of keys is fixed; the full list is shown in the response example ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no parameters, so it has no errors of its own. It returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `telephony` scope ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

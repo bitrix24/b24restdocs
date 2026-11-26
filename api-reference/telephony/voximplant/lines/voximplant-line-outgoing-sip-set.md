@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with the Management of Numbers — modification access permission
+> Who can execute the method: user with the Manage numbers — Update access permission
 
 The method `voximplant.line.outgoing.sip.set` sets the SIP line as the default outgoing line.
 
@@ -146,6 +146,7 @@ You can obtain the ID using [voximplant.sip.get](../sip/voximplant-sip-get.md). 
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -278,9 +279,9 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | `Specified CONFIG_ID is not found` | SIP line with the specified `CONFIG_ID` was not found. ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient rights to modify the outgoing SIP line. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | `Specified CONFIG_ID is not found` | The `CONFIG_ID` parameter is not passed, is less than or equal to `0`, or no line configuration with this ID is found ||
+|| `403` | `ACCESS_DENIED` | `Access denied!` | Insufficient rights to modify the outgoing SIP line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -290,4 +291,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./voximplant-line-get.md)
 - [{#T}](./voximplant-line-outgoing-get.md)
 - [{#T}](./voximplant-line-outgoing-set.md)
-- [{#T}](./voximplant-line-outgoing-sip-set.md)
+- [{#T}](../sip/voximplant-sip-get.md)

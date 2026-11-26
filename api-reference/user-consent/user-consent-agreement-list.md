@@ -13,11 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `userconsent.agreement.list` returns a list of agreements.
+The method `userconsent.agreement.list` returns a list of Bitrix24 agreements with the identifiers required by the [userconsent.agreement.text](./user-consent-agreement-text.md) and [userconsent.consent.add](./user-consent-consent-add.md) methods.
 
 ## Method Parameters
 
 No parameters.
+
+The method does not support filtering, sorting, or pagination: passed parameters such as `start` or `filter` are ignored, and the response always contains the full list.
 
 ## Code Examples
 
@@ -64,16 +66,9 @@ No parameters.
     }
 
     try {
-      // userconsent.agreement.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<AgreementItem[]>({
         method: 'userconsent.agreement.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -101,16 +96,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // userconsent.agreement.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'userconsent.agreement.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -230,12 +218,6 @@ No parameters.
     for _, it := range items {
     	fmt.Println(it.ID, it.Name)
     }
-
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -246,114 +228,48 @@ HTTP status: **200**
 
 ```json
 {
-"result": [
-    {
-     "ID": "35",
-     "NAME": "Consent to receive newsletters",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "de"
-    },
-    {
-     "ID": "33",
-     "NAME": "Conditions of use for Bitrix24 Sites",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "fr"
-    },
-    {
-     "ID": "31",
-     "NAME": "Terms of use for the notification service",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": null
-    },
-    {
-     "ID": "29",
-     "NAME": "ALEX",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": ""
-    },
-    {
-     "ID": "27",
-     "NAME": "Terms of use for the B24 Notification Center",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": null
-    },
-    {
-     "ID": "25",
-     "NAME": "Termos de Uso do Bitrix24 Sites",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "br"
-    },
-    {
-     "ID": "23",
-     "NAME": "Second agreement",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": ""
-    },
-    {
-     "ID": "21",
-     "NAME": "Bitrix24 Sites: Terms of Use",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "de"
-    },
-    {
-     "ID": "19",
-     "NAME": "Consent with Cookies",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "de"
-    },
-    {
-     "ID": "17",
-     "NAME": "Cookie consent",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "en"
-    },
-    {
-     "ID": "15",
-     "NAME": "Rules for using Bitrix24.Sites",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "ua"
-    },
-    {
-     "ID": "13",
-     "NAME": "Test newwef",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": ""
-    },
-    {
-     "ID": "11",
-     "NAME": "Bitrix24 Sites Terms of Use",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "en"
-    },
-    {
-     "ID": "9",
-     "NAME": "Rules for using Bitrix24.Sites",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "es"
-    },
-    {
-     "ID": "7",
-     "NAME": "Rules for using Bitrix24.Sites",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": "de"
-    },
-    {
-     "ID": "1",
-     "NAME": "Example of consent for processing personal data",
-     "ACTIVE": "Y",
-     "LANGUAGE_ID": ""
+    "result": [
+        {
+            "ID": "35",
+            "NAME": "Consent to receive newsletters",
+            "ACTIVE": "Y",
+            "LANGUAGE_ID": "de"
+        },
+        {
+            "ID": "31",
+            "NAME": "Terms of use for the notification service",
+            "ACTIVE": "Y",
+            "LANGUAGE_ID": null
+        },
+        {
+            "ID": "23",
+            "NAME": "Consent to data processing in a CRM form",
+            "ACTIVE": "Y",
+            "LANGUAGE_ID": ""
+        },
+        {
+            "ID": "17",
+            "NAME": "Cookie consent",
+            "ACTIVE": "Y",
+            "LANGUAGE_ID": "en"
+        },
+        {
+            "ID": "1",
+            "NAME": "Example of consent for processing personal data",
+            "ACTIVE": "Y",
+            "LANGUAGE_ID": ""
+        }
+    ],
+    "time": {
+        "start": 1760352862,
+        "finish": 1760352862.776508,
+        "duration": 0.776508092880249,
+        "processing": 0,
+        "date_start": "2025-10-13T11:54:22+01:00",
+        "date_finish": "2025-10-13T11:54:22+01:00",
+        "operating_reset_at": 1760353462,
+        "operating": 0
     }
-],
-"time": {
-    "start": 1760352862,
-    "finish": 1760352862.776508,
-    "duration": 0.776508092880249,
-    "processing": 0,
-    "date_start": "2025-10-13T13:54:22+02:00",
-    "date_finish": "2025-10-13T13:54:22+02:00",
-    "operating_reset_at": 1760353462,
-    "operating": 0
-}
 }
 ```
 
@@ -363,26 +279,48 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Root element of the response ||
+[`array`](../data-types.md) | Array of agreements. The method returns all Bitrix24 agreements in a single array, without pagination, sorted from newest to oldest by `ID`. If there are no agreements, an empty array `[]` is returned ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the agreement ||
+[`integer`](../data-types.md) | Identifier of the agreement. Returned as a string, for example `"35"`. Pass it to the `id` parameter of the [userconsent.agreement.text](./user-consent-agreement-text.md) method and to the `AGREEMENT_ID` parameter of the [userconsent.consent.add](./user-consent-consent-add.md) method ||
 || **NAME**
 [`string`](../data-types.md) | Name of the agreement ||
 || **ACTIVE**
 [`string`](../data-types.md) | Activity status. Possible values:
-- `Y` — yes
-- `N` — no ||
+- `Y` — the agreement is enabled
+- `N` — the agreement is disabled ||
 || **LANGUAGE_ID**
-[`string`](../data-types.md) | Language identifier of the agreement ||
+[`string`](../data-types.md) | Language code of the agreement, for example `en` or `de`. If no language is set, an empty string or `null` is returned ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+HTTP status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no parameters, so it has no method-specific errors. It returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `userconsent` scope ||
+|#
+
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-consent-agreement-text.md)
 - [{#T}](./user-consent-consent-add.md)
+- [{#T}](./index.md)

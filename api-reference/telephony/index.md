@@ -45,20 +45,22 @@ The REST API supports three telephony scenarios:
 
 ## How to Start Working with External Telephony
 
-1. Register a line using the [telephony.externalLine.add](./telephony-external-line-add.md) method.
-2. When starting a call, invoke [telephony.externalCall.register](./telephony-external-call-register.md).
-3. If necessary, open the call record via [telephony.externalCall.show](./telephony-external-call-show.md).
-4. After the call ends, invoke [telephony.externalCall.finish](./telephony-external-call-finish.md) and pass the recording via [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md).
-5. Subscribe to [OnExternalCallStart](./events/on-external-call-start.md) and [OnExternalCallBackStart](./events/on-external-call-back-start.md) if you need to handle call initiation from the CRM interface.
+1. Register a line using the [telephony.externalLine.add](./telephony-external-line-add.md) method
+2. When starting a call, invoke [telephony.externalCall.register](./telephony-external-call-register.md)
+3. If necessary, open the call record via [telephony.externalCall.show](./telephony-external-call-show.md)
+4. After the call ends, invoke [telephony.externalCall.finish](./telephony-external-call-finish.md) and pass the recording via [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md)
+5. Subscribe to [OnExternalCallStart](./events/on-external-call-start.md) and [OnExternalCallBackStart](./events/on-external-call-back-start.md) if you need to handle call initiation from the CRM interface
+
+For a complete integration example — registering an incoming call, showing the call card to employees, routing to the client's responsible person, making an outgoing call from CRM, and finishing with a recording — see the tutorial [How to Integrate External Telephony with Bitrix24](../../tutorials/telephony/index.md).
 
 ## How to Start Working with Built-in Telephony and SIP Connector
 
-1. Create a SIP connection using the [voximplant.sip.add](./voximplant/sip/voximplant-sip-add.md) method.
-2. Check the connection using the [voximplant.sip.get](./voximplant/sip/voximplant-sip-get.md) and [voximplant.sip.status](./voximplant/sip/voximplant-sip-status.md) methods.
-3. Obtain a list of available lines using the [voximplant.line.get](./voximplant/lines/voximplant-line-get.md) method.
-4. Set the default outgoing line using [voximplant.line.outgoing.set](./voximplant/lines/voximplant-line-outgoing-set.md) or [voximplant.line.outgoing.sip.set](./voximplant/lines/voximplant-line-outgoing-sip-set.md).
-5. For employees, obtain SIP settings using the [voximplant.user.get](./voximplant/users/voximplant-user-get.md) method and, if necessary, activate the SIP device using [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md) or deactivate it using [voximplant.user.deactivatePhone](./voximplant/users/voximplant-user-deactivate-phone.md).
-6. Subscribe to events [OnVoximplantCallInit](./voximplant/events/on-voximplant-call-init.md), [OnVoximplantCallStart](./voximplant/events/on-voximplant-call-start.md), [OnVoximplantCallEnd](./voximplant/events/on-voximplant-call-end.md) if you need to handle the call lifecycle.
+1. Create a SIP connection using the [voximplant.sip.add](./voximplant/sip/voximplant-sip-add.md) method
+2. Check the connection using the [voximplant.sip.get](./voximplant/sip/voximplant-sip-get.md) and [voximplant.sip.status](./voximplant/sip/voximplant-sip-status.md) methods
+3. Obtain a list of available lines using the [voximplant.line.get](./voximplant/lines/voximplant-line-get.md) method
+4. Set the default outgoing line using [voximplant.line.outgoing.set](./voximplant/lines/voximplant-line-outgoing-set.md) or [voximplant.line.outgoing.sip.set](./voximplant/lines/voximplant-line-outgoing-sip-set.md)
+5. For employees, obtain SIP settings using the [voximplant.user.get](./voximplant/users/voximplant-user-get.md) method and, if necessary, activate the SIP device using [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md) or deactivate it using [voximplant.user.deactivatePhone](./voximplant/users/voximplant-user-deactivate-phone.md)
+6. Subscribe to events [OnVoximplantCallInit](./voximplant/events/on-voximplant-call-init.md), [OnVoximplantCallStart](./voximplant/events/on-voximplant-call-start.md), [OnVoximplantCallEnd](./voximplant/events/on-voximplant-call-end.md) if you need to handle the call lifecycle
 
 ## Widgets
 
@@ -70,11 +72,12 @@ You can embed an application into the call record and display the operator inter
 
 ## Limitations and Checks
 
-- The methods [telephony.externalCall.register](./telephony-external-call-register.md) and [telephony.externalCall.finish](./telephony-external-call-finish.md) work only in the context of an [application](../../settings/app-installation/index.md).
-- In [telephony.externalCall.register](./telephony-external-call-register.md), pass a unique `EXTERNAL_CALL_ID` for each physical call to avoid receiving an existing `CALL_ID` when re-registering within 30 minutes.
-- Call [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md) after [telephony.externalCall.finish](./telephony-external-call-finish.md) when the recording is ready.
-- Call [telephony.call.attachTranscription](./telephony-call-attach-transcription.md) for a completed call.
-- After [voximplant.line.outgoing.set](./voximplant/lines/voximplant-line-outgoing-set.md), check the actual line using [voximplant.line.outgoing.get](./voximplant/lines/voximplant-line-outgoing-get.md).
+- An external line is bound to whoever added it: an application sees and modifies only its own lines, and a webhook only the lines added via a webhook
+- In [telephony.externalCall.register](./telephony-external-call-register.md), pass a unique `EXTERNAL_CALL_ID` for each physical call. Re-registering with the same `EXTERNAL_CALL_ID` returns the `CALL_ID` of the unfinished call, and without `EXTERNAL_CALL_ID` the method looks for a matching registration within the last 30 minutes
+- The [voximplant.user.get](./voximplant/users/voximplant-user-get.md) method works only in the context of an application; via a webhook, it returns the `ACCESS_DENIED` error
+- Call [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md) after [telephony.externalCall.finish](./telephony-external-call-finish.md) when the recording is ready
+- Call [telephony.call.attachTranscription](./telephony-call-attach-transcription.md) for a completed call
+- After [voximplant.line.outgoing.set](./voximplant/lines/voximplant-line-outgoing-set.md), check the actual line using [voximplant.line.outgoing.get](./voximplant/lines/voximplant-line-outgoing-get.md)
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -114,6 +117,8 @@ You can embed an application into the call record and display the operator inter
 {% endlist %}
 
 ### SIP and Built-in Telephony
+
+The [voximplant.callback.start](./voximplant/voximplant-callback-start.md), [voximplant.infocall.startwithsound](./voximplant/voximplant-infocall-start-with-sound.md), and [voximplant.infocall.startwithtext](./voximplant/voximplant-infocall-start-with-text.md) methods require the [`call`](../scopes/permissions.md) scope; the other methods in this section require the `telephony` scope.
 
 {% list tabs %}
 
