@@ -12,8 +12,9 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - any user can reset their own settings,
->  - a user with the "Allow to change settings" access permission in CRM can reset both general and others' settings.
+>  - any user can reset their own personal settings
+>  - a user with the "Manage CRM item form layout" or "Edit CRM preferences" permission in CRM can reset the general settings
+>  - a CRM administrator with the "Edit CRM preferences" permission can reset other users' personal settings
 
 {% note warning "DEPRECATED" %}
 
@@ -23,11 +24,7 @@ The development of this method has been halted. Please use [crm.item.details.con
 
 The method `crm.lead.details.configuration.reset` resets the settings of lead cards.
 
-{% note warning %}
-
-The settings for repeat leads may differ from those for simple leads. To switch between lead card settings, use the `lead.customer.type` parameter in `extras`.
-
-{% endnote %}
+Both permissions are granted for the entire CRM and cannot be granted for leads separately.
 
 ## Method Parameters
 
@@ -39,17 +36,17 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 || **userId**
 [`user`](../../../data-types.md) | The identifier of the user for whom the personal configuration needs to be reset.
 
-If this parameter is not provided, the `userId` of the user calling the method will be used.
+If this parameter is not provided, or its value converted to an integer is less than or equal to zero, the current user's identifier is used.
 
 This is only required when resetting personal settings ||
 || **scope**
 [`string`](../../../data-types.md) | The scope of the settings. Possible values:
-- `'P'` - personal settings
-- `'C'` - general settings
+- `'P'` — personal settings
+- `'C'` — general settings
 
-The default value is `'P'` ||
+The default is `P`. Any value other than `C` selects personal settings `P` ||
 || **extras**
-[`object`](../../../data-types.md) | Additional parameters for selecting the type of lead. The structure is described [below](#extras) ||
+[`object`](../../../data-types.md) | Optional additional parameters for selecting the type of lead. The structure is described [below](#extras) ||
 |#
 
 ### Parameter extras Parameter {#extras}
@@ -57,10 +54,12 @@ The default value is `'P'` ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **lead.customer.type**
+|| **leadCustomerType**
 [`integer`](../../../data-types.md) | The type of lead. Possible values:
-- `1` - simple lead
-- `2` - repeat lead ||
+- `1` — simple lead
+- `2` — repeat lead
+
+If `extras` or the `leadCustomerType` key is not passed, the method resets the simple lead card settings ||
 |#
 
 ## Code Examples
@@ -172,7 +171,6 @@ The default value is `'P'` ||
             bitrix_response = client.crm.lead.details.configuration.reset(
                 scope="P",
                 user_id=1,
-                extras={"leadCustomerType": 2},
             ).response
             result = bitrix_response.result
             print(result)
@@ -479,7 +477,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The root element of the response. Returns `true` if the settings were successfully reset ||
+[`boolean`](../../../data-types.md) | The root element of the response. Returns `true` if the call completed without an error ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -500,8 +498,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Access denied | Insufficient permissions to reset the requested configuration ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied | Insufficient permissions to reset the requested configuration ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

@@ -12,8 +12,8 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - any user can retrieve their own and shared settings,
->  - a user with the "Allow to modify settings" access permission in CRM can retrieve others' settings.
+>  - any user can retrieve their own personal settings and the shared settings
+>  - a CRM administrator with the "Edit CRM preferences" permission can retrieve other users' personal settings
 
 {% note warning "DEPRECATED" %}
 
@@ -21,13 +21,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.lead.details.configuration.get` retrieves the settings for lead cards.
-
-{% note warning %}
-
-The settings for repeat leads may differ from those for simple leads. To switch between lead card settings, use the `lead.customer.type` parameter in `extras`.
-
-{% endnote %}
+The method `crm.lead.details.configuration.get` retrieves the personal lead card settings of the specified user or the shared settings for all users.
 
 ## Method Parameters
 
@@ -39,17 +33,17 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 || **userId**
 [`user`](../../../data-types.md) | The identifier of the user for whom to retrieve personal configuration.
 
-If the parameter is not provided, the `userId` of the user calling the method will be used.
+If the parameter is not provided, or its value converted to an integer is less than or equal to zero, the current user's identifier is used.
 
 Required only when requesting personal settings ||
 || **scope**
 [`string`](../../../data-types.md) | The scope of the settings. Possible values:
-- `'P'` - personal settings
-- `'C'` - shared settings
+- `'P'` — personal settings
+- `'C'` — shared settings
 
-The default value is `'P'` ||
+The default is `P`. Any value other than `C` selects personal settings `P` ||
 || **extras**
-[`object`](../../../data-types.md) | Additional parameters. The structure is described [below](#extras) ||
+[`object`](../../../data-types.md) | Optional additional parameters. The structure is described [below](#extras) ||
 |#
 
 ### Parameter extras Parameter {#extras}
@@ -57,10 +51,12 @@ The default value is `'P'` ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **lead.customer.type**
+|| **leadCustomerType**
 [`integer`](../../../data-types.md) | Type of lead. Possible values:
-- `1` - simple lead
-- `2` - repeat lead ||
+- `1` — simple lead
+- `2` — repeat lead
+
+If `extras` or the `leadCustomerType` key is not passed, the method retrieves the simple lead card settings ||
 |#
 
 ## Code Examples
@@ -103,7 +99,7 @@ The default value is `'P'` ||
 
         type CrmLeadCardSectionElement = {
           name: string
-          optionFlags: string
+          optionFlags?: string | number
         }
 
         // Shape of the payload returned in result (match the "response handling" section of the page)
@@ -185,7 +181,6 @@ The default value is `'P'` ||
             bitrix_response = client.crm.lead.details.configuration.get(
                 scope="P",
                 user_id=1,
-                extras={"leadCustomerType": 2},
             ).response
             result = bitrix_response.result
             print(result)
@@ -328,7 +323,7 @@ The default value is `'P'` ||
 
         type CrmLeadCardSectionElement = {
           name: string
-          optionFlags: string
+          optionFlags?: string | number
         }
 
         // Shape of the payload returned in result (match the "response handling" section of the page)
@@ -544,7 +539,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`section[]`](#section)\|`null` | The root element of the response. Contains the configuration of the lead card sections. Returns `null` if the configuration is not found ||
+[`section[]`](#section) or `null` | The root element of the response. Contains the configuration of the lead card sections. Returns `null` if the selected view has no saved configuration, for example, if the employee has not customized their personal view ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -572,9 +567,11 @@ HTTP Status: **200**
 || **name**
 [`string`](../../../data-types.md) | Field identifier ||
 || **optionFlags**
-[`string`](../../../data-types.md) | Values:
-- `"1"` - always show
-- `"0"` - not always show ||
+[`string`](../../../data-types.md) or [`integer`](../../../data-types.md) | Whether the field is always shown:
+- `"1"` — yes
+- `"0"` — no
+
+Returned in the form it was passed to [crm.lead.details.configuration.set](./crm-lead-details-configuration-set.md): as a string or a number. If the flag was not passed when saving, the field is absent from the response ||
 || **options**
 [`object`](../../../data-types.md) | Additional options for the field ||
 |#
@@ -595,8 +592,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Access denied | Insufficient permissions to retrieve the requested configuration ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied | The user requested another user's personal settings and does not have the "Edit CRM preferences" permission in CRM ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

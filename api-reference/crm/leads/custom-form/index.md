@@ -22,37 +22,66 @@ For each card view, sections can be configured, and within each section, a list 
 
 ## Current API Version
 
-Development of the `crm.lead.details.configuration.*` methods has been discontinued. For new development, use the universal methods [crm.item.details.configuration.*](../../universal/item-details-configuration/index.md) and pass `entityTypeId: 1` to them — this is the identifier of the "Lead" object type. The `entityTypeId` parameter allows a single group of methods to configure the cards of any CRM object.
+Development of the `crm.lead.details.configuration.*` methods has been discontinued. For new development, use the [REST 3.0 card view methods](../../rest-v3/detail-page-layout/index.md). The `crm.lead.details.configuration.*` methods continue to work in existing integrations.
 
 #|
 || **Method with Discontinued Development** | **Replacement** ||
-|| `crm.lead.details.configuration.get` | [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md) ||
-|| `crm.lead.details.configuration.set` | [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md) ||
-|| `crm.lead.details.configuration.reset` | [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md) ||
-|| `crm.lead.details.configuration.forceCommonScopeForAll` | [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md) ||
+|| `crm.lead.details.configuration.get` | [crm.lead.detailpagelayout.get](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-get-rest-v3.md) ||
+|| `crm.lead.details.configuration.set` | [crm.lead.detailpagelayout.update](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-update-rest-v3.md) ||
+|| `crm.lead.details.configuration.reset` | [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md) with `entityTypeId: 1`; REST 3.0 has no equivalent ||
+|| `crm.lead.details.configuration.forceCommonScopeForAll` | [crm.lead.detailpagelayout.setcommonforall](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-set-common-for-all-rest-v3.md) ||
 |#
 
-The `crm.lead.details.configuration.*` methods continue to work — retain them only in existing integrations.
+In REST 3.0, repeat leads have their own views: `personal_returning_customer` and `common_returning_customer`.
 
 ## How to Configure the Card
 
-1. Retrieve the identifiers of the fields you want to display in the card with the [crm.lead.fields](../crm-lead-fields.md) method. The card configurations use the same names as the response of this method: `TITLE`, `STATUS_ID`, `PHONE`, and others.
-2. Review the current structure of the card with the [crm.lead.details.configuration.get](./crm-lead-details-configuration-get.md) method — it returns a list of sections with nested fields.
-3. Pass the new structure with the [crm.lead.details.configuration.set](./crm-lead-details-configuration-set.md) method. List the sections in the `data` parameter, and the fields of each section in its `elements`.
+1. Retrieve the identifiers of the fields you want to display in the card with the [crm.lead.fields](../crm-lead-fields.md) method: `TITLE`, `STATUS_ID`, `PHONE`, and others. Besides lead fields, the card contains composite elements such as `CLIENT` and `OPPORTUNITY_WITH_CURRENCY` — their names are returned by [crm.lead.details.configuration.get](./crm-lead-details-configuration-get.md).
+2. Review the current structure of the card with the [crm.lead.details.configuration.get](./crm-lead-details-configuration-get.md) method — it returns a list of sections with nested fields, or `null` if no configuration has been saved.
+3. Pass the new structure with the [crm.lead.details.configuration.set](./crm-lead-details-configuration-set.md) method. The new structure replaces the entire saved configuration of the selected view.
 4. If the result does not suit you, return to the default configurations with the [crm.lead.details.configuration.reset](./crm-lead-details-configuration-reset.md) method.
 5. To force the general view of the card onto all employees and delete their personal configurations, call [crm.lead.details.configuration.forceCommonScopeForAll](./crm-lead-details-configuration-force-common-scope-for-all.md).
 
-## Configuration Scope
+## Card Configuration Structure
 
-The configuration scope is set by the `scope` parameter:
+A configuration is an array of sections with nested fields in `elements`. An example of the `result` field in the [crm.lead.details.configuration.get](./crm-lead-details-configuration-get.md) response with one section and two lead fields:
+
+```json
+{
+    "result": [
+        {
+            "name": "lead_info",
+            "title": "About the Lead",
+            "type": "section",
+            "elements": [
+                {"name": "TITLE"},
+                {"name": "STATUS_ID"}
+            ]
+        }
+    ]
+}
+```
 
 #|
-|| **Value** | **What It Configures** | **What Else to Pass** ||
-|| `P` | Personal card view of an employee. Default value | `userId` — the employee identifier. If not passed, the methods work with the configurations of the user calling the method ||
-|| `C` | General card view for all employees | — ||
+|| **Level** | **Fields** | **Description** ||
+|| Section | `name`, `title`, `type`, `elements` | `name` — section name, `title` — heading, `type` — the `section` type, `elements` — an array of lead fields ||
+|| Section field | `name` | A lead field identifier from `crm.lead.fields` or a card element name from the `crm.lead.details.configuration.get` response ||
 |#
 
-The scope also determines the access permissions: any user can read and change their own personal configurations, while the general and other users' configurations require the "Allow to modify settings" permission in CRM. This is a single role permission for the entire CRM module — it cannot be granted for leads separately.
+The [crm.lead.details.configuration.set](./crm-lead-details-configuration-set.md) method accepts the array of sections from `result` in the `data` parameter.
+
+## Configuration Scope
+
+The `scope` parameter selects the card view, and `userId` selects the employee. By default, `scope` is `P`, so the methods work with the personal configurations of the calling user.
+
+#|
+|| **Card View** | **What to Pass** | **Who Can Read** | **Who Can Change and Reset** ||
+|| General view — the card for all employees | `scope = C` | Any user | A user with the "Edit CRM preferences" or "Manage CRM item form layout" permission ||
+|| Own personal view | `scope = P` without `userId` | Any user | Any user ||
+|| Another employee's personal view | `scope = P` and that employee's `userId` | CRM administrator | CRM administrator ||
+|#
+
+A CRM administrator is a user with the "Edit CRM preferences" permission. Both permissions are granted for the entire CRM and cannot be granted for leads separately. The `forceCommonScopeForAll` method is available to a user with either of these permissions.
 
 ## Linking Lead Cards with Other Objects
 
@@ -72,7 +101,7 @@ Configurations for simple and repeat lead cards are retained separately. The lea
 || `2` | Repeat lead ||
 |#
 
-If `extras` is not passed, the methods work with the simple lead card.
+The `extras` parameter is optional. If `extras` or the `leadCustomerType` key in it is not passed, the methods work with the simple lead card.
 
 ## Overview of Methods {#all-methods}
 

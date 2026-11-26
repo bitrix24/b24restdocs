@@ -12,8 +12,11 @@ Choose a tool for developing with an AI agent:
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - any user can set their own settings,
->  - a user with the "Allow to change settings" access permission in CRM can set others' and shared settings.
+>  - any user can set their own personal settings
+>  - a user with the "Manage CRM item form layout" or "Edit CRM preferences" permission in CRM can set the shared settings
+>  - a CRM administrator with the "Edit CRM preferences" permission can set other users' personal settings
+>
+> Both permissions are granted for the entire CRM and cannot be granted for leads separately.
 
 {% note warning "DEPRECATED" %}
 
@@ -21,13 +24,7 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 {% endnote %}
 
-The method `crm.lead.details.configuration.set` sets the settings for lead cards.
-
-{% note warning %}
-
-The settings for repeat leads may differ from those for simple leads. To switch between lead card settings, use the `leadCustomerType` parameter.
-
-{% endnote %}
+The method `crm.lead.details.configuration.set` sets the settings for lead cards. The passed `data` value replaces the entire configuration of the selected view: sections missing from `data` disappear from the card.
 
 ## Method Parameters
 
@@ -37,19 +34,19 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 || **Name**
 `type` | **Description** ||
 || **data***
-[`section[]`](#section) | A list of sections in the card. Each section contains a set of fields that will be displayed in the lead card. ||
+[`section[]`](#section) | A non-empty array of sections in the card. Each section contains a set of fields that will be displayed in the lead card. ||
 || **userId**
 [`user`](../../../data-types.md) | The identifier of the user for whom to save the personal configuration.
 
-If the parameter is not provided, the `userId` of the user calling the method will be used.
+If the parameter is not provided, or its value converted to an integer is less than or equal to zero, the current user's identifier is used.
 
 This is only required when setting personal settings. ||
 || **scope**
 [`string`](../../../data-types.md) | The scope of the settings. Possible values:
-- `'P'` - personal settings
-- `'C'` - shared settings
+- `'P'` — personal settings
+- `'C'` — shared settings
 
-The default value is `'P'`. ||
+The default is `P`. Any value other than `C` selects personal settings `P` ||
 || **extras**
 [`object`](../../../data-types.md) | Additional parameters for selecting the lead type. The structure is described [below](#extras) ||
 |#
@@ -63,8 +60,8 @@ The default value is `'P'`. ||
 [`string`](../../../data-types.md) | Unique name of the section. ||
 || **title***
 [`string`](../../../data-types.md) | Title of the section. ||
-|| **type***
-[`string`](../../../data-types.md) | Type of the section. Only the value `'section'` is supported. ||
+|| **type**
+[`string`](../../../data-types.md) | Type of the section. The allowed value is `section`. If the parameter is not passed or an empty string is passed, `section` is used ||
 || **elements**
 [`section_element[]`](#section_element) | A list of fields displayed in the section. ||
 |#
@@ -78,8 +75,8 @@ The default value is `'P'`. ||
 [`string`](../../../data-types.md) | Identifier of the lead field. A list of available fields can be obtained using the [crm.lead.fields](../crm-lead-fields.md) method. ||
 || **optionFlags**
 [`integer`](../../../data-types.md) | Whether to always show the field:
-- `1` - yes
-- `0` - no
+- `1` — yes
+- `0` — no
 
 The default value is `0`. ||
 || **options**
@@ -93,8 +90,10 @@ The default value is `0`. ||
 `type` | **Description** ||
 || **leadCustomerType**
 [`integer`](../../../data-types.md) | Type of lead. Possible values:
-- `1` - simple lead
-- `2` - repeat lead ||
+- `1` — simple lead
+- `2` — repeat lead
+
+If `extras` or the `leadCustomerType` key is not passed, the method sets the simple lead card settings ||
 |#
 
 ## Code Examples
@@ -145,7 +144,7 @@ The default value is `0`. ||
         data: [
           {
             name: 'main',
-            title: 'About lead',
+            title: 'About the Lead',
             type: 'section',
             elements: [
               { name: 'TITLE' },
@@ -157,7 +156,7 @@ The default value is `0`. ||
           },
           {
             name: 'additional',
-            title: 'Additional',
+            title: 'Additional Information',
             type: 'section',
             elements: [
               { name: 'ASSIGNED_BY_ID' },
@@ -204,7 +203,7 @@ The default value is `0`. ||
             data: [
               {
                 name: 'main',
-                title: 'About lead',
+                title: 'About the Lead',
                 type: 'section',
                 elements: [
                   { name: 'TITLE' },
@@ -216,7 +215,7 @@ The default value is `0`. ||
               },
               {
                 name: 'additional',
-                title: 'Additional',
+                title: 'Additional Information',
                 type: 'section',
                 elements: [
                   { name: 'ASSIGNED_BY_ID' },
@@ -257,6 +256,29 @@ The default value is `0`. ||
             scope="P",
             user_id=1,
             extras={"leadCustomerType": 2},
+            data=[
+                {
+                    "name": "main",
+                    "title": "About the Lead",
+                    "type": "section",
+                    "elements": [
+                        {"name": "TITLE"},
+                        {"name": "STATUS_ID"},
+                        {"name": "SOURCE_ID"},
+                        {"name": "NAME"},
+                        {"name": "PHONE", "optionFlags": 1},
+                    ],
+                },
+                {
+                    "name": "additional",
+                    "title": "Additional Information",
+                    "type": "section",
+                    "elements": [
+                        {"name": "ASSIGNED_BY_ID"},
+                        {"name": "COMMENTS"},
+                    ],
+                },
+            ],
         ).response
         result = bitrix_response.result
         print(result)
@@ -525,15 +547,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Access denied | Insufficient permissions. ||
-|| Empty value | Parameter 'data' must be array | The `data` parameter is not an array. ||
-|| Empty value | The data must be indexed array | The `data` parameter is not an indexed array. ||
-|| Empty value | There are no data to write | An empty array was passed in `data`. ||
-|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section' | A value other than `'section'` was passed in `data[i].type`. ||
-|| Empty value | Section at index `i` does not have name | An empty value was passed in `data[i].name`. ||
-|| Empty value | Section at index `i` does not have title | An empty value was passed in `data[i].title`. ||
-|| Empty value | Element at index `j` in section at index `i` does not have name | An empty value was passed in `data[i].elements[j].name`. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied | Insufficient permissions. ||
+|| `400` | Empty value | Parameter 'data' must be array | The `data` parameter is not an array. ||
+|| `400` | Empty value | The data must be indexed array | The `data` parameter is not an indexed array. ||
+|| `400` | Empty value | There are no data to write | An empty array was passed in `data`. ||
+|| `400` | Empty value | Section at index `i` have type '`data[i].type`'. The expected type is 'section' | A value other than `'section'` was passed in `data[i].type`. ||
+|| `400` | Empty value | Section at index `i` does not have name | An empty value was passed in `data[i].name`. ||
+|| `400` | Empty value | Section at index `i` does not have title | `data[i].title` is not a string. ||
+|| `400` | Empty value | Element at index `j` in section at index `i` does not have name | An empty value was passed in `data[i].elements[j].name`. ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}
