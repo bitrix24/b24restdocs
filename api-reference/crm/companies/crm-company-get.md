@@ -21,6 +21,8 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.company.get` returns a company by its identifier.
 
+The method returns only companies from the general category. Retrieve companies from other categories using [crm.item.get](../universal/crm-item-get.md) with `entityTypeId=4`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -29,7 +31,7 @@ The method `crm.company.get` returns a company by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Company identifier ||
+[`integer`](../../data-types.md) | Company identifier. Must be greater than 0 after conversion to an integer ||
 |#
 
 ## Code Examples
@@ -44,7 +46,7 @@ The method `crm.company.get` returns a company by its identifier.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":12}' \
+    -d '{"id":12}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.get
     ```
 
@@ -54,7 +56,7 @@ The method `crm.company.get` returns a company by its identifier.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":12,"auth":"**put_access_token_here**"}' \
+    -d '{"id":12,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.get
     ```
 
@@ -196,7 +198,7 @@ The method `crm.company.get` returns a company by its identifier.
     $result = CRest::call(
         'crm.company.get',
         [
-            'ID' => 12
+            'id' => 12
         ]
     );
 
@@ -314,9 +316,36 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response, returns company fields. You can get the description of company fields using the method [crm.company.fields](./crm-company-fields.md) ||
+[`object`](../../data-types.md) | Company fields. Key fields are described [below](#company), the full list is available in [crm.company.fields](./crm-company-fields.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object company {#company}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Company identifier ||
+|| **TITLE**
+[`string`](../../data-types.md) | Company name ||
+|| **COMPANY_TYPE**
+[`crm_status`](../data-types.md) | Company type ||
+|| **ASSIGNED_BY_ID**
+[`user`](../../data-types.md) | Identifier of the responsible user ||
+|| **DATE_CREATE**
+[`datetime`](../../data-types.md) | Creation date ||
+|| **DATE_MODIFY**
+[`datetime`](../../data-types.md) | Modification date ||
+|| **PHONE**
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Phone numbers ||
+|| **EMAIL**
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Email addresses ||
+|| **WEB**
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Websites ||
+|| **IM**
+[`crm_multifield[]`](../data-types.md#crm_multifield) | Messengers ||
 |#
 
 ## Error Handling
@@ -335,9 +364,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | The user does not have "Read" access permission for companies ||
-|| Empty value | `Not found` | Company not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is not provided, or its value is not greater than 0 after conversion to an integer ||
+|| `400` | Empty value | `Access denied.` | The user does not have "Read" access permission for companies ||
+|| `400` | Empty value | `Not found` | The company with the provided `id` was not found or does not belong to the general category ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -345,7 +375,7 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-company-add.md)
-- [{#T}](./crm-company-list.md)
 - [{#T}](./crm-company-update.md)
+- [{#T}](./crm-company-list.md)
 - [{#T}](./crm-company-delete.md)
 - [{#T}](./crm-company-fields.md)

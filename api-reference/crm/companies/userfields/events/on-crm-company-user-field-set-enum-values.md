@@ -1,4 +1,4 @@
-# When Setting List Values for the Custom Field onCrmCompanyUserFieldSetEnumValues
+# Event When Values Are Set for a Custom Company List Field onCrmCompanyUserFieldSetEnumValues
 
 {% note tip "" %}
 
@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: any user. Administrator permissions are required for offline events
 
-The event `ONCRMCOMPANYUSERFIELDSETENUMVALUES` will trigger when setting list values for a company's custom field.
+The `ONCRMCOMPANYUSERFIELDSETENUMVALUES` event is triggered after values are set for a custom company list field. The event is sent even if the set of values has not changed.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md).
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -25,12 +31,12 @@ Data is transmitted as a POST request {.b24-info}
     "event_handler_id": "745",
     "data": {
         "FIELDS": {
-            "ID": "6979",
+            "ID": "6981",
             "ENTITY_ID": "CRM_COMPANY",
-            "FIELD_NAME": "UF_CRM_1743165530"
+            "FIELD_NAME": "UF_CRM_1743165600"
         }
     },
-    "ts": "1743165530",
+    "ts": "1743165610",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -40,7 +46,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -64,9 +69,9 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md), in Unix timestamp format ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -79,10 +84,14 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../../data-types.md) | Identifier of the object to which the custom field belongs. In this case — `CRM_COMPANY` ||
+[`userFieldEntityId`](../../../data-types.md#object_type) | Type of CRM object to which the custom field is attached.
+
+In this case — `CRM_COMPANY` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the custom field ||
+[`string`](../../../../data-types.md) | Code of the custom field for which list values were set ||
 |#
+
+List values are not included in the event. Retrieve them using [crm.company.userfield.get](../crm-company-userfield-get.md) with the `ID` from the event.
 
 ### Parameter auth {#auth}
 
@@ -92,6 +101,7 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-company-user-field-add.md)
 - [{#T}](./on-crm-company-user-field-update.md)
 - [{#T}](./on-crm-company-user-field-delete.md)

@@ -30,10 +30,10 @@ The method `crm.company.update` updates an existing company.
 `type` | **Description** ||
 || **id***
 [`integer`](../../data-types.md) | Company identifier ||
-|| **fields***
+|| **fields**
 [`object`](../../data-types.md) | Object format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -46,21 +46,19 @@ where:
 - `field_n` — field name
 - `value_n` — new field value
 
-The list of available fields is described in the method [crm.company.fields](crm-company-fields.md).
+The list of available fields is described [below](#parameter-fields); the full list can be retrieved using the method [crm.company.fields](crm-company-fields.md).
 
-An incorrect field in `fields` will be ignored
+An incorrect field in `fields` will be ignored.
+
+If `fields` is not passed, the method returns `true` and does not change the company fields
 ||
 || **params**
-[`object`](../../data-types.md) | Object containing a set of additional parameters:
-
-- `REGISTER_SONET_EVENT` — send notification to the responsible person
-- `REGISTER_HISTORY_EVENT` — register an event in history. Possible values:
-  - `Y` — yes
-  - `N` — no
-||
+[`object`](../../data-types.md) | Object containing a set of additional parameters. The structure and possible values are described [below](#parameter-params) ||
 |#
 
 ### Parameter fields {#parameter-fields}
+
+Pass `PHONE`, `EMAIL`, `WEB`, and `IM` as an array of objects. To change an existing value, specify its `ID`, the new `VALUE`, and `VALUE_TYPE`; to add a value, specify `VALUE` and `VALUE_TYPE` without `ID`. Values that are not passed are retained. For details, see [crm_multifield](../data-types.md#crm_multifield).
 
 #|
 || **Name**
@@ -88,7 +86,7 @@ An incorrect field in `fields` will be ignored
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible person ||
 || **CONTACT_ID**
-[`crm_contact`](../data-types.md) | Contact. Multiple ||
+[`crm_contact[]`](../data-types.md) | Array of identifiers of linked contacts, for example `[13, 15]`. The passed array replaces the current set of links; an empty array unlinks all contacts ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
@@ -109,7 +107,7 @@ An incorrect field in `fields` will be ignored
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 ||**PARENT_ID_...** | Relationship fields.
 
-If there are SPAs related to companies on the account, there is a field for each such SPA that stores the relationship between this SPA and the company. The field itself stores the identifier of the SPA element ||
+If there are SPAs related to companies in Bitrix24, there is a field for each such SPA that stores the relationship between this SPA and the company. The field itself stores the identifier of the SPA element ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone. Multiple ||
 || **EMAIL**
@@ -122,7 +120,7 @@ If there are SPAs related to companies on the account, there is a field for each
 [`crm_multifield[]`](../data-types.md) | LINK. Multiple ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the account settings, companies may have a set of custom fields of specific types.
+Depending on the Bitrix24 settings, companies may have a set of custom fields of specific types.
 
 You can add a custom field to a company using the method [crm.company.userfield.add](./userfields/crm-company-userfield-add.md) ||
 |#
@@ -133,7 +131,26 @@ To change the address and banking details of the company, use the methods for [r
 
 {% endnote %}
 
-## Examples
+### Parameter params {#parameter-params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **REGISTER_SONET_EVENT**
+[`boolean`](../../data-types.md) | Register a notification when the responsible user changes. Possible values:
+- `Y` — yes
+- `N` — no
+
+Default is `N` ||
+|| **REGISTER_HISTORY_EVENT**
+[`boolean`](../../data-types.md) | Whether to record the company update in the history. Possible values:
+- `Y` — yes
+- `N` — no
+
+Default is `Y` ||
+|#
+
+## Code Examples
 
 {% include [Example Note](../../../_includes/examples.md) %}
 
@@ -145,7 +162,7 @@ To change the address and banking details of the company, use the methods for [r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"}}' \
+    -d '{"id":43,"fields":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"params":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.update
     ```
 
@@ -155,7 +172,7 @@ To change the address and banking details of the company, use the methods for [r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":43,"fields":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"params":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.update
     ```
 
@@ -407,12 +424,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code**      | **Description** | **Value** ||
-|| Empty value | Parameter 'fields' must be an array | The `fields` parameter is not an object ||
-|| Empty value | Parameter 'params' must be an array | The `params` parameter is not an object ||
-|| Empty value | Access denied | The user does not have "Edit" access permission for companies ||
-|| Empty value | Exhausted allocated disk resource | ||
-|| `ERROR_CORE` | The `E-mail` field contains an invalid address | The `E-mail` field contains an invalid address ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The company identifier is not passed or is invalid ||
+|| `400` | Empty value | `Company is not found` | The company was not found ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The `fields` parameter is not an object ||
+|| `400` | Empty value | `Parameter 'params' must be array.` | The `params` parameter is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have "Edit" access permission for companies ||
+|| `400` | Empty value | `Disk quota exceeded.` | Not enough free space to update the company ||
+|| `400` | `ERROR_CORE` | `The field "Work E-mail" contains an incorrect address.<br>` | An invalid email address is passed ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

@@ -21,6 +21,8 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.company.list` returns a list of companies based on a filter. It is an implementation of the [list method](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) for companies.
 
+The method selects only companies from the general category. A filter by `CATEGORY_ID` does not change this behavior. Retrieve companies from other categories using [crm.item.list](../universal/crm-item-list.md) with `entityTypeId=4` and `categoryId`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -32,8 +34,8 @@ The method `crm.company.list` returns a list of companies based on a filter. It 
 [`string[]`](../../data-types.md) | List of fields to limit the selection.
 
 You can use masks for selection:
-- `'*'` — to select all fields, excluding custom and multiple fields,
-- `'UF_*'` — to select all custom fields excluding multiple ones.
+- `'*'` — to select all fields, excluding custom and multiple fields
+- `'UF_*'` — to select all custom fields excluding multiple ones
 
 There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list — `PHONE`, `EMAIL`, and so on.
 
@@ -44,7 +46,7 @@ By default, all fields are returned — `'*'` + custom fields — `'UF_*'`
 || **filter**
 [`object`](../../data-types.md) | Object format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -73,13 +75,13 @@ Possible prefix values:
 - `%=` — LIKE (similar to `=%`)
 - `*` — word search. The value is split into words, and each word must occur in the field as a substring, in any order. For non-string fields, it works as `=`
 - `*=` — same as `*`
-- `=` — equal, exact match (used by default)
+- `=` — equal, exact match. Used by default, except for the `PHONE`, `EMAIL`, `WEB`, and `IM` fields
 - `!=` — not equal
 - `!` — not equal
 
 In the filter, the `LAST_COMMUNICATION_TIME` field accepts a date in ISO 8601 format, for example, `2026-01-01T00:00:00+01:00`.
 
-Fields `PHONE`, `EMAIL`, `WEB`, `IM` — are multiple. Filters work only on exact matches for these.
+For the `PHONE`, `EMAIL`, `WEB`, and `IM` fields, a filter without a prefix searches for values that start with the passed string.
 
 The `LIKE` filter does not work with fields of type `crm_status`, `crm_company` — for example, `COMPANY_TYPE`.
 
@@ -90,7 +92,7 @@ The `logic` key in the filter is not supported. For complex logic in the filter,
 || **order**
 [`object`](../../data-types.md) | Object format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -109,13 +111,15 @@ You can find the list of available fields for sorting using the [crm.company.fie
 || **start**
 [`integer`](../../data-types.md) | Parameter for managing pagination.
 
-The page size of results is always static — 50 records.
+A single page contains no more than 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the number of the desired page.
+
+Pass `-1` to retrieve the first batch without counting the total. In this mode, `total` is `0` and `next` is not returned.
 ||
 |#
 
@@ -124,9 +128,9 @@ The formula for calculating the `start` parameter value:
 {% include [Example Note](../../../_includes/examples.md) %}
 
 Retrieve companies:
-- sorted by creation date,
-- with selected fields: title, responsible person, phone,
-- filtered by company type `CUSTOMER` and creation date from 2025-01-01.
+- sorted by creation date
+- with selected fields: title, responsible person, phone
+- filtered by company type `CUSTOMER` and creation date from 2025-01-01
 
 {% list tabs %}
 
@@ -346,12 +350,18 @@ Retrieve companies:
     	Title        string `json:"TITLE"`
     	AssignedByID b24.ID `json:"ASSIGNED_BY_ID"`
     	ID           b24.ID `json:"ID"`
+    	Phone        []struct {
+    		ID        string `json:"ID"`
+    		ValueType string `json:"VALUE_TYPE"`
+    		Value     string `json:"VALUE"`
+    		TypeID    string `json:"TYPE_ID"`
+    	} `json:"PHONE"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
-    	fmt.Println(it.Title, it.AssignedByID)
+    	fmt.Println(it.Title, it.AssignedByID, it.Phone)
     }
 
     // Total and Next are filled in by list methods; for a full
@@ -406,12 +416,35 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../data-types.md) | Array of companies matching the filter. The format of the returned data depends on the `select` parameter ||
+[`object[]`](../../data-types.md) | Array of companies matching the filter. The set of fields depends on `select`; the field descriptions can be retrieved using the method [crm.company.fields](crm-company-fields.md) ||
 || **total**
 [`integer`](../../data-types.md) | Total number of companies found ||
+|| **next**
+[`integer`](../../data-types.md) | The value of `start` for the next request to retrieve the next page. Returned if there are more records after the current page and `start` is not `-1` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+#### Element of the result Array
+
+Each element is a company object. For example, `ID` is the company identifier, `TITLE` is the name, and `ASSIGNED_BY_ID` is the identifier of the responsible user. The `PHONE`, `EMAIL`, `WEB`, and `IM` fields, if selected in `select`, contain arrays of `crm_multifield` objects.
+
+#### Object crm_multifield
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the multiple field value ||
+|| **VALUE_TYPE**
+[`string`](../../data-types.md) | Value type, for example `WORK` for a work phone ||
+|| **VALUE**
+[`string`](../../data-types.md) | Value: phone number, email address, website, or messenger ||
+|| **TYPE_ID**
+[`string`](../../data-types.md) | Field type: `PHONE`, `EMAIL`, `WEB`, or `IM` ||
+|#
+
+The full list of value types is available in the [crm_multifield](../data-types.md#crm_multifield) description.
 
 ## Error Handling
 
@@ -429,11 +462,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | The user does not have "Read" access permission for companies ||
-|| Empty value | `Parameter 'order' must be array` | The `order` parameter is not an array ||
-|| Empty value | `Parameter 'filter' must be array` | The `filter` parameter is not an array ||
-|| Empty value | `Failed to get list. General error` | An unknown error occurred ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have "Read" access permission for companies ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | The `order` parameter is not an object ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | The `filter` parameter is not an object ||
+|| `400` | Empty value | `Failed to get list. General error.` | An unknown error occurred ||
 |#
 
 {% include [System Errors](./../../../_includes/system-errors.md) %}

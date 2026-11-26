@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read permission for at least one CRM object type or SPA in a digital workplace
 
 {% note warning "DEPRECATED" %}
 
@@ -800,117 +800,44 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID**
-[`integer`](../../data-types.md) | Company Identifier ||
-|| **TITLE**
-[`string`](../../data-types.md) | Company Name ||
-|| **COMPANY_TYPE**
-[`crm_status`](../data-types.md) | Company Type. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=COMPANY_TYPE` ||
-|| **LOGO**
-[`file`](../../data-types.md) | Logo ||
-|| **ADDRESS**
-[`string`](../../data-types.md) | Physical Address. Deprecated, used for compatibility. For working with the address, use [requisites](../requisites/index.md).
-
-Deprecated address fields:
-- `ADDRESS_2` — address (line 2)
-- `ADDRESS_CITY` — city
-- `ADDRESS_POSTAL_CODE` — postal code
-- `ADDRESS_REGION` — region
-- `ADDRESS_PROVINCE` — province
-- `ADDRESS_COUNTRY` — country
-- `ADDRESS_COUNTRY_CODE` — country code
-- `ADDRESS_LOC_ADDR_ID` — location address ID
-- `ADDRESS_LEGAL` — legal address
-- `REG_ADDRESS` — legal address
-- `REG_ADDRESS_2` — legal address (line 2)
-- `REG_ADDRESS_CITY` — legal address city
-- `REG_ADDRESS_POSTAL_CODE` — legal address postal code
-- `REG_ADDRESS_REGION` — legal address region
-- `REG_ADDRESS_PROVINCE` — legal address province
-- `REG_ADDRESS_COUNTRY` — legal address country
-- `REG_ADDRESS_COUNTRY_CODE` — legal address country code
-- `REG_ADDRESS_LOC_ADDR_ID` — legal address location ID ||
-|| **BANKING_DETAILS**
-[`string`](../../data-types.md) | Banking Details ||
-|| **INDUSTRY**
-[`crm_status`](../data-types.md) | Industry. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=INDUSTRY` ||
-|| **EMPLOYEES**
-[`crm_status`](../data-types.md) | Number of Employees. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=EMPLOYEES` ||
-|| **CURRENCY_ID**
-[`crm_currency`](../data-types.md) | Currency ||
-|| **REVENUE**
-[`double`](../../data-types.md) | Annual Revenue ||
-|| **OPENED**
-[`char`](../../data-types.md) | Is the company available to everyone. Possible values: `Y` or `N` ||
-|| **COMMENTS**
-[`string`](../../data-types.md) | Comment ||
-|| **HAS_PHONE**
-[`char`](../../data-types.md) | Phone Set ||
-|| **HAS_EMAIL**
-[`char`](../../data-types.md) | E-mail Set ||
-|| **HAS_IMOL**
-[`char`](../../data-types.md) | Open Line Set ||
-|| **IS_MY_COMPANY**
-[`char`](../../data-types.md) | My Company Flag. Possible values: `Y` or `N` ||
-|| **ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Responsible Person ||
-|| **CREATED_BY_ID**
-[`user`](../../data-types.md) | Created By ||
-|| **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Modified By ||
-|| **DATE_CREATE**
-[`datetime`](../../data-types.md) | Creation Date ||
-|| **DATE_MODIFY**
-[`datetime`](../../data-types.md) | Modification Date ||
-|| **CONTACT_ID**
-[`crm_contact`](../data-types.md) | Contact. Multiple ||
-|| **LEAD_ID**
-[`crm_lead`](../data-types.md) | Identifier of the lead associated with the company ||
-|| **ORIGINATOR_ID**
-[`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
-|| **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
-|| **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Original version. Used to protect data from accidental overwriting by an external system ||
-|| **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
-|| **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic Type. Possible values:
-- `CPC` — ads
-- `CPM` — banners ||
-|| **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Campaign Identifier ||
-|| **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign Content. For example, for contextual ads ||
-|| **UTM_TERM**
-[`string`](../../data-types.md) | Campaign Search Term. For example, keywords for contextual advertising ||
-||**PARENT_ID_...** | Relationship fields.
-
-If there are smart processes related to companies on the account, there is a field for each such smart process that stores the relationship between this smart process and the company. The field itself stores the identifier of the item of such a smart process ||
-|| **LAST_ACTIVITY_TIME**
-[`datetime`](../../data-types.md) | Last Activity ||
-|| **LAST_ACTIVITY_BY**
-[`user`](../../data-types.md) | Author of the last activity in the timeline ||
-|| **LAST_COMMUNICATION_TIME**
-[`string`](../../data-types.md) | Last Communication Date ||
-|| **PHONE**
-[`crm_multifield`](../data-types.md) | Phone. Multiple ||
-|| **EMAIL**
-[`crm_multifield`](../data-types.md) | E-mail. Multiple ||
-|| **WEB**
-[`crm_multifield`](../data-types.md) | Website. Multiple ||
-|| **IM**
-[`crm_multifield`](../data-types.md) | Messenger. Multiple ||
-|| **LINK**
-[`crm_multifield`](../data-types.md) | LINK. Multiple ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
-
-Depending on the portal settings, companies may have a set of custom fields of specific types.
-
-You can add a custom field to a company using the method [crm.company.userfield.add](./userfields/crm-company-userfield-add.md) ||
+|| **result**
+[`object`](../../data-types.md) | Object: the key is the company field code, the value is its description ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
+
+#### Field Description
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../data-types.md) | Field type. See the [general types](../../data-types.md) and [CRM types](../data-types.md) reference guides ||
+|| **isRequired**
+[`boolean`](../../data-types.md) | `true` — the field is required ||
+|| **isReadOnly**
+[`boolean`](../../data-types.md) | `true` — the field is read-only ||
+|| **isImmutable**
+[`boolean`](../../data-types.md) | `true` — the value can be set only on creation ||
+|| **isMultiple**
+[`boolean`](../../data-types.md) | `true` — the field is multiple ||
+|| **isDynamic**
+[`boolean`](../../data-types.md) | `true` — the field is a custom field ||
+|| **title**
+[`string`](../../data-types.md) | Field name ||
+|| **statusType**
+[`string`](../../data-types.md) | Directory identifier for the `crm_status` type ||
+|| **items**
+[`object[]`](../../data-types.md) | List options for the `enumeration` type: `ID` is the identifier and `VALUE` is the name ||
+|| **settings**
+[`object`](../../data-types.md) | Field settings, if defined. The structure depends on the field and its type ||
+|| **listLabel**, **formLabel**, **filterLabel**
+[`string`](../../data-types.md) | Custom field labels for the list, form, and filter, if defined ||
+|| **isDeprecated**
+[`boolean`](../../data-types.md) | `true` — the field is deprecated. Returned only for deprecated fields ||
+|#
+
+Company fields are described in the method [crm.company.add](crm-company-add.md#parameter-fields). Sample field values are returned by the method [crm.company.get](crm-company-get.md).
 
 ## Error Handling
 
@@ -928,8 +855,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | The user does not have permission to "Read" companies ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have read permission for any CRM object type or SPA in a digital workplace ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -937,7 +864,7 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-company-add.md)
+- [{#T}](./crm-company-update.md)
 - [{#T}](./crm-company-get.md)
 - [{#T}](./crm-company-list.md)
-- [{#T}](./crm-company-update.md)
 - [{#T}](./crm-company-delete.md)

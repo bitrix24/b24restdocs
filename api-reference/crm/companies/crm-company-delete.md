@@ -29,7 +29,7 @@ The method `crm.company.delete` removes a company.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Company identifier ||
+[`integer`](../../data-types.md) | Company identifier. Must be greater than 0 after conversion to an integer ||
 |#
 
 ## Code Examples
@@ -44,7 +44,7 @@ The method `crm.company.delete` removes a company.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":50}' \
+    -d '{"id":50}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.delete
     ```
 
@@ -54,7 +54,7 @@ The method `crm.company.delete` removes a company.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":50,"auth":"**put_access_token_here**"}' \
+    -d '{"id":50,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.delete
     ```
 
@@ -183,7 +183,7 @@ The method `crm.company.delete` removes a company.
     $result = CRest::call(
         'crm.company.delete',
         [
-            'ID' => 50
+            'id' => 50
         ]
     );
 
@@ -259,9 +259,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `Access denied` | User does not have permission for "Delete" companies ||
-|| Empty value | `Company is not found` | Company not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is not provided, or its value is not greater than 0 after conversion to an integer ||
+|| `400` | Empty value | `Access denied.` | User does not have permission for "Delete" companies ||
+|| `400` | Empty value | Empty value | The company with the specified `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

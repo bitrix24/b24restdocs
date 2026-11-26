@@ -31,7 +31,7 @@ The method `crm.company.add` creates a new company.
 || **fields***
 [`object`](../../data-types.md) | Object format:
 
-```
+```text
 {
     field_1: value_1,
     field_2: value_2,
@@ -44,25 +44,12 @@ where:
 - `field_n` — field name
 - `value_n` — field value
 
-The list of available fields is described in the method [crm.company.fields](crm-company-fields.md).
+The list of available fields is described [below](#parameter-fields); the full list can be retrieved using the method [crm.company.fields](crm-company-fields.md).
 
-An incorrect field in `fields` will be ignored.
-
-{% note info " " %}
-
-To find out the list of required fields, execute the method [crm.company.fields](./crm-company-fields.md).
-
-{% endnote %}
- ||
+An incorrect field in `fields` will be ignored ||
 || **params**
-[`object`](../../data-types.md) | An object containing a set of additional parameters:
-
-- `REGISTER_SONET_EVENT` — register the company addition event and send a notification to the responsible person
-- `IMPORT` — import mode. Possible values:
-  - `Y` — yes
-  - `N` — no
-||
-|#
+[`object`](../../data-types.md) | Additional parameters [(detailed description)](#parameter-params) ||
+|##
 
 ### Parameter fields {#parameter-fields}
 
@@ -70,7 +57,7 @@ To find out the list of required fields, execute the method [crm.company.fields]
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | Company name ||
+[`string`](../../data-types.md) | Company name. If omitted, the company is created with the name `Company #<ID>` ||
 || **COMPANY_TYPE**
 [`crm_status`](../data-types.md) | Company type.
 
@@ -80,9 +67,7 @@ Default — the first available company type ||
 || **INDUSTRY**
 [`crm_status`](../data-types.md) | Industry.
 
-The list of available values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "INDUSTRY" }`.
-
-Default — the first available industry ||
+The list of available values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "INDUSTRY" }` ||
 || **EMPLOYEES**
 [`crm_status`](../data-types.md) | Number of employees.
 
@@ -135,20 +120,15 @@ Default — the identifier of the user calling the method ||
 - `N` — no ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the portal settings, companies may have a set of custom fields of specific types.
+Depending on the Bitrix24 settings, companies may have a set of custom fields of specific types.
 
 You can add a custom field to a company using the method [crm.company.userfield.add](./userfields/crm-company-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields.
 
-If there are smart processes related to companies on the portal, there is a field for each such smart process that stores the relationship between this smart process and the company. The field itself stores the identifier of the element of that smart process ||
+If there are smart processes related to companies in Bitrix24, there is a field for each such smart process that stores the relationship between this smart process and the company. The field itself stores the identifier of the element of that smart process ||
 |#
 
 **Fields for connections with external data sources**
-
-If the company is created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the company in that external system
-- the field `ORIGIN_VERSION` stores the version of the company data in that external system
 
 #|
 || **Name**
@@ -163,7 +143,7 @@ If the company is created by an external system, then:
 
 **Import**
 
-These fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
+These fields are available for filling when import mode is enabled.
 
 #|
 || **Name**
@@ -184,7 +164,18 @@ To add the company's address and banking details, use the methods from [requisit
 
 {% endnote %}
 
-## Examples
+### Parameter params {#parameter-params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **REGISTER_SONET_EVENT**
+[`boolean`](../../data-types.md) | Register the company creation event. Pass `Y` to enable registration; registration is disabled by default ||
+|| **IMPORT**
+[`boolean`](../../data-types.md) | Import mode. Disabled by default. Pass `Y` to enable it, `0` or an empty string to disable it. The string `N` also enables import mode ||
+|#
+
+## Code Examples
 
 {% include [Note on Examples](../../../_includes/examples.md) %}
 
@@ -225,7 +216,7 @@ To add the company's address and banking details, use the methods from [requisit
         method: 'crm.company.add',
         params: {
           fields: {
-            TITLE: 'Titov Sole Proprietor',
+            TITLE: 'John Doe LLC',
             COMPANY_TYPE: 'CUSTOMER',
             INDUSTRY: 'MANUFACTURING',
             EMPLOYEES: 'EMPLOYEES_2',
@@ -269,7 +260,7 @@ To add the company's address and banking details, use the methods from [requisit
             method: 'crm.company.add',
             params: {
               fields: {
-                TITLE: 'Titov Sole Proprietor',
+                TITLE: 'John Doe LLC',
                 COMPANY_TYPE: 'CUSTOMER',
                 INDUSTRY: 'MANUFACTURING',
                 EMPLOYEES: 'EMPLOYEES_2',
@@ -484,19 +475,25 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'fields' must be array | The `fields` parameter is not an object ||
-|| Empty value | Parameter 'params' must be array | The `params` parameter is not an object ||
-|| Empty value | Access denied | The user does not have permission for "Add" or "Import" companies ||
-|| Empty value | Disk resource exhausted | ||
-|| `ERROR_CORE` | The `E-mail` field contains an invalid address | The `E-mail` field contains an invalid address ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | The `fields` parameter is not an object ||
+|| `400` | Empty value | `Parameter 'params' must be array.` | The `params` parameter is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have permission to add companies or, in import mode, to import companies ||
+|| `400` | Empty value | `Disk quota exceeded.` | Disk quota exceeded ||
+|| `400` | Empty value | `The value of "Date created" cannot be less than that of any other items` | In import mode, the creation date passed is too early ||
+|| `400` | `ERROR_CORE` | `The field "Work E-mail" contains an incorrect address.<br>` | An incorrect address is passed in `EMAIL` ||
 |#
 
 {% include [System Errors](./../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./crm-company-update.md)
+- [{#T}](./crm-company-get.md)
+- [{#T}](./crm-company-list.md)
+- [{#T}](./crm-company-delete.md)
+- [{#T}](./crm-company-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)
