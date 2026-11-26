@@ -79,6 +79,8 @@ What the method sets if a field is not passed:
 
 Product rows are not passed in `fields`: add them with the [crm.&lt;type&gt;.productrow.*](../product-rows/crm-entity-product-row-list-rest-v3.md) methods after the item is created.
 
+The method does not add the client's requisites to a deal, even if the company in `companyId` has requisites. To select requisites, call [crm.deal.clientrequisite.set](../requisites/crm-entity-client-requisite-set-rest-v3.md) after the deal is created.
+
 ### Required Fields {#required-fields}
 
 Without these fields, the method returns an error and does not create the item:

@@ -41,7 +41,7 @@ May contain only item field names or `'*'`.
 
 The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 
-The `fm` field (multiple fields: phones, e-mail, messengers) is not a CRM object field and cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`
+The `fm` field (multiple fields: phones, e-mail, messengers) can be requested in `select` by name, for example, `select: ['id', 'fm']`, or retrieved together with all fields via `select: ['*']`. You cannot filter or sort by `fm`
 ||
 || **filter**
 [`object`](../../data-types.md) |Format object:

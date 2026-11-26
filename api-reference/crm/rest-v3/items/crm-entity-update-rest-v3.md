@@ -75,6 +75,10 @@ Custom fields are passed by name, for example, `UF_CRM_1687529546`. Their list i
 
 The `stageId` value must be a stage of the item's pipeline, and `categoryId` must be an existing pipeline of this object type. Retrieve stages and pipelines with the [crm.&lt;type&gt;.category.stage.list](../categories/crm-entity-category-stage-list-rest-v3.md) and [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) methods.
 
+To move an item to another pipeline, pass the `categoryId` of the new pipeline and a `stageId` from it in a single request. If you pass only a `stageId` from another pipeline, the method returns `true` but does not change the stage.
+
+A stage change runs automation rules, triggers, and workflows the same way as moving the item in the Kanban view.
+
 If `fields` is an empty object or all its values match the current ones, the method returns `true` and does not write the item: the modification time `updatedTime` stays the same.
 
 The method does not accept `null` for a string field and returns a data type error. An empty string is handled differently depending on the object type — see [differences between object types](#types).
@@ -373,7 +377,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.result**
-[`boolean`](../../../data-types.md) | `true` if the request was executed. The method also returns `true` when there is nothing to write — see the [fields parameter description](#fields). The new field values can be retrieved with the [crm.&lt;type&gt;.get](./crm-entity-get-rest-v3.md) method ||
+[`boolean`](../../../data-types.md) | `true` if the request was executed. The method also returns `true` when there is nothing to write or the stage belongs to another pipeline — see the [fields parameter description](#fields). The new field values can be retrieved with the [crm.&lt;type&gt;.get](./crm-entity-get-rest-v3.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -407,7 +411,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Entity with ID #ID# was not found | Check the item ID. This object type has no item with this `id`, or the item has been deleted ||
+|| `-` | Entity with ID #ID# was not found | Check the item ID. This object type has no item with this `id`, the item has been deleted, or the user has no permission to read it ||
 |#
 
 #### Request Validation Errors
@@ -421,9 +425,11 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `assignedById` | This request requires data type `int` in field `assignedById` | Pass a value of the type specified in the field description. `null` in a string field also causes this error ||
 || `CRM_FIELD_ERROR_REQUIRED` | Fields `#NAME#` and `#LAST_NAME#` cannot be both empty. Please complete at least one of them | Keep `name` or `lastName` filled in. The rule applies to contacts ||
+|| `CRM_ITEM_UPDATE_ACCESS_DENIED` | You do not have permission to edit this item | The user has no permission to edit the item. The permission may depend on the item's current stage ||
+|| — | Insufficient permission to change stage | The user's role does not allow moving the item from its current stage. This error has no `field` ||
 |#
 
-The method also wraps errors that Bitrix24 returned while writing the item into this code. In this case, `field` contains the field name or the write error code, as in the contact example.
+The method also wraps errors that Bitrix24 returned while writing the item into this code. In this case, `field` contains the field name or the write error code, as in the contact example. Permission errors also come with this code and HTTP status **400**, not with the `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION` code.
 
 #### Object Validation Errors
 
@@ -433,7 +439,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `id` | Field `id` is read-only | Pass the ID in the `id` parameter, not in `fields` ||
 || `createdTime` | Field `createdTime` is read-only | Remove fields that cannot be edited from `fields`. Whether a field can be edited is returned by [crm.&lt;type&gt;.field.list](../fields/crm-entity-field-list-rest-v3.md) ||
-|| `stageId` | Field value is not one of the possible values: `#STAGES#` | Pass a stage from the item's pipeline. The error message lists the allowed stages ||
+|| `stageId` | Field value is not one of the possible values: `#STAGES#` | Pass a stage from the item's pipeline. The error message lists the stages of the pipeline that the code prefix points to, for example, `C1:` points to pipeline `1`. For a code without a prefix, it lists the stages of the default pipeline. This is not necessarily the item's pipeline ||
 || `categoryId` | Field value is not one of the possible values | Pass the ID of an existing pipeline of this object type ||
 || `assignedById` | Field value is not one of the possible values | Pass the ID of an existing user ||
 |#

@@ -76,7 +76,9 @@ The list of available stages can be found using the method [crm.status.list](../
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
 - `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [Sales Funnel](../universal/category/index.md) and equals the `CATEGORY_ID` of the deal.
   
-If you need to change the Sales Funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), with the `entityTypeId` of the deal being `2`.
+The method does not move the deal to another Sales Funnel. It ignores the `CATEGORY_ID` field and does not write a stage from another Sales Funnel to `STAGE_ID`. In both cases, the method returns `true`, and the deal stays in the same Sales Funnel at the same stage.
+
+To move a deal to another Sales Funnel, use the REST 3.0 method [crm.deal.update](../rest-v3/items/crm-entity-update-rest-v3.md) and pass the `categoryId` and `stageId` of the new Sales Funnel in a single request.
 ||
 || **IS_RECURRING**
 [`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
