@@ -11,7 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
+> Who can execute the method:
+> - a user with the "Edit CRM preferences" permission in CRM
+> - a user with the "Manage CRM item form layout" permission in CRM
+
+Both permissions are granted for the entire CRM and cannot be granted for leads separately.
 
 {% note warning "DEPRECATED" %}
 
@@ -21,12 +25,6 @@ The development of this method has been halted. Please use the REST 3.0 method [
 
 The method `crm.lead.details.configuration.forceCommonScopeForAll` forcibly sets a common lead card for all users, removing their personal lead card settings.
 
-{% note warning %}
-
-Settings for repeat leads may differ from those for simple leads. To switch between lead card settings, use the `leadCustomerType` parameter.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -35,7 +33,7 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 || **Name**
 `type` | **Description** ||
 || **extras**
-[`object`](../../../data-types.md) | Additional parameters for selecting the lead type. The structure is described [below](#extras) ||
+[`object`](../../../data-types.md) | Optional parameter for selecting the lead type. The structure is described [below](#extras) ||
 |#
 
 ### Parameter extras Parameter {#extras}
@@ -45,8 +43,10 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 `type` | **Description** ||
 || **leadCustomerType**
 [`integer`](../../../data-types.md) | Lead type. Possible values:
-- `1` - simple lead
-- `2` - repeat lead ||
+- `1` — simple lead
+- `2` — repeat lead
+
+If the parameter is not passed, the simple lead card is used ||
 |#
 
 ## Code Examples
@@ -310,8 +310,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Access denied | Insufficient permissions to forcibly set the common lead card ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied | Insufficient permissions to apply the common view ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
