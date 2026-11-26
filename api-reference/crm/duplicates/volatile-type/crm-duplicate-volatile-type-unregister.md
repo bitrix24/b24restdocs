@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: Bitrix24 administrator or CRM administrator
 
-The method `crm.duplicate.volatileType.unregister` removes a custom field from the duplicate search.
+The method `crm.duplicate.volatileType.unregister` removes an additional field from the duplicate search.
 
 ## Method Parameters
 
@@ -25,6 +25,10 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the field record to be removed. You can obtain the identifiers of records added to the duplicate search using the method [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md) ||
 |#
+
+### Method Operation Features
+
+After a field is disconnected, it disappears from the duplicate search settings in the Bitrix24 interface. A background cleanup of the duplicate search data for the disconnected field is started.
 
 ## Code Examples
 
@@ -38,7 +42,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     curl -X POST \
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
-         -d '{"id":101}' \
+         -d '{"id":33554432}' \
          https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.duplicate.volatileType.unregister
     ```
 
@@ -48,7 +52,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":101,"auth":"**put_access_token_here**"}' \
+    -d '{"id":33554432,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.duplicate.volatileType.unregister
     ```
 
@@ -66,7 +70,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.duplicate.volatileType.unregister',
         params: {
-          id: 101,
+          id: 33554432,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -98,7 +102,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
           const response = await $b24.actions.v2.call.make({
             method: 'crm.duplicate.volatileType.unregister',
             params: {
-              id: 101,
+              id: 33554432,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -128,7 +132,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.crm.duplicate.volatile_type.unregister(bitrix_id=101).response
+        bitrix_response = client.crm.duplicate.volatile_type.unregister(bitrix_id=33554432).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -153,7 +157,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
             ->call(
                 'crm.duplicate.volatileType.unregister',
                 [
-                    'id' => 101,
+                    'id' => 33554432,
                 ]
             );
     
@@ -173,7 +177,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     BX24.callMethod(
         "crm.duplicate.volatileType.unregister",
         {
-            id: 101
+            id: 33554432
         },
         function(result) {
             if(result.error())
@@ -192,7 +196,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     $result = CRest::call(
         'crm.duplicate.volatileType.unregister',
         [
-            'id' => 101
+            'id' => 33554432
         ]
     );
 
@@ -206,7 +210,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.duplicate.volatileType.unregister", b24.Params{
-    	"id": 101,
+    	"id": 33554432,
     })
     if err != nil {
     	return fmt.Errorf("crm.duplicate.volatileType.unregister: %w", err)
@@ -268,9 +272,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `TYPE_IS_NOT_ASSIGNED` | This type is not assigned | The record with the `id` passed was not found. Current identifiers are returned by [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md) ||
-|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `TYPE_IS_NOT_ASSIGNED` | This type is not assigned | The record with the `id` passed was not found. Current identifiers are returned by [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md) ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

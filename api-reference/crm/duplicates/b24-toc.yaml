@@ -7,7 +7,7 @@ items:
     href: crm-duplicate-find-by-comm.md
   - name: Merge Duplicates
     href: crm-entity-merge-batch.md
-  - name: Duplicate Search Settings for Any Fields 
+  - name: Duplicate Search Settings for Additional Fields
     include:
       path: volatile-type/b24-toc.yaml
       mode: link

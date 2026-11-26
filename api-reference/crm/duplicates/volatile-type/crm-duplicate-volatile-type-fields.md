@@ -28,7 +28,7 @@ The method `crm.duplicate.volatileType.fields` returns a list of standard and cu
 - `3` — [contact](../../contacts/index.md)
 - `4` — [company](../../companies/index.md)
 
-If not specified, fields for all types will be returned ||
+If the parameter is not specified or equals `0`, fields for all types are returned ||
 |#
 
 ## Code Examples
@@ -254,8 +254,7 @@ HTTP status: **200**
             "entityTypeId": 1,
             "fieldCode": "UF_CRM_1750854801",
             "fieldTitle": "String"
-        },
-        // ... other fields ...
+        }
     ],
     "time": {
         "start": 1750854837.219779,
@@ -270,17 +269,28 @@ HTTP status: **200**
 
 ### Returned Data
 
+The example shows part of the list of available fields.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../../data-types.md) | The complete list of available fields, without pagination. The element structure is described [below](#result-item) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Element of the result Array {#result-item}
+
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Type of the object ||
+[`integer`](../../../data-types.md) | CRM object type ||
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
 || **fieldTitle**
 [`string`](../../../data-types.md) | Field name ||
-|| **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -299,8 +309,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

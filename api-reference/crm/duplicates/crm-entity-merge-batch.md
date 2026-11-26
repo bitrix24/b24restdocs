@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: a user with permission to modify the main entity and permission to delete the remaining entities being merged
+> Who can execute the method: a user with permission to read and modify the main entity and to read and delete the remaining entities being merged
 
 The method `crm.entity.mergeBatch` merges multiple entities into one.
 
@@ -26,7 +26,7 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 [`object`](../../data-types.md) | Object containing the entities to merge [(detailed description)](#params) ||
 |#
 
-### Parameter params{#params}
+### Parameter params {#params}
 
 #|
 || **Name**
@@ -39,9 +39,9 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 - `4` — [company](../companies/index.md)
 - `7` — [estimate](../quote/index.md)
 - `31` — [invoice](../universal/invoice.md)
-- `128` — [SPA](../universal/index.md). The identifier of a specific SPA can be found using the methods [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) and [crm.type.list](../universal/user-defined-object-types/crm-type-list.md) ||
+- the identifier of a specific [SPA](../universal/index.md) type, for example `128`. You can find it using the methods [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) and [crm.type.list](../universal/user-defined-object-types/crm-type-list.md) ||
 || **entityIds***
-[`integer[]`](../../data-types.md) | Array of identifiers of the entities to be merged. At least two entities are required ||
+[`integer[]`](../../data-types.md) | Array of identifiers of the entities to be merged. Pass at least two distinct identifiers of existing entities ||
 |#
 
 ### Method Operation Features
@@ -49,10 +49,10 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 You can only merge entities of the same type: lead with lead, contact with contact, SPA element with ID 128 with another SPA element with ID 128.
 
 Full automatic merging is available in several cases:
-- the entities are identical,
-- the entities are not identical, but the differences in field values do not require manual processing. For example, if one entity has a field filled and the other has the same field empty — the value from the filled field will be retained.
+- the entities are identical
+- the entities are not identical, but the differences in field values do not require manual processing. For example, if one entity has a field filled and the other has the same field empty — the value from the filled field will be retained
 
-The main entity in the merge will be the one whose `ID` is specified first in the `entityIds` array. Information from other entities will be transferred to the main entity. All entities except the main one will be deleted after a successful merge.
+Identifiers that are not found are excluded from the merge. The first of the remaining entities becomes the main one: information from the other entities is transferred to it. The remaining found entities will be deleted after a successful merge.
 
 Permissions are checked for each entity separately. The main entity requires read and modify permissions, and the remaining ones require read and delete permissions. Permissions are not checked for the administrator.
 
@@ -111,8 +111,8 @@ The `id[]` parameter contains the identifiers of the entities to be merged, pass
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type MergeBatchResult = {
-      STATUS: 'SUCCESS' | 'CONFLICT' | 'ERROR'
-      ENTITY_IDS: number[]
+      STATUS: 'SUCCESS' | 'CONFLICT' | 'ERROR' | 'NOT_FOUND'
+      ENTITY_IDS?: number[]
     }
 
     try {
@@ -132,7 +132,12 @@ The `id[]` parameter contains the identifiers of the entities to be merged, pass
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Merge status:', result.STATUS, '| Deleted entity IDs:', result.ENTITY_IDS)
+        console.info('Merge status:', result.STATUS)
+        if (result.STATUS === 'SUCCESS') {
+          console.info('Entity IDs in merge request:', result.ENTITY_IDS)
+        } else {
+          console.warn('Merge not completed:', result.STATUS)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -169,7 +174,12 @@ The `id[]` parameter contains the identifiers of the entities to be merged, pass
           }
 
           const result = response.getData().result
-          console.info('Merge status:', result.STATUS, '| Deleted entity IDs:', result.ENTITY_IDS)
+          console.info('Merge status:', result.STATUS)
+          if (result.STATUS === 'SUCCESS') {
+            console.info('Entity IDs in merge request:', result.ENTITY_IDS)
+          } else {
+            console.warn('Merge not completed:', result.STATUS)
+          }
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -327,15 +337,25 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Merge result [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **STATUS**
 [`string`](../../data-types.md) | Status of the operation. Possible values:
 - `SUCCESS` — the merge was successful
 - `CONFLICT` — a data conflict occurred, automatic merging is not possible
-- `ERROR` — an [error](#errors) occurred ||
+- `ERROR` — an [error](#errors) occurred
+- `NOT_FOUND` — the main entity was not found during the repeated check before the merge ||
 || **ENTITY_IDS**
-[`integer[]`](../../data-types.md) | Array of identifiers of the entities that were deleted during the merge ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`integer[]`](../../data-types.md) | Identifiers of the found entities passed for merging with the main entity. A repeated main ID may appear in `ENTITY_IDS` without the entity being deleted; with `NOT_FOUND`, the field is absent ||
 |#
 
 ## Error Handling
@@ -344,8 +364,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "The parameter entityIds must contains at least two elements."
+    "error": "0",
+    "error_description": "The parameter entityTypeId is required."
 }
 ```
 
@@ -354,18 +374,20 @@ HTTP status: **400**
 ### Possible Error Codes {#errors}
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `403` | `Access denied` | The user does not have permission to modify or delete CRM entities ||
-|| `400` | `The parameter entityTypeId is required.` | Required parameter `entityTypeId` is not specified ||
-|| `400` | `The parameter entityIds does not contains valid elements.` | No elements were provided or found for merging ||
-|| `400` | `The parameter entityIds must contains at least two elements.` | At least two elements are required for merging ||
-|| `400` | `Owner was not found` | The object was not found ||
-|| `400` | `Entity type {entityTypeName} is not supported` | An unsupported object type was specified ||
-|| `400` | `CRM_FEATURE_RESTRICTION_ERROR` | Plan restriction ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Access denied.` | The user is not authorized to work with CRM ||
+|| `400` | `0` | `The parameter entityTypeId is required.` | Required parameter `entityTypeId` is not specified ||
+|| `400` | `0` | `The parameter entityIds does not contains valid elements.` | An empty `entityIds` array was passed, or none of the passed identifiers match entities to merge ||
+|| `400` | `0` | `The parameter entityIds must contains at least two elements.` | At least two elements are required for merging ||
+|| `400` | `OWNER_NOT_FOUND` | `Owner was not found` | No CRM object type with the specified `entityTypeId` was found ||
+|| `400` | `0` | `Internal server error.` | Internal error, including when the object type is not supported ||
+|| `400` | `0` | Localized message `CRM_FEATURE_RESTRICTION_ERROR` | Plan restriction ||
 |#
 
 {% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-duplicate-find-by-comm.md) 
+- [{#T}](./index.md)
+- [{#T}](./crm-duplicate-find-by-comm.md)
+- [{#T}](./volatile-type/index.md) 

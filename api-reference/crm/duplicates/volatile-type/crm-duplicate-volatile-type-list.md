@@ -1,4 +1,4 @@
-# Get a List of Custom Fields Used in Duplicate Search crm.duplicate.volatileType.list
+# Get a List of Fields Connected to Duplicate Search crm.duplicate.volatileType.list
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: Bitrix24 administrator or CRM administrator
 
-The method `crm.duplicate.volatileType.list` returns a list of custom fields currently used to search for duplicates in leads, contacts, and companies.
+The method `crm.duplicate.volatileType.list` returns a list of fields connected to duplicate search in leads, contacts, and companies. A field being in the list does not mean that its indexing is complete.
 
 ## Method Parameters
 
@@ -63,16 +63,9 @@ No parameters.
     }
 
     try {
-      // crm.duplicate.volatileType.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<VolatileTypeItem[]>({
         method: 'crm.duplicate.volatileType.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -100,16 +93,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.duplicate.volatileType.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.duplicate.volatileType.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -162,30 +148,6 @@ No parameters.
 
     try:
         bitrix_response = client.crm.duplicate.volatile_type.list().as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    `as_list_fast` Example
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.duplicate.volatile_type.list().as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -273,12 +235,6 @@ No parameters.
     for _, it := range items {
     	fmt.Println(it.ID, it.EntityTypeID)
     }
-
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -291,7 +247,7 @@ HTTP status: **200**
 {
     "result": [
         {
-            "id": 3355,
+            "id": 33554432,
             "entityTypeId": 1,
             "fieldCode": "TITLE"
         }
@@ -314,13 +270,23 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`array`](../../../data-types.md) | The complete list of connected fields, without pagination. If there are no fields, an empty array is returned. The element structure is described [below](#result-item) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Element of the result Array {#result-item}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Record identifier ||
+[`integer`](../../../data-types.md) | Identifier of the connected field record ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Type of the object ||
+[`integer`](../../../data-types.md) | CRM object type ||
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
-|| **time**[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -339,8 +305,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

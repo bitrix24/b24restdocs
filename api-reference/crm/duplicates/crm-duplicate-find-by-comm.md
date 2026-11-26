@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: user with read access permission to CRM entities
+> Who can execute the method: a user with permission to read leads, contacts, or companies — at least one of these types
 
 The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts, and companies that contain phone numbers or email addresses from a specified list. The search does not consider the phone extension.
 
@@ -29,7 +29,7 @@ The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts
 || **values***
 [`string[]`](../../data-types.md) | Array of emails or phone numbers.  
 
-Maximum number of values — 20 ||
+The method processes no more than 20 distinct non-empty string values. Empty and non-string values, as well as duplicate search criteria, are skipped ||
 || **entity_type**
 [`string`](../../data-types.md) | Type of object. Possible values:
 - `LEAD` — lead
@@ -41,7 +41,7 @@ If not specified — the search is performed across all three types ||
 
 ### Method Operation Features
 
-If 20 or more duplicates are found for one object, the other types are not returned. For example, if `entity_type` is not specified and duplicates are expected across all three objects, but there are 20 or more duplicates in leads, contacts and companies will not be returned. If there are 20 or more duplicates in contacts, we will receive duplicates for leads and contacts, while the company will be absent from the selection.
+For each processed value, the method searches for up to 20 matches in total across the selected object types. If the limit is reached, some matches may be missing from the response. Split the requests by object type if you need to check each type.
 
 ## Code Examples
 
@@ -84,7 +84,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
       LEAD?: number[]
       CONTACT?: number[]
       COMPANY?: number[]
-    }
+    } | []
 
     try {
       const response = await $b24.actions.v2.call.make<FindByCommResult>({
@@ -102,7 +102,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Contacts with duplicate phone:', result.CONTACT)
+        console.info('Contacts with duplicate phone:', Array.isArray(result) ? [] : result.CONTACT ?? [])
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -138,7 +138,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
           }
 
           const result = response.getData().result
-          console.info('Contacts with duplicate phone:', result.CONTACT)
+          console.info('Contacts with duplicate phone:', Array.isArray(result) ? [] : result.CONTACT ?? [])
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -252,10 +252,11 @@ If 20 or more duplicates are found for one object, the other types are not retur
     	return fmt.Errorf("crm.duplicate.findbycomm: %w", err)
     }
 
-    // The method wraps the response in an object with the "CONTACT" key.
+    // The CONTACT key is present only if contacts are found.
     raw, ok := b24.Unwrap(res.Result, "CONTACT")
     if !ok {
-    	return fmt.Errorf("no CONTACT key in the response")
+    	fmt.Println("No matches found")
+    	return nil
     }
 
     fmt.Printf("%s\n", raw)
@@ -292,14 +293,25 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) or [`array`](../../data-types.md) | Found elements [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+`result` contains only the object types for which matches are found. If there are no matches, `result` contains an empty array `[]`.
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **LEAD**
 [`integer[]`](../../data-types.md) | Array of identifiers of found leads ||
 || **CONTACT**
 [`integer[]`](../../data-types.md) | Array of identifiers of found contacts ||
 || **COMPANY**
 [`integer[]`](../../data-types.md) | Array of identifiers of found companies ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -308,8 +320,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Communication type is not defined",
-    "error_description": "Parameter 'type' is required."
+    "error": "",
+    "error_description": "Communication type is not defined."
 }
 ```
 
@@ -318,11 +330,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `403` | `Access denied` | User does not have permission to read CRM entities ||
-|| `400` | `Communication type is not defined` | Required parameter `type` is not specified ||
-|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type was specified ||
-|| `400` | `Communication values is not defined` | Required parameter `values` is not specified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user has no permission to read leads, contacts, or companies ||
+|| `400` | Empty value | `Communication type is not defined.` | Required parameter `type` is not specified ||
+|| `400` | Empty value | `Communication type '{type}' is not supported in current context.` | An unsupported communication type was specified ||
+|| `400` | Empty value | `Communication values is not defined.` | The `values` parameter is not specified, is not an array, or is an empty array ||
+|| `400` | Empty value | `Deal is not supported in current context.` | The `entity_type` parameter is set to `DEAL` ||
 |#
 
 {% include [System errors](./../../../_includes/system-errors.md) %}

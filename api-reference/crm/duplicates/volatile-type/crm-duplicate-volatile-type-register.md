@@ -33,7 +33,7 @@ The method `crm.duplicate.volatileType.register` adds a field to the duplicate s
 
 ### Method Operation Features
 
-A total of seven custom fields can be registered for duplicate searches. For example, if you have already added three fields for contacts and four fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`.
+A total of seven additional fields can be registered for duplicate searches. For example, if you have already added three fields for contacts and four fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`.
 
 Calling the method again for a field that is already registered does not take up a new slot — the method returns the `id` of the existing record.
 
@@ -255,7 +255,7 @@ HTTP status: **200**
 ```json
 {
     "result": {
-        "id": 3355
+        "id": 33554432
     },
     "time": {
         "start": 1750934251.736599,
@@ -275,9 +275,19 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **id** 
+|| **result**
+[`object`](../../../data-types.md) | Object with the record identifier. The structure is described [below](#result-item) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result-item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
 [`integer`](../../../data-types.md) | Identifier for the record of the field added to the duplicate search ||
-|| **time**[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -296,10 +306,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `FIELD_NOT_FOUND` | Field not found | The field with the specified `fieldCode` is not available for the `entityTypeId` passed. The list of available fields is returned by [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
-|| `MAX_TYPES_COUNT_EXCEEDED` | There is already a maximum number of volatile types | All seven slots for additional fields are taken. Free up a slot using the method [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) ||
-|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `FIELD_NOT_FOUND` | Field not found | The field with the specified `fieldCode` is not available for the `entityTypeId` passed. The list of available fields is returned by [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
+|| `400` | `MAX_TYPES_COUNT_EXCEEDED` | There is already a maximum number of volatile types | All seven slots for additional fields are taken. Free up a slot using the method [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}
