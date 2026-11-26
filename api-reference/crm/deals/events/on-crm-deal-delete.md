@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: any user. Administrator permissions are required for offline events
 
 The event `ONCRMDEALDELETE` will trigger upon the deletion of a deal.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md).
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -38,7 +44,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -58,13 +63,13 @@ In this case — `ONCRMDEALDELETE` ||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | An object containing information about remote deal fields.
+[`object`](../../../data-types.md) | An object containing the identifier of the deleted deal.
 
 The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -75,8 +80,10 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the deleted deal ||
+[`integer`](../../../data-types.md) | Identifier of the deleted deal. In the POST request example, it is passed as a string ||
 |#
+
+The event passes only the deal `ID`. By the time the event is processed, the deal has already been deleted and is no longer available via [crm.deal.get](../crm-deal-get.md).
 
 ### Parameter auth {#auth}
 
@@ -86,5 +93,8 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
-- [{#T}](./on-crm-deal-update.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-deal-add.md)
+- [{#T}](./on-crm-deal-update.md)
+- [{#T}](./on-crm-deal-move-to-category.md)
+- [{#T}](../crm-deal-get.md)

@@ -11,9 +11,14 @@ Choose a tool for developing with an AI agent:
 
 Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, deletion, and movement of deals.
 
-The handler receives only the deal identifier in the `data.FIELDS.ID` field. Events do not pass field values, so request the deal in the handler using the method [crm.deal.get](../crm-deal-get.md). The exception is the event [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md): along with the identifier, it passes the new funnel `CATEGORY_ID` and the new stage `STAGE_ID`.
+The create, update, and delete events pass only the deal identifier in the `data.FIELDS.ID` field. The [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md) event passes the new pipeline `CATEGORY_ID` and the new stage `STAGE_ID` along with the identifier. Request other deal data in the handler using [crm.deal.get](../crm-deal-get.md). After deletion, the deal is no longer available, so retain the data you need in advance.
 
-Moving a deal to another funnel does not trigger the event [onCrmDealUpdate](./on-crm-deal-update.md) — it is tracked only by the event [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md). A stage change within the same funnel, on the contrary, arrives as a regular deal update.
+Which event arrives when the pipeline changes depends on how it is changed:
+
+- moving a deal from the deal form or with the "Change pipeline" automation rule triggers only [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md), without [onCrmDealUpdate](./on-crm-deal-update.md)
+- the [crm.item.update](../../universal/crm-item-update.md) method with a new `categoryId` triggers only [onCrmDealUpdate](./on-crm-deal-update.md)
+
+A stage change within the same pipeline arrives as [onCrmDealUpdate](./on-crm-deal-update.md).
 
 Custom field configurations and recurring deal templates are tracked by separate groups of events: [events for custom deal fields](../user-defined-fields/events/index.md) and [events for recurring deals](../recurring-deals/events/index.md).
 
@@ -40,12 +45,12 @@ An example of a handler code for the event is described in the article [How to T
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: any user. Administrator permissions are required for offline events
 
 #|
 || **Event** | **Triggered By** ||
 || [onCrmDealAdd](./on-crm-deal-add.md) | When a deal is created manually or via the method [crm.deal.add](../crm-deal-add.md) ||
-|| [onCrmDealUpdate](./on-crm-deal-update.md) | When a deal is modified manually or via the method [crm.deal.update](../crm-deal-update.md) ||
+|| [onCrmDealUpdate](./on-crm-deal-update.md) | When a deal is modified manually or via the methods [crm.deal.update](../crm-deal-update.md) and [crm.item.update](../../universal/crm-item-update.md) ||
 || [onCrmDealDelete](./on-crm-deal-delete.md) | When a deal is deleted manually or via the method [crm.deal.delete](../crm-deal-delete.md) ||
-|| [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md) | When the deal's funnel is changed manually or via the method [crm.item.update](../../universal/crm-item-update.md) ||
+|| [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md) | When a deal is moved to another pipeline from the deal form or with the "Change pipeline" automation rule ||
 |#
