@@ -34,7 +34,7 @@ The `mail.message.removecrmactivity` method deletes CRM activities created from 
 The identifier can be obtained using the [mail.message.list](./mail-message-list.md) method ||
 |#
 
-The method deletes only the activities the user is allowed to delete under CRM permissions. The other activities remain in CRM together with their link to the e-mail, and the response contains `complete: false`.
+The method deletes only the activities the user is allowed to delete under CRM permissions. The other activities remain in CRM together with their link to the e-mail, and the response contains `complete: false`. If the user cannot delete any of the e-mail's activities, the method returns the `MAIL_MESSAGE_CRM_ACCESS_DENIED` error.
 
 If all activities are deleted, the method adds the sender address of an incoming e-mail to the CRM exclusion list so that new e-mails from this sender do not get into CRM. The address is added only if the user has the permission to edit the exclusion list.
 
@@ -297,7 +297,7 @@ HTTP status: **200**
 || **result.deletedCount**
 [`integer`](../../data-types.md) | Number of deleted activities ||
 || **result.totalCount**
-[`integer`](../../data-types.md) | Number of CRM activities created from the e-mail ||
+[`integer`](../../data-types.md) | Number of CRM activities linked to the e-mail that existed at the time of the call. If the e-mail has no activities, the value is `0` ||
 || **result.complete**
 [`boolean`](../../data-types.md) | Whether all activities were deleted. Possible values:
 - `true` — all activities of the e-mail were deleted
@@ -305,12 +305,6 @@ HTTP status: **200**
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
-
-{% note warning "" %}
-
-Currently, Bitrix24 returns only `result.result`, without the `deletedCount`, `totalCount`, and `complete` counters. The method responds this way even if the e-mail has no CRM activities. To check the result, retrieve the e-mail using [mail.message.get](./mail-message-get.md) and look for links of the `crm` type in the `bindings` field.
-
-{% endnote %}
 
 ## Error Handling
 

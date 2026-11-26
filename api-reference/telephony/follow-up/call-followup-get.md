@@ -44,6 +44,8 @@ Default — the latest analysis results of the call ||
 || **lastOutcomeId**
 [`integer`](../../data-types.md) | Identifier of the newest analysis result to take into account. Newer results are not returned. This is the `LAST_OUTCOME_ID` value from the parameters of the Follow-up message in the call chat. Use the parameter if the analysis was restarted without a new transcription: in this case, the runs share the same `outcomeId`.
 
+You can pass it together with `outcomeId`, in which case both limits apply. The method does not check whether a result with this identifier exists: the value works as an upper limit.
+
 The parameter is ignored for Sync calls.
 
 Default — no limit ||
@@ -330,7 +332,15 @@ HTTP status: **200**
             "createdAt": "2026-01-15T11:05:00+00:00",
             "tracks": [ /* TrackDto */ ],
             "transcription": { "language": "de", "segments": [ /* TranscriptionSegmentDto */ ] },
-            "overview": { "topic": "Sprint Planning", "actionItems": [ /* ... */ ] },
+            "overview": {
+                "topic": "Sprint Planning",
+                "actionItems": [
+                    { "actionItem": "Deploy MVP by Friday", "quote": "...", "quoteAuthorId": 7, "quoteAuthorName": "Klaus Weber", "quoteStart": "00:12:41" }
+                ],
+                "contextualSuggestions": [
+                    { "text": "Create a task", "kind": "put", "inputDraft": "Deploy MVP by Friday" }
+                ]
+            },
             "summary": { "segments": [ /* SummarySegmentDto */ ] },
             "insights": { "speakerEvaluationAvailable": true, "speakerAnalysis": [ /* ... */ ] },
             "evaluation": { "efficiencyValue": 75, "criteria": { /* ... */ } }

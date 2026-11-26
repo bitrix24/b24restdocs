@@ -273,6 +273,8 @@ The domain in the URL is returned in Unicode, not in Punycode: for example, `htt
 
 For the main page of the site and the index page of the folder, the method returns the address without the `CODE` of the page. If the page has the `RULE` field filled, the address is also returned without adding the `CODE`.
 
+For the Bitrix24 main page (a site of the `MAINPAGE` type), the method returns the address at which the main page opens in Bitrix24, not the address of its site.
+
 More about the `CODE` and `RULE` fields in the section [Page Object Fields](../fields.md) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||

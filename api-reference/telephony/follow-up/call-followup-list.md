@@ -453,7 +453,7 @@ HTTP status: **200**
                 "overview": {
                     "topic": "Sprint planning",
                     "actionItems": [
-                        { "actionItem": "Deploy MVP by Friday", "quote": "..." }
+                        { "actionItem": "Deploy MVP by Friday", "quote": "...", "quoteAuthorId": 7, "quoteAuthorName": "Klaus Weber", "quoteStart": "00:12:41" }
                     ]
                 }
             }

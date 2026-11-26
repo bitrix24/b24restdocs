@@ -236,7 +236,7 @@ For Bitrix24 Sync call Follow-ups, the field keys and types are the same as for 
 - `actionItemMentionLess` — action without participant mentions
 - `quote` — quote from the call
 - `quoteAuthorId` — identifier of the user who said the quote. If the speaker has no user account in Bitrix24 — `null`
-- `quoteAuthorName` — name of the speaker
+- `quoteAuthorName` — name of the speaker. Can be `null`
 - `quoteStart` — start time of the transcription fragment with the quote relative to the start of the call in `HH:MM:SS` format
 
 The `quoteAuthorId`, `quoteAuthorName`, and `quoteStart` fields are returned only if the quote is found in the call transcription ||
@@ -247,7 +247,7 @@ The `quoteAuthorId`, `quoteAuthorName`, and `quoteStart` fields are returned onl
 - `meetingMentionLess` — meeting description without mentions of participants
 - `quote` — a quote from the call
 - `quoteAuthorId` — identifier of the user who said the quote. If the speaker has no user account in Bitrix24 — `null`
-- `quoteAuthorName` — name of the speaker
+- `quoteAuthorName` — name of the speaker. Can be `null`
 - `quoteStart` — start time of the transcription fragment with the quote relative to the start of the call in `HH:MM:SS` format
 
 The `quoteAuthorId`, `quoteAuthorName`, and `quoteStart` fields are returned only if the quote is found in the call transcription ||

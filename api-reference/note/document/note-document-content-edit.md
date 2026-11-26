@@ -54,7 +54,7 @@ Pass either `edits` or `markdown` ||
 
 Trailing spaces and tabs are ignored during comparison, and line breaks are normalized to `\n`.
 
-If multiple matches are found without `replaceAll`, the method returns `NOTE_CONTENT_MATCH_AMBIGUOUS`. Replacement ranges must not overlap, including passing the same `old` in two replacements ||
+If multiple matches are found and `replaceAll` is not passed or is `false`, the method returns `NOTE_CONTENT_MATCH_AMBIGUOUS`. Replacement ranges must not overlap, including passing the same `old` in two replacements ||
 || **new***
 [`string`](../../data-types.md) | New Markdown fragment ||
 || **replaceAll**
@@ -308,7 +308,7 @@ HTTP status: **409**
 
 The field with the error is passed in `details.field`, and the replacement index is passed in `details.editIndex` ||
 || `409` | `NOTE_CONTENT_MATCH_NOT_FOUND` | The `old` fragment was not found in the current Markdown. The replacement index is passed in `details.editIndex` ||
-|| `409` | `NOTE_CONTENT_MATCH_AMBIGUOUS` | Multiple occurrences of `old` were found, and `replaceAll` was not passed. The number of matches is passed in `details.matches`, and the replacement index is passed in `details.editIndex` ||
+|| `409` | `NOTE_CONTENT_MATCH_AMBIGUOUS` | Multiple occurrences of `old` were found, and `replaceAll` was not passed or is `false`. The number of matches is passed in `details.matches`, and the replacement index is passed in `details.editIndex` ||
 || `400` | `NOTE_CONTENT_EDITS_OVERLAP` | The ranges of multiple replacements overlap. The replacement indexes are passed in the `details.editIndexes` array ||
 || `409` | `NOTE_CONTENT_BLOCK_UNSUPPORTED` | A replacement or the new `markdown` modifies a block from `opaqueBlocks`, or an `old` boundary passes inside such a block. The block can be retained unchanged or deleted as a whole. The block index and type are passed in `details.blockIndex` and `details.nodeType` ||
 || `409` | `NOTE_CONTENT_FORMAT_UNSUPPORTED` | The document content is stored in a legacy format that the method does not support ||

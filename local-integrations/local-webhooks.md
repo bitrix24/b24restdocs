@@ -169,6 +169,8 @@ An outbound webhook does not call a method by itself. It passes an event to your
 
 ### How to Create an Outbound Webhook
 
+Any employee can create an outbound webhook. Neither administrator permissions nor access to creating inbound webhooks are required.
+
 1. Open *Developer resources*
 2. Go to *Common use cases > Other > Outbound webhook*
 3. Specify your handler URL
