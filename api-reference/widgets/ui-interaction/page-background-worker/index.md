@@ -30,7 +30,7 @@ The commands and events of this section are not REST methods. The application ca
 5. Wait for the [BackgroundCallCard::initialized](./events/initialized.md) event. Before it, there is no card, and the card management commands return the `Call card is undefined` error. Only [CallCardGetListUiStates](./call-card-get-list-ui-states.md) works without a card
 6. Manage the card with commands through [BX24.placement.call](../bx24-placement-call.md) and subscribe to the operator's actions through [BX24.placement.bindEvent](../bx24-placement-bind-event.md)
 
-The fourth step is mandatory. The commands and events work only with the card of an external call shown by the `telephony.externalCall.register` method. During a regular Bitrix24 call, the card looks the same, but the `BackgroundCallCard::*` events do not arrive, and the commands respond with the `Call card is undefined` error.
+The fourth step is mandatory. The commands and events work only with the card of an external call shown by the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method. During a regular Bitrix24 call, the card looks the same, but the `BackgroundCallCard::*` events do not arrive, and the commands respond with the `Call card is undefined` error.
 
 A minimal working cycle: the application waits for the card to be created, switches it to the required state, and listens to the operator's buttons.
 
@@ -120,7 +120,7 @@ How the card itself is arranged, which areas it has, and which buttons are avail
 
 #|
 || **Problem** | **Cause and what to do** ||
-|| The command returns `Call card is undefined` | There is no call card, or the call was not registered with the `telephony.externalCall.register` method. Invoke commands only after the [BackgroundCallCard::initialized](./events/initialized.md) event ||
+|| The command returns `Call card is undefined` | There is no call card, or the call was not registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method. Invoke commands only after the [BackgroundCallCard::initialized](./events/initialized.md) event ||
 || The callback function is not invoked at all | The widget is open outside the `PAGE_BACKGROUND_WORKER` placement, or the command name is misspelled. Check the list of available commands with the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method. For the `CallCardStartTimer` and `CallCardStopTimer` commands, silence in the browser is the normal behavior on success ||
 || The widget is in the right placement, but events do not arrive and commands return `Call card is undefined` | The call is not an external one. The card has to be raised by the handler itself with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method; this interface does not work for calls made by Bitrix24 itself ||
 || The `CallCardSetUiState` command returns `Invalid ui state` | The state is not in the list of supported ones. Retrieve the list with the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) command ||

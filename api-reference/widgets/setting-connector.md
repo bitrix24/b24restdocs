@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 
 The widget renders the application interface on the settings page of a custom open channel connector. This is where the user connects their communication channel: enters the login of an external service, selects an account, or confirms access.
 
-The handler is connected not with the `placement.bind` method but with the `PLACEMENT_HANDLER` parameter of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method. Bitrix24 creates the binding to the placement itself when it registers the connector.
+The handler is connected not with the [placement.bind](./placement-bind.md) method but with the `PLACEMENT_HANDLER` parameter of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method. Bitrix24 creates the binding to the placement itself when it registers the connector.
 
 {% note info "" %}
 
@@ -82,7 +82,7 @@ The `PLACEMENT_OPTIONS` value is sent as a JSON string. It carries both the addr
 || **REGISTER_STATUS**
 [`boolean`](../data-types.md) | The channel is registered in the external service. `CONNECTION_STATUS` and `REGISTER_STATUS` are set by the [imconnector.activate](../imopenlines/imconnector/imconnector-activate.md) method with `ACTIVE: 1` when the connector is enabled for an open channel ||
 || **ERROR_STATUS**
-[`boolean`](../data-types.md) | The connector has an error. The flag is set by the `imconnector.set.error` method ||
+[`boolean`](../data-types.md) | The connector has an error ||
 || **STATUS**
 [`boolean`](../data-types.md) | Final status: `true` when the connector is enabled, the connection and the registration are confirmed, and there are no errors. The same value is returned by the [imconnector.status](../imopenlines/imconnector/imconnector-status.md) method ||
 |#
@@ -96,7 +96,7 @@ A separate [placement.bind](./placement-bind.md) call is not needed for this pla
 - specify the address of the settings page in `PLACEMENT_HANDLER` of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method
 - Bitrix24 will create the binding to the `SETTING_CONNECTOR` placement and link it to the connector
 
-The `imconnector.register` method is called only from an application: a webhook receives the `WRONG_AUTH_TYPE` error. Besides `PLACEMENT_HANDLER`, the `ID`, `NAME`, and the `ICON[DATA_IMAGE]` icon are required. `ID` must not contain a dot.
+The [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method is called only from an application: a webhook receives the `WRONG_AUTH_TYPE` error. Besides `PLACEMENT_HANDLER`, the `ID`, `NAME`, and the `ICON[DATA_IMAGE]` icon are required. `ID` must not contain a dot.
 
 {% include [Note on Examples](../../_includes/examples.md) %}
 
@@ -121,7 +121,7 @@ BX24.callMethod(
 );
 ```
 
-A repeated `imconnector.register` call with the same `ID` and a new address does not replace the binding but adds a second one. To change the address, remove the old binding with the [placement.unbind](./placement-unbind.md) method with `PLACEMENT: 'SETTING_CONNECTOR'` and the old address in `HANDLER`, then register the connector again. The [imconnector.unregister](../imopenlines/imconnector/imconnector-unregister.md) method removes the connector together with its binding.
+A repeated [imconnector.register](../imopenlines/imconnector/imconnector-register.md) call with the same `ID` and a new address does not replace the binding but adds a second one. To change the address, remove the old binding with the [placement.unbind](./placement-unbind.md) method with `PLACEMENT: 'SETTING_CONNECTOR'` and the old address in `HANDLER`, then register the connector again. The [imconnector.unregister](../imopenlines/imconnector/imconnector-unregister.md) method removes the connector together with its binding.
 
 The placement does not support the `OPTIONS` parameters: there is no way to pass them when registering a connector.
 
@@ -129,9 +129,9 @@ The placement does not support the `OPTIONS` parameters: there is no way to pass
 
 #|
 || **Mistake** | **How to Solve** ||
-|| The handler was bound with the `placement.bind` method | The method accepts the `SETTING_CONNECTOR` code and creates a binding, but it does not appear on the settings page. Bitrix24 shows the binding that it created itself when registering the connector ||
+|| The handler was bound with the [placement.bind](./placement-bind.md) method | The method accepts the `SETTING_CONNECTOR` code and creates a binding, but it does not appear on the settings page. Bitrix24 shows the binding that it created itself when registering the connector ||
 || The settings page is looked for before the channel is connected | Until *Connect* is clicked in the connector slider and an open channel is selected, there is no application interface on the page ||
-|| The connector identifier does not match the stored one | The `imconnector.register` method converts `ID` to lowercase, and `PLACEMENT_OPTIONS` already contains the converted value. Compare the values in the same case ||
+|| The connector identifier does not match the stored one | The [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method converts `ID` to lowercase, and `PLACEMENT_OPTIONS` already contains the converted value. Compare the values in the same case ||
 |#
 
 ## Continue Learning

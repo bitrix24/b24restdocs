@@ -15,6 +15,13 @@ Choose a tool for developing with an AI agent:
 
 The `disableAutoClose` command disables the automatic closing of the call card and resets the delayed-closing timer to 65 seconds if it has already started.
 
+You can use the command to:
+
+- give the operator time after the conversation, for example to finish filling in the widget form with the call results
+- allow more time if needed: calling the command again restarts the countdown
+
+Without the command, the card closes right after the call ends, and the widget closes with it. The block lasts a limited time: after the call ends, the card stays on screen for 65 seconds and then closes by itself, even if the block has not been lifted. Once the widget has saved the data, restore auto-closing with the [enableAutoClose](./enable-auto-close.md) command.
+
 {% note info "" %}
 
 The command operates within the application context in the `CALL_CARD` placement. This is a JS interface command, not a REST method: it cannot be invoked with a request to `/rest/`.

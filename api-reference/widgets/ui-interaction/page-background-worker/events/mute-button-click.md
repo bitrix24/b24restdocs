@@ -25,7 +25,7 @@ The event operates within the application context in the `PAGE_BACKGROUND_WORKER
 
 ## What the Handler Receives
 
-Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
+Data is passed to the callback function passed to [BX24.placement.bindEvent](../../bx24-placement-bind-event.md) {.b24-info}
 
 ```js
 callback(true);

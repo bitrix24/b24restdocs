@@ -28,7 +28,7 @@ BX24.placement.call(command, parameters[, callback]);
 `type` | **Description** ||
 || **command***
 [`string`](../../data-types.md) | The name of the command to invoke ||
-|| **parameters**
+|| **parameters***
 [`any`](../../data-types.md) | Passed parameters. The value type depends on the command: object, string, number, array, or `null`. Commands without parameters accept an empty object `{}` ||
 || **callback**
 [`callable`](../../data-types.md) | Callback function. It receives the result of the command ||
@@ -65,6 +65,8 @@ Besides the commands of the placement, general methods are available to the widg
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
+The example retrieves the current call data from a widget opened in the `CALL_CARD` call card.
+
 {% list tabs %}
 
 - BX24.js
@@ -73,10 +75,6 @@ Besides the commands of the placement, general methods are available to the widg
     BX24.ready(function () {
         BX24.init(function () {
             BX24.placement.call('getStatus', {}, function (result) {
-                console.log(result);
-            });
-
-            BX24.placement.call('CallCardSetCardTitle', {title: 'hello world!'}, function (result) {
                 console.log(result);
             });
         });
@@ -114,11 +112,21 @@ Besides the commands of the placement, general methods are available to the widg
 
 {% endlist %}
 
+A background widget in `PAGE_BACKGROUND_WORKER` invokes its own `CallCard*` commands with the same method. This is how it changes the call card title. The command works while an external call card is open — after the [BackgroundCallCard::initialized](./page-background-worker/events/initialized.md) event:
+
+```js
+BX24.placement.call('CallCardSetCardTitle', {title: 'Call from CRM'}, function (result) {
+    console.log(result);
+});
+```
+
 ## Result
 
-The content of the result is defined by the command itself and described on the command page. Commands that return nothing pass an empty array to the callback function, while read commands pass an object or an array with data.
+The result is defined by the command itself: some commands pass data to the callback function, others pass an empty array, and still others do not invoke it at all. What a particular command returns is described on its page.
 
-A command returns its error to the same place — the JS interface has no separate error channel. For example, when there is no call card, the call card commands pass an array with an object:
+For example, the `CallCardSetCardTitle` command of a background widget passes an empty array `[]` after a successful action, and the `getValue` command of a `USERFIELD_TYPE` field passes the field value itself. `CallCardStartTimer`, however, does not invoke the callback function after successfully starting the timer.
+
+A command returns its error to the same place — the JS interface has no separate error channel. For example, the `CallCard*` call card control commands, including `CallCardStartTimer`, pass an array with an object when there is no active external call card:
 
 ```json
 [
@@ -128,6 +136,8 @@ A command returns its error to the same place — the JS interface has no separa
     }
 ]
 ```
+
+The exception is `CallCardGetListUiStates`: it does not check for a card and always returns the list of states.
 
 ## Errors
 

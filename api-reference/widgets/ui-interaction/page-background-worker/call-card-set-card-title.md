@@ -130,7 +130,7 @@ The command error arrives in the same callback function: instead of the usual re
 
 - before the `BackgroundCallCard::initialized` event
 - after the card was closed
-- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+- during a call that was not registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method, for example, a call made by Bitrix24 itself ||
 || `missing field title` | The required `title` parameter was not passed | In the Bitrix24 desktop application, the `title` field is required ||
 |#
 

@@ -13,7 +13,7 @@ The `BackgroundCallCard::*` events let an application react to the operator's ac
 
 {% note warning "" %}
 
-These are events of the placement JS interface, not [REST events](../../../../events/index.md). They have no server handler: the application subscribes to them in the browser with the [BX24.placement.bindEvent](../../bx24-placement-bind-event.md) method. They cannot be registered with the `event.bind` method, and the REST method `placement.bindEvent` does not exist.
+These are events of the placement JS interface, not [REST events](../../../../events/index.md). They have no server handler: the application subscribes to them in the browser with the [BX24.placement.bindEvent](../../bx24-placement-bind-event.md) method. They cannot be registered with the [event.bind](../../../../events/event-bind.md) method, and the REST method [placement.bindEvent](../../bx24-placement-bind-event.md) does not exist.
 
 {% endnote %}
 
@@ -42,7 +42,7 @@ BX24.ready(function () {
 
 You need to subscribe to each event separately: there is no subscription to all events at once.
 
-An interface event cannot be unsubscribed from, and calling `BX24.placement.bindEvent` again with the same name adds a second handler, so the application handles the event twice. Subscribe once per widget load.
+An interface event cannot be unsubscribed from, and calling [BX24.placement.bindEvent](../../bx24-placement-bind-event.md) again with the same name adds a second handler, so the application handles the event twice. Subscribe once per widget load.
 
 ## How to Choose an Event
 

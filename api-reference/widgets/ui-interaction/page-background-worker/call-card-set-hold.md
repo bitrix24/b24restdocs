@@ -139,7 +139,7 @@ The command error arrives in the same callback function: instead of the usual re
 
 - before the `BackgroundCallCard::initialized` event
 - after the card was closed
-- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+- during a call that was not registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method, for example, a call made by Bitrix24 itself ||
 || `missing field held` | The required `held` parameter was not passed | A parameter error in the Bitrix24 desktop application. Because of the way it is implemented, a second response — an empty array — may arrive after it ||
 |#
 

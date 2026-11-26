@@ -129,7 +129,7 @@ The command error arrives in the same callback function: instead of the usual re
 
 - before the `BackgroundCallCard::initialized` event
 - after the card was closed
-- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+- during a call that was not registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method, for example, a call made by Bitrix24 itself ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardClose` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

@@ -13,12 +13,10 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `CallCard::EntityChanged` event occurs when the client bound to the call changes.
+The `CallCard::EntityChanged` event occurs when the call card starts loading or refreshing the client data from the CRM. This happens in four cases:
 
-The event arrives in four cases:
-
-- the call card opened and pulled up CRM data
-- the card refreshed the client data
+- the call card opened
+- the card refreshed the client data. The object type and identifier may stay the same
 - a CRM item was created or bound from the card — a lead, a contact, or a company
 - in call campaign mode, the operator moved on to the next client
 
@@ -30,7 +28,7 @@ The event operates within the application context in the `CALL_CARD` placement. 
 
 ## What the Handler Receives
 
-Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
+Data is passed to the callback function passed to [BX24.placement.bindEvent](../bx24-placement-bind-event.md) {.b24-info}
 
 ```js
 callback({
@@ -50,11 +48,26 @@ callback({
 || **PHONE_NUMBER***
 [`string`](../../../data-types.md) | The client's phone number.
 
-If the client has no phone number at all, the string `unknown` arrives ||
+Possible values:
+
+- the client's number — the usual case
+- `hidden` — the client's number did not arrive, for example the client hid it
+- `unknown` — in call campaign mode, the selected client has no phone number at all ||
 || **CRM_ENTITY_TYPE***
-[`string`](../../../data-types.md) | The type of the CRM object linked to the call ||
+[`string`](../../../data-types.md) | The type of the CRM object linked to the call.
+
+For a regular call, one of the following values arrives:
+
+- `LEAD` — lead
+- `CONTACT` — contact
+- `COMPANY` — company
+- an empty string — the call is not linked to the CRM
+
+In a call campaign based on deals, estimates, or invoices, the type of the call campaign item itself may arrive, for example `DEAL`, if the item has no client ||
 || **CRM_ENTITY_ID***
-[`integer`](../../../data-types.md) | The identifier of the CRM object linked to the call ||
+[`integer`](../../../data-types.md) | The identifier of the CRM object linked to the call.
+
+`0` if the call is not linked to the CRM ||
 |#
 
 ## Event Subscription Parameters
@@ -132,10 +145,11 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](../bx24-placement-bind-event.md)
 - [{#T}](./get-status.md)
 - [{#T}](./disable-auto-close.md)
 - [{#T}](./enable-auto-close.md)
 - [{#T}](./call-card-before-close.md)
 - [{#T}](./call-card-call-state-changed.md)
-- [{#T}](./index.md)
 - [{#T}](../../telephony/call-card.md)

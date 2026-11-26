@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The `getStatus` command returns the current data of the call card.
 
+With the response, the application can:
+
+- store its own data about the conversation, such as operator notes, under the `CALL_ID` key
+- show the client data next to the conversation based on `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID`
+- find the CRM objects the call is bound to in `CRM_BINDINGS`: the client and, for example, their deal
+
 {% note info "" %}
 
 The command operates within the application context in the `CALL_CARD` placement. This is a JS interface command, not a REST method: it cannot be invoked with a request to `/rest/`.
@@ -103,25 +109,24 @@ The command takes no parameters. Pass an empty object `{}` as the second argumen
 
 ```json
 {
-    "CALL_ID": "E45D40253D1C2D2F.1774588815.822533",
-    "PHONE_NUMBER": "+19999999666",
-    "LINE_NUMBER": "reg151083",
-    "LINE_NAME": "",
+    "CALL_ID": "externalCall.440f80efd51b08c719713286819ab5d7.1795683625",
+    "PHONE_NUMBER": "+491701234567",
+    "LINE_NUMBER": "493012345678",
+    "LINE_NAME": "Sales Department",
     "CRM_ENTITY_TYPE": "CONTACT",
-    "CRM_ENTITY_ID": 797,
-    "CRM_ACTIVITY_ID": 12043,
+    "CRM_ENTITY_ID": 4597,
     "CRM_BINDINGS": [
         {
-        "ENTITY_TYPE": "DEAL",
-        "ENTITY_ID": 4615
+            "ENTITY_TYPE": "DEAL",
+            "ENTITY_ID": 9221
         },
         {
-        "ENTITY_TYPE": "COMPANY",
-        "ENTITY_ID": 643
+            "ENTITY_TYPE": "CONTACT",
+            "ENTITY_ID": 4597
         }
     ],
-    "CALL_DIRECTION": "outgoing",
-    "CALL_STATE": "idle",
+    "CALL_DIRECTION": "incoming",
+    "CALL_STATE": "connected",
     "CALL_LIST_MODE": false
 }
 ```

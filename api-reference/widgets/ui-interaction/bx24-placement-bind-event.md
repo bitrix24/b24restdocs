@@ -19,7 +19,7 @@ The method `BX24.placement.bindEvent` sets an event handler for the interface. T
 BX24.placement.bindEvent(event, callback);
 ```
 
-These are interface events, not [REST events](../../events/index.md): the handler runs in the browser, in the widget code, and it is not registered with the `event.bind` method.
+These are interface events, not [REST events](../../events/index.md): the handler runs in the browser, in the widget code, and it is not registered with the [event.bind](../../events/event-bind.md) method.
 
 ## Parameters
 
@@ -54,6 +54,8 @@ The set of events is defined by the placement where the widget is open.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
+The example subscribes a widget opened in the `CALL_CARD` call card to call state changes.
+
 {% list tabs %}
 
 - BX24.js
@@ -61,10 +63,6 @@ The set of events is defined by the placement where the widget is open.
     ```js
     BX24.ready(function () {
         BX24.init(function () {
-            BX24.placement.bindEvent('BackgroundCallCard::initialized', function (eventData) {
-                console.log(eventData);
-            });
-
             BX24.placement.bindEvent('CallCard::CallStateChanged', function (callState) {
                 console.log(callState);
             });
@@ -102,6 +100,14 @@ The set of events is defined by the placement where the widget is open.
     ```
 
 {% endlist %}
+
+A background widget in `PAGE_BACKGROUND_WORKER` subscribes in the same way, only to its own `BackgroundCallCard::*` events:
+
+```js
+BX24.placement.bindEvent('BackgroundCallCard::initialized', function (eventData) {
+    console.log(eventData);
+});
+```
 
 ## Result
 

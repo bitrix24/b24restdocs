@@ -27,6 +27,8 @@ The method takes no parameters and returns the result immediately, without a cal
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
+The code runs in the widget frame after the library is initialized: in [BX24.js](../../../sdk/bx24-js-sdk/index.md) — inside [BX24.init](../../../sdk/bx24-js-sdk/system-functions/bx24-init.md), in [b24jssdk](../../../sdk/b24jssdk/index.md) — after `initializeB24Frame`.
+
 {% list tabs %}
 
 - BX24.js
@@ -81,14 +83,18 @@ The method takes no parameters and returns the result immediately, without a cal
 || **Name**
 `type` | **Description** ||
 || **placement**
-[`string`](../../data-types.md) | The code of the placement where the widget is open. For a widget opened through the main application link — `DEFAULT` ||
+[`string`](../../data-types.md) | The code of the placement where the widget is open. `DEFAULT` — if the application is opened without a placement, for example through the main link ||
 || **options**
-[`object`](../../data-types.md) | The placement parameters. The set of keys depends on the placement: for example, the identifier of a CRM item or the identifier of a chat. The keys of each placement are described on its page in the [placement catalog](../placements.md) ||
+[`object`](../../data-types.md) | The data that Bitrix24 passes to the widget when it opens: for example, the identifier of a CRM item or the call data. The set of keys depends on the placement and is described on its page in the [placement catalog](../placements.md).
+
+Numbers and boolean values may arrive as strings: for example, `"CRM_ENTITY_ID": "0"` and `"CALL_LIST_MODE": "false"` in the call card. Convert them to the required type yourself.
+
+The `OPTIONS` parameters that the application passed to [placement.bind](../placement-bind.md) during registration are not included in `options` ||
 |#
 
 ## Errors
 
-The method returns no errors. If `placement` contains `DEFAULT` while a placement was expected, the widget was opened through the main application link rather than from a registered placement.
+The method returns no errors. If `placement` contains `DEFAULT` while a placement was expected, the application was opened without a placement: through the main link or with the [BX24.openApplication](../../../sdk/bx24-js-sdk/additional-functions/bx24-open-application.md) method. Check how the widget is opened.
 
 ## Continue Learning
 

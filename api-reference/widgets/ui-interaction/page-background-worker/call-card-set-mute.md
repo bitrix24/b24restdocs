@@ -139,7 +139,7 @@ The command error arrives in the same callback function. Usually, it is an array
 
 - before the `BackgroundCallCard::initialized` event
 - after the card was closed
-- during a call that was not registered with the `telephony.externalCall.register` method, for example, a call made by Bitrix24 itself ||
+- during a call that was not registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method, for example, a call made by Bitrix24 itself ||
 || `missing field muted` | The required `muted` parameter was not passed | In the Bitrix24 desktop application, the `muted` field is required. This code arrives as a single object, without being wrapped in an array ||
 |#
 

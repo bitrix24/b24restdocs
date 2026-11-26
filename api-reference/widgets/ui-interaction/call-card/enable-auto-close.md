@@ -15,6 +15,13 @@ Choose a tool for developing with an AI agent:
 
 The `enableAutoClose` command restores the automatic closing of the call card that was disabled by the [disableAutoClose](./disable-auto-close.md) command.
 
+You can use the command to:
+
+- restore auto-closing when the widget has finished working with the call, for example has saved the conversation results from the form
+- close the card from the [CallCard::BeforeClose](./call-card-before-close.md) event handler — the event arrives when Bitrix24 tries to close the card
+
+Save the form data first, then call the command.
+
 If the conversation has already ended by that moment and the countdown to closing was running, the card closes immediately. While the call is active, the command only lifts the block: the card closes as usual after the conversation. If a comment form is open in the card, Bitrix24 retains the comment first.
 
 {% note info "" %}
@@ -93,6 +100,8 @@ The command takes no parameters. Pass an empty object `{}` as the second argumen
 ### Returned Data
 
 An empty array on a successful call.
+
+If the command closed the card, the callback function is not invoked: the widget closes along with the card before that. So save the data before calling `enableAutoClose`, not in the callback function.
 
 ## Errors
 

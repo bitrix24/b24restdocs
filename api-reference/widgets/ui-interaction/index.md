@@ -13,7 +13,7 @@ The `BX24.placement.*` methods give a widget access to the Bitrix24 interface: t
 
 {% note warning "" %}
 
-These are methods of a JS library, not of the REST API. They are called in the browser from the widget code — through [BX24.js](../../../sdk/bx24-js-sdk/index.md) or the [b24jssdk](../../../sdk/b24jssdk/index.md) library. The REST methods `placement.call` and `placement.bindEvent` do not exist: a request to `/rest/` with such names returns an error. Through REST, you only register the placement itself, with the [placement.bind](../placement-bind.md) method.
+These are methods of a JS library, not of the REST API. They are called in the browser from the widget code — through [BX24.js](../../../sdk/bx24-js-sdk/index.md) or the [b24jssdk](../../../sdk/b24jssdk/index.md) library. The REST methods [placement.call](bx24-placement-call.md) and [placement.bindEvent](bx24-placement-bind-event.md) do not exist: a request to `/rest/` with such names returns an error. Through REST, you only register the placement itself, with the [placement.bind](../placement-bind.md) method.
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some placements have commands and events of their own — the call card, for exa
 
 ## Getting Started
 
-1. Register the widget with the [placement.bind](../placement-bind.md) method and open it in the desired placement
+1. Register the widget in the desired placement. For most placements, this is done with the [placement.bind](../placement-bind.md) method; for the rest, the method is given on the placement page. Open the widget in this placement
 2. Connect a client library in the widget code. [BX24.js](../../../sdk/bx24-js-sdk/index.md) is connected with a single script and works through callback functions, while [b24jssdk](../../../sdk/b24jssdk/index.md) is installed as a package and returns promises. Without a library, there is no `BX24` object on the page
 3. Retrieve the call context with the [BX24.placement.info](./bx24-placement-info.md) method — it shows which placement the widget is open in and which parameters arrived with it
 4. Request the available commands and events with the [BX24.placement.getInterface](./bx24-placement-get-interface.md) method — the set depends on the placement
@@ -41,11 +41,22 @@ BX24.ready(function () {
 });
 ```
 
+The result for a widget opened in the `CALL_CARD` call card:
+
+```json
+{
+    "command": ["getStatus", "disableAutoClose", "enableAutoClose"],
+    "event": ["CallCard::EntityChanged", "CallCard::BeforeClose", "CallCard::CallStateChanged"]
+}
+```
+
+Invoke the commands from `command` with the [BX24.placement.call](./bx24-placement-call.md) method, and subscribe to the events from `event` with the [BX24.placement.bindEvent](./bx24-placement-bind-event.md) method. Empty arrays mean that the placement where the widget is open has no commands or events of its own.
+
 ## Limitations and Features
 
 - Each placement has its own set of commands and events. The same call may be valid for `CALL_CARD` and not exist elsewhere in the interface
 - The placement interface silently ignores an unknown command and a subscription to an unregistered event: the callback function is not invoked and no error arrives. That is why you should check the interface with the [BX24.placement.getInterface](./bx24-placement-get-interface.md) method before making a call
-- The methods of this section operate on the interface side and do not replace the REST API: data still has to be retrieved and retained with REST methods. This also applies to the navigation methods [BX24.openPath](../bx24-widget-methods.md), [BX24.openApplication](../bx24-widget-methods.md), and [BX24.closeApplication](../bx24-widget-methods.md)
+- The methods of this section operate on the interface side and do not replace the REST API: data still has to be retrieved and retained with REST methods. This also applies to the navigation methods [BX24.openPath](../../../sdk/bx24-js-sdk/additional-functions/bx24-open-path.md), [BX24.openApplication](../../../sdk/bx24-js-sdk/additional-functions/bx24-open-application.md), and [BX24.closeApplication](../../../sdk/bx24-js-sdk/additional-functions/bx24-close-application.md)
 
 ## Special Features of Individual Placements
 
@@ -81,7 +92,7 @@ BX24.placement.call('reloadData', {}, function () {
 });
 ```
 
-The command refreshes data only in the interface and invokes the callback function without arguments. It does not retain changes in the CRM: for the data to reach the database, the user has to save the card.
+The command only refreshes the interface and invokes the callback function without arguments. It does not change the data itself: first save the changes with REST methods, then call `reloadData` so that the user sees them.
 
 ## Overview of Methods {#all-methods}
 
@@ -90,11 +101,11 @@ The command refreshes data only in the interface and invokes the callback functi
 > Who can execute the method: any user
 
 #|
-|| **Method** | **When it is needed** ||
-|| [BX24.placement.info](./bx24-placement-info.md) | To find out which placement the widget is open in and which parameters arrived with it ||
-|| [BX24.placement.getInterface](./bx24-placement-get-interface.md) | To check whether the current placement supports the command or event you need ||
-|| [BX24.placement.call](./bx24-placement-call.md) | To perform an action in the interface: refresh a form, change the call card, write a value into a field ||
-|| [BX24.placement.bindEvent](./bx24-placement-bind-event.md) | To react to user actions in the Bitrix24 interface ||
+|| **Method** | **When it is needed** | **What it returns** ||
+|| [BX24.placement.info](./bx24-placement-info.md) | To find out which placement the widget is open in and which parameters arrived with it | An object with the `placement` and `options` fields — immediately, without a callback function ||
+|| [BX24.placement.getInterface](./bx24-placement-get-interface.md) | To check whether the current placement supports the command or event you need | An object with the `command` and `event` arrays — in the callback function ||
+|| [BX24.placement.call](./bx24-placement-call.md) | To perform an action in the interface: refresh a form, change the call card, write a value into a field | The command result — in the callback function. Its content is defined by the command ||
+|| [BX24.placement.bindEvent](./bx24-placement-bind-event.md) | To react to user actions in the Bitrix24 interface | Nothing. The data arrives in the handler every time the event occurs ||
 |#
 
 ## Continue Learning

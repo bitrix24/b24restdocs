@@ -15,7 +15,7 @@ A telephony application with its own WebRTC client works with the Bitrix24 call 
 
 The handler of the WebRTC client is registered once and loads on every page.
 
-There is a dedicated placement for this — an invisible frame on every Bitrix24 page. The application registers a handler in it with the [placement.bind](../../placement-bind.md) method from its own interface, for example during installation. The application needs the `placement` and `telephony` scopes. Who can call `placement.bind` is described on the method page. The handler starts loading once the application installation is complete.
+There is a dedicated placement for this — an invisible frame on every Bitrix24 page. The application registers a handler in it with the [placement.bind](../../placement-bind.md) method from its own interface, for example during installation. The application needs the `placement` and `telephony` scopes. Who can call [placement.bind](../../placement-bind.md) is described on the method page. The handler starts loading once the application installation is complete.
 
 The examples use [BX24.js](../../../../sdk/bx24-js-sdk/index.md) — the library is included on the application page. A registration example:
 

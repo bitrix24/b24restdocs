@@ -34,6 +34,8 @@ Bitrix24 silently ignores an unknown command and a subscription to an unregister
 [`callable`](../../data-types.md) | Callback function. It receives an object with the fields `command` and `event` ||
 |#
 
+The method is asynchronous: it returns nothing, and the list of commands and events arrives only in the callback function. Write the code that checks the interface inside it. The [BX24.placement.info](bx24-placement-info.md) method, by contrast, returns the context immediately.
+
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
@@ -90,7 +92,7 @@ Bitrix24 silently ignores an unknown command and a subscription to an unregister
 
 ## Result
 
-An example for a widget opened in the `CALL_CARD` placement.
+The object that arrives in the callback function. An example for a widget opened in the `CALL_CARD` placement.
 
 ```json
 {

@@ -23,25 +23,18 @@ The event operates within the application context in the `CALL_CARD` placement. 
 
 ## What the Handler Receives
 
-Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
+Data is passed to the callback function passed to [BX24.placement.bindEvent](../bx24-placement-bind-event.md) {.b24-info}
 
 ```js
-callback(
-    "idle",
-    {
-        "failedCode": "486"
-    }
-);
+callback("idle");
 ```
 
 ## Event Handler Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **callState***
+|| **callState**
 [`string`](../../../data-types.md) | The current state of the call.
 
 Possible values:
@@ -49,22 +42,9 @@ Possible values:
 - `idle` — no connection
 - `connecting` — establishing connection
 - `connected` — connection established ||
-|| **additionalParams**
-[`object`](../../../data-types.md) | Additional data [(detailed description)](#additional_params).
-
-The argument always arrives: if there is no additional data, it is an empty object. The asterisk marks the required subscription parameters, not the handler arguments ||
 |#
 
-### additionalParams Parameter {#additional_params}
-
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **failedCode**
-[`string`](../../../data-types.md) | The call termination code. It is passed only on an unsuccessful termination, when `callState = idle`.
-
-The value is a SIP protocol code. For example, `486` — the subscriber is busy, `480` — the subscriber is unavailable ||
-|#
+The handler receives no other arguments: the reason code for a failed call is not passed to the widget.
 
 ## Event Subscription Parameters
 
@@ -94,7 +74,7 @@ For this event — `CallCard::CallStateChanged` ||
     ```js
     BX24.ready(function () {
         BX24.init(function () {
-            BX24.placement.bindEvent('CallCard::CallStateChanged', function (callState, additionalParams) {
+            BX24.placement.bindEvent('CallCard::CallStateChanged', function (callState) {
                 console.log(callState);
             });
         });
@@ -109,8 +89,8 @@ For this event — `CallCard::CallStateChanged` ||
 
     declare const $b24: B24Frame
 
-    await $b24.placement.bindEvent('CallCard::CallStateChanged', (callState: string, additionalParams: { failedCode?: string }) => {
-      console.log(callState, additionalParams.failedCode)
+    await $b24.placement.bindEvent('CallCard::CallStateChanged', (callState: string) => {
+      console.log(callState)
     })
     ```
 
@@ -123,7 +103,7 @@ For this event — `CallCard::CallStateChanged` ||
       document.addEventListener('DOMContentLoaded', async () => {
         const $b24 = await B24Js.initializeB24Frame()
 
-        await $b24.placement.bindEvent('CallCard::CallStateChanged', (callState, additionalParams) => {
+        await $b24.placement.bindEvent('CallCard::CallStateChanged', (callState) => {
           console.log(callState)
         })
       })
@@ -142,10 +122,11 @@ Check the following conditions.
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](../bx24-placement-bind-event.md)
 - [{#T}](./get-status.md)
 - [{#T}](./disable-auto-close.md)
 - [{#T}](./enable-auto-close.md)
 - [{#T}](./call-card-entity-changed.md)
 - [{#T}](./call-card-before-close.md)
-- [{#T}](./index.md)
 - [{#T}](../../telephony/call-card.md)
