@@ -44,17 +44,17 @@ Possible prefix values:
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
+- `><` — between, an array of two values is passed as the value
+- `!><` — not between, an array of two values is passed as the value
 - `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
-    - `"mol%"` — searches for values starting with "mol"
-    - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
+- `!%` — NOT LIKE, the value does not contain the substring
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+To filter records by a list of values, pass an array without a prefix: `"ID": [5, 27]`. With the `!` prefix, the array excludes the listed values: `"!ID": [5, 27]`.
+
+The method does not support the `@`, `!@`, `=%`, and `%=` prefixes. It silently drops a condition with such a prefix and returns records without applying that condition.
 
 The list of fields available for filtering can be obtained using [disk.storage.getFields](./disk-storage-get-fields.md). The method ignores fields that are not in this list ||
 || **order**
