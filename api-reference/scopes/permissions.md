@@ -103,4 +103,4 @@ Versions:
 
 [*key_task]: Additionally, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.
 
-[*key_sonet]: The socialnetwork scope does not grant access to any method. To work with working groups, specify sonet_group.
+[*key_sonet]: The socialnetwork scope is used by the socialnetwork.api.workgroup.* methods. For the sonet_group.* methods, specify sonet_group.

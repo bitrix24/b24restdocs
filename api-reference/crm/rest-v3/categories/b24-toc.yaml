@@ -25,3 +25,15 @@ items:
     href: crm-entity-category-stage-delete-rest-v3.md
   - name: Replace Pipeline Stages
     href: crm-entity-category-stage-replace-rest-v3.md
+  - name: Add an Estimate Stage
+    href: crm-quote-stage-add-rest-v3.md
+  - name: Update an Estimate Stage
+    href: crm-quote-stage-update-rest-v3.md
+  - name: Get an Estimate Stage by ID
+    href: crm-quote-stage-get-rest-v3.md
+  - name: Get Estimate Stages
+    href: crm-quote-stage-list-rest-v3.md
+  - name: Delete an Estimate Stage
+    href: crm-quote-stage-delete-rest-v3.md
+  - name: Replace Estimate Stages
+    href: crm-quote-stage-replace-rest-v3.md

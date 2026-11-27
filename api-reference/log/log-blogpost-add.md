@@ -27,7 +27,7 @@ The method `log.blogpost.add` adds a message to the News Feed.
 || **POST_TITLE**
 [`string`](../data-types.md) | Message title ||
 || **DEST**
-[`array`](../data-types.md) | List of recipients who will have permission to view the message.
+[`array`](../data-types.md) | List of recipients who will have permission to view the message. Each recipient must be a string. Nested arrays are not supported: the method returns the `Wrong destinations` error.
 
 Possible values:
 
@@ -462,6 +462,7 @@ HTTP Status: **400**
 || — | `Access to one or more message recipients was denied` | `DEST` contains an external user who is not accessible to the current user. The error can occur if the `extranet` module is installed. Portal administrators and department employees are always valid recipients ||
 || `SONET_CONTROLLER_LIVEFEED_BLOGPOST_MODULE_BLOG_NOT_INSTALLED` | `Blog module is not installed` | The `blog` module is not installed ||
 || `SONET_CONTROLLER_LIVEFEED_BLOG_NOT_FOUND` | `Blog not found` | Failed to retrieve the blog to which the message belongs ||
+|| `ERROR_ARGUMENT` | `Wrong destinations` | `DEST` contains a nested array instead of a string with a recipient code ||
 || — | `Cannot add blog post` | Internal error when creating the message ||
 |#
 

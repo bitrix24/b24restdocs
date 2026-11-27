@@ -44,7 +44,7 @@ Some fields are named differently in the universal methods: the estimate stage `
 ## Getting Started
 
 1. Retrieve the description of estimate fields using the method [crm.quote.fields](./crm-quote-fields.md) — it returns both system and custom fields with their types
-2. Find out the available stages using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID = QUOTE_STATUS`, and the list of currencies using the method [crm.currency.list](../currency/crm-currency-list.md)
+2. Find out the available stages using the REST 3.0 method [crm.quote.stage.list](../rest-v3/categories/crm-quote-stage-list-rest-v3.md) or the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID = QUOTE_STATUS`, and the list of currencies using the method [crm.currency.list](../currency/crm-currency-list.md)
 3. Create an estimate using the method [crm.quote.add](./crm-quote-add.md): pass the subject `TITLE`, the stage `STATUS_ID`, the client company `COMPANY_ID` or the contacts `CONTACT_IDS`, and your own company `MYCOMPANY_ID`
 4. Add product items using the method [crm.quote.productrows.set](./crm-quote-product-rows-set.md); to check their composition, use the method [crm.quote.productrows.get](./crm-quote-product-rows-get.md)
 5. Subscribe to [estimate events](./events/index.md) to receive notifications about changes in your application

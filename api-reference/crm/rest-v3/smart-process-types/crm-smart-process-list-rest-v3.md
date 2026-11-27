@@ -54,22 +54,21 @@ The method name is written in lowercase: `crm.smartprocess.list`. For the name `
 
 The type fields are described on the [crm.smartprocess.get](./crm-smart-process-get-rest-v3.md#item) method page.
 
-Without `select`, the method returns all fields, including the `relations` links, the `linkedUserFields` bindings, and the `customSections` digital workplaces. If `select` is passed, nested objects are returned only when they are listed in it. The `entityTypeId` field is not added automatically: list it explicitly.
+Without `select`, the method returns all fields, including the `relations` links, the `linkedUserFields` bindings, and the `customSectionIds` digital workplaces. If `select` is passed, nested objects are returned only when they are listed in it. The `entityTypeId` field is not added automatically: list it explicitly.
 
 You can select some fields of nested objects with a dot-notation path:
 
 - `relations.parent` — only parent links
 - `relations.parent.entityTypeId` — only parent type IDs
 - ```linkedUserFields.TASKS_TASK|UF_CRM_TASK``` — only the flag for tasks
-- `customSections.title` — only digital workplace names
 
-`select` can be passed as a string with one field: `"select": "entityTypeId"`. For an unknown field, the method returns an [error](#unknown-field).
+`select` can be passed as a string with one field: `"select": "entityTypeId"`. For an unknown field, including the obsolete `customSectionId` and `customSections` fields, the method returns an [error](#unknown-field).
 
 ### The filter Parameter {#filter}
 
 A filter is an array of conditions. The method combines the conditions in the array with AND logic. A condition is written in the format `["field", "operator", value]`, for example, `["isClientEnabled", "=", true]`.
 
-You can filter by all type fields except `description`, `additionalCustomSectionIds`, `relations`, `linkedUserFields`, and `customSections`. Operators:
+You can filter by all type fields except `description`, `customSectionIds`, `relations`, and `linkedUserFields`. Operators:
 
 - `=`, `!=` — for all fields
 - `>`, `>=`, `<`, `<=` — for numbers and dates
@@ -78,7 +77,7 @@ You can filter by all type fields except `description`, `additionalCustomSection
 
 What each operator does is described in the [REST 3.0 overview](../../../rest-v3.md#operators). You cannot search by part of a name: there is no `like` operator.
 
-The value must match the field type: `true` or `false` for `is…` flags, a number for `entityTypeId`, a string for `title` and `code`, and a date in ISO 8601 format for `createdTime` and `updatedTime`, for example, `"2025-01-01T00:00:00+01:00"`. The value `"Y"` for a flag or `null` for `customSectionId` causes a validation error.
+The value must match the field type: `true` or `false` for `is…` flags, a number for `entityTypeId`, a string for `title` and `code`, and a date in ISO 8601 format for `createdTime` and `updatedTime`, for example, `"2025-01-01T00:00:00+01:00"`. The value `"Y"` for a flag or `null` for `primaryCustomSectionId` causes a validation error. Types without a digital workplace do not match conditions on `primaryCustomSectionId`, including the `!=` condition.
 
 To combine conditions with OR logic, pass a group — an object with these keys:
 
@@ -527,7 +526,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `isClientEnabled` | This request requires data type `bool` in field `isClientEnabled` | Pass a value of the field type in the filter condition: `true` or `false`, not `"Y"` ||
-|| `customSectionId` | This request requires data type `int` in field `customSectionId` | Pass a number. The filter does not support comparison with `null` ||
+|| `primaryCustomSectionId` | This request requires data type `int` in field `primaryCustomSectionId` | Pass a number. The filter does not support comparison with `null` ||
 || `description` | DTO `SmartProcessDto` in field `description` requires attribute `Filterable` to perform this request | The field cannot be used in a filter. The fields available for filtering are listed in [The filter Parameter](#filter) ||
 || `description` | DTO `SmartProcessDto` in field `description` requires attribute `Sortable` to perform this request | The field cannot be used for sorting. The fields available for sorting are listed in [The order Parameter](#order) ||
 |#

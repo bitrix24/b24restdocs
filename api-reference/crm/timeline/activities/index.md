@@ -128,7 +128,7 @@ Methods of the previous version still work, but their development has been disco
 || [crm.activity.binding.*](./binding/index.md) | REST 3.0 [crm.activity.binding.bind](../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md), [unbind](../../rest-v3/activities/crm-activity-binding-unbind-rest-v3.md), [move](../../rest-v3/activities/crm-activity-binding-move-rest-v3.md), [list](../../rest-v3/activities/crm-activity-binding-list-rest-v3.md) | Parameters and responses follow the REST 3.0 format and are described on the method pages ||
 |#
 
-Other REST 3.0 activity methods — completing [crm.activity.complete](../../rest-v3/activities/crm-activity-complete-rest-v3.md), returning to work [crm.activity.uncomplete](../../rest-v3/activities/crm-activity-uncomplete-rest-v3.md), entity methods `crm.<type>.activity.*`, and e-mail methods `crm.activity.mail.*` — are listed in the [REST 3.0 activities overview](../../rest-v3/activities/index.md).
+Other REST 3.0 activity methods — completing [crm.activity.complete](../../rest-v3/activities/crm-activity-complete-rest-v3.md), returning to work [crm.activity.uncomplete](../../rest-v3/activities/crm-activity-uncomplete-rest-v3.md), entity methods `crm.<type>.activity.*`, and e-mail methods `crm.activity.email.*` — are listed in the [REST 3.0 activities overview](../../rest-v3/activities/index.md).
 
 ## Overview of Methods and Events {#all-methods}
 

@@ -13,6 +13,8 @@ Timeline comments capture agreements, clarifications, and service notes within t
 
 The methods in this section help manage such records: creating, retrieving, updating, and deleting comments. Events allow for real-time tracking of changes.
 
+You can also add and retrieve text comments using the REST 3.0 methods [crm.&lt;type&gt;.timeline.comment.*](../../rest-v3/timeline-comments/index.md). Editing and deleting comments and attaching files require the methods in this section.
+
 > Quick navigation: [all methods and events](#all-methods)
 >
 > User documentation: [Timeline in CRM item form](https://helpdesk.bitrix24.com/open/25816403/)

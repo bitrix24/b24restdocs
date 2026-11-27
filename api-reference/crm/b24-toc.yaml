@@ -41,6 +41,10 @@ items:
     include:
       path: rest-v3/activities/b24-toc.yaml
       mode: link
+  - name: Timeline Comments
+    include:
+      path: rest-v3/timeline-comments/b24-toc.yaml
+      mode: link
   - name: Change History
     include:
       path: rest-v3/history/b24-toc.yaml

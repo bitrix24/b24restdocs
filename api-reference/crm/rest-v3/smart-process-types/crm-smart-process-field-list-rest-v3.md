@@ -356,7 +356,7 @@ The example shows the first two of 36 fields. The response was received without 
 || **type**
 [`string`](../../../data-types.md) | Data type: `int`, `string`, `bool`, `object`, or `array`. For the `createdTime` and `updatedTime` dates, it is `object`, although the date is returned as a string in ISO 8601 format ||
 || **elementType**
-[`string`](../../../data-types.md) | Element type of the `additionalCustomSectionIds` and `customSections` fields. For other fields, `null` ||
+[`string`](../../../data-types.md) | Element type of the `customSectionIds` field. For other fields, `null` ||
 || **multiple**
 [`boolean`](../../../data-types.md) | Whether the field is multiple. For all SPA type fields, `false` ||
 || **title**

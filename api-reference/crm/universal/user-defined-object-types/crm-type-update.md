@@ -744,7 +744,7 @@ HTTP Status: **400**
 || `403` | `allowed_only_intranet_user` | This action is available only to Intranet users | The user is not an intranet user and does not have Bitrix24 administrator permissions ||
 || `400` | `UPDATE_DYNAMIC_TYPE_RESTRICTED` | You cannot edit Smart Process Automation settings due to your current plan's restrictions | SPAs are not available on your plan ||
 || `400` | `0` | Smart Process Automation was not found | An SPA with the specified `id` does not exist ||
-|| `400` | `0` | SPA from an automated solution installed from Automated solution gallery cannot be used with another automated solution | The SPA is linked to an automated solution from the Automated solution gallery, and the passed `customSectionId` differs from the current one or is not passed ||
+|| `400` | `0` | SPA from an automated solution installed from Automated solution gallery cannot be used with another automated solution | The SPA is linked to an automated solution from the Automated solution gallery, and the passed `customSectionId` differs from the current one. If `customSectionId` is omitted, the other fields of this SPA can be updated ||
 || `400` | `BX_EMPTY_REQUIRED` | The field Name is required | An empty SPA title is passed ||
 || `400` | `BX_INVALID_VALUE` | Planned SPA item cycle length must be in range 0 to 365 days inclusive | The `daysBeforeClose` value is outside the range from `0` to `365` ||
 || `400` | `ADDRESS_BUSY` | Another address change is still being saved. Please try again | The section address is locked by a concurrent operation while the SPA is being moved to a section or a section is being added ||

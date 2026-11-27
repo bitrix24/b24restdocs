@@ -5,6 +5,8 @@
 ### November 27, 2026
 
 - Added e-Signature for HR methods in REST 3.0: [sign.b2e.template.*](./api-reference/sign/index.md#templates) send an employee a document using a company template or template bundle, and [sign.b2e.legal.*](./api-reference/sign/index.md#legal) store personal details in the employee profile
+- Added CRM methods in REST 3.0: emails [crm.activity.email.*](./api-reference/crm/rest-v3/activities/index.md) and item emails `crm.<type>.activity.email.*`, [Estimate Stages](./api-reference/crm/rest-v3/categories/index.md#quote-stages-methods) `crm.quote.stage.*`, [Timeline Comments](./api-reference/crm/rest-v3/timeline-comments/index.md) `crm.<type>.timeline.comment.*`, and SPA type deletion [crm.smartprocess.delete](./api-reference/crm/rest-v3/smart-process-types/crm-smart-process-delete-rest-v3.md)
+- The `crm.activity.mail.getContent` and `crm.activity.mail.getThread` methods have been removed; use [crm.activity.email.get](./api-reference/crm/rest-v3/activities/crm-activity-email-get-rest-v3.md) and [crm.activity.email.getthread](./api-reference/crm/rest-v3/activities/crm-activity-email-get-thread-rest-v3.md). The `crm.activity.mail.reply` method is deprecated; use [crm.activity.email.reply](./api-reference/crm/rest-v3/activities/crm-activity-email-reply-rest-v3.md) instead
 
 ### November 25, 2026
 

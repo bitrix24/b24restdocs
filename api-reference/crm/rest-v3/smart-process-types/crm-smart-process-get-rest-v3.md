@@ -34,7 +34,7 @@ The `crm.smartprocess.get` method returns the settings of an SPA type by its `en
 Type IDs are returned by the [crm.smartprocess.list](./crm-smart-process-list-rest-v3.md) method ||
 |#
 
-The method always returns all fields of the type, including the `relations` links, the `linkedUserFields` bindings to custom fields, and the `customSections` digital workplaces. The method ignores the `select` parameter without returning an error. To retrieve only some of the fields, use the [crm.smartprocess.list](./crm-smart-process-list-rest-v3.md) method with a filter by `entityTypeId` and the `select` parameter.
+The method always returns all fields of the type, including the `relations` links, the `linkedUserFields` bindings to custom fields, and the `primaryCustomSectionId` and `customSectionIds` digital workplaces. The method ignores the `select` parameter without returning an error. To retrieve only some of the fields, use the [crm.smartprocess.list](./crm-smart-process-list-rest-v3.md) method with a filter by `entityTypeId` and the `select` parameter.
 
 The method name is written in lowercase: `crm.smartprocess.get`. For the name `crm.smartProcess.get`, the method returns the ["Method Not Found"](#method-not-found) error.
 
@@ -292,7 +292,7 @@ HTTP status: **200**
             "updatedBy": 1,
             "createdTime": "2025-07-01T09:26:42+01:00",
             "updatedTime": "2026-09-29T12:33:45+01:00",
-            "customSectionId": null,
+            "primaryCustomSectionId": null,
             "daysBeforeClose": null,
             "startCatalogFormId": null,
             "isCategoriesEnabled": true,
@@ -316,7 +316,7 @@ HTTP status: **200**
             "isCreateByFormEnabled": false,
             "isPersonEnabled": false,
             "isSetOpenPermissions": false,
-            "additionalCustomSectionIds": [],
+            "customSectionIds": [],
             "description": null,
             "relations": {
                 "parent": [
@@ -363,15 +363,7 @@ HTTP status: **200**
                 "CALENDAR_EVENT|UF_CRM_CAL_EVENT": true,
                 "TASKS_TASK|UF_CRM_TASK": true,
                 "TASKS_TASK_TEMPLATE|UF_CRM_TASK": true
-            },
-            "customSections": [
-                {
-                    "id": 1,
-                    "title": "Procurement",
-                    "isSelected": false,
-                    "isAdditional": false
-                }
-            ]
+            }
         }
     },
     "time": {
@@ -421,10 +413,10 @@ HTTP status: **200**
 [`datetime`](../../../data-types.md) | Date and time the type was created ||
 || **updatedTime**
 [`datetime`](../../../data-types.md) | Date and time the type was last updated ||
-|| **customSectionId**
-[`integer`](../../../data-types.md) | ID of the digital workplace the type is placed in. If the type is placed in CRM, `null` ||
-|| **additionalCustomSectionIds**
-[`integer[]`](../../../data-types.md) | IDs of the digital workplaces the type is additionally added to. The list includes only the workplaces the user can see ||
+|| **primaryCustomSectionId**
+[`integer`](../../../data-types.md) | ID of the primary digital workplace. If the type is not placed in any digital workplaces, `null` ||
+|| **customSectionIds**
+[`integer[]`](../../../data-types.md) | IDs of all digital workplaces of the type. The primary workplace `primaryCustomSectionId` comes first. If the type is not placed in any digital workplaces, an empty array ||
 || **daysBeforeClose**
 [`integer`](../../../data-types.md) | Number of days from creation allotted to an item until completion: from `0` to `365`. If no deadline is set, `null` ||
 || **startCatalogFormId**
@@ -475,8 +467,6 @@ HTTP status: **200**
 [`object`](#relations) | Links of the type to other CRM objects. [Object description](#relations) ||
 || **linkedUserFields**
 [`object`](#linked-user-fields) | Custom fields of other modules in which an item of the type can be selected. [Object description](#linked-user-fields) ||
-|| **customSections**
-[`object[]`](#custom-sections) | Digital workplaces the user can see, with a flag showing whether the type is placed in them. [Object description](#custom-sections) ||
 |#
 
 #### The relations Object {#relations}
@@ -518,21 +508,6 @@ The key is the custom field code, and the value is the `true` or `false` flag: w
 [`boolean`](../../../data-types.md) | CRM binding in a task ||
 || ```TASKS_TASK_TEMPLATE|UF_CRM_TASK```
 [`boolean`](../../../data-types.md) | CRM binding in a task template ||
-|#
-
-#### Digital Workplace Object {#custom-sections}
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **id**
-[`integer`](../../../data-types.md) | Digital workplace ID ||
-|| **title**
-[`string`](../../../data-types.md) | Digital workplace name ||
-|| **isSelected**
-[`boolean`](../../../data-types.md) | Whether the type is placed in this workplace. Matches the `customSectionId` field ||
-|| **isAdditional**
-[`boolean`](../../../data-types.md) | Whether the type is additionally added to this workplace. Matches the `additionalCustomSectionIds` list ||
 |#
 
 ## Error Handling

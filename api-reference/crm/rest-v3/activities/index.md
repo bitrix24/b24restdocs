@@ -45,7 +45,7 @@ The object type is set by the `<type>` segment of the method name:
 || SPA | `smartprocess<entityTypeId>`, for example, `smartprocess1038` ||
 |#
 
-My company and B2E documents have no activity methods. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Method names are written in lowercase: `crm.deal.activity.get`. The exception is the email methods `crm.activity.mail.getContent` and `crm.activity.mail.getThread`: their names contain capital letters, as in the method table.
+My company and B2E documents have no activity methods. SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Method names are written in lowercase: `crm.deal.activity.get`, `crm.activity.email.getthread`.
 
 ## Relationship with Other Objects
 
@@ -55,7 +55,7 @@ An activity is linked to CRM items, employees, mail, telephony, and Open Channel
 
 **Employees.** `assignedById` contains the responsible person, `authorId` the author, and `editorId` the last person who changed the activity. Employee data can be retrieved with the [user.get](../../../user/user-get.md) method.
 
-**Mail.** CRM emails are activities with `providerId` equal to `CRM_EMAIL`. The email text is returned by [crm.activity.mail.getContent](./crm-activity-mail-get-content-rest-v3.md), the entire conversation by [crm.activity.mail.getThread](./crm-activity-mail-get-thread-rest-v3.md), and a reply is sent by [crm.activity.mail.reply](./crm-activity-mail-reply-rest-v3.md).
+**Mail.** CRM emails are activities with `providerId` equal to `CRM_EMAIL`. An email is returned by [crm.activity.email.get](./crm-activity-email-get-rest-v3.md), the conversation by [crm.activity.email.getthread](./crm-activity-email-get-thread-rest-v3.md), and a reply is sent by [crm.activity.email.reply](./crm-activity-email-reply-rest-v3.md). You can retrieve and send an email on behalf of an item with the `crm.<type>.activity.email.*` methods.
 
 **Telephony.** Calls are activities with `providerId` equal to `VOXIMPLANT_CALL`. In addition to activity fields, the [crm.&lt;type&gt;.activity.call.get](./crm-entity-activity-call-get-rest-v3.md) and [crm.&lt;type&gt;.activity.call.list](./crm-entity-activity-call-list-rest-v3.md) methods return the call direction, duration, outcome, recording, comment, rating, line, and number. The methods are read-only. My company and B2E documents do not have them.
 
@@ -191,7 +191,10 @@ The descriptions of fields with the `filterable` and `sortable` attributes are r
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.mail.getContent](./crm-activity-mail-get-content-rest-v3.md) | Returns the email text and recipients ||
-|| [crm.activity.mail.getThread](./crm-activity-mail-get-thread-rest-v3.md) | Returns an email thread ||
-|| [crm.activity.mail.reply](./crm-activity-mail-reply-rest-v3.md) | Sends a reply to an email ||
+|| [crm.activity.email.get](./crm-activity-email-get-rest-v3.md) | Returns an email by ID ||
+|| [crm.activity.email.getthread](./crm-activity-email-get-thread-rest-v3.md) | Returns accessible emails in a thread ||
+|| [crm.activity.email.reply](./crm-activity-email-reply-rest-v3.md) | Sends a reply to an email ||
+|| [crm.&lt;type&gt;.activity.email.get](./crm-entity-activity-email-get-rest-v3.md) | Returns an email in the context of an object type ||
+|| [crm.&lt;type&gt;.activity.email.list](./crm-entity-activity-email-list-rest-v3.md) | Returns an item's emails ||
+|| [crm.&lt;type&gt;.activity.email.send](./crm-entity-activity-email-send-rest-v3.md) | Sends an email on behalf of a CRM item ||
 |#

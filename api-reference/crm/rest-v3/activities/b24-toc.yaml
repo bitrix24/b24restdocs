@@ -51,9 +51,17 @@ items:
         href: crm-activity-binding-list-rest-v3.md
   - name: Emails
     items:
-      - name: Get the Email Content
-        href: crm-activity-mail-get-content-rest-v3.md
+      - name: Get an Email
+        href: crm-activity-email-get-rest-v3.md
       - name: Get the Email Thread
-        href: crm-activity-mail-get-thread-rest-v3.md
+        href: crm-activity-email-get-thread-rest-v3.md
       - name: Reply to an Email
+        href: crm-activity-email-reply-rest-v3.md
+      - name: Reply to an Email (Deprecated Method)
         href: crm-activity-mail-reply-rest-v3.md
+      - name: Get an Item's Email
+        href: crm-entity-activity-email-get-rest-v3.md
+      - name: Get an Item's Emails
+        href: crm-entity-activity-email-list-rest-v3.md
+      - name: Send an Item's Email
+        href: crm-entity-activity-email-send-rest-v3.md

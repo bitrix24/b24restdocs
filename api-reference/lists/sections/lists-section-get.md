@@ -591,7 +591,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is not provided. ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the section. ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the collection of sections or the section with the specified `IBLOCK_SECTION_ID`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

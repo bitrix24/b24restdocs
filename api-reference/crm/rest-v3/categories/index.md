@@ -29,9 +29,10 @@ The object type is set by the `<type>` segment of the method name: `crm.deal.cat
 || **Methods** | **Object types** ||
 || `crm.<type>.category.*` | Deal `deal`, contact `contact`, company `company`, SPA `smartprocess<entityTypeId>` ||
 || `crm.<type>.category.stage.*` | Deal `deal`, SPA `smartprocess<entityTypeId>` ||
+|| `crm.quote.stage.*` | Estimate. The object type is already part of the method name ||
 |#
 
-An SPA has pipeline methods only if pipelines are enabled in the type settings, and stage methods only if both pipelines and stages are enabled. Leads, estimates, invoices, and my company have no pipeline or stage methods.
+An SPA has pipeline methods only if pipelines are enabled in the type settings, and stage methods only if both pipelines and stages are enabled. Leads, invoices, and my company have no stage methods. Estimate stages are managed by the separate [crm.quote.stage.*](#quote-stages-methods) group: estimates have a single pipeline, so these methods have no `categoryId`.
 
 SPA type IDs `entityTypeId` are returned by the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. Method names are written in lowercase: `crm.smartprocess1038.category.list`.
 
@@ -156,11 +157,24 @@ At the `/rest/` address, pipelines are handled by the [crm.category.*](../../uni
 || [crm.&lt;type&gt;.category.stage.field.get](#field-methods) | Returns a stage field description by name ||
 |#
 
+### Estimate Stages {#quote-stages-methods}
+
+#|
+|| **Method** | **Description** ||
+|| [crm.quote.stage.add](./crm-quote-stage-add-rest-v3.md) | Adds an estimate stage ||
+|| [crm.quote.stage.update](./crm-quote-stage-update-rest-v3.md) | Updates an estimate stage ||
+|| [crm.quote.stage.get](./crm-quote-stage-get-rest-v3.md) | Returns an estimate stage by ID ||
+|| [crm.quote.stage.list](./crm-quote-stage-list-rest-v3.md) | Returns estimate stages ||
+|| [crm.quote.stage.delete](./crm-quote-stage-delete-rest-v3.md) | Deletes an estimate stage without items ||
+|| [crm.quote.stage.replace](./crm-quote-stage-replace-rest-v3.md) | Sets the estimate stages in a single request ||
+|#
+
 ### Pipeline and Stage Field Descriptions {#field-methods}
 
 Field descriptions with the required and editable flags are returned by the following methods:
 
 - pipeline fields — `crm.<type>.category.field.list` and `crm.<type>.category.field.get`
 - stage fields — `crm.<type>.category.stage.field.list` and `crm.<type>.category.stage.field.get`
+- estimate stage fields — `crm.quote.stage.field.list` and `crm.quote.stage.field.get`
 
 The response format is the same as for the [crm.&lt;type&gt;.field.list](../fields/crm-entity-field-list-rest-v3.md) method.

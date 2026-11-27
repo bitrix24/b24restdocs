@@ -91,11 +91,27 @@ The method name is written in lowercase: `crm.smartprocess.add`. For the name `c
 [`boolean`](../../../data-types.md) | Make new pipelines available to everyone ||
 || **startCatalogFormId**
 [`integer`](../../../data-types.md) | CRM form for the "Start workflow" page. When creating a type, you can pass only `null` or `0`: the form is selected with the [crm.smartprocess.update](./crm-smart-process-update-rest-v3.md) method ||
+|| **relations**
+[`object`](./crm-smart-process-get-rest-v3.md#relations) | Links between the type and other CRM objects. Accepts the `parent` and `child` keys, each containing an array of objects with `entityTypeId` and `isChildrenListEnabled`. Do not pass the `isPredefined` field when writing.
+
+The list replaces the existing links entirely: if the `parent` or `child` key is omitted, links in that direction are removed. System links with `isPredefined: true` are preserved and must not be passed ||
+|| **linkedUserFields**
+[`object`](./crm-smart-process-get-rest-v3.md#linked-user-fields) | Bindings to calendar and task custom fields. Keys: ```CALENDAR_EVENT|UF_CRM_CAL_EVENT```, ```TASKS_TASK|UF_CRM_TASK```, ```TASKS_TASK_TEMPLATE|UF_CRM_TASK```; values: `true` or `false`.
+
+The object replaces the existing bindings entirely: omitted keys are set to `false` ||
+|| **primaryCustomSectionId**
+[`integer`](../../../data-types.md) | Primary digital workplace of the type. If passed together with `customSectionIds`, it must be included in that list. If omitted, the first workplace in `customSectionIds` becomes the primary one.
+
+When updating a type without `customSectionIds`, only a workplace the type is already placed in can be made primary. The method ignores `null` ||
+|| **customSectionIds**
+[`integer[]`](../../../data-types.md) | Digital workplaces of the type. IDs must be unique positive integers.
+
+The list replaces the existing list entirely. An empty array removes the type from all digital workplaces ||
 |#
 
 Flags are passed as `true` or `false`. If a flag is not passed, it is disabled, except for `isSetOpenPermissions`, which is enabled by default. The default values of the created type are returned by the [crm.smartprocess.get](./crm-smart-process-get-rest-v3.md) method.
 
-The method does not accept the `entityTypeId`, `createdBy`, `updatedBy`, `createdTime`, `updatedTime`, `customSectionId`, and `isPaymentsEnabled` fields: Bitrix24 assigns the type ID itself, and the other fields are read-only. This method also does not set the `relations` links, the `linkedUserFields` bindings, or the `customSections` digital workplaces. How to configure them is described in the [group overview](./index.md#limits).
+The method does not accept the `entityTypeId`, `createdBy`, `updatedBy`, `createdTime`, `updatedTime`, and `isPaymentsEnabled` fields: Bitrix24 assigns the type ID itself, and the other fields are read-only. The `relations`, `linkedUserFields`, and `customSectionIds` lists are set in full and replace the existing ones when updating the type.
 
 {% note info "" %}
 
@@ -449,8 +465,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `fields.daysBeforeClose` | Invalid smart process field. | Pass a number from `0` to `365` or `null` in `daysBeforeClose`. The same error is returned for a `code` longer than 255 characters ||
 || `fields` | Invalid smart process fields. | Remove a `startCatalogFormId` greater than `0`: the form is selected after the type is created, with the [crm.smartprocess.update](./crm-smart-process-update-rest-v3.md) method ||
 || `DESCRIPTION_TOO_LONG` | Description cannot exceed 1000 characters | Shorten `description` to 1000 characters ||
-|| `relations` | This request requires data type `SmartProcessRelationsDto` in field `relations` | Remove `relations` from `fields`: this method does not set links. The method returns the same error for `linkedUserFields` ||
-|| `RESTRICTION` | RESTRICTION | Bitrix24 did not save the type. For example, the SPA limit of the plan has been reached, or the passed flag cannot be enabled, for example, `isPersonEnabled` ||
+|| `fields.relations` | Invalid smart process field. | Check the link structure: `parent` and `child` contain objects with a positive `entityTypeId` and a boolean `isChildrenListEnabled`. For `linkedUserFields`, `primaryCustomSectionId`, and `customSectionIds`, check the format in the parameter table ||
+|| `fields.relations` | The requested relations are unavailable. | Keep only available links. For `linkedUserFields`, the message is `The requested linked user fields are unavailable.`; for workplaces, it is `The requested workplace is unavailable.` ||
+|| `fields.primaryCustomSectionId` | The primary workplace must be in the list. | Add `primaryCustomSectionId` to the `customSectionIds` list or omit it: the first workplace in the list becomes the primary one ||
+|| `RESTRICTION` | The smart process change is restricted. | Bitrix24 did not save the type. For example, the SPA limit of the plan has been reached, or the passed flag cannot be enabled: the method returns this error for `"isPersonEnabled": true` ||
 |#
 
 #### Object Validation Errors
@@ -460,7 +478,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `title` | Required field "title" is empty | Pass `title` in `fields` ||
-|| `entityTypeId` | Field "entityTypeId" is read-only | Remove `entityTypeId` from `fields`: the type ID is assigned automatically. The method returns the same error for other read-only fields, for example, `isPaymentsEnabled` and `customSectionId` ||
+|| `entityTypeId` | Field "entityTypeId" is read-only | Remove `entityTypeId` from `fields`: the type ID is assigned automatically. The method returns the same error for other read-only fields, for example, `isPaymentsEnabled` ||
 |#
 
 #### Unknown Field Error
@@ -469,7 +487,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `foo` found in entity `SmartProcessDto` | Check the field name against the [fields parameter table](#fields). An error with the field name `0` occurs when `fields` is passed as a string instead of an object ||
+|| `-` | Unknown field `foo` found in entity `SmartProcessDto` | Check the field name against the [fields parameter table](#fields). An error with the field name `0` occurs when `fields` is passed as a string instead of an object. The method returns the same error for the obsolete `customSectionId` and `customSections` fields ||
 |#
 
 #### Access Error {#access-denied}

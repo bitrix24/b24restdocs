@@ -40,9 +40,9 @@ Example: an app keeps track of supplier requests in its own SPA.
 
 **Access.** A type can be read by a CRM administrator, an administrator of this SPA, a user with permission to read items of the type, or a user with permission to manage SPAs. The [crm.smartprocess.list](./crm-smart-process-list-rest-v3.md) method skips types the user has no access to. Types can be created and updated by a CRM administrator or a user with permission to manage SPAs.
 
-**What the write methods set.** The [crm.smartprocess.add](./crm-smart-process-add-rest-v3.md) and [crm.smartprocess.update](./crm-smart-process-update-rest-v3.md) methods change the name, code, description, item completion deadline, and feature flags of the type. They do not change the `relations` links, the `linkedUserFields` bindings to custom fields, the `isPaymentsEnabled` payment acceptance flag, or digital workplaces. Links and bindings are configured by the previous-version method [crm.type.update](../../universal/user-defined-object-types/crm-type-update.md), and digital workplaces by the [crm.automatedsolution.*](../../automated-solution/index.md) methods.
+**What the write methods set.** The [crm.smartprocess.add](./crm-smart-process-add-rest-v3.md) and [crm.smartprocess.update](./crm-smart-process-update-rest-v3.md) methods change the name, code, description, item completion deadline, feature flags, `relations` links, `linkedUserFields` bindings, and `primaryCustomSectionId` and `customSectionIds` digital workplaces. These methods do not change the `isPaymentsEnabled` payment acceptance flag.
 
-**Deletion.** REST 3.0 has no method for deleting a type. A type is deleted by the previous-version method [crm.type.delete](../../universal/user-defined-object-types/crm-type-delete.md): it requires the type `id` from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md), not `entityTypeId`.
+**Deletion.** The [crm.smartprocess.delete](./crm-smart-process-delete-rest-v3.md) method deletes a type by `entityTypeId`. Before deleting a type, delete its items. Bitrix24 removes links to other types and placement in digital workplaces along with the type.
 
 **Method names.** Names are written in lowercase: `crm.smartprocess.list`. For `crm.smartProcess.list`, Bitrix24 returns the "Method not found" error.
 
@@ -58,11 +58,11 @@ An SPA type is linked to items, fields, pipelines, and other CRM types.
 
 **Other CRM types.** The `relations` object in the [crm.smartprocess.get](./crm-smart-process-get-rest-v3.md#relations) response shows which types an SPA item can be linked to and which items can be linked to it.
 
-**Digital workplaces.** The `customSectionId`, `additionalCustomSectionIds`, and `customSections` fields show which digital workplaces the type is placed in. Digital workplaces are managed by the [crm.automatedsolution.*](../../automated-solution/index.md) methods.
+**Digital workplaces.** The `primaryCustomSectionId` and `customSectionIds` fields specify the primary and other digital workplaces of the type. The [crm.automatedsolution.*](../../automated-solution/index.md) methods return the workplace directory.
 
 ## Methods of the Previous Version
 
-At the `/rest/` address, SPA types are handled by the [crm.type.*](../../universal/user-defined-object-types/index.md) methods. In REST 3.0, flags are passed as `true` and `false`, not `Y` and `N`, a type is found by `entityTypeId`, and `select`, `filter`, `order`, and `pagination` are written in the [REST 3.0](../../../rest-v3.md) format. The previous-version methods are still needed to delete a type, change its links and bindings to custom fields, or find out the type `id`: it is part of custom field names of the form `UF_CRM_<id>_<code>`.
+At the `/rest/` address, SPA types are handled by the [crm.type.*](../../universal/user-defined-object-types/index.md) methods. In REST 3.0, flags are passed as `true` and `false`, not `Y` and `N`, a type is found by `entityTypeId`, and `select`, `filter`, `order`, and `pagination` are written in the [REST 3.0](../../../rest-v3.md) format. The previous-version method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) is needed to find out the type `id`: it is part of custom field names of the form `UF_CRM_<id>_<code>`.
 
 ## Overview of Methods {#all-methods}
 
@@ -76,6 +76,7 @@ At the `/rest/` address, SPA types are handled by the [crm.type.*](../../univers
 || **Method** | **Description** ||
 || [crm.smartprocess.add](./crm-smart-process-add-rest-v3.md) | Creates an SPA type ||
 || [crm.smartprocess.update](./crm-smart-process-update-rest-v3.md) | Updates the settings of an SPA type ||
+|| [crm.smartprocess.delete](./crm-smart-process-delete-rest-v3.md) | Deletes a type that has no items ||
 || [crm.smartprocess.get](./crm-smart-process-get-rest-v3.md) | Returns the settings of an SPA type by `entityTypeId` ||
 || [crm.smartprocess.list](./crm-smart-process-list-rest-v3.md) | Returns SPA types with filtering, sorting, and pagination ||
 |#

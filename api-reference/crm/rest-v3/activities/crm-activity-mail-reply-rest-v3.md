@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to view the email and with a mailbox available for sending
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [crm.activity.email.reply](./crm-activity-email-reply-rest-v3.md).
+
+{% endnote %}
+
 {% note info "" %}
 
 This method belongs to REST 3.0. The call specifics and response format of the new API version are described in the [REST 3.0 overview](../../../rest-v3.md).
@@ -412,5 +418,5 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-activity-mail-get-content-rest-v3.md)
-- [{#T}](./crm-activity-mail-get-thread-rest-v3.md)
+- [{#T}](./crm-activity-email-get-rest-v3.md)
+- [{#T}](./crm-activity-email-get-thread-rest-v3.md)

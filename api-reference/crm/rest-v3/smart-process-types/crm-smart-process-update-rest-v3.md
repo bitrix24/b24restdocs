@@ -38,6 +38,8 @@ Type IDs are returned by the [crm.smartprocess.list](./crm-smart-process-list-re
 
 The method changes only the fields that are passed; the other type settings remain the same. If you pass an empty `fields` object, the method returns `true` and changes nothing.
 
+The method replaces the `relations` links, the `linkedUserFields` bindings, and the `customSectionIds` workplace list entirely. For example, `"relations": {"parent": [...]}` without the `child` key removes all non-system child links of the type. How to pass these fields is described in the [fields Parameter Table](./crm-smart-process-add-rest-v3.md#fields).
+
 The `title` field is optional when updating, but you cannot pass an empty string in it. To remove the description, pass `null` or an empty string in `description`. To remove the item completion deadline, pass `"daysBeforeClose": null`.
 
 In `startCatalogFormId`, you can pass the ID of a CRM form of this type that is available on the "Start workflow" page. The value `null` or `0` clears the form selection.
@@ -391,8 +393,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `isClientEnabled` | This request requires data type `bool` in field `isClientEnabled` | Pass the flag as `true` or `false`, not `"Y"` ||
 || `fields.daysBeforeClose` | Invalid smart process field. | Pass a number from `0` to `365` or `null` in `daysBeforeClose`. The same error is returned for a `code` longer than 255 characters ||
 || `DESCRIPTION_TOO_LONG` | Description cannot exceed 1000 characters | Shorten `description` to 1000 characters ||
-|| `relations` | This request requires data type `SmartProcessRelationsDto` in field `relations` | Remove `relations` from `fields`: this method does not change links. The method returns the same error for `linkedUserFields` ||
-|| `RESTRICTION` | RESTRICTION | Bitrix24 did not save the type. For example, the type settings are not available on the plan, or the passed flag cannot be enabled: the method returns this error for `"isPersonEnabled": true` in a regular SPA ||
+|| `fields.relations` | Invalid smart process field. | Check the structure of `relations`, `linkedUserFields`, `primaryCustomSectionId`, and `customSectionIds` against the [Parameter Table](./crm-smart-process-add-rest-v3.md#fields). The lists replace the existing ones entirely ||
+|| `fields.relations` | The requested relations are unavailable. | Keep only available links. For `linkedUserFields`, the message is `The requested linked user fields are unavailable.`; for workplaces, it is `The requested workplace is unavailable.` The same error is returned if `primaryCustomSectionId` is passed without `customSectionIds` and specifies a workplace the type is not placed in ||
+|| `fields.primaryCustomSectionId` | The primary workplace must be in the list. | Add `primaryCustomSectionId` to the `customSectionIds` list or omit it: the first workplace in the list becomes the primary one ||
+|| `RESTRICTION` | The smart process change is restricted. | The type settings are not available on the plan, or the passed flag cannot be enabled: the method returns this error for `"isPersonEnabled": true` in a regular SPA ||
 |#
 
 #### Object Validation Errors
@@ -401,10 +405,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `customSectionId` | Field "customSectionId" is read-only | Remove the field from `fields`: it is read-only. The method returns the same error for `entityTypeId`, `isPaymentsEnabled`, and other read-only fields ||
+|| `entityTypeId` | Field "entityTypeId" is read-only | Remove the field from `fields`: it is read-only, as is `isPaymentsEnabled`. For the obsolete `customSectionId` field, the method returns an [Unknown Field Error](#unknown-field) ||
 |#
 
-#### Unknown Field Error
+#### Unknown Field Error {#unknown-field}
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 

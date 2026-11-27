@@ -93,7 +93,7 @@ Explicitly selecting a hidden system field in `select` of the item retrieval and
 
 ## Methods Available for Each Object Type {#method-groups}
 
-Not every group of REST 3.0 methods is available for every type. For example, only deals and SPAs have stages, and only contacts and companies have requisites.
+Not every group of REST 3.0 methods is available for every type. For example, only deals, estimates, and SPAs have stages, and only contacts and companies have requisites.
 
 #|
 || **Method group** | **deal** | **lead** | **contact** | **company** | **quote** | **smartinvoice** | **mycompany** | **smartdocument** | **smartb2edocument** | **smartprocess** ||
@@ -102,7 +102,7 @@ Not every group of REST 3.0 methods is available for every type. For example, on
 || [Field descriptions](./rest-v3/fields/index.md) `field.get`, `field.list` | + | + | + | + | + | + | + | — | — | + ||
 || [Custom fields and required fields](./rest-v3/fields/index.md) | + | + | + | + | + | + | — | — | — | + ||
 || [Pipelines](./rest-v3/categories/index.md) | + | — | + | + | — | — | — | — | — | + ||
-|| [Stages](./rest-v3/categories/index.md) | + | — | — | — | — | — | — | — | — | + ||
+|| [Stages](./rest-v3/categories/index.md) | + | — | — | — | + | — | — | — | — | + ||
 || [Product items](./rest-v3/product-rows/index.md) | + | + | — | — | + | + | — | + | — | + ||
 || [Requisites and bank details](./rest-v3/requisites/index.md) | — | — | + | + | — | — | — | — | — | — ||
 || [Client requisites](./rest-v3/requisites/index.md) | + | — | — | — | + | + | — | + | — | + ||
@@ -111,6 +111,7 @@ Not every group of REST 3.0 methods is available for every type. For example, on
 || [Card views](./rest-v3/detail-page-layout/index.md) | + | + | + | + | + | + | — | + | + | + ||
 || [Activities](./rest-v3/activities/index.md) | + | + | + | + | + | + | — | + | — | + ||
 || [Calls and Open Channel chats](./rest-v3/activities/index.md) | + | + | + | + | + | + | — | + | — | + ||
+|| [Timeline Comments](./rest-v3/timeline-comments/index.md) | + | + | + | + | + | + | + | + | + | + ||
 || Item copy `copy` | + | + | + | + | + | + | + | — | — | + ||
 || [Change history](./rest-v3/history/index.md) | + | + | + | + | — | + | — | — | — | + ||
 || [Stage history](./rest-v3/history/index.md) | + | + | — | — | — | + | — | — | — | + ||
@@ -182,12 +183,13 @@ CRM entities are linked to Bitrix24 users, tasks, the product catalog, telephony
 || [SPA Types](./rest-v3/smart-process-types/index.md) | Create, update, and retrieve SPA types and the description of their fields. The type ID `entityTypeId` is required for the method name, for example `crm.smartprocess1038.add` ||
 || [Items](./rest-v3/items/index.md) | Create, copy, update, retrieve, count, and delete CRM items, work with multiple fields and the primary contact. This section also has the fields page for each object type ||
 || [Field Management](./rest-v3/fields/index.md) | Return field descriptions, create custom fields and list values, and set required fields ||
-|| [Pipelines and Stages](./rest-v3/categories/index.md) | Create and configure pipelines and stages of deals and SPAs, and pipelines of contacts and companies ||
+|| [Pipelines and Stages](./rest-v3/categories/index.md) | Create and configure pipelines and stages of deals and SPAs, pipelines of contacts and companies, and stages of estimates ||
 || [Product Items](./rest-v3/product-rows/index.md) | Add, update, and replace products in deals, leads, estimates, invoices, documents, and SPAs ||
 || [Requisites](./rest-v3/requisites/index.md) | Work with requisites, bank details, and requisite addresses of contacts and companies, and link client and my company requisites to items ||
 || [Addresses](./rest-v3/addresses/index.md) | Work with addresses of contacts, companies, and leads ||
 || [Card Views](./rest-v3/detail-page-layout/index.md) | Configure the sections and fields of the item card, select the view for a user, and set the common view ||
-|| [Activities](./rest-v3/activities/index.md) | Retrieve, complete, and delete activities, manage activity links to items, work with emails, and read item calls and Open Channel chats. Activities and comments are created by the [timeline](./timeline/index.md) methods of the previous version ||
+|| [Activities](./rest-v3/activities/index.md) | Retrieve, complete, and delete activities, manage activity links to items, work with emails, and read item calls and Open Channel chats. Activities are created by the [timeline](./timeline/index.md) methods of the previous version ||
+|| [Timeline Comments](./rest-v3/timeline-comments/index.md) | Add and retrieve comments in the item timeline. Comments are updated and deleted by the [crm.timeline.comment.*](./timeline/comments/index.md) methods of the previous version ||
 || [Change History](./rest-v3/history/index.md) | Retrieve the history of item field and stage changes ||
 || [CRM Recycle Bin](./rest-v3/recyclebin/index.md) | Retrieve deleted CRM items and restore them ||
 || [Directories](./rest-v3/dictionaries/index.md) | Return and modify CRM directories: deal and contact types, sources, salutations, industries, and others ||

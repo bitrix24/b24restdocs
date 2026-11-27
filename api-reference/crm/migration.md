@@ -93,15 +93,16 @@ https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_y
 || `crm.company.contact.items.set` | [crm.company.update](./rest-v3/items/crm-entity-update-rest-v3.md) with the `contactsId` array ||
 || `crm.company.contact.items.delete` | [crm.company.update](./rest-v3/items/crm-entity-update-rest-v3.md) with an empty `contactsId` array ||
 || `crm.category.*` | [crm.deal.category.*](./rest-v3/categories/index.md) ||
-|| `crm.status.*` | Directories — [crm.dictionary.&lt;directory&gt;.*](./rest-v3/dictionaries/index.md), stages of deals and SPAs — [crm.deal.category.stage.*](./rest-v3/categories/index.md) ||
+|| `crm.status.*` | Directories — [crm.dictionary.&lt;directory&gt;.*](./rest-v3/dictionaries/index.md), stages of deals and SPAs — [crm.deal.category.stage.*](./rest-v3/categories/index.md), stages of estimates — [crm.quote.stage.*](./rest-v3/categories/index.md#quote-stages-methods) ||
 || `crm.requisite.*` | [crm.company.requisite.*](./rest-v3/requisites/index.md) and `crm.contact.requisite.*` ||
 || `crm.requisite.bankdetail.*` | [crm.company.requisite.bankrequisite.*](./rest-v3/requisites/index.md) ||
 || `crm.requisite.link.*` | [crm.deal.clientrequisite.*](./rest-v3/requisites/index.md) for client requisites, `crm.deal.mycompanyrequisite.*` for my company requisites ||
 || `crm.address.*` | Addresses of contacts, companies, and leads — [crm.company.address.*](./rest-v3/addresses/index.md), requisite addresses — [crm.company.requisite.address.*](./rest-v3/requisites/index.md) ||
 || `crm.activity.binding.add`, `delete` | [crm.activity.binding.bind](./rest-v3/activities/crm-activity-binding-bind-rest-v3.md), [crm.activity.binding.unbind](./rest-v3/activities/crm-activity-binding-unbind-rest-v3.md) ||
 || `crm.enum.addresstype` | [crm.dictionary.addresstype.list](./rest-v3/dictionaries/crm-dictionary-list-rest-v3.md) ||
-|| `crm.type.add`, `update`, `get`, `list`, `fields` | [crm.smartprocess.add](./rest-v3/smart-process-types/crm-smart-process-add-rest-v3.md), [update](./rest-v3/smart-process-types/crm-smart-process-update-rest-v3.md), [get](./rest-v3/smart-process-types/crm-smart-process-get-rest-v3.md), [list](./rest-v3/smart-process-types/crm-smart-process-list-rest-v3.md), [field.list](./rest-v3/smart-process-types/crm-smart-process-field-list-rest-v3.md). The type is identified by `entityTypeId`, not by `id` ||
+|| `crm.type.add`, `update`, `get`, `list`, `delete`, `fields` | [crm.smartprocess.add](./rest-v3/smart-process-types/crm-smart-process-add-rest-v3.md), [update](./rest-v3/smart-process-types/crm-smart-process-update-rest-v3.md), [get](./rest-v3/smart-process-types/crm-smart-process-get-rest-v3.md), [list](./rest-v3/smart-process-types/crm-smart-process-list-rest-v3.md), [delete](./rest-v3/smart-process-types/crm-smart-process-delete-rest-v3.md), [field.list](./rest-v3/smart-process-types/crm-smart-process-field-list-rest-v3.md). The type is identified by `entityTypeId`, not by `id` ||
 || `crm.stagehistory.list` | [crm.deal.stagehistory.list](./rest-v3/history/crm-entity-stage-history-list-rest-v3.md) ||
+|| `crm.timeline.comment.add`, `get`, `list` | [crm.deal.timeline.comment.add](./rest-v3/timeline-comments/crm-entity-timeline-comment-add-rest-v3.md), [get](./rest-v3/timeline-comments/crm-entity-timeline-comment-get-rest-v3.md), [list](./rest-v3/timeline-comments/crm-entity-timeline-comment-list-rest-v3.md). The item type is specified in the method name; files cannot be attached to the comment ||
 |#
 
 ## What REST 3.0 Does Not Support Yet {#previous-only}
@@ -112,7 +113,7 @@ For these tasks, keep the calls of the previous version at the `/rest/` address.
 || **Task** | **Method of the previous version** ||
 || Work with CRM documents and B2E documents | [crm.item.*](./universal/index.md) ||
 || Work with pipelines of invoices and documents | [crm.category.*](./universal/category/index.md) ||
-|| Work with stages of leads, estimates, and invoices, and with the call list status directory | [crm.status.*](./status/index.md) ||
+|| Work with stages of leads and invoices, and with the call list status directory | [crm.status.*](./status/index.md) ||
 || Create a custom field of the List or File type | `crm.deal.userfield.add`, `crm.lead.userfield.add`, `crm.contact.userfield.add`, `crm.company.userfield.add`, `crm.quote.userfield.add` ||
 || Set the order of contacts in a deal, or make a contact's company primary when adding it | `crm.deal.contact.add`, `crm.lead.contact.add`, `crm.quote.contact.add`, `crm.contact.company.add`, `crm.company.contact.add` ||
 || Work with custom fields of requisites | [crm.requisite.userfield.*](./requisites/user-fields/index.md) ||
@@ -120,10 +121,11 @@ For these tasks, keep the calls of the previous version at the `/rest/` address.
 || Select my company requisites in an estimate or an SPA | [crm.requisite.link.*](./requisites/links/index.md) ||
 || Retrieve all activity fields, including settings and provider data, or retrieve a list of activities without administrator permissions | [crm.activity.get](./timeline/activities/activity-base/crm-activity-get.md), [crm.activity.list](./timeline/activities/activity-base/crm-activity-list.md) ||
 || Create or update an activity | [Timeline and Activities](./timeline/index.md) ||
+|| Update or delete a timeline comment, or attach files to a comment | [crm.timeline.comment.*](./timeline/comments/index.md) ||
 || Reset a card view to the default settings | `crm.deal.details.configuration.reset`, `crm.lead.details.configuration.reset`, `crm.contact.details.configuration.reset`, `crm.company.details.configuration.reset`, `crm.item.details.configuration.reset` ||
 || Retrieve the short object type codes `D`, `L`, `C` | [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md) ||
 || Find out the CRM mode without administrator permissions | [crm.settings.mode.get](./crm-settings-mode-get.md) ||
-|| Delete an SPA type or retrieve its internal `id` | [crm.type.delete](./universal/user-defined-object-types/crm-type-delete.md), [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) ||
+|| Retrieve the internal `id` of an SPA type | [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) ||
 || Work with the timeline, document generator, automation, currencies, call lists, duplicates, sales intelligence, digital workplaces, payments, and deliveries | The methods of these sections in the [CRM overview](./index.md#all-methods) ||
 |#
 

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`log`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to comment on the message
 
-The method `log.blogcomment.add` adds a comment to a News Feed message and returns its identifier. If the user's comments on the message require moderator approval, the comment is stored but appears in the News Feed only after a moderator approves it.
+The method `log.blogcomment.add` adds a comment to a News Feed message and returns its identifier. Read-only access to the message is not sufficient to comment on it. If the user's comments on the message require moderator approval, the comment is stored but appears in the News Feed only after a moderator approves it.
 
 ## Method Parameters
 
@@ -339,7 +339,7 @@ HTTP status: **400**
 || `400` | Empty value | No post found | There is no News Feed message with the provided `POST_ID` ||
 || `400` | Empty value | No blog found | Failed to retrieve the blog associated with the message ||
 || `400` | Empty value | Duplicate comment | An identical comment has already been published. Checked only for comments without files ||
-|| `400` | Empty value | No permissions | The user does not have permission to add a comment to the message ||
+|| `400` | Empty value | No permissions | The user does not have permission to add a comment to the message, for example, they only have read access ||
 || `400` | Empty value | Blog comment hasn't been added | The comment was not saved, for example due to an error in the input data ||
 |#
 

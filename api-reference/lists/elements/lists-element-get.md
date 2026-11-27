@@ -653,7 +653,7 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
 || `400` | `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
-|| `400` | `ACCESS_DENIED` | Access denied | Insufficient permissions to read the element ||
+|| `400` | `ACCESS_DENIED` | Access denied | Insufficient permissions to read the collection of elements or the element with the specified `ELEMENT_ID`/`ELEMENT_CODE` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
