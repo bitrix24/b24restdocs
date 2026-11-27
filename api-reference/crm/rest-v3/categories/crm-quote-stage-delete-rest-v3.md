@@ -335,8 +335,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass a non-empty stage `id` ||
-|| `-` | — | Pass a non-empty stage `id`. The method does not support the `filter` parameter ||
+|| `-` | At least one of the required fields must be not empty: id, filter | Pass a non-empty stage `id` ||
+|| `-` | Only one of the following values must be provided: id, filter | Pass a non-empty stage `id`. The method does not support the `filter` parameter ||
 || `STAGE_NOT_FOUND` | Stage was not found | Check `id` with [crm.quote.stage.list](./crm-quote-stage-list-rest-v3.md). The stage with this code does not exist or has already been deleted ||
 || `DEPENDENT_ITEMS_EXIST` | Move or delete the related items first | The stage has estimates. Move them to another stage or delete them ||
 || `OPERATION_NOT_ALLOWED_FOR_STAGE` | This action is not available for this stage | This is a system stage. Only a stage with `isSystem: false` can be deleted ||

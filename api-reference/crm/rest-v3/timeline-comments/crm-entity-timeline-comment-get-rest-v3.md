@@ -401,7 +401,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Required field `id` is not specified | Pass the comment `id` ||
-|| `id` | — | Pass the comment ID as a positive number ||
+|| `id` | This request requires data type `int` in field `id` | Pass the comment ID as a positive number ||
 |#
 
 #### Comment Not Found {#entity-not-found}
@@ -410,7 +410,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The comment does not exist, is not linked to an item of the type specified in the method name, or you have no permission to view the item. The ID of another kind of timeline record, such as an activity, causes the same error. Check `id` and the method name: `crm.deal.timeline.comment.get` returns deal comments ||
+|| `-` | Entity with ID `77161` was not found | The comment does not exist, is not linked to an item of the type specified in the method name, or you have no permission to view the item. The ID of another kind of timeline record, such as an activity, causes the same error. Check `id` and the method name: `crm.deal.timeline.comment.get` returns deal comments ||
 |#
 
 #### Unknown Field Error
@@ -419,7 +419,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass only fields from the [Comment Fields Table](#item) in `select` ||
+|| `-` | Unknown field `files` found in entity `CommentDto` | Pass only fields from the [Comment Fields Table](#item) in `select` ||
 |#
 
 #### Access Error
@@ -428,7 +428,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
+|| `-` | Access denied | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
 |#
 
 #### Feature Unavailable on the Plan
@@ -437,7 +437,7 @@ Error Code: `FEATURE_NOT_AVAILABLE_ON_CURRENT_PLAN`, HTTP status **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
+|| `-` | This feature is not available on your current plan. | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -446,7 +446,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.get`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
+|| `-` | Method `crm.smartInvoice.timeline.comment.get` was not found | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.get`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

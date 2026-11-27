@@ -519,8 +519,8 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `filter` | Required field `filter` is not specified | Pass `filter` with an `ownerId` condition. Passing `filter` as a string also causes this error ||
 || `ownerId` | ownerId is a condition of the filter: name it as ["ownerId", "=", N] there. | Remove `ownerId` from the request body and pass it as a condition in `filter` ||
-|| `subject` | — | Filter only by `id`, `providerId`, `isCompleted`, `assignedById`, `direction`, `createdTime`, `updatedTime`, `startTime`, and `deadlineTime` ||
-|| `subject` | — | Sort only by `id`, `createdTime`, `updatedTime`, `startTime`, `endTime`, and `deadlineTime` ||
+|| `subject` | DTO `EmailActivityDto` in field `subject` requires attribute `Filterable` to perform this request | Filter only by `id`, `providerId`, `isCompleted`, `assignedById`, `direction`, `createdTime`, `updatedTime`, `startTime`, and `deadlineTime` ||
+|| `subject` | DTO `EmailActivityDto` in field `subject` requires attribute `Sortable` to perform this request | Sort only by `id`, `createdTime`, `updatedTime`, `startTime`, `endTime`, and `deadlineTime` ||
 || `direction` | This request requires data type `Direction` in field `direction` | Pass a value from the `direction` field list: `incoming`, `outgoing`, `undefined` ||
 |#
 
@@ -530,7 +530,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTIO
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter.ownerId` | — | Add the `["ownerId","=",<item ID>]` condition to `filter` ||
+|| `filter.ownerId` | Filter for required field `ownerId` is required | Add the `["ownerId","=",<item ID>]` condition to `filter` ||
 |#
 
 #### Invalid Filter
@@ -539,7 +539,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the `ownerId` condition: a single condition at the top level, with the `=` operator and a positive number. Write condition groups with the `"type": "filter"` key ||
+|| `-` | Invalid filter `["ownerId",">",741]` | Check the `ownerId` condition: a single condition at the top level, with the `=` operator and a positive number. Write condition groups with the `"type": "filter"` key ||
 |#
 
 #### Invalid Pagination
@@ -548,7 +548,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass `limit` greater than zero and `offset` not less than zero ||
+|| `-` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass `limit` greater than zero and `offset` not less than zero ||
 |#
 
 #### Item Not Found
@@ -557,7 +557,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The item from `ownerId` does not exist for this object type, is in the Recycle Bin, or you do not have permission to view it. Check `ownerId` and the method name ||
+|| `-` | Entity with ID `999999999` was not found | The item from `ownerId` does not exist for this object type, is in the Recycle Bin, or you do not have permission to view it. Check `ownerId` and the method name ||
 |#
 
 #### Unknown Field Error
@@ -566,8 +566,8 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the field names in `select`, `filter`, and `order` against the [Item Object](./crm-entity-activity-email-get-rest-v3.md#item) table. The `type` and `description` fields and activity files are returned by the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method ||
-|| `-` | — | Check the nested field in `select`: `communications.type`, `communications.value`, `communications.entityTypeId`, `communications.entityId` ||
+|| `-` | Unknown field `description` found in entity `EmailActivityDto` | Check the field names in `select`, `filter`, and `order` against the [Item Object](./crm-entity-activity-email-get-rest-v3.md#item) table. The `type` and `description` fields and activity files are returned by the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method ||
+|| `-` | Unknown field `foo` found in entity `ActivityCommunicationDto` | Check the nested field in `select`: `communications.type`, `communications.value`, `communications.entityTypeId`, `communications.entityId` ||
 |#
 
 #### Access Error
@@ -576,7 +576,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | For `crm.lead.activity.email.list`: leads are disabled in Bitrix24. Enable leads or request emails of another object type ||
+|| `-` | Access denied | For `crm.lead.activity.email.list`: leads are disabled in Bitrix24. Enable leads or request emails of another object type ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -585,7 +585,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.list`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
+|| `-` | Method `crm.mycompany.activity.email.list` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.list`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

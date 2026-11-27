@@ -456,7 +456,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Required field `id` is not specified | Pass the email `id` ||
 || `id` | This request requires data type `int` in field `id` | Pass the ID as a number ||
-|| `id` | — | Pass a positive ID ||
+|| `id` | Field value must be 1 or greater | Pass a positive ID ||
 |#
 
 #### Email Not Found
@@ -465,7 +465,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The email does not exist, the activity with this ID is not an email, you do not have permission to view the email, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method using the `["providerId","=","CRM_EMAIL"]` condition ||
+|| `-` | Entity with ID `#ID#` was not found | The email does not exist, the activity with this ID is not an email, you do not have permission to view the email, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method using the `["providerId","=","CRM_EMAIL"]` condition ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -474,7 +474,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it is written in lowercase, `crm.activity.email.getthread`. The variant `crm.activity.email.getThread` does not work ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, `crm.activity.email.getthread`. The variant `crm.activity.email.getThread` does not work ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

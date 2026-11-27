@@ -499,7 +499,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTIO
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter.ownerId` | — | Pass `filter` with the condition `[["ownerId","=",<item ID>]]` ||
+|| `filter.ownerId` | Filter for required field `ownerId` is required | Pass `filter` with the condition `[["ownerId","=",<item ID>]]` ||
 |#
 
 #### Invalid Filter
@@ -508,8 +508,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass a single condition with the `=` operator: `["ownerId","=",741]`. The `>`, `!=`, and `in` operators, a second condition, and condition groups are not supported ||
-|| `-` | — | Pass the filter as an array `[["ownerId","=",741]]`, not an object `{"ownerId":741}` ||
+|| `-` | Invalid filter `ownerId` | Pass a single condition with the `=` operator: `["ownerId","=",741]`. The `>`, `!=`, and `in` operators, a second condition, and condition groups are not supported ||
+|| `-` | Invalid filter `Unknown filter condition` | Pass the filter as an array `[["ownerId","=",741]]`, not an object `{"ownerId":741}` ||
 |#
 
 #### Request Validation Errors
@@ -518,9 +518,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `ownerId` | — | Pass the item ID as a positive number, not a string ||
-|| `text` | — | Filter only by `ownerId` ||
-|| `id` | — | Sort only by `createdTime` ||
+|| `ownerId` | This request requires data type `int` in field `ownerId` | Pass the item ID as a positive number, not a string ||
+|| `text` | DTO `CommentDto` in field `text` requires attribute `Filterable` to perform this request | Filter only by `ownerId` ||
+|| `id` | DTO `CommentDto` in field `id` requires attribute `Sortable` to perform this request | Sort only by `createdTime` ||
 |#
 
 #### Invalid Sort Order
@@ -529,7 +529,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass the `asc` or `desc` direction ||
+|| `-` | Invalid sort order `up` | Pass the `asc` or `desc` direction ||
 |#
 
 #### Invalid Pagination
@@ -538,7 +538,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass a `limit` greater than zero and an `offset` of zero or greater ||
+|| `-` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a `limit` greater than zero and an `offset` of zero or greater ||
 |#
 
 #### Item Not Found {#entity-not-found}
@@ -547,7 +547,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The item specified in `ownerId` does not exist for this object type, has been deleted, or you have no permission to view it. Check `ownerId` and the method name: my company and a regular company are different types ||
+|| `-` | Entity with ID `99999999` was not found | The item specified in `ownerId` does not exist for this object type, has been deleted, or you have no permission to view it. Check `ownerId` and the method name: my company and a regular company are different types ||
 |#
 
 #### Unknown Field Error
@@ -556,7 +556,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass only fields from the [Comment Fields Table](./crm-entity-timeline-comment-get-rest-v3.md#item) in `select` ||
+|| `-` | Unknown field `files` found in entity `CommentDto` | Pass only fields from the [Comment Fields Table](./crm-entity-timeline-comment-get-rest-v3.md#item) in `select` ||
 |#
 
 #### Access Error
@@ -565,7 +565,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
+|| `-` | Access denied | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
 |#
 
 #### Feature Unavailable on the Plan
@@ -574,7 +574,7 @@ Error Code: `FEATURE_NOT_AVAILABLE_ON_CURRENT_PLAN`, HTTP status **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
+|| `-` | This feature is not available on your current plan. | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -583,7 +583,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.list`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
+|| `-` | Method `crm.smartInvoice.timeline.comment.list` was not found | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.list`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

@@ -414,8 +414,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass a non-empty stage `id` ||
-|| `-` | — | Pass a non-empty stage `id`. The method does not support the `filter` parameter ||
+|| `-` | At least one of the required fields must be not empty: id, filter | Pass a non-empty stage `id` ||
+|| `-` | Only one of the following values must be provided: id, filter | Pass a non-empty stage `id`. The method does not support the `filter` parameter ||
 || `STAGE_NOT_FOUND` | Stage was not found | Check `id` with [crm.quote.stage.list](./crm-quote-stage-list-rest-v3.md) ||
 || `fields` | Required field `fields` is not specified | Pass the `fields` object ||
 || `sort` | This request requires data type `int` in field `sort` | Pass `sort` as an integer ||

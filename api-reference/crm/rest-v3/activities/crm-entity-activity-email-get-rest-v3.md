@@ -512,7 +512,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Required field `id` is not specified | Pass the email `id` ||
 || `id` | This request requires data type `int` in field `id` | Pass the ID as a number ||
-|| `id` | — | Pass a positive ID ||
+|| `id` | Field value must be 1 or greater | Pass a positive ID ||
 |#
 
 #### Email Not Found
@@ -521,7 +521,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The activity does not exist, is not an email, is not bound to an item of this object type, you do not have permission to view it, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.email.list](./crm-entity-activity-email-list-rest-v3.md) method and check the method name ||
+|| `-` | Entity with ID `7773` was not found | The activity does not exist, is not an email, is not bound to an item of this object type, you do not have permission to view it, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.email.list](./crm-entity-activity-email-list-rest-v3.md) method and check the method name ||
 |#
 
 #### Unknown Field Error
@@ -530,8 +530,8 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the field names in `select` against the [Item Object](#item) table. The `type` and `description` fields and activity files are returned by the [crm.&lt;type&gt;.activity.get](./crm-entity-activity-get-rest-v3.md) method ||
-|| `-` | — | Check the nested field in `select`: `communications.type`, `communications.value`, `communications.entityTypeId`, `communications.entityId` ||
+|| `-` | Unknown field `description` found in entity `EmailActivityDto` | Check the field names in `select` against the [Item Object](#item) table. The `type` and `description` fields and activity files are returned by the [crm.&lt;type&gt;.activity.get](./crm-entity-activity-get-rest-v3.md) method ||
+|| `-` | Unknown field `foo` found in entity `ActivityCommunicationDto` | Check the nested field in `select`: `communications.type`, `communications.value`, `communications.entityTypeId`, `communications.entityId` ||
 |#
 
 #### Access Error
@@ -540,7 +540,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | For `crm.lead.activity.email.get`: leads are disabled in Bitrix24. Enable leads or retrieve the email through another object type it is also bound to ||
+|| `-` | Access denied | For `crm.lead.activity.email.get`: leads are disabled in Bitrix24. Enable leads or retrieve the email through another object type it is also bound to ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -549,7 +549,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.get`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
+|| `-` | Method `crm.deal.activity.Email.get` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.get`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

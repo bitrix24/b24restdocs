@@ -447,7 +447,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Required field `id` is not specified | Pass the email `id` ||
 || `id` | This request requires data type `int` in field `id` | Pass the ID as a number ||
-|| `id` | — | Pass a positive ID ||
+|| `id` | Field value must be 1 or greater | Pass a positive ID ||
 || `fields` | Required field `fields` is not specified | Pass a `fields` object with the reply text ||
 || `body` | body is required. | Pass the reply text in `fields.body` ||
 || `body` | body must be a non-empty string. | Pass non-empty text in `body` ||
@@ -473,7 +473,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass `fields` as an object with field names, rather than a string or array ||
+|| `-` | Unknown field `#FIELD#` found in entity `EmailActivityDto` | Pass `fields` as an object with field names, rather than a string or array ||
 |#
 
 #### Email Not Found
@@ -482,7 +482,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The email does not exist, the activity with this ID is not an email, you do not have permission to view the email, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method using the `["providerId","=","CRM_EMAIL"]` condition ||
+|| `-` | Entity with ID `#ID#` was not found | The email does not exist, the activity with this ID is not an email, you do not have permission to view the email, or its customer is hidden from you by access settings. Check `id` with the [crm.&lt;type&gt;.activity.list](./crm-entity-activity-list-rest-v3.md) method using the `["providerId","=","CRM_EMAIL"]` condition ||
 |#
 
 #### Sending Errors
@@ -513,7 +513,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it is written in lowercase, `crm.activity.email.reply` ||
+|| `-` | Method `#METHOD#` was not found | Check the method name: it is written in lowercase, `crm.activity.email.reply` ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

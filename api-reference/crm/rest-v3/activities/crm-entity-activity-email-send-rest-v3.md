@@ -488,10 +488,10 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `subject` | — | Pass the email subject. The method validates `to`, `body`, and `ownerId` in the same way ||
-|| `ownerId` | — | Pass a positive item ID. The method validates `senderId` and `mailboxId` in the same way ||
-|| `to` | — | Pass the addresses as strings ||
-|| `id` | — | Remove fields from `fields` that are not in the [Parameter fields](#fields) table ||
+|| `subject` | Required field "subject" is empty | Pass the email subject. The method validates `to`, `body`, and `ownerId` in the same way ||
+|| `ownerId` | Field value must be 1 or greater | Pass a positive item ID. The method validates `senderId` and `mailboxId` in the same way ||
+|| `to` | Incorrect argument type | Pass the addresses as strings ||
+|| `id` | Field "id" is read-only | Remove fields from `fields` that are not in the [Parameter fields](#fields) table ||
 |#
 
 #### Unknown Field Error
@@ -500,7 +500,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the field names in `fields` against the [Parameter fields](#fields) table ||
+|| `-` | Unknown field `foo` found in entity `EmailActivityDto` | Check the field names in `fields` against the [Parameter fields](#fields) table ||
 |#
 
 #### Item Not Found
@@ -509,7 +509,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The item from `ownerId` does not exist for this object type, or you do not have permission to edit it. Check `ownerId` and the method name ||
+|| `-` | Entity with ID `999999999` was not found | The item from `ownerId` does not exist for this object type, or you do not have permission to edit it. Check `ownerId` and the method name ||
 |#
 
 #### Invalid Recipient Address
@@ -586,7 +586,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_IDEMPOTENCYKEYREUSEDEXCEPTION`, HTTP statu
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass a new `Idempotency-Key` for a new email. Use the previous key only when repeating the same request ||
+|| `-` | Idempotency-Key was previously used with a different request body. Use a new key for a different request. | Pass a new `Idempotency-Key` for a new email. Use the previous key only when repeating the same request ||
 |#
 
 #### Access Error
@@ -595,7 +595,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | For `crm.lead.activity.email.send`: leads are disabled in Bitrix24. Enable leads or send the email from an item of another object type ||
+|| `-` | Access denied | For `crm.lead.activity.email.send`: leads are disabled in Bitrix24. Enable leads or send the email from an item of another object type ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -604,7 +604,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.send`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
+|| `-` | Method `crm.deal.activity.Email.send` was not found | Check the method name: it is written in lowercase, for example, `crm.deal.activity.email.send`. For an SPA, check `entityTypeId` with the [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) method. My company and B2E documents have no email methods ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

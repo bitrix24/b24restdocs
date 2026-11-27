@@ -396,9 +396,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `fields` | Required field `fields` is not specified | Pass a `fields` object with `ownerId` and `text` ||
 || `fields.text` | Enter comment text | Pass non-empty text. A string containing only spaces is also considered empty ||
 || `fields.text` | Remove attachment tags from the comment text | Remove `[DISK FILE ID=…]`, `[FILE ID=…]`, and `[DOCUMENT ID=…]` tags from the text. Use the previous version’s [crm.timeline.comment.add](../../timeline/comments/crm-timeline-comment-add.md) method to attach a file ||
-|| `fields.ownerId` | — | Pass the item ID as a positive number, not a string ||
-|| `text` | — | Pass the text as a string ||
-|| `fields.authorId` | — | Pass only `ownerId` and `text` in `fields`. The user calling the method becomes the author ||
+|| `fields.ownerId` | This request requires data type `int` in field `fields.ownerId` | Pass the item ID as a positive number, not a string ||
+|| `text` | This request requires data type `string` in field `text` | Pass the text as a string ||
+|| `fields.authorId` | DTO `CommentDto` in field `fields.authorId` requires attribute `Editable` to perform this request | Pass only `ownerId` and `text` in `fields`. The user calling the method becomes the author ||
 |#
 
 #### Object Validation Errors
@@ -407,8 +407,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `ownerId` | — | Pass `ownerId` in `fields` ||
-|| `text` | — | Pass `text` in `fields` ||
+|| `ownerId` | Required field "ownerId" is empty | Pass `ownerId` in `fields` ||
+|| `text` | Required field "text" is empty | Pass `text` in `fields` ||
 |#
 
 #### Item Not Found {#entity-not-found}
@@ -417,7 +417,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The item specified in `ownerId` does not exist for this object type, has been deleted, or you have no permission to edit it. Check `ownerId` and the method name: my company and a regular company are different types ||
+|| `-` | Entity with ID `99999999` was not found | The item specified in `ownerId` does not exist for this object type, has been deleted, or you have no permission to edit it. Check `ownerId` and the method name: my company and a regular company are different types ||
 |#
 
 #### Unknown Field Error
@@ -426,7 +426,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Pass only `ownerId` and `text` in `fields`. Use the previous version’s [crm.timeline.comment.add](../../timeline/comments/crm-timeline-comment-add.md) method to attach a file ||
+|| `-` | Unknown field `files` found in entity `CommentDto` | Pass only `ownerId` and `text` in `fields`. Use the previous version’s [crm.timeline.comment.add](../../timeline/comments/crm-timeline-comment-add.md) method to attach a file ||
 |#
 
 #### Access Error
@@ -435,7 +435,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`, HTTP status **403*
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
+|| `-` | Access denied | Leads are disabled in the CRM settings. This error is returned only by the lead method. Enable leads ||
 |#
 
 #### Feature Unavailable on the Plan
@@ -444,7 +444,7 @@ Error Code: `FEATURE_NOT_AVAILABLE_ON_CURRENT_PLAN`, HTTP status **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
+|| `-` | This feature is not available on your current plan. | The Bitrix24 plan does not include leads. This error is returned only by the lead method ||
 |#
 
 #### Method Not Found {#method-not-found}
@@ -453,7 +453,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status **40
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | — | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.add`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
+|| `-` | Method `crm.smartInvoice.timeline.comment.add` was not found | Check the method name: it must be lowercase, for example, `crm.smartinvoice.timeline.comment.add`. For an SPA, check `entityTypeId` using [crm.smartprocess.list](../smart-process-types/crm-smart-process-list-rest-v3.md) ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}
