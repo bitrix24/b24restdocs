@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 
 The widget adds its own item to the user menu — the one that opens from the avatar in the upper right corner. The menu is available from any page of Bitrix24, so the placement suits actions that are not tied to a section: personal application settings, a jump to your own section, sending data about yourself to an external service.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -76,7 +76,7 @@ The value does not depend on whose employee card is open on the page: the menu b
 [`string`](../../data-types.md) | The address of the page the widget is opened from. The menu is shown on every page of Bitrix24, so the value differs every time ||
 |#
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
 ## Relationship with Other Objects
 

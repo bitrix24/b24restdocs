@@ -15,7 +15,7 @@ Bitrix24 loads the handler of this placement on every page in a hidden frame, wi
 
 The placement is needed where the application has to react not to a click but to an external event: receive a signal from its own backend through [interactive interaction](../../../settings/interactivity/index.md), show an incoming call in a telephony integration, open the application slider with the [openApplication](../bx24-widget-methods.md) method.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. Registration requires the `OPTIONS[errorHandlerUrl]` parameter. It carries the address where Bitrix24 reports that the handler has been deactivated.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. Registration requires the `OPTIONS[errorHandlerUrl]` parameter. It carries the address where Bitrix24 reports that the handler has been deactivated. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -34,7 +34,7 @@ The widget is not displayed in the interface until the application installation 
 
 The handler loads on every Bitrix24 page load. A page opened in a slider is a separate document, so the handler loads there once more, already with its own address in the `URI` key.
 
-This leads to the main requirement for the handler: it has to respond quickly. If the response takes longer than five seconds and this happens more than ten times a day on the same Bitrix24, the handler registration is deleted.
+This leads to the main requirement for the handler: it has to load quickly. Bitrix24 measures the time until the frame is fully loaded — including the server response and the page scripts and styles. If loading takes longer than five seconds more than ten times in roughly a day, the handler registration is deleted.
 
 Bitrix24 informs the application about the deletion: a request with the error `ERROR_PLACEMENT_LOADING_OVERTIME` and a description of the exceeded loading time arrives at the address from `OPTIONS[errorHandlerUrl]`. The request is sent without authorization tokens. To bring the widget back, the application registers the handler again with the [placement.bind](../placement-bind.md) method.
 
@@ -80,7 +80,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 
 ## OPTIONS when registering via placement.bind
 
-For `PAGE_BACKGROUND_WORKER`, the `placement.bind` method supports one `OPTIONS` parameter.
+For `PAGE_BACKGROUND_WORKER`, the [placement.bind](../placement-bind.md) method supports one `OPTIONS` parameter.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -90,13 +90,19 @@ For `PAGE_BACKGROUND_WORKER`, the `placement.bind` method supports one `OPTIONS`
 || **errorHandlerUrl***
 [`string`](../../data-types.md) | The address where Bitrix24 reports that the handler registration has been deleted.
 
-The parameter is mandatory: without it `placement.bind` returns the error `EMPTY_ERROR_HANDLER_URL`. Other `OPTIONS` keys are not retained. The [placement.get](../placement-get.md) method returns only `errorHandlerUrl`
+The parameter is mandatory: without it [placement.bind](../placement-bind.md) returns the error `EMPTY_ERROR_HANDLER_URL`. Other `OPTIONS` keys are not retained. The [placement.get](../placement-get.md) method returns the `errorHandlerUrl` address in `options`. If the handler took longer than five seconds to load, `options` also contains the `maxTimeCount` counter — how many such loads have occurred since the last reset. Bitrix24 resets the counter roughly once a day. When it exceeds ten, the registration is deleted
 ||
 |#
 
-An application registers one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
+An application registers one general handler for this placement and one personal handler per user — see [A Handler for a Single User](#single-user) for details. A repeated general [placement.bind](../placement-bind.md) call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
 
-### Code Examples
+## A Handler for a Single User {#single-user}
+
+`PAGE_BACKGROUND_WORKER` is the only placement that supports the `USER_ID` parameter of the [placement.bind](../placement-bind.md) method. A handler registered with `USER_ID` loads only on the pages of that user. This is how background code is connected only for those who need it, for example for telephony operators.
+
+A personal handler and a handler for all employees can work at the same time if you register the personal one first and then the general one. If a general handler already exists, registering a personal one returns the error `ERROR_PLACEMENT_MAX_COUNT`. Each registration needs its own address in `HANDLER`: if the address is already taken, the method returns the error `ERROR_CORE` with the description `Handler already binded`.
+
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -286,12 +292,6 @@ An application registers one handler for this placement. A repeated `placement.b
 
 {% endlist %}
 
-## A Handler for a Single User
-
-`PAGE_BACKGROUND_WORKER` is the only placement that supports the `USER_ID` parameter of the [placement.bind](../placement-bind.md) method. A handler registered with `USER_ID` loads only on the pages of that user. This is how background code is connected only for those who need it, for example for telephony operators.
-
-The limit of one handler is counted separately for the general registration and for each user, so a personal handler and a handler for all employees can be registered at the same time.
-
 ## Relationship With Other Objects
 
 **Call card.** From the background handler, the application controls the call card: it changes the card state, buttons, and title, and subscribes to the operator actions. The methods and events are collected in the [{#T}](../ui-interaction/page-background-worker/index.md) section, and the whole scenario is described in the [{#T}](../ui-interaction/page-background-worker/webrtc-scenario.md) article.
@@ -304,9 +304,9 @@ The limit of one handler is counted separately for the general registration and 
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `EMPTY_ERROR_HANDLER_URL` | Pass `OPTIONS[errorHandlerUrl]`: without an address for deactivation messages the placement is not registered ||
-|| `placement.bind` returns `ERROR_PLACEMENT_MAX_COUNT` | The handler is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
-|| The handler stopped being called and is missing from `placement.get` | The registration was deleted because of slow loading. Speed up the handler response and register it again ||
+|| [placement.bind](../placement-bind.md) returns `EMPTY_ERROR_HANDLER_URL` | Pass `OPTIONS[errorHandlerUrl]`: without an address for deactivation messages the placement is not registered ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_MAX_COUNT` | The handler is already registered, or a personal handler is registered after the general one. Remove the old registration with the [placement.unbind](../placement-unbind.md) method or register the personal handler first ||
+|| The handler stopped being called and is missing from [placement.get](../placement-get.md) | Check the requests to the address from `OPTIONS[errorHandlerUrl]`: if the registration was deleted because of slow loading, the `ERROR_PLACEMENT_LOADING_OVERTIME` error arrived there. Speed up the handler loading and register it again ||
 || The handler is called several times on one screen | Pages in sliders are separate documents, and the handler loads again in each of them. Check `URI` if the scenario has to run only once ||
 |#
 

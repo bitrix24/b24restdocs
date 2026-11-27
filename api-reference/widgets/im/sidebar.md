@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, im`](../../scopes/permissions.md)
 
-The widget adds its item to the chat sidebar.
+The widget adds its item to the chat sidebar. When the item is clicked, the application opens inside the sidebar, next to the conversation. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- show the card of a client or a deal linked to the chat
+- display a summary of the chat from your own system: participants, files, tasks
+- provide tools for working with the chat as a whole, for example integration settings
+
+Choose this placement if the application needs a separate screen with chat data. For an action on a single message, use [{#T}](./context-menu.md), and for a quick action in the conversation, use [{#T}](./textarea.md).
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -79,14 +85,14 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || **Parameter**
 `type` | **Description** ||
 || **dialogId***
-[`string`](../../data-types.md) | Identifier of the chat in whose sidebar the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor is returned by the [user.get](../../user/user-get.md) method ||
-|| **URI***
-[`string`](../../data-types.md) | Address of the page the widget is opened from. For the messenger this is `/online/` ||
+[`string`](../../data-types.md) | Identifier of the chat in whose sidebar the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor, including a bot, is returned by the [im.user.get](../../chats/users/im-user-get.md) method ||
+|| **URI**
+[`string`](../../data-types.md) | Path of the page the widget is opened from, with the query string if there is one, for example `/online/` or `/online/?IM_DIALOG=chat1`. The key is absent if the browser did not send the `Referer` header ||
 |#
 
 ## OPTIONS when registering via placement.bind
 
-For `IM_SIDEBAR`, the `placement.bind` method supports `OPTIONS` parameters.
+For `IM_SIDEBAR`, the [placement.bind](../placement-bind.md) method supports `OPTIONS` parameters.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -103,8 +109,8 @@ Possible values:
 
 Possible values:
 - `ALL` — all chats
-- `USER` — personal chats of users, excluding chats with bots
-- `CHAT` — group chats, excluding `LINES` and `CRM`
+- `USER` — personal chats, including chats with bots
+- `CHAT` — group chats, channels, and other chats, excluding `LINES` and `CRM`
 - `LINES` — chats of open channels
 - `CRM` — chats created within CRM
 
@@ -116,7 +122,7 @@ Possible values:
 - `USER` — application is available to all users
 - `ADMIN` — application is available only to portal administrators
 ||
-|| **color** [`string`](../../data-types.md) | Icon color from the IM palette.
+|| **color** [`string`](../../data-types.md) | Background color under the icon — a value from the IM palette. The icon itself is white. If the parameter is not passed, the color is chosen automatically.
 
 Possible values:
 - `RED` — red
@@ -136,6 +142,7 @@ Possible values:
 - `MARENGO` — marengo
 - `GRAY` — gray
 - `GRAPHITE` — graphite
+- `COPILOT` — violet
 ||
 |#
 
@@ -297,7 +304,7 @@ Possible values:
                 },
             },
             options={
-                "iconName": "chat-tools",
+                "iconName": "fa-file-text-o",
                 "context": "ALL",
                 "role": "USER",
                 "extranet": "N",
@@ -460,11 +467,11 @@ Possible values:
 
 #|
 || **Error** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
-|| `placement.bind` returns `INVALID_ERROR_ICON_NAME` with the description `Field iconName is invalid.` and HTTP status 200 | An empty string or an invalid value was passed in `OPTIONS[iconName]`. Pass an icon name of Latin letters, spaces, and `-`, no longer than 50 characters ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing or a parameter has the wrong type — for example, `LANG_ALL` was passed as a string. The parameter name arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_ICON_NAME` with the description `Field iconName is invalid.` and HTTP status 200 | An empty string or an invalid value was passed in `OPTIONS[iconName]`. Pass an icon name of Latin letters, spaces, and `-`, no longer than 50 characters ||
 || The item did not appear in the *Applications* block of the chat sidebar | Complete the application installation and reopen the chat ||
-|| Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_CONTEXT` | An invalid value was passed in `OPTIONS[context]`. Use only `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||
 |#
 

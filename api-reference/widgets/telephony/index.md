@@ -24,14 +24,14 @@ Choose a placement by the task your application solves:
 - show client data right during a conversation — [CALL_CARD](./call-card.md)
 - add your own report to the built-in call analytics — [TELEPHONY_ANALYTICS_MENU](./analytics-menu.md)
 
-The placements differ in the condition that invokes them. The `CALL_CARD` handler is invoked when the user opens the tab in the call card, and it receives the conversation context. This placement exists only during a call: without an active call there is no card and nothing to check the widget against.
+The placements differ in the condition that invokes them. The `CALL_CARD` handler is invoked when the user opens the application tab in the call card. If the card has no other tabs, the handler is invoked as soon as the card opens. The handler receives the call context. The placement works only in an open card — during a call or in a call list. Without a call or a call list, the widget cannot be checked.
 
 The `TELEPHONY_ANALYTICS_MENU` handler is invoked when the user selects an item in the call statistics menu. The placement has no context of its own, but it is available at any moment.
 
 ## How to Get Started
 
 1. Choose a placement for your scenario.
-2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: a placement cannot be bound with a webhook. On successful registration, the method returns `result: true` — the response breakdown and the error codes are on its page.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. On successful registration, the method returns `result: true` — the response breakdown and the error codes are on its page. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 3. Complete the application installation. Until then, the widget is not displayed in the interface.
 4. Reload the Bitrix24 page. The lists of call card tabs and analytics menu items are built when the page loads.
 5. Call the widget. For `TELEPHONY_ANALYTICS_MENU`, open the `/report/telephony/` page and select the application item. For `CALL_CARD`, you need a call: register an external call with the [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method and the `SHOW` = 1 parameter.
@@ -101,15 +101,19 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 Line and number: `PHONE_NUMBER`, `LINE_NUMBER`, `LINE_NAME`
 
-CRM links: `CRM_ENTITY_TYPE`, `CRM_ENTITY_ID`, `CRM_BINDINGS`, `CRM_ACTIVITY_ID` | The context of the call during which the widget is opened. The description of each key, the default values, and the cases when a key does not arrive are on the [placement page](./call-card.md) ||
+CRM links: `CRM_ENTITY_TYPE`, `CRM_ENTITY_ID`, `CRM_BINDINGS`, `CRM_ACTIVITY_ID` | The context of the call during which the widget is opened.
+
+`CRM_BINDINGS` is an array of objects. It does not always arrive: during a call — if the call is linked to CRM items, in a call list — only for deals, estimates, and invoices that have a client specified. The other keys always arrive, and as strings, even numbers and boolean values: `CRM_ENTITY_ID` — `"0"`, `CALL_LIST_MODE` — `"false"`.
+
+The description of each key and its values in different cases are on the [placement page](./call-card.md#placement-options) ||
 || [TELEPHONY_ANALYTICS_MENU](./analytics-menu.md) | none | Only the address of the analytics page in `URI` ||
 |#
 
 ## OPTIONS When Registering via placement.bind
 
-Neither placement of the section supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array for such a registration.
+Neither placement of the section supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
-This rule does not apply to the WebRTC scenario. It works not on a telephony placement but on [PAGE_BACKGROUND_WORKER](../universal/background-worker.md), and there `OPTIONS[errorHandlerUrl]` is required: without it, `placement.bind` returns the `EMPTY_ERROR_HANDLER_URL` error.
+This rule does not apply to the WebRTC scenario. It works not on a telephony placement but on [PAGE_BACKGROUND_WORKER](../universal/background-worker.md), and there `OPTIONS[errorHandlerUrl]` is required: without it, [placement.bind](../placement-bind.md) returns the `EMPTY_ERROR_HANDLER_URL` error.
 
 ## Relationship With Other Objects
 
@@ -117,17 +121,17 @@ This rule does not apply to the WebRTC scenario. It works not on a telephony pla
 
 **CRM items.** The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys point to the item the call is linked to, and `CRM_BINDINGS` points to all linked items. The data is returned by the methods of the corresponding CRM sections.
 
-**CRM activity.** The `CRM_ACTIVITY_ID` identifier points to the activity created for the call. The activity data is returned by the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
+**CRM activity.** The `CRM_ACTIVITY_ID` identifier points to the activity created for the call. The activity data is returned by the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method. For an external call, `CRM_ACTIVITY_ID` carries the string `undefined`: the activity is created by the [telephony.externalCall.finish](../../telephony/telephony-external-call-finish.md) method after the call.
 
-**Phone lines.** The line name in `LINE_NAME` refers to a line added with the [telephony.externalLine.add](../../telephony/telephony-external-line-add.md) method.
+**Phone lines.** For an external call, `LINE_NAME` carries the name of the line added with the [telephony.externalLine.add](../../telephony/telephony-external-line-add.md) method.
 
 ## Common Mistakes
 
 #|
 || **Mistake** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of the application. A placement cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The code of the empty field arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of the application. A placement cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The missing parameter is named in `error_description`, for example `Argument 'The URL of the placement handler is not specified' is null or empty` for an empty `HANDLER` ||
 || The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page: the lists of call card tabs and analytics menu items are assembled when the page loads ||
 || The handler received call data other than expected | The description of each context key and its specifics are on the [CALL_CARD](./call-card.md) page: it also describes `CRM_ACTIVITY_ID` with the string `undefined`, the symbolic code in `CRM_ENTITY_TYPE`, and the full list of links in `CRM_BINDINGS` ||
 |#

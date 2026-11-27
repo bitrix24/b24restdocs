@@ -11,9 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, telephony`](../../scopes/permissions.md)
 
-The widget adds its own tab to the call card. The handler is invoked during a conversation and receives the call context: call identifier, phone number, call direction and state, and the linked CRM items.
+The widget adds its own tab to the call card. The handler receives the call context: call identifier, phone number, call direction and state, and the linked CRM items. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- show the operator client data from your own system
+- suggest a conversation script based on the linked deal or lead
+- record the outcome of the conversation in an external service
+
+Choose this placement if the operator needs to see data during the call. For your own call report, use [{#T}](./analytics-menu.md).
+
+The handler loads when the operator opens the application tab. The exception is a card without other tabs, for example without scripts, a call list, or a CRM form. In that case, the card opens the first application tab itself, and the handler loads as soon as the card opens.
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -30,7 +38,7 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-The call card appears for the employee when a conversation starts. The application tab is displayed on the right side of the card, in the same row as the built-in tabs.
+The call card appears for the employee when a call starts. In a call list, it opens even before the call — when the employee moves to a client from the list. The application tab is displayed on the right side of the card, in the same row as the built-in tabs.
 
 The tab name is set with a parameter of the [placement.bind](../placement-bind.md) method during registration.
 
@@ -38,7 +46,7 @@ The tab name is set with a parameter of the [placement.bind](../placement-bind.m
 || **Parameter**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | The tab name in the call card. If the parameter is not passed, the application name is displayed instead ||
+[`string`](../../data-types.md) | The tab name in the call card. If `LANG_ALL` is passed, the name is taken from it in the user's language. If neither is passed, the application name is displayed ||
 |#
 
 The name is translated into the user's language with the `LANG_ALL` parameter — as in the examples below.
@@ -77,7 +85,7 @@ Array
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
-### PLACEMENT_OPTIONS
+### PLACEMENT_OPTIONS {#placement-options}
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call context.
 
@@ -88,13 +96,15 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 || **CALL_ID***
 [`string`](../../data-types.md) | The identifier of the call during which the widget was opened.
 
-The [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method returns the same identifier. It is accepted by the methods that finish a call and attach a call recording
+The [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method returns the same identifier. It is accepted by the methods that finish a call and attach a call recording.
+
+In a call list, an empty string arrives before the call starts
 
 ||
 || **PHONE_NUMBER**
 [`string`](../../data-types.md) | The phone number of the client the conversation is held with.
 
-The number arrives in normalized form, without spaces or separators. If the client's number is unknown, the key is not passed
+During a call, the number arrives in normalized form, without spaces or separators. In a call list, it arrives as recorded in CRM, for example `+49 (30) 000-77-09`. If there is no number, the string `undefined` arrives — for example, in a call list for a client without a phone number
 
 ||
 || **LINE_NUMBER**
@@ -108,7 +118,7 @@ Lines are added by telephony integration applications with the [telephony.extern
 
 ||
 || **CRM_ENTITY_TYPE**
-[`string`](../../data-types.md) | The symbolic code of the [CRM item type](../../crm/data-types.md#object_type) the call is linked to: `LEAD`, `DEAL`, `CONTACT`, `COMPANY`.
+[`string`](../../data-types.md) | The symbolic code of the [CRM item type](../../crm/data-types.md#object_type) the call is linked to: `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, and in a call list also `QUOTE` and `INVOICE`.
 
 This is `entityTypeName`, not the numeric type identifier. If the call is not linked to CRM, the key arrives empty
 
@@ -132,7 +142,7 @@ If the call is not linked to CRM, the key carries `0`
 
 The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys name the primary item only. If the call is linked to several items at once — for example, to a company and its deal — the full list arrives in `CRM_BINDINGS`.
 
-If there are no linked items, the key is not passed at all
+If there are no linked items, the key is not passed at all. In a call list for contacts and companies, it is absent too: the item arrives only in `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID`. In a call list for deals, estimates, and invoices that have a client specified, `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` carry the client, and `CRM_BINDINGS` carries the deal, estimate, or invoice itself
 
 ||
 || **CRM_ACTIVITY_ID**
@@ -140,7 +150,7 @@ If there are no linked items, the key is not passed at all
 
 The [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method returns the activity data.
 
-If no activity was created for the call, the key carries the string `undefined`. Check the value before using it
+If no activity was created for the call, the string `undefined` arrives. For an external call from the [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method, it is always `undefined`: the activity is created by the [telephony.externalCall.finish](../../telephony/telephony-external-call-finish.md) method after the call. Check the value before using it
 
 ||
 || **CALL_DIRECTION***
@@ -173,12 +183,12 @@ Along with these keys, the universal `URI` key arrives — it is described above
 || **Key**
 `type` | **Description** ||
 || **ENTITY_TYPE**
-[`string`](../../data-types.md) | Symbolic code of the [CRM item type](../../crm/data-types.md#object_type): `LEAD`, `DEAL`, `CONTACT`, `COMPANY` ||
+[`string`](../../data-types.md) | Symbolic code of the [CRM item type](../../crm/data-types.md#object_type): `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, and in a call list also `QUOTE` and `INVOICE` ||
 || **ENTITY_ID**
 [`string`](../../data-types.md) | Identifier of the CRM item ||
 |#
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
 ## Managing the Call Card From the Handler
 
@@ -412,17 +422,17 @@ The handler can do more than read the context: it can also work with the call ca
 
 {% endlist %}
 
+If the registration succeeds, the method returns `result: true`. For the tab to appear in the call card, complete the application installation and reload the Bitrix24 page.
+
 ## Common Mistakes
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The code of the empty field arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The missing parameter is named in `error_description`, for example `Argument 'The URL of the placement handler is not specified' is null or empty` for an empty `HANDLER` ||
 || The widget is registered, but there is no tab in the call card | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page: the list of card tabs is assembled when the page loads ||
-|| The handler does not find the activity identifier | If no activity has been created for the call, the string `undefined` arrives in `CRM_ACTIVITY_ID`. Check the value before using it ||
-|| The handler does not recognize `CRM_ENTITY_TYPE` | The key carries the symbolic code of the type — `LEAD`, `DEAL`, `CONTACT`, `COMPANY` — not the numeric identifier ||
-|| The widget does not see the second linked CRM item | The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys name the primary item only. The full list of links arrives in `CRM_BINDINGS` ||
+|| The handler received the wrong call data: no activity identifier, the CRM item type is not recognized, a linked item is missing | See the [PLACEMENT_OPTIONS](#placement-options) section: the activity identifier can arrive as the string `undefined`, the item type arrives as a symbolic code, and all linked items arrive in `CRM_BINDINGS` ||
 |#
 
 The error arrives in the response body — the code in the `error` field, the text in `error_description`:

@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, im`](../../scopes/permissions.md)
 
-The widget adds its item to the context menu of a message in the chat.
+The widget adds its item to the context menu of a message in the chat. When the item is clicked, the handler receives the identifier of that message. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- create a task, a request, or a record in an external system from a message
+- translate, check, or process the message text
+- forward the message to an external service
+
+Choose this placement if the action applies to a specific message. For actions in a chat that are not tied to a message, use [{#T}](./sidebar.md), a separate screen for the chat, or [{#T}](./textarea.md), a quick action in the conversation.
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -30,7 +36,7 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Hover over *More* to reveal additional menu items. The application item with `PLACEMENT=IM_CONTEXT_MENU` appears at the end of the action list above the message.
+Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Application items are at the end of the message action list. Usually they are in the *More* submenu: it appears when there are three or more additional actions; otherwise, the items are shown directly in the menu. The menu shows no more than 10 application items. When an item is clicked, the application opens in a slider.
 
 ![Message context menu item](./_images/IM_CONTEXT_MENU.png "Message context menu item")
 
@@ -82,14 +88,14 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || **messageId***
 [`string`](../../data-types.md) | Identifier of the message whose menu the widget is called from. The value comes as a string. The application works with the message by this identifier using the [chat message methods](../../chats/messages/index.md) ||
 || **dialogId***
-[`string`](../../data-types.md) | Chat identifier: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor is returned by the [user.get](../../user/user-get.md) method ||
-|| **URI***
-[`string`](../../data-types.md) | Address of the page the widget is opened from. For the messenger this is `/online/` ||
+[`string`](../../data-types.md) | Chat identifier: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor, including a bot, is returned by the [im.user.get](../../chats/users/im-user-get.md) method ||
+|| **URI**
+[`string`](../../data-types.md) | Path of the page the widget is opened from, with the query string if there is one, for example `/online/` or `/online/?IM_DIALOG=chat1`. The key is absent if the browser did not send the `Referer` header ||
 |#
 
 ## OPTIONS When Registering via placement.bind
 
-For `IM_CONTEXT_MENU`, the `placement.bind` method supports `OPTIONS` parameters.
+For `IM_CONTEXT_MENU`, the [placement.bind](../placement-bind.md) method supports `OPTIONS` parameters.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -108,8 +114,8 @@ Possible values:
 
 Possible values:
 - `ALL` — all chats
-- `USER` — personal chats of users, excluding chats with bots
-- `CHAT` — group chats, excluding `LINES` and `CRM`
+- `USER` — personal chats, including chats with bots
+- `CHAT` — group chats, channels, and other chats, excluding `LINES` and `CRM`
 - `LINES` — open lines chats
 - `CRM` — chats created within CRM
 
@@ -429,10 +435,10 @@ Possible values:
 
 #|
 || **Error** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
 || The item did not appear in the context menu of a message | Complete the application installation and reopen the chat ||
-|| The item is not found in the menu because only the first actions are checked | The application item is placed at the end of the list. Hover over *More* to open the remaining items ||
-|| Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
+|| The item is not found in the menu because only the first actions are checked | The application item is at the end of the list, usually in the *More* submenu. Hover over *More* to open the remaining items. The menu shows no more than 10 application items ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_CONTEXT` | An invalid value was passed in `OPTIONS[context]`. Use only `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||
 |#
 

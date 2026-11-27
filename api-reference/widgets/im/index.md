@@ -29,10 +29,10 @@ The mobile application chat is a separate embedding point, [IMMOBILE_CONTEXT_MEN
 ## How to Get Started
 
 1. Choose the embedding point for your scenario: input panel, sidebar, message menu, or navigation menu.
-2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: an embedding point cannot be bound with a webhook. On successful registration, the method returns `result: true` — the response breakdown and the error codes are on its page.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter. On successful registration, the method returns `result: true` — the response breakdown and the error codes are on its page. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 3. Pass the icon name in `OPTIONS` if the embedding point requires it, and the display restrictions if you need them.
 4. Complete the application installation. Until then, the widget is not displayed in the interface.
-5. Open a chat and call the widget.
+5. Open the messenger and call the widget: the `IM_TEXTAREA`, `IM_SIDEBAR`, and `IM_CONTEXT_MENU` items are in an open chat, and the `IM_NAVIGATION` item is in the messenger navigation menu.
 6. Parse `PLACEMENT_OPTIONS` in the handler to obtain the call context: the identifier of the current chat or message, if the embedding point passes them.
 7. If necessary, use the obtained identifiers to call the REST API or open an additional interface.
 
@@ -77,7 +77,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call. All values in it are strings, including `messageId`. For a group chat, `dialogId` contains `chatNNN`, for example `chat5881`, and for a private conversation, the identifier of the interlocutor, for example `1595`.
 
 #|
 || **Embedding Point** | **Keys** | **Description** ||
@@ -87,7 +87,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || [IM_NAVIGATION](./navigation.md) | `URI` | The widget is opened for the messenger as a whole, not for a particular chat ||
 |#
 
-The `URI` key is passed to every embedding point of the web messenger and contains the address of the page the widget is opened from — for the messenger this is `/online/`. The mobile point `IMMOBILE_CONTEXT_MENU` does not receive it: there the widget opens as a separate page rather than as a frame inside the interface.
+The `URI` key is passed to every embedding point of the web messenger and contains the path of the page the widget is opened from, with the query string if there is one, for example `/online/` or `/online/?IM_DIALOG=chat1`. The key is absent if the browser did not send the `Referer` header. The mobile point `IMMOBILE_CONTEXT_MENU` does not receive it: there the widget opens as a separate page rather than as a frame inside the interface.
 
 ## OPTIONS When Registering via placement.bind
 
@@ -101,11 +101,28 @@ The messenger embedding points accept the `OPTIONS` parameter of the [placement.
 || [IM_NAVIGATION](./navigation.md) | `iconName`*, `extranet`, `role` ||
 |#
 
-The key marked with an asterisk is required: without `iconName`, the `placement.bind` method returns the `ERROR_ARGUMENT` error.
+The key marked with an asterisk is required: without `iconName`, the [placement.bind](../placement-bind.md) method returns the `ERROR_ARGUMENT` error.
 
-The `context` key restricts the display to a chat type. Possible values: `ALL` — all chats, `USER` — personal user chats except chats with bots, `CHAT` — group chats except `LINES` and `CRM`, `LINES` — open channel chats, `CRM` — chats created within CRM. Several values are passed separated by `;`. The `IM_NAVIGATION` point does not support this key: a navigation item is not tied to a chat.
+The `context` key restricts the display to a chat type. Possible values: `ALL` — all chats, `USER` — personal chats, including chats with bots, `CHAT` — group chats, channels, and other chats except `LINES` and `CRM`, `LINES` — open channel chats, `CRM` — chats created within CRM. Several values are passed separated by `;`. The `IM_NAVIGATION` point does not support this key: a navigation item is not tied to a chat.
 
-The `role` and `extranet` keys determine which categories of users have access to the widget. The full description of all keys with their types and default values is on the page of each embedding point.
+The `role` and `extranet` keys determine which categories of users have access to the widget.
+
+For example, to make the item in the panel above the input field visible to all employees in personal and group chats, pass these parameters:
+
+```json
+{
+    "PLACEMENT": "IM_TEXTAREA",
+    "HANDLER": "https://your-domain.com/widgets/im-textarea-handler.php",
+    "TITLE": "My panel item",
+    "OPTIONS": {
+        "iconName": "fa-paperclip",
+        "context": "USER;CHAT",
+        "role": "USER"
+    }
+}
+```
+
+Keys that are not passed get their default values: `extranet` — `N`, and `width` and `height` — `100` pixels each. The full description of the keys with their types and default values, and call examples in different languages, are on the page of each embedding point.
 
 The table lists the active embedding points. The archive `IM_SMILES_SELECTOR` accepts `context`, `role`, and `extranet`, but its handler is not called — [more details on its page](./smile-selector.md).
 
@@ -113,7 +130,7 @@ The table lists the active embedding points. The archive `IM_SMILES_SELECTOR` ac
 
 **Chat.** The `dialogId` parameter in `PLACEMENT_OPTIONS` indicates which chat the handler was invoked for. You can retrieve information about the chat by its identifier using the method [im.dialog.get](../../chats/im-dialog-get.md).
 
-**User.** In a personal conversation, `dialogId` equals the identifier of the interlocutor, so their data is returned by the [user.get](../../user/user-get.md) method.
+**User.** In a personal conversation, `dialogId` equals the identifier of the interlocutor, so their data, including a bot's data, is returned by the [im.user.get](../../chats/users/im-user-get.md) method.
 
 **Message.** The `messageId` parameter indicates which chat message the handler was invoked for. It arrives only in the `IM_CONTEXT_MENU` embedding point. Using this identifier, the application works with the message [via the methods of the section](../../chats/messages/index.md) — for example, updates it with the [im.message.update](../../chats/messages/im-message-update.md) method or deletes it with the [im.message.delete](../../chats/messages/im-message-delete.md) method.
 
@@ -121,11 +138,12 @@ The table lists the active embedding points. The archive `IM_SMILES_SELECTOR` ac
 
 #|
 || **Error** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | A required parameter is missing. For `IM_TEXTAREA`, `IM_SIDEBAR`, and `IM_NAVIGATION`, `iconName` is required in `OPTIONS`. The code of the empty field arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ACCESS_DENIED` | The user has no permission to register widgets of this application. Register the widget on behalf of an administrator; in a local application, you can also grant the employee permission to create applications ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | A required parameter is missing or a parameter has the wrong type — for example, `LANG_ALL` was passed as a string. For `IM_TEXTAREA`, `IM_SIDEBAR`, and `IM_NAVIGATION`, `iconName` is required in `OPTIONS`. The parameter name arrives in `argument` ||
 || Widget does not display after registration | Complete the application installation and reopen the chat ||
-|| Widget does not appear in the interface because the script is checked outside the chat | Check the embedding only in the chat interface ||
-|| Registration via `placement.bind` fails due to an invalid value for `OPTIONS.context` | Use only valid values `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
+|| Widget does not appear in the interface because it is looked for in the wrong place | Check the `IM_TEXTAREA`, `IM_SIDEBAR`, and `IM_CONTEXT_MENU` items in an open chat, and the `IM_NAVIGATION` item in the messenger navigation menu ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_CONTEXT` | An invalid value was passed in `OPTIONS[context]`. Use only `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The restriction by `context` does not work as expected because `ALL` was passed along with other values | Pass only `ALL` or a list of specific contexts separated by `;` ||
 |#
 
@@ -144,7 +162,7 @@ Other registration error codes are listed in the "Possible Error Codes" section 
 
 > Scope: [`placement, im`](../../scopes/permissions.md)
 
-The `placement` scope is required to register the handler. To work with a chat from the widget — for example, to get it by the `dialogId` from the call context — the application also needs the `im` scope. The exception is the archive `IM_SMILES_SELECTOR`: it is declared in the global `placement` scope and requires no second scope.
+Registering a handler for any messenger embedding point requires only the `placement` scope. The `im` scope is needed to work with a chat from the widget — for example, to retrieve it by the `dialogId` from the call context with the [im.dialog.get](../../chats/im-dialog-get.md) method.
 
 #|
 || **Embedding Point** | **When to Use** ||
@@ -152,7 +170,7 @@ The `placement` scope is required to register the handler. To work with a chat f
 || [IM_SIDEBAR](./sidebar.md) | Item in the chat sidebar ||
 || [IM_CONTEXT_MENU](./context-menu.md) | Item in the context menu of a message ||
 || [IM_NAVIGATION](./navigation.md) | Item in the messenger navigation menu ||
-|| [IM_SMILES_SELECTOR](./smile-selector.md) | Archive page of the deprecated placement. Do not use for new integrations ||
+|| [IM_SMILES_SELECTOR](./smile-selector.md) | Archive page of the deprecated placement. Do not use for new integrations. For a button next to the input field, `IM_TEXTAREA` fits, but it does not add its own collection of smileys or stickers ||
 |#
 
 ## Continue Learning

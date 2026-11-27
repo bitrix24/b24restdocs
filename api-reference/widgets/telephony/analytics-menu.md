@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 
 The widget adds its own report to the call analytics menu. The user selects the item in the menu, and the application interface opens instead of a built-in report.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -79,7 +79,7 @@ Array
 
 This placement has no own keys. The call context carries only the universal `URI` key — the address of the analytics page the widget is opened from. The analytics open in a slider, so the address contains the `IFRAME` and `IFRAME_TYPE` parameters.
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
 ## Code Examples
 
@@ -338,9 +338,9 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The code of the empty field arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The missing parameter is named in `error_description`, for example `Argument 'The URL of the placement handler is not specified' is null or empty` for an empty `HANDLER` ||
 || The widget is registered, but there is no item in the analytics menu | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page: the list of menu items is assembled when the page loads ||
 |#
 

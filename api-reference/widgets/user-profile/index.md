@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The placements of this section add an application item where the user works with profiles: to the user's own menu and to the employee card. Both placements require the `user` scope.
+The placements of this section add an application item where the user works with profiles: to the user's own menu and to the employee card. In addition to `placement`, both placements need one of the scopes: `user`, `user_brief`, or `user_basic`.
 
 To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
@@ -28,10 +28,22 @@ The placements differ in whose identifier the handler receives.
 ## How to Get Started
 
 1. Choose the placement by whose identifier the handler needs
-2. Register the handler with the [placement.bind](../placement-bind.md) method, pass the placement code in `PLACEMENT` and the item name in `TITLE`
+2. Register the handler with the [placement.bind](../placement-bind.md) method, pass the placement code in `PLACEMENT` and the item name in `TITLE`. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications
 3. Complete the application installation — until then the item does not appear in the interface
 4. Open the user menu or an employee card and select your item
 5. Parse `PLACEMENT_OPTIONS` in the handler and retrieve employee data with the [user.get](../../user/user-get.md) method
+
+For example, an item in the user menu is registered with these parameters:
+
+```json
+{
+    "PLACEMENT": "USER_PROFILE_MENU",
+    "HANDLER": "https://your-domain.com/widgets/user-menu-handler.php",
+    "TITLE": "My requests"
+}
+```
+
+If the registration succeeds, the method returns `result: true`. Call examples in different languages are on the page of each placement.
 
 ## What the Handler Receives
 
@@ -73,7 +85,14 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 
 The `URI` key is universal: it carries the address of the page the widget is opened from.
 
-Neither placement supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
+The handler takes the employee identifier from `USER_ID` and requests the employee data with the [user.get](../../user/user-get.md) method. In PHP, the key can be parsed like this:
+
+```php
+$options = json_decode($_POST['PLACEMENT_OPTIONS'] ?? '{}', true);
+$userId = (int)($options['USER_ID'] ?? 0);
+```
+
+Neither placement supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
 ## Relationship With Other Objects
 
@@ -90,7 +109,7 @@ Neither placement supports the `OPTIONS` parameter of the [placement.bind](../pl
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`placement, user`](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md) and one of [`user`](../../scopes/permissions.md), [`user_brief`](../../scopes/permissions.md), [`user_basic`](../../scopes/permissions.md)
 
 #|
 || **Placement** | **When to Use** ||

@@ -15,7 +15,7 @@ The placement has no button of its own in the interface. The handler is called w
 
 Custom parameters can be added directly to the link: they reach the handler in `PLACEMENT_OPTIONS`. This way a single application opens different screens: a document card, a report, an approval form.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -79,21 +79,23 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string. It contains the key
 || **Parameter** | **Description** ||
 || **Keys from `params`**
 [`string`](../../data-types.md) | The values the application set in the link. Key names are arbitrary, and the values arrive as strings ||
-|| **URI***
-[`string`](../../data-types.md) | The path with the query string of the Bitrix24 page the user followed the link from ||
+|| **URI**
+[`string`](../../data-types.md) | The path with the query string of the Bitrix24 page the user followed the link from. If the link was opened directly, for example from the address bar, the address of the link itself arrives. The key is absent if the browser did not send the `Referer` header ||
 |#
 
-Bitrix24 adds the `URI` key itself, but it never overwrites a value of its own. If the application passes its own `URI` key in `params`, the handler receives exactly that value.
+Bitrix24 adds the `URI` key itself. If the application passed its own non-empty `URI` in `params`, the handler receives it. Bitrix24 replaces an empty string and `0` with the page address.
+
+Arrays in `params` are not supported: `params[ids][]=1&params[ids][]=2` results in the string `"ids": "2"` — the last value.
 
 ## OPTIONS when registering via placement.bind
 
-The placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array. Pass your settings in the handler address or in the `params` key of the link.
+The placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array. Pass your settings in the handler address or in the `params` key of the link.
 
 The placement does not support the `USER_ID` parameter either: an attempt to register a handler for a single user returns the error `ERROR_PLACEMENT_USER_MODE`. The handler is always registered for all Bitrix24 users.
 
-An application registers only one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
+An application registers only one handler for this placement. A repeated [placement.bind](../placement-bind.md) call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
 
-### Code Examples
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -266,7 +268,7 @@ An application registers only one handler for this placement. A repeated `placem
 
 **The content that holds the link.** The application places the link with the same methods it uses for any other text: in a chat message with the methods of the [{#T}](../../chats/index.md) section, in a feed post with the methods of the [{#T}](../../log/index.md) section, in a task description with the methods of the [{#T}](../../tasks/index.md) section.
 
-**Application interface.** The slider is controlled by the [JavaScript methods for widgets](../bx24-widget-methods.md): `closeApplication` closes the widget, `openApplication` opens it again with different parameters.
+**Application interface.** The slider is controlled by the [JavaScript methods for widgets](../bx24-widget-methods.md): `closeApplication` closes the widget, `openApplication` opens the main application interface at the address from the application settings, not the `REST_APP_URI` handler. The parameters passed to `openApplication` arrive in `PLACEMENT_OPTIONS`.
 
 ## Common Mistakes
 
@@ -274,7 +276,7 @@ An application registers only one handler for this placement. A repeated `placem
 || **Mistake** | **Solution** ||
 || The link opens an empty slider | Check that the application is installed and active: the handler is substituted only for an installed application ||
 || The slider opens, but the parameters do not arrive | Parameters are passed only in the `params` key: `?params[docId]=42`. Keys passed directly in the query string do not reach `PLACEMENT_OPTIONS` ||
-|| `placement.bind` returns `ERROR_PLACEMENT_MAX_COUNT` | The handler is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_MAX_COUNT` | The handler is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
 || The link contains the handler registration identifier | The address needs the application code: the symbolic code of a mass-market application or the `client_id` of a local one ||
 |#
 

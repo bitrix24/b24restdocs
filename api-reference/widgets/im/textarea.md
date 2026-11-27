@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, im`](../../scopes/permissions.md)
 
-The widget adds its item to the panel above the message input field.
+The widget adds its item to the panel above the message input field. When the item is clicked, the application opens in a window above the input field, and the conversation stays on the screen. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- insert a ready-made reply, template, or link from your own system into the input field — how to do this is described in [{#T}](../../../sdk/b24jssdk/iframe-messenger-textarea.md)
+- find data for a reply: order status, product stock, a contact
+- create a record from the current conversation, for example a request or a task in an external service
+
+Choose this placement if the action is short and the user does not need to leave the conversation. For a separate screen with chat data or tools, use [{#T}](./sidebar.md), and for an action on a single message, use [{#T}](./context-menu.md).
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -79,14 +85,14 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || **Parameter**
 `type` | **Description** ||
 || **dialogId***
-[`string`](../../data-types.md) | Identifier of the chat from whose input field the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor is returned by the [user.get](../../user/user-get.md) method ||
-|| **URI***
-[`string`](../../data-types.md) | Address of the page the widget is opened from. For the messenger this is `/online/` ||
+[`string`](../../data-types.md) | Identifier of the chat from whose input field the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor, including a bot, is returned by the [im.user.get](../../chats/users/im-user-get.md) method ||
+|| **URI**
+[`string`](../../data-types.md) | Path of the page the widget is opened from, with the query string if there is one, for example `/online/` or `/online/?IM_DIALOG=chat1`. The key is absent if the browser did not send the `Referer` header ||
 |#
 
 ## OPTIONS When Registering via placement.bind
 
-For `IM_TEXTAREA`, the `placement.bind` method supports `OPTIONS` parameters.
+For `IM_TEXTAREA`, the [placement.bind](../placement-bind.md) method supports `OPTIONS` parameters.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -103,8 +109,8 @@ Possible values:
 
 Possible values:
 - `ALL` — all chats
-- `USER` — personal chats of users, excluding chats with bots
-- `CHAT` — group chats, excluding `LINES` and `CRM`
+- `USER` — personal chats, including chats with bots
+- `CHAT` — group chats, channels, and other chats, excluding `LINES` and `CRM`
 - `LINES` — open lines chats
 - `CRM` — chats created within CRM
 
@@ -116,7 +122,7 @@ Possible values:
 - `USER` — application is available to all users
 - `ADMIN` — application is available only to portal administrators
 ||
-|| **color** [`string`](../../data-types.md) | Icon color from the IM palette.
+|| **color** [`string`](../../data-types.md) | Background color under the icon — a value from the IM palette. The icon itself is white. If the parameter is not passed, the color is chosen automatically.
 
 Possible values:
 - `RED` — red
@@ -136,6 +142,7 @@ Possible values:
 - `MARENGO` — marengo
 - `GRAY` — gray
 - `GRAPHITE` — graphite
+- `COPILOT` — violet
 ||
 || **width** [`integer`](../../data-types.md) | Width of the application window in pixels, default is `100`. The window opens above the input field when the user clicks the application item.
 
@@ -482,12 +489,12 @@ The value must be greater than or equal to `0`. A string is converted to a numbe
 
 #|
 || **Error** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
-|| `placement.bind` returns `INVALID_ERROR_WIDTH` or `INVALID_ERROR_HEIGHT` | A negative number was passed in `OPTIONS[width]` or `OPTIONS[height]`. Pass the window size in pixels, greater than or equal to `0` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing or a parameter has the wrong type — for example, `LANG_ALL` was passed as a string. The parameter name arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_WIDTH` or `INVALID_ERROR_HEIGHT` | A negative number was passed in `OPTIONS[width]` or `OPTIONS[height]`. Pass the window size in pixels, greater than or equal to `0` ||
 || The application window is too small | `width` and `height` were not passed, and the window opened with the default size of 100 × 100 pixels. Pass the required size in pixels, for example `"width": 400`, `"height": 400`. Percentages are not supported ||
 || The item did not appear in the panel above the input field | Complete the application installation and reopen the chat ||
-|| Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
+|| [placement.bind](../placement-bind.md) returns `INVALID_ERROR_CONTEXT` | An invalid value was passed in `OPTIONS[context]`. Use only `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||
 |#
 

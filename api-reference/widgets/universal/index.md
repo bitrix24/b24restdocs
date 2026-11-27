@@ -28,13 +28,13 @@ The placements differ in who launches the handler.
 ## How to Get Started
 
 1. Choose the placement by who launches the handler: the user through a link or Bitrix24 on every page
-2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the placement code in `PLACEMENT`. For `PAGE_BACKGROUND_WORKER`, `OPTIONS[errorHandlerUrl]` is mandatory
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the placement code in `PLACEMENT`. For `PAGE_BACKGROUND_WORKER`, `OPTIONS[errorHandlerUrl]` is mandatory. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications
 3. Complete the application installation: until then the handler is not called
 4. Call the placement: follow the link `/marketplace/view/#APP_CODE#/` or open any Bitrix24 page
 5. Parse `PLACEMENT_OPTIONS` to get the launch context
 6. If the widget has to open the application interface, use the [JavaScript methods for widgets](../bx24-widget-methods.md)
 
-Both placements are registered in a single copy: a repeated `placement.bind` for the same application returns the error `ERROR_PLACEMENT_MAX_COUNT`.
+Each placement accepts one general handler per application: a repeated [placement.bind](../placement-bind.md) returns the error `ERROR_PLACEMENT_MAX_COUNT`. `PAGE_BACKGROUND_WORKER` also accepts personal handlers — see the [placement page](./background-worker.md#single-user) for details.
 
 ## What the Handler Receives
 
@@ -98,9 +98,34 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 
 #|
 || **Placement** | **Keys** | **What They Contain** ||
-|| [REST_APP_URI](./app-url.md) | Keys from the link `params`, `URI` | The parameters the application set in the link itself and the address of the page the user came from ||
-|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | `ID`, `URI` | The placement code and the address of the page where the handler loaded ||
+|| [REST_APP_URI](./app-url.md) | Keys from the link `params`, `URI` | The application itself sets the keys from `params` in the link, and their values arrive as strings. Bitrix24 adds `URI` itself: it is the address of the page the user followed the link from, or the address of the link itself when it is opened directly. If the application passed its own `URI` in `params`, that value arrives ||
+|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | `ID`, `URI` | Bitrix24 adds both keys itself: `ID` is the placement code, `URI` is the address of the page where the handler loaded ||
 |#
+
+After parsing, the `PLACEMENT_OPTIONS` string from the examples above looks like this:
+
+{% list tabs %}
+
+- REST_APP_URI
+
+    ```json
+    {
+        "test": "y",
+        "docId": "42",
+        "URI": "/company/personal/user/1/blog/"
+    }
+    ```
+
+- PAGE_BACKGROUND_WORKER
+
+    ```json
+    {
+        "ID": "PAGE_BACKGROUND_WORKER",
+        "URI": "/company/personal/user/1/blog/"
+    }
+    ```
+
+{% endlist %}
 
 The `URI` key is universal: it is passed to any placement and carries the path with the query string of the Bitrix24 page the widget is opened from.
 
@@ -116,8 +141,8 @@ The `URI` key is universal: it is passed to any placement and carries the path w
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `EMPTY_ERROR_HANDLER_URL` | The `PAGE_BACKGROUND_WORKER` placement requires an address for deactivation messages. Pass `OPTIONS[errorHandlerUrl]` ||
-|| `placement.bind` returns `ERROR_PLACEMENT_MAX_COUNT` | A handler for this placement is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
+|| [placement.bind](../placement-bind.md) returns `EMPTY_ERROR_HANDLER_URL` | The `PAGE_BACKGROUND_WORKER` placement requires an address for deactivation messages. Pass `OPTIONS[errorHandlerUrl]` ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_MAX_COUNT` | A handler for this placement is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
 || The `/marketplace/view/#APP_CODE#/` link opens an empty slider | Check that the application installation is complete and that the link contains the application code, not the handler registration identifier ||
 || The background handler stopped being called | The registration is deleted if the handler took longer than five seconds to load more than ten times a day. Bitrix24 reports this to the address from `errorHandlerUrl` ||
 |#

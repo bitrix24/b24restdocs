@@ -15,7 +15,7 @@ The widget adds its own item to the messenger navigation menu — to the same ro
 
 The placement suits applications that work with the messenger as a whole rather than with a particular chat or message: conversation summaries, reports, custom dialog lists.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -32,9 +32,9 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where it is located in the interface
 
-Open the messenger and look at the row of navigation items at the top of the screen. The application item appears in this row with the name from the `TITLE` parameter.
+Open the messenger and look at the row of navigation items at the top of the screen. The application item appears in this row with the name from the `TITLE` parameter. If `LANG_ALL` is passed, the name is taken from it in the user's language.
 
-If there are more items than fit into the row, some of them move under the *More* button. The application item is added last, so most often it ends up there.
+The application item is placed after *Market*. If there are more items than fit into the row, some of them move under the *More* button.
 
 ![Application item in the messenger navigation menu](./_images/IM_NAVIGATION.png "Application item in the messenger navigation menu")
 
@@ -82,7 +82,7 @@ If the application needs a chat identifier, use the placements that are called f
 
 ## OPTIONS when registering via placement.bind
 
-For `IM_NAVIGATION`, the `placement.bind` method supports the `OPTIONS` parameters.
+For `IM_NAVIGATION`, the [placement.bind](../placement-bind.md) method supports the `OPTIONS` parameters.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -90,7 +90,7 @@ For `IM_NAVIGATION`, the `placement.bind` method supports the `OPTIONS` paramete
 || **Parameter** `type` | **Description** ||
 || **iconName*** [`string`](../../data-types.md) | Name of a Font Awesome 4 icon, for example `fa-rocket`. Bitrix24 adds the `fa` set class itself. Up to 50 characters, the value must contain Latin letters, a space, or `-`.
 
-The parameter is required: without it, `placement.bind` returns the `ERROR_ARGUMENT` error. In the current messenger interface the navigation item is rendered as text, while the icon is used in the other placements of the section
+The parameter is required: without it, [placement.bind](../placement-bind.md) returns the `ERROR_ARGUMENT` error. In the current messenger interface the navigation item is rendered as text, while the icon is used in the other placements of the section
 ||
 || **extranet** [`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
@@ -375,10 +375,10 @@ The `context` parameter, which limits the display by chat type, does not apply t
 
 #|
 || **Error** | **How to Resolve** ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
-|| `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing or a parameter has the wrong type — for example, `LANG_ALL` was passed as a string. The parameter name arrives in `argument` ||
 || The item did not appear in the messenger navigation menu | Complete the application installation and reopen the messenger ||
-|| The item is not found in the navigation row | The application item is added last, so most often it moves under the *More* button. Open that list ||
+|| The item is not found in the navigation row | The application item is placed after *Market*. If the row does not fit all items, open the list under the *More* button ||
 || The display of the item is restricted with the `context` key | The embedding point is not tied to a chat, and the `context` key does not apply to it. Access can be restricted with the `role` and `extranet` keys ||
 |#
 

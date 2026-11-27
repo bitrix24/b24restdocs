@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 
 The widget adds its own item to the employee card menu. The call context carries the identifier of the employee whose card was opened — so the placement suits actions with a specific employee: show their data from an external system, submit a request about them, open their card in your own service.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 {% note info "" %}
 
@@ -30,7 +30,7 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open an employee card — for example, from the *Employees* section; the card address is `/company/personal/user/<user ID>/`. The card opens in a slider. The application item goes to the menu of the button in the upper right corner of the card, next to the *Security* button.
+Open an employee card — for example, from the *Employees* section; the card address is `/company/personal/user/<user ID>/`. The card opens in a slider. The application item goes to the menu of the button in the upper right corner of the card, next to the *Security* button. The user sees the item in any employee card they can open, including their own.
 
 ![Item in the employee card menu](./_images/USER_PROFILE_TOOLBAR.png "Item in the employee card menu")
 
@@ -78,7 +78,7 @@ When someone else's card is open, the value does not match the current user. To 
 [`string`](../../data-types.md) | The address of the employee card the widget is opened from ||
 |#
 
-This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
+This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and in the [placement.get](../placement-get.md) response, the `options` field of such a registration is an empty array.
 
 ## Relationship with Other Objects
 

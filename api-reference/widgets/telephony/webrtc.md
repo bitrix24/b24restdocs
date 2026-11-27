@@ -9,9 +9,13 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Bitrix24 allows you to embed an external WebRTC client into the web version of the product. This scenario has no placement code of its own: the client is loaded into the `PAGE_BACKGROUND_WORKER` placement, and telephony is connected with the methods of the [{#T}](../../telephony/index.md) section.
+> Scope: [`placement, telephony`](../../scopes/permissions.md)
+
+Bitrix24 allows you to embed an external WebRTC client into the web version of the product. This scenario has no placement code of its own: the client is loaded into the `PAGE_BACKGROUND_WORKER` placement, and telephony is connected with the methods of the [{#T}](../../telephony/index.md) section. The application needs two scopes: `placement` to register the handler and `telephony` to work with calls.
 
 The scenario has no visible element in the interface either. The user works with the standard call card, while the application's WebRTC client runs in the background.
+
+The handler is registered with the [placement.bind](../placement-bind.md) method. The method works only on behalf of an application: you cannot register the placement via a webhook. A widget can be registered by the Bitrix24 administrator and, in a local application, also by an employee with permission to create applications.
 
 To embed your own WebRTC client:
 
@@ -46,10 +50,10 @@ The workflow with the call card is described in the article [{#T}](../ui-interac
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `EMPTY_ERROR_HANDLER_URL` | The `PAGE_BACKGROUND_WORKER` placement requires an address for disconnection messages. Pass `OPTIONS[errorHandlerUrl]` ||
-|| `placement.bind` returns `ERROR_PLACEMENT_MAX_COUNT` | A handler for this placement is already registered: it is registered in a single instance. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
-|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| The background handler is no longer called | The registration was removed because of slow responses. Bitrix24 reports it to the address from `OPTIONS[errorHandlerUrl]`; after fixing the issue, register the handler again ||
+|| [placement.bind](../placement-bind.md) returns `EMPTY_ERROR_HANDLER_URL` | The `PAGE_BACKGROUND_WORKER` placement requires an address for disconnection messages. Pass `OPTIONS[errorHandlerUrl]` ||
+|| [placement.bind](../placement-bind.md) returns `ERROR_PLACEMENT_MAX_COUNT` | The application already has a handler for this placement — for all users or for the same user from `USER_ID`. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
+|| [placement.bind](../placement-bind.md) returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The background handler is no longer called | Check whether the handler is present in the [placement.get](../placement-get.md) response. If it is not, check the address from `OPTIONS[errorHandlerUrl]`: on slow responses, Bitrix24 removes the registration and sends the `ERROR_PLACEMENT_LOADING_OVERTIME` error there. Speed up the handler response and register it again ||
 |#
 
 Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
