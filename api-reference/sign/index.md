@@ -19,17 +19,21 @@ Bitrix24 e-Signature allows you to sign HR documents with employees using a digi
 
 The `sign.b2e.*` methods work with documents in e-Signature. Use them to send a document for signing, retrieve document data, retrieve a list of the company's signing providers, and retrieve lists of signed documents.
 
+The `sign.b2e.template.*` and `sign.b2e.legal.*` methods belong to [REST 3.0](../rest-v3.md). They send documents to employees using ready-made company templates and store personal details in the employee profile.
+
 The `sign.b2e.provider.*` methods connect your own signing providers to Bitrix24. They are called by an administrator. The methods work only if e-Signature for HR is available on Bitrix24.
 
 The `humanresources.hcmlink.*` methods manage e-Signature integration data with HR systems through HCM Link: companies, employees, mappings, and field values.
 
-The [sign.b2e.document.send](./sign-b2e-document-send.md), [sign.b2e.document.get](./sign-b2e-document-get.md), and [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) methods work both in an [application](../../settings/app-installation/index.md) and via an [inbound webhook](../../local-integrations/local-webhooks.md). The other methods in this section, including `humanresources.hcmlink.*`, are available only to applications: they reject calls made through a webhook with the `WRONG_AUTH_TYPE` error.
+The [sign.b2e.document.send](./sign-b2e-document-send.md), [sign.b2e.document.get](./sign-b2e-document-get.md), and [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) methods, as well as the REST 3.0 `sign.b2e.template.*` and `sign.b2e.legal.*` methods, work both in an [application](../../settings/app-installation/index.md) and via an [inbound webhook](../../local-integrations/local-webhooks.md). The other methods in this section, including `humanresources.hcmlink.*`, are available only to applications: they reject calls made through a webhook with the `WRONG_AUTH_TYPE` error.
 
 ## How to Select a Method Group
 
 #|
 || **If You Need To** | **Use** ||
 || Send documents for signing and retrieve signing information | `sign.b2e.*` methods ||
+|| Send an employee a document using a ready-made company template or template bundle | [sign.b2e.template.*](#templates) methods ||
+|| Fill in personal details in the employee profile: position, Social Security number, Taxpayer ID | [sign.b2e.legal.*](#legal) methods ||
 || Connect your own signing provider to Bitrix24 | [sign.b2e.provider.*](#providers) methods ||
 || Track changes in document and signing participant statuses | `OnSignB2e*` events ||
 || Transfer data from an HR system to fill e-Signature documents | [humanresources.hcmlink.*](./hcm-link/index.md) methods ||
@@ -108,6 +112,36 @@ The [sign.b2e.document.send](./sign-b2e-document-send.md), [sign.b2e.document.ge
     |#
 
 {% endlist %}
+
+### Templates and Bundles {#templates}
+
+> Scope: [`sign.b2e`, `crm`](../scopes/permissions.md)
+>
+> Who can execute the method: depends on the method
+
+These methods belong to REST 3.0 and are called at the `/rest/api/` address.
+
+#|
+|| **Method** | **Description** ||
+|| [sign.b2e.template.list](./sign-b2e-template-list.md) | Returns company templates you can send a document with ||
+|| [sign.b2e.template.send](./sign-b2e-template-send.md) | Sends an employee a document using a template ||
+|| [sign.b2e.template.folder.tail](./sign-b2e-template-folder-tail.md) | Returns a list of template bundles ||
+|| [sign.b2e.template.folder.get](./sign-b2e-template-folder-get.md) | Returns the templates of a bundle ||
+|#
+
+### Personal Details {#legal}
+
+> Scope: [`sign.b2e`, `user`](../scopes/permissions.md)
+>
+> Who can execute the method: depends on the method
+
+These methods belong to REST 3.0 and are called at the `/rest/api/` address.
+
+#|
+|| **Method** | **Description** ||
+|| [sign.b2e.legal.field.list](./sign-b2e-legal-field-list.md) | Returns a list of personal details fields ||
+|| [sign.b2e.legal.profile.update](./sign-b2e-legal-profile-update.md) | Stores personal details in the employee profile ||
+|#
 
 ### External Signing Providers {#providers}
 

@@ -11,6 +11,22 @@ items:
     href: sign-b2e-hcmlink-document-get.md
   - name: Get Company Provider List
     href: sign-b2e-company-provider-list.md
+  - name: Templates and Bundles
+    items:
+      - name: Get a List of Templates for Sending
+        href: sign-b2e-template-list.md
+      - name: Send a Document Using a Template
+        href: sign-b2e-template-send.md
+      - name: Get a List of Template Bundles
+        href: sign-b2e-template-folder-tail.md
+      - name: Get Bundle Templates
+        href: sign-b2e-template-folder-get.md
+  - name: Personal Details
+    items:
+      - name: Get a List of Personal Details Fields
+        href: sign-b2e-legal-field-list.md
+      - name: Store Personal Details in the Employee Profile
+        href: sign-b2e-legal-profile-update.md
   - name: Add Signing Provider
     href: sign-b2e-provider-add.md
   - name: Update Signing Provider

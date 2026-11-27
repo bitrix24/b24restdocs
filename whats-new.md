@@ -2,6 +2,10 @@
 
 ## 2026
 
+### November 27, 2026
+
+- Added e-Signature for HR methods in REST 3.0: [sign.b2e.template.*](./api-reference/sign/index.md#templates) send an employee a document using a company template or template bundle, and [sign.b2e.legal.*](./api-reference/sign/index.md#legal) store personal details in the employee profile
+
 ### November 25, 2026
 
 - Added the [landing.landing.cutblock](./api-reference/landing/page/block-methods/landing-landing-cut-block.md) method: records block cutting in the history for a subsequent move

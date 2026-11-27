@@ -101,6 +101,7 @@ The REST 3.0 methods are described in the following sections:
 || [Time Tracking Records](./timeman/record/index.md) | Retrieve and modify time tracking records ||
 || [Call Follow-up](./telephony/follow-up/index.md) | Retrieve the materials that the AI assistant generates after a Bitrix24 video call or a Bitrix24 Sync call — the [call.followup.*](./telephony/follow-up/index.md#all-methods) and [syncconnector.followup.*](./telephony/follow-up/index.md#sync-methods) method groups ||
 || [Forum](./forum/index.md) | Delete forum messages and comments, create and configure custom fields of messages and values of "List" type fields ||
+|| [e-Signature](./sign/index.md) | Send employees documents using company templates and store personal details in the employee profile — the `sign.b2e.template.*` and `sign.b2e.legal.*` groups of methods. The other e-Signature methods belong to the old version ||
 || [Information Blocks](./iblock/index.md) | Retrieve information block elements with properties. Work only with information blocks that have REST access enabled in the admin panel ||
 |#
 
