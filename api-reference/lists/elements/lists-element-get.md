@@ -84,8 +84,9 @@ Available fields:
 The `ID` field is always returned. The method skips fields and properties that are not in the list without an error
 || 
 || **FILTER**
-[`object`] | An object for filtering element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values: 
+[`object`] | An object for filtering element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values:
 
+- `ID` — element identifier
 - `NAME` — element name
 - `IBLOCK_SECTION_ID` — identifier of the section to which the element is added
 - `CREATED_BY` — identifier of the user who created the element
@@ -120,6 +121,10 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+
+The `ID` field supports the prefixes `=`, `!`, `>`, `>=`, `<`, `<=`. The `!=`, `@`, `!@`, `=%`, and `!=%` operators are not supported for this field. If an unsupported operator is specified, the method returns the `ERROR_ARGUMENT` error.
+
+The filter `{"FILTER": {">=ID": 6983}}` returns elements with IDs greater than or equal to `6983`. To retrieve a specific element, specify its identifier in the `ELEMENT_ID` parameter.
 
 If no element identifier is provided and no filtering conditions are specified, all elements of the list will be returned
 ||
